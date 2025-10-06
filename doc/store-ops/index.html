@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store Operations Module - Screenshot Gallery</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .section h3 {
+            color: #555;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .screenshot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .screenshot-item {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            background: white;
+        }
+
+        .screenshot-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .screenshot-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            cursor: pointer;
+        }
+
+        .screenshot-info {
+            padding: 1rem;
+        }
+
+        .screenshot-info h4 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .screenshot-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .badge-dashboard {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .badge-list {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .badge-detail {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 2rem;
+            margin: 0;
+            color: white;
+        }
+
+        .stat-card p {
+            margin: 0.5rem 0 0 0;
+            opacity: 0.9;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            max-width: 95%;
+            max-height: 95%;
+            position: relative;
+        }
+
+        .modal-content img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #ddd;
+        }
+
+        .toc {
+            background: #f9f9f9;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .toc h3 {
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+
+        .toc ul {
+            list-style: none;
+        }
+
+        .toc li {
+            margin-bottom: 0.5rem;
+        }
+
+        .toc a {
+            color: #555;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .toc a:hover {
+            color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Store Operations Module</h1>
+        <p>Visual Documentation & Screenshot Gallery</p>
+    </div>
+
+    <div class="container">
+        <!-- Stats Section -->
+        <div class="section">
+            <h2>Documentation Overview</h2>
+            <div class="stats">
+                <div class="stat-card">
+                    <h3>10</h3>
+                    <p>Total Screenshots</p>
+                </div>
+                <div class="stat-card">
+                    <h3>5</h3>
+                    <p>Module Sections</p>
+                </div>
+                <div class="stat-card">
+                    <h3>1920x1080</h3>
+                    <p>Resolution</p>
+                </div>
+                <div class="stat-card">
+                    <h3>100%</h3>
+                    <p>Coverage</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table of Contents -->
+        <div class="section">
+            <div class="toc">
+                <h3>Table of Contents</h3>
+                <ul>
+                    <li><a href="#dashboard">1. Store Operations Dashboard</a></li>
+                    <li><a href="#requisitions-list">2. Store Requisitions List</a></li>
+                    <li><a href="#requisitions-detail">3. Store Requisition Detail</a></li>
+                    <li><a href="#stock-replenishment">4. Stock Replenishment</a></li>
+                    <li><a href="#wastage">5. Wastage Reporting</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div class="section" id="dashboard">
+            <h2>1. Store Operations Dashboard</h2>
+            <p>Main entry point for the Store Operations module with navigation to all sub-modules.</p>
+            <div class="screenshot-grid">
+                <div class="screenshot-item">
+                    <img src="store-operations-dashboard.png" alt="Store Operations Dashboard" onclick="openModal(this.src)">
+                    <div class="screenshot-info">
+                        <h4>Main Dashboard</h4>
+                        <p>Overview cards and module navigation</p>
+                        <span class="badge badge-dashboard">Dashboard</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Store Requisitions List Section -->
+        <div class="section" id="requisitions-list">
+            <h2>2. Store Requisitions List</h2>
+            <p>Browse and manage store requisitions with multiple view options and advanced filtering.</p>
+
+            <h3>List Views</h3>
+            <div class="screenshot-grid">
+                <div class="screenshot-item">
+                    <img src="store-requisitions-list-table.png" alt="Table View" onclick="openModal(this.src)">
+                    <div class="screenshot-info">
+                        <h4>Table View</h4>
+                        <p>Compact tabular display with sortable columns</p>
+                        <span class="badge badge-list">List View</span>
+                    </div>
+                </div>
+                <div class="screenshot-item">
+                    <img src="store-requisitions-list-card.png" alt="Card View" onclick="openModal(this.src)">
+                    <div class="screenshot-info">
+                        <h4>Card View</h4>
+                        <p>Visual card layout for better readability</p>
+                        <span class="badge badge-list">List View</span>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Filtering</h3>
+            <div class="screenshot-grid">
+                <div class="screenshot-item">
+                    <img src="store-requisitions-filters.png" alt="Filters" onclick="openModal(this.src)">
+                    <div class="screenshot-info">
+                        <h4>Advanced Filters</h4>
+                        <p>Multi-criteria filtering with status, date, location, and priority</p>
+                        <span class="badge badge-list">Filter Dialog</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Store Requisition Detail Section -->
+        <div class="section" id="requisitions-detail">
+            <h2>3. Store Requisition Detail</h2>
+            <p>Comprehensive detail view with tabbed interface for items, stock movements, journal entries, and approval workflow.</p>
+
+            <div class="screenshot-grid">
+                <div class="screenshot-item">
+                    <img src="store-requisition-detail-items.png" alt="Items Tab" onclick="openModal(this.src)">
+                    <div class="screenshot-info">
+                        <h4>Items Tab</h4>
+                        <p>Requisition line items with quantities, costs, and approval status</p>
+                        <span class="badge badge-detail">Detail View</span>
+                    </div>
+                </div>
+                <div class="screenshot-item">
+                    <img src="store-requisition-detail-stock-movements.png" alt="Stock Movements" onclick="openModal(this.src)">
+                    <div class="screenshot-info">
+                        <h4>Stock Movements Tab</h4>
+                        <p>Inventory transaction history and tracking</p>
+                        <span class="badge badge-detail">Detail View</span>
+                    </div>
+                </div>
+                <div class="screenshot-item">
+                    <img src="store-requisition-detail-journal.png" alt="Journal Entries" onclick="openModal(this.src)">
+                    <div class="screenshot-info">
+                        <h4>Journal Entries Tab</h4>
+                        <p>Financial accounting entries and impact</p>
+                        <span class="badge badge-detail">Detail View</span>
+                    </div>
+                </div>
+                <div class="screenshot-item">
+                    <img src="store-requisition-detail-approval-workflow.png" alt="Approval Workflow" onclick="openModal(this.src)">
+                    <div class="screenshot-info">
+                        <h4>Approval Workflow Tab</h4>
+                        <p>Multi-level approval process visualization</p>
+                        <span class="badge badge-detail">Detail View</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stock Replenishment Section -->
+        <div class="section" id="stock-replenishment">
+            <h2>4. Stock Replenishment</h2>
+            <p>Manage automated and manual stock replenishment based on par levels and consumption patterns.</p>
+
+            <div class="screenshot-grid">
+                <div class="screenshot-item">
+                    <img src="stock-replenishment-dashboard.png" alt="Stock Replenishment" onclick="openModal(this.src)">
+                    <div class="screenshot-info">
+                        <h4>Replenishment Dashboard</h4>
+                        <p>Overview and management of stock replenishment requests</p>
+                        <span class="badge badge-dashboard">Dashboard</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wastage Reporting Section -->
+        <div class="section" id="wastage">
+            <h2>5. Wastage Reporting</h2>
+            <p>Track, categorize, and analyze product wastage with cost impact and prevention insights.</p>
+
+            <div class="screenshot-grid">
+                <div class="screenshot-item">
+                    <img src="wastage-reporting-dashboard.png" alt="Wastage Reporting" onclick="openModal(this.src)">
+                    <div class="screenshot-info">
+                        <h4>Wastage Dashboard</h4>
+                        <p>Wastage tracking and reporting with analytics</p>
+                        <span class="badge badge-dashboard">Dashboard</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="imageModal" class="modal" onclick="closeModal()">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <img id="modalImage" src="">
+        </div>
+    </div>
+
+    <script>
+        function openModal(src) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modal.classList.add('active');
+            modalImg.src = src;
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.remove('active');
+        }
+
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
