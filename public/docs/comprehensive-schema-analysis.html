@@ -1,0 +1,2900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carmen ERP System - Comprehensive Schema Analysis - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: var(--bg-gradient);
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr 300px;
+            gap: 2rem;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 1.5rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .back-to-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: var(--primary-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        .back-to-home:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        /* Content Area */
+        .doc-content {
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 260px 1fr 280px;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 1.5rem;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 2.5rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            .doc-nav {
+                display: none;
+            }
+            .doc-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </div>
+            <div class="doc-header-actions">
+                <a href="../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="SYSTEM-DOCUMENTATION-INDEX.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Documentation Index</span>
+                    </a>
+                    <a href="DOCUMENTATION-CATALOG.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Catalog</span>
+                    </a>
+                    <a href="DOCUMENTATION-SUMMARY-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Summary</span>
+                    </a>
+                    <a href="MODULE-VERIFICATION-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Module Verification</span>
+                    </a>
+                    <a href="SYSTEM-GAPS-AND-ROADMAP.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Gaps & Roadmap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="architecture/SYSTEM-ARCHITECTURE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-users"></i>
+                    <span>Stakeholders</span>
+                </div>
+                <div class="nav-items">
+                    <a href="stakeholders/BUSINESS-VALUE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                </div>
+                <div class="nav-items">
+                    <a href="pr/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Requests</span>
+                    </a>
+                    <a href="po/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Orders</span>
+                    </a>
+                    <a href="grn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Goods Received Note</span>
+                    </a>
+                    <a href="cn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Credit Notes</span>
+                    </a>
+                    <a href="prt/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>PR Templates</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-boxes"></i>
+                    <span>Inventory Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="inv/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Overview</span>
+                    </a>
+                    <a href="inv/inventory-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Specification</span>
+                    </a>
+                    <a href="inv/inventory-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Sitemap</span>
+                    </a>
+                    <a href="pc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Physical Count</span>
+                    </a>
+                    <a href="sc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Spot Check</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-handshake"></i>
+                    <span>Vendor Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="vm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Overview</span>
+                    </a>
+                    <a href="vm/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Module</span>
+                    </a>
+                    <a href="vm/MANAGE-VENDORS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Manage Vendors</span>
+                    </a>
+                    <a href="vm/TEMPLATES.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Templates</span>
+                    </a>
+                    <a href="vm/CAMPAIGNS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Campaigns</span>
+                    </a>
+                    <a href="vm/PRICELISTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Pricelists</span>
+                    </a>
+                    <a href="vm/VENDOR-PORTAL.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Portal</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cube"></i>
+                    <span>Product Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="pm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Overview</span>
+                    </a>
+                    <a href="pm/product-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Specification</span>
+                    </a>
+                    <a href="pm/product-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-store"></i>
+                    <span>Store Operations</span>
+                </div>
+                <div class="nav-items">
+                    <a href="store-ops/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Overview</span>
+                    </a>
+                    <a href="store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Module</span>
+                    </a>
+                    <a href="store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Requisitions</span>
+                    </a>
+                    <a href="store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Stock Replenishment</span>
+                    </a>
+                    <a href="store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Wastage Reporting</span>
+                    </a>
+                    <a href="store-ops/GLOSSARY.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Glossary</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Operational Planning</span>
+                </div>
+                <div class="nav-items">
+                    <a href="operational-planning/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Overview</span>
+                    </a>
+                    <a href="operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Module</span>
+                    </a>
+                    <a href="operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Menu Engineering</span>
+                    </a>
+                    <a href="operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Recipe Management</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cash-register"></i>
+                    <span>POS Integration</span>
+                </div>
+                <div class="nav-items">
+                    <a href="pos-integration/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Overview</span>
+                    </a>
+                    <a href="pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Module</span>
+                    </a>
+                    <a href="pos-integration/MAPPING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Mapping Subsystem</span>
+                    </a>
+                    <a href="pos-integration/TRANSACTIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Transaction Management</span>
+                    </a>
+                    <a href="pos-integration/REPORTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports & Analytics</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-items">
+                    <a href="dashboard/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Overview</span>
+                    </a>
+                    <a href="dashboard/sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>System Requirements</span>
+                </div>
+                <div class="nav-items">
+                    <a href="carmen-erp-system-requirements-documentation.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Requirements</span>
+                    </a>
+                    <a href="comprehensive-schema-analysis.html" class="nav-item active">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="carmen-erp-system-comprehensive-schema-analysis">Carmen ERP System - Comprehensive Schema Analysis</h1>
+<h2 id="overview">Overview</h2>
+<p>This document provides a comprehensive analysis of all schema structures found across the Carmen ERP system documentation. The schemas are organized by module and include field definitions, types, formats, default values, and data source derivations.</p>
+<p><em>Generated: September 25, 2025</em><br><em>Source: Complete analysis of docs/documents/ directory</em></p>
+<hr>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#product-management-schemas">Product Management Schemas</a></li>
+<li><a href="#purchase-request-template-schemas">Purchase Request Template Schemas</a></li>
+<li><a href="#credit-note-schemas">Credit Note Schemas</a></li>
+<li><a href="#goods-received-note-grn-schemas">Goods Received Note (GRN) Schemas</a></li>
+<li><a href="#purchase-order-schemas">Purchase Order Schemas</a></li>
+<li><a href="#inventory-management-schemas">Inventory Management Schemas</a></li>
+<li><a href="#user-management-schemas">User Management Schemas</a></li>
+<li><a href="#commonshared-schemas">Common/Shared Schemas</a></li>
+</ol>
+<hr>
+<h2 id="product-management-schemas">Product Management Schemas</h2>
+<h3 id="1-product-interface">1. Product Interface</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Format</th>
+<th>Required</th>
+<th>Default</th>
+<th>Derived From</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>string</td>
+<td>UUID</td>
+<td>Yes</td>
+<td>Generated</td>
+<td>System generated UUID</td>
+</tr>
+<tr>
+<td>productCode</td>
+<td>string</td>
+<td>Custom format</td>
+<td>Yes</td>
+<td>Auto-generated</td>
+<td>System generated unique code</td>
+</tr>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>Text (255)</td>
+<td>Yes</td>
+<td>-</td>
+<td>User input</td>
+</tr>
+<tr>
+<td>description</td>
+<td>string</td>
+<td>Text</td>
+<td>Yes</td>
+<td>-</td>
+<td>User input</td>
+</tr>
+<tr>
+<td>categoryName</td>
+<td>string</td>
+<td>Text</td>
+<td>No</td>
+<td>null</td>
+<td>Selected from category list</td>
+</tr>
+<tr>
+<td>subCategoryName</td>
+<td>string</td>
+<td>Text</td>
+<td>No</td>
+<td>null</td>
+<td>Selected from subcategory list</td>
+</tr>
+<tr>
+<td>isActive</td>
+<td>boolean</td>
+<td>true/false</td>
+<td>Yes</td>
+<td>true</td>
+<td>User selection</td>
+</tr>
+<tr>
+<td>basePrice</td>
+<td>number</td>
+<td>Decimal(10,2)</td>
+<td>Yes</td>
+<td>-</td>
+<td>User input</td>
+</tr>
+<tr>
+<td>costPrice</td>
+<td>number</td>
+<td>Decimal(10,2)</td>
+<td>No</td>
+<td>null</td>
+<td>User input or calculated</td>
+</tr>
+<tr>
+<td>margin</td>
+<td>number</td>
+<td>Percentage</td>
+<td>No</td>
+<td>null</td>
+<td>Calculated from basePrice - costPrice</td>
+</tr>
+<tr>
+<td>supplierName</td>
+<td>string</td>
+<td>Text</td>
+<td>No</td>
+<td>null</td>
+<td>Selected from vendor list</td>
+</tr>
+<tr>
+<td>unitName</td>
+<td>string</td>
+<td>Text</td>
+<td>No</td>
+<td>null</td>
+<td>Selected from unit list</td>
+</tr>
+<tr>
+<td>taxRate</td>
+<td>number</td>
+<td>Percentage</td>
+<td>No</td>
+<td>null</td>
+<td>User input or from tax configuration</td>
+</tr>
+<tr>
+<td>allergens</td>
+<td>string[]</td>
+<td>Array of strings</td>
+<td>No</td>
+<td>[]</td>
+<td>User selection from predefined list</td>
+</tr>
+<tr>
+<td>isVegetarian</td>
+<td>boolean</td>
+<td>true/false</td>
+<td>No</td>
+<td>false</td>
+<td>User selection</td>
+</tr>
+<tr>
+<td>isVegan</td>
+<td>boolean</td>
+<td>true/false</td>
+<td>No</td>
+<td>false</td>
+<td>User selection</td>
+</tr>
+<tr>
+<td>isGlutenFree</td>
+<td>boolean</td>
+<td>true/false</td>
+<td>No</td>
+<td>false</td>
+<td>User selection</td>
+</tr>
+<tr>
+<td>shelfLife</td>
+<td>number</td>
+<td>Integer (days)</td>
+<td>No</td>
+<td>null</td>
+<td>User input</td>
+</tr>
+<tr>
+<td>storageConditions</td>
+<td>string</td>
+<td>Text</td>
+<td>No</td>
+<td>null</td>
+<td>User input</td>
+</tr>
+<tr>
+<td>minOrderQty</td>
+<td>number</td>
+<td>Decimal(10,3)</td>
+<td>No</td>
+<td>null</td>
+<td>User input</td>
+</tr>
+<tr>
+<td>maxOrderQty</td>
+<td>number</td>
+<td>Decimal(10,3)</td>
+<td>No</td>
+<td>null</td>
+<td>User input</td>
+</tr>
+<tr>
+<td>leadTimeDays</td>
+<td>number</td>
+<td>Integer</td>
+<td>No</td>
+<td>null</td>
+<td>User input or from supplier data</td>
+</tr>
+<tr>
+<td>supplierProductCode</td>
+<td>string</td>
+<td>Text</td>
+<td>No</td>
+<td>null</td>
+<td>From supplier catalog</td>
+</tr>
+<tr>
+<td>barcode</td>
+<td>string</td>
+<td>Barcode format</td>
+<td>No</td>
+<td>null</td>
+<td>User input or scanner</td>
+</tr>
+<tr>
+<td>images</td>
+<td>string[]</td>
+<td>Array of URLs</td>
+<td>No</td>
+<td>[]</td>
+<td>File upload paths</td>
+</tr>
+<tr>
+<td>nutritionalInfo</td>
+<td>object</td>
+<td>NutritionalInfo</td>
+<td>No</td>
+<td>null</td>
+<td>User input</td>
+</tr>
+<tr>
+<td>createdAt</td>
+<td>string</td>
+<td>ISO 8601 DateTime</td>
+<td>Yes</td>
+<td>Current timestamp</td>
+<td>System generated</td>
+</tr>
+<tr>
+<td>updatedAt</td>
+<td>string</td>
+<td>ISO 8601 DateTime</td>
+<td>Yes</td>
+<td>Current timestamp</td>
+<td>System updated on change</td>
+</tr>
+<tr>
+<td>createdBy</td>
+<td>string</td>
+<td>User ID</td>
+<td>Yes</td>
+<td>Current user ID</td>
+<td>From authentication context</td>
+</tr>
+</tbody></table>
+<h3 id="2-categoryitem-interface">2. CategoryItem Interface</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Format</th>
+<th>Required</th>
+<th>Default</th>
+<th>Derived From</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>string</td>
+<td>UUID</td>
+<td>Yes</td>
+<td>Generated</td>
+<td>System generated UUID</td>
+</tr>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>Text (100)</td>
+<td>Yes</td>
+<td>-</td>
+<td>User input</td>
+</tr>
+<tr>
+<td>type</td>
+<td>enum</td>
+<td>&#39;CATEGORY&#39;, &#39;SUBCATEGORY&#39;, &#39;ITEM_GROUP&#39;</td>
+<td>Yes</td>
+<td>-</td>
+<td>User selection</td>
+</tr>
+<tr>
+<td>itemCount</td>
+<td>number</td>
+<td>Integer</td>
+<td>Yes</td>
+<td>0</td>
+<td>Calculated from associated products</td>
+</tr>
+<tr>
+<td>children</td>
+<td>CategoryItem[]</td>
+<td>Array</td>
+<td>No</td>
+<td>[]</td>
+<td>Hierarchical relationships</td>
+</tr>
+<tr>
+<td>parentId</td>
+<td>string</td>
+<td>UUID</td>
+<td>No</td>
+<td>null</td>
+<td>Parent category reference</td>
+</tr>
+<tr>
+<td>sortOrder</td>
+<td>number</td>
+<td>Integer</td>
+<td>Yes</td>
+<td>0</td>
+<td>User defined or auto-increment</td>
+</tr>
+<tr>
+<td>isExpanded</td>
+<td>boolean</td>
+<td>true/false</td>
+<td>No</td>
+<td>false</td>
+<td>UI state</td>
+</tr>
+<tr>
+<td>isSelected</td>
+<td>boolean</td>
+<td>true/false</td>
+<td>No</td>
+<td>false</td>
+<td>UI state</td>
+</tr>
+<tr>
+<td>isHighlighted</td>
+<td>boolean</td>
+<td>true/false</td>
+<td>No</td>
+<td>false</td>
+<td>UI state</td>
+</tr>
+</tbody></table>
+<h3 id="3-unit-interface">3. Unit Interface</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Format</th>
+<th>Required</th>
+<th>Default</th>
+<th>Derived From</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>string</td>
+<td>UUID</td>
+<td>Yes</td>
+<td>Generated</td>
+<td>System generated UUID</td>
+</tr>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>Text (50)</td>
+<td>Yes</td>
+<td>-</td>
+<td>User input</td>
+</tr>
+<tr>
+<td>symbol</td>
+<td>string</td>
+<td>Text (10)</td>
+<td>Yes</td>
+<td>-</td>
+<td>User input</td>
+</tr>
+<tr>
+<td>type</td>
+<td>enum</td>
+<td>&#39;inventory&#39;, &#39;order&#39;, &#39;recipe&#39;</td>
+<td>Yes</td>
+<td>-</td>
+<td>User selection</td>
+</tr>
+<tr>
+<td>isActive</td>
+<td>boolean</td>
+<td>true/false</td>
+<td>Yes</td>
+<td>true</td>
+<td>User selection</td>
+</tr>
+<tr>
+<td>baseUnit</td>
+<td>string</td>
+<td>Unit ID</td>
+<td>No</td>
+<td>null</td>
+<td>Reference to base unit</td>
+</tr>
+<tr>
+<td>conversionFactor</td>
+<td>number</td>
+<td>Decimal(10,6)</td>
+<td>No</td>
+<td>null</td>
+<td>User input for conversions</td>
+</tr>
+<tr>
+<td>description</td>
+<td>string</td>
+<td>Text</td>
+<td>No</td>
+<td>null</td>
+<td>User input</td>
+</tr>
+<tr>
+<td>usageCount</td>
+<td>number</td>
+<td>Integer</td>
+<td>Yes</td>
+<td>0</td>
+<td>Calculated from product usage</td>
+</tr>
+<tr>
+<td>createdAt</td>
+<td>string</td>
+<td>ISO 8601 DateTime</td>
+<td>Yes</td>
+<td>Current timestamp</td>
+<td>System generated</td>
+</tr>
+</tbody></table>
+<h3 id="4-filtertype-interface">4. FilterType Interface</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Format</th>
+<th>Required</th>
+<th>Default</th>
+<th>Derived From</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>field</td>
+<td>keyof T</td>
+<td>Property name</td>
+<td>Yes</td>
+<td>-</td>
+<td>User selection</td>
+</tr>
+<tr>
+<td>operator</td>
+<td>enum</td>
+<td>FilterOperator</td>
+<td>Yes</td>
+<td>-</td>
+<td>User selection</td>
+</tr>
+<tr>
+<td>value</td>
+<td>string or string[]</td>
+<td>Mixed</td>
+<td>Yes</td>
+<td>-</td>
+<td>User input</td>
+</tr>
+<tr>
+<td>logicalOperator</td>
+<td>enum</td>
+<td>&#39;AND&#39;, &#39;OR&#39;</td>
+<td>No</td>
+<td>&#39;AND&#39;</td>
+<td>User selection</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="purchase-request-template-schemas">Purchase Request Template Schemas</h2>
+<h3 id="1-purchaserequesttemplate-interface">1. PurchaseRequestTemplate Interface</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Format</th>
+<th>Required</th>
+<th>Default</th>
+<th>Derived From</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>string</td>
+<td>UUID</td>
+<td>Yes</td>
+<td>Generated</td>
+<td>System generated UUID</td>
+</tr>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>Text (255)</td>
+<td>Yes</td>
+<td>-</td>
+<td>User input</td>
+</tr>
+<tr>
+<td>description</td>
+<td>string</td>
+<td>Text</td>
+<td>No</td>
+<td>null</td>
+<td>User input</td>
+</tr>
+<tr>
+<td>reference_number</td>
+<td>string</td>
+<td>Auto-generated format</td>
+<td>Yes</td>
+<td>Generated</td>
+<td>System pattern: PRT-YYYY-NNN</td>
+</tr>
+<tr>
+<td>type</td>
+<td>enum</td>
+<td>&#39;general&#39;, &#39;asset&#39;, &#39;service&#39;, &#39;recurring&#39;</td>
+<td>Yes</td>
+<td>&#39;general&#39;</td>
+<td>User selection</td>
+</tr>
+<tr>
+<td>department</td>
+<td>string</td>
+<td>Department code</td>
+<td>Yes</td>
+<td>-</td>
+<td>User&#39;s department or selection</td>
+</tr>
+<tr>
+<td>requestor_id</td>
+<td>string</td>
+<td>User ID</td>
+<td>Yes</td>
+<td>-</td>
+<td>Current user or selection</td>
+</tr>
+<tr>
+<td>status</td>
+<td>enum</td>
+<td>&#39;draft&#39;, &#39;active&#39;, &#39;inactive&#39;, &#39;archived&#39;</td>
+<td>Yes</td>
+<td>&#39;draft&#39;</td>
+<td>System managed</td>
+</tr>
+<tr>
+<td>is_active</td>
+<td>boolean</td>
+<td>true/false</td>
+<td>Yes</td>
+<td>true</td>
+<td>User selection</td>
+</tr>
+<tr>
+<td>is_default</td>
+<td>boolean</td>
+<td>true/false</td>
+<td>Yes</td>
+<td>false</td>
+<td>User selection</td>
+</tr>
+<tr>
+<td>total_amount</td>
+<td>number</td>
+<td>Decimal(15,2)</td>
+<td>Yes</td>
+<td>0</td>
+<td>Calculated from items</td>
+</tr>
+<tr>
+<td>currency</td>
+<td>enum</td>
+<td>CurrencyCode</td>
+<td>Yes</td>
+<td>&#39;MYR&#39;</td>
+<td>User selection or system default</td>
+</tr>
+<tr>
+<td>item_count</td>
+<td>number</td>
+<td>Integer</td>
+<td>Yes</td>
+<td>0</td>
+<td>Calculated from items array</td>
+</tr>
+<tr>
+<td>budget_codes</td>
+<td>string[]</td>
+<td>Array of codes</td>
+<td>No</td>
+<td>[]</td>
+<td>User selection</td>
+</tr>
+<tr>
+<td>account_codes</td>
+<td>string[]</td>
+<td>Array of codes</td>
+<td>No</td>
+<td>[]</td>
+<td>User selection</td>
+</tr>
+<tr>
+<td>approval_workflow</td>
+<td>string</td>
+<td>Workflow ID</td>
+<td>No</td>
+<td>null</td>
+<td>System or user selection</td>
+</tr>
+<tr>
+<td>created_at</td>
+<td>string</td>
+<td>ISO 8601 DateTime</td>
+<td>Yes</td>
+<td>Current timestamp</td>
+<td>System generated</td>
+</tr>
+<tr>
+<td>updated_at</td>
+<td>string</td>
+<td>ISO 8601 DateTime</td>
+<td>Yes</td>
+<td>Current timestamp</td>
+<td>System updated on change</td>
+</tr>
+<tr>
+<td>created_by</td>
+<td>string</td>
+<td>User ID</td>
+<td>Yes</td>
+<td>Current user ID</td>
+<td>From authentication context</td>
+</tr>
+<tr>
+<td>updated_by</td>
+<td>string</td>
+<td>User ID</td>
+<td>Yes</td>
+<td>Current user ID</td>
+<td>From authentication context</td>
+</tr>
+<tr>
+<td>version</td>
+<td>number</td>
+<td>Integer</td>
+<td>Yes</td>
+<td>1</td>
+<td>Auto-increment on updates</td>
+</tr>
+</tbody></table>
+<h3 id="2-templateitem-interface">2. TemplateItem Interface</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Format</th>
+<th>Required</th>
+<th>Default</th>
+<th>Derived From</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>string</td>
+<td>UUID</td>
+<td>Yes</td>
+<td>Generated</td>
+<td>System generated UUID</td>
+</tr>
+<tr>
+<td>template_id</td>
+<td>string</td>
+<td>UUID</td>
+<td>Yes</td>
+<td>-</td>
+<td>Parent template reference</td>
+</tr>
+<tr>
+<td>item_code</td>
+<td>string</td>
+<td>Product code</td>
+<td>Yes</td>
+<td>-</td>
+<td>User input or product selection</td>
+</tr>
+<tr>
+<td>description</td>
+<td>string</td>
+<td>Text</td>
+<td>Yes</td>
+<td>-</td>
+<td>User input or from product</td>
+</tr>
+<tr>
+<td>uom</td>
+<td>string</td>
+<td>Unit code</td>
+<td>Yes</td>
+<td>-</td>
+<td>User selection or from product</td>
+</tr>
+<tr>
+<td>quantity</td>
+<td>number</td>
+<td>Decimal(10,3)</td>
+<td>Yes</td>
+<td>-</td>
+<td>User input</td>
+</tr>
+<tr>
+<td>unit_price</td>
+<td>number</td>
+<td>Decimal(10,2)</td>
+<td>Yes</td>
+<td>-</td>
+<td>User input or from product</td>
+</tr>
+<tr>
+<td>total_amount</td>
+<td>number</td>
+<td>Decimal(15,2)</td>
+<td>Yes</td>
+<td>Calculated</td>
+<td>quantity * unit_price</td>
+</tr>
+<tr>
+<td>currency</td>
+<td>enum</td>
+<td>CurrencyCode</td>
+<td>Yes</td>
+<td>Template currency</td>
+<td>Inherited from template</td>
+</tr>
+<tr>
+<td>exchange_rate</td>
+<td>number</td>
+<td>Decimal(10,6)</td>
+<td>Yes</td>
+<td>1.0</td>
+<td>From currency service</td>
+</tr>
+<tr>
+<td>budget_code</td>
+<td>string</td>
+<td>Budget code</td>
+<td>Yes</td>
+<td>-</td>
+<td>User selection</td>
+</tr>
+<tr>
+<td>account_code</td>
+<td>string</td>
+<td>Account code</td>
+<td>Yes</td>
+<td>-</td>
+<td>User selection</td>
+</tr>
+<tr>
+<td>department</td>
+<td>string</td>
+<td>Department code</td>
+<td>Yes</td>
+<td>Template department</td>
+<td>Inherited from template</td>
+</tr>
+<tr>
+<td>tax_code</td>
+<td>string</td>
+<td>Tax code</td>
+<td>No</td>
+<td>null</td>
+<td>User selection or default</td>
+</tr>
+<tr>
+<td>tax_rate</td>
+<td>number</td>
+<td>Percentage</td>
+<td>Yes</td>
+<td>0</td>
+<td>From tax configuration</td>
+</tr>
+<tr>
+<td>tax_amount</td>
+<td>number</td>
+<td>Decimal(15,2)</td>
+<td>Yes</td>
+<td>Calculated</td>
+<td>total_amount * tax_rate</td>
+</tr>
+<tr>
+<td>sort_order</td>
+<td>number</td>
+<td>Integer</td>
+<td>Yes</td>
+<td>0</td>
+<td>User defined or auto-increment</td>
+</tr>
+<tr>
+<td>created_at</td>
+<td>string</td>
+<td>ISO 8601 DateTime</td>
+<td>Yes</td>
+<td>Current timestamp</td>
+<td>System generated</td>
+</tr>
+<tr>
+<td>updated_at</td>
+<td>string</td>
+<td>ISO 8601 DateTime</td>
+<td>Yes</td>
+<td>Current timestamp</td>
+<td>System updated on change</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="credit-note-schemas">Credit Note Schemas</h2>
+<h3 id="1-creditnote-interface">1. CreditNote Interface</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Format</th>
+<th>Required</th>
+<th>Default</th>
+<th>Derived From</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>string</td>
+<td>UUID</td>
+<td>Yes</td>
+<td>Generated</td>
+<td>System generated UUID</td>
+</tr>
+<tr>
+<td>ref_number</td>
+<td>string</td>
+<td>Auto-generated format</td>
+<td>Yes</td>
+<td>Generated</td>
+<td>System pattern: CN-YYYY-NNN</td>
+</tr>
+<tr>
+<td>vendor_id</td>
+<td>string</td>
+<td>UUID</td>
+<td>Yes</td>
+<td>-</td>
+<td>User selection</td>
+</tr>
+<tr>
+<td>type</td>
+<td>enum</td>
+<td>&#39;quantity_return&#39;, &#39;amount_discount&#39;</td>
+<td>Yes</td>
+<td>-</td>
+<td>User selection</td>
+</tr>
+<tr>
+<td>status</td>
+<td>enum</td>
+<td>&#39;draft&#39;, &#39;pending_approval&#39;, &#39;approved&#39;, &#39;processed&#39;</td>
+<td>Yes</td>
+<td>&#39;draft&#39;</td>
+<td>System managed</td>
+</tr>
+<tr>
+<td>date</td>
+<td>string</td>
+<td>ISO 8601 Date</td>
+<td>Yes</td>
+<td>Current date</td>
+<td>User input or current date</td>
+</tr>
+<tr>
+<td>currency</td>
+<td>enum</td>
+<td>CurrencyCode</td>
+<td>Yes</td>
+<td>-</td>
+<td>User selection or vendor default</td>
+</tr>
+<tr>
+<td>exchange_rate</td>
+<td>number</td>
+<td>Decimal(10,6)</td>
+<td>Yes</td>
+<td>1.0</td>
+<td>From currency service</td>
+</tr>
+<tr>
+<td>reason</td>
+<td>string</td>
+<td>Text</td>
+<td>Yes</td>
+<td>-</td>
+<td>User input</td>
+</tr>
+<tr>
+<td>description</td>
+<td>string</td>
+<td>Text</td>
+<td>No</td>
+<td>null</td>
+<td>User input</td>
+</tr>
+<tr>
+<td>subtotal</td>
+<td>number</td>
+<td>Decimal(15,2)</td>
+<td>Yes</td>
+<td>0</td>
+<td>Calculated from items</td>
+</tr>
+<tr>
+<td>tax_amount</td>
+<td>number</td>
+<td>Decimal(15,2)</td>
+<td>Yes</td>
+<td>0</td>
+<td>Calculated from items</td>
+</tr>
+<tr>
+<td>total_amount</td>
+<td>number</td>
+<td>Decimal(15,2)</td>
+<td>Yes</td>
+<td>0</td>
+<td>subtotal + tax_amount</td>
+</tr>
+<tr>
+<td>created_at</td>
+<td>string</td>
+<td>ISO 8601 DateTime</td>
+<td>Yes</td>
+<td>Current timestamp</td>
+<td>System generated</td>
+</tr>
+<tr>
+<td>updated_at</td>
+<td>string</td>
+<td>ISO 8601 DateTime</td>
+<td>Yes</td>
+<td>Current timestamp</td>
+<td>System updated on change</td>
+</tr>
+<tr>
+<td>created_by</td>
+<td>string</td>
+<td>User ID</td>
+<td>Yes</td>
+<td>Current user ID</td>
+<td>From authentication context</td>
+</tr>
+<tr>
+<td>approved_by</td>
+<td>string</td>
+<td>User ID</td>
+<td>No</td>
+<td>null</td>
+<td>Approver user ID</td>
+</tr>
+<tr>
+<td>approval_date</td>
+<td>string</td>
+<td>ISO 8601 DateTime</td>
+<td>No</td>
+<td>null</td>
+<td>System set on approval</td>
+</tr>
+<tr>
+<td>processed_by</td>
+<td>string</td>
+<td>User ID</td>
+<td>No</td>
+<td>null</td>
+<td>Processor user ID</td>
+</tr>
+<tr>
+<td>processing_date</td>
+<td>string</td>
+<td>ISO 8601 DateTime</td>
+<td>No</td>
+<td>null</td>
+<td>System set on processing</td>
+</tr>
+</tbody></table>
+<h3 id="2-creditnoteitem-interface">2. CreditNoteItem Interface</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Format</th>
+<th>Required</th>
+<th>Default</th>
+<th>Derived From</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>string</td>
+<td>UUID</td>
+<td>Yes</td>
+<td>Generated</td>
+<td>System generated UUID</td>
+</tr>
+<tr>
+<td>credit_note_id</td>
+<td>string</td>
+<td>UUID</td>
+<td>Yes</td>
+<td>-</td>
+<td>Parent credit note reference</td>
+</tr>
+<tr>
+<td>product_id</td>
+<td>string</td>
+<td>UUID</td>
+<td>Yes</td>
+<td>-</td>
+<td>Product reference</td>
+</tr>
+<tr>
+<td>quantity</td>
+<td>number</td>
+<td>Decimal(10,3)</td>
+<td>Yes</td>
+<td>-</td>
+<td>User input</td>
+</tr>
+<tr>
+<td>unit_price</td>
+<td>number</td>
+<td>Decimal(10,2)</td>
+<td>Yes</td>
+<td>-</td>
+<td>User input or from GRN</td>
+</tr>
+<tr>
+<td>total_amount</td>
+<td>number</td>
+<td>Decimal(15,2)</td>
+<td>Yes</td>
+<td>Calculated</td>
+<td>quantity * unit_price</td>
+</tr>
+<tr>
+<td>reason_code</td>
+<td>enum</td>
+<td>Various reason codes</td>
+<td>Yes</td>
+<td>-</td>
+<td>User selection</td>
+</tr>
+<tr>
+<td>lot_number</td>
+<td>string</td>
+<td>Text</td>
+<td>No</td>
+<td>null</td>
+<td>From GRN or user input</td>
+</tr>
+<tr>
+<td>expiry_date</td>
+<td>string</td>
+<td>ISO 8601 Date</td>
+<td>No</td>
+<td>null</td>
+<td>From GRN or user input</td>
+</tr>
+<tr>
+<td>grn_reference</td>
+<td>string</td>
+<td>GRN number</td>
+<td>No</td>
+<td>null</td>
+<td>Source GRN reference</td>
+</tr>
+<tr>
+<td>notes</td>
+<td>string</td>
+<td>Text</td>
+<td>No</td>
+<td>null</td>
+<td>User input</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="goods-received-note-grn-schemas">Goods Received Note (GRN) Schemas</h2>
+<h3 id="1-goodsreceivenote-interface">1. GoodsReceiveNote Interface</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Format</th>
+<th>Required</th>
+<th>Default</th>
+<th>Derived From</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>string</td>
+<td>UUID</td>
+<td>Yes</td>
+<td>Generated</td>
+<td>System generated UUID</td>
+</tr>
+<tr>
+<td>ref</td>
+<td>string</td>
+<td>Auto-generated format</td>
+<td>Yes</td>
+<td>Generated</td>
+<td>System pattern: GRN-YYYY-NNN</td>
+</tr>
+<tr>
+<td>vendor_id</td>
+<td>string</td>
+<td>UUID</td>
+<td>Yes</td>
+<td>-</td>
+<td>User selection or from PO</td>
+</tr>
+<tr>
+<td>purchase_order_id</td>
+<td>string</td>
+<td>UUID</td>
+<td>No</td>
+<td>null</td>
+<td>Source PO reference</td>
+</tr>
+<tr>
+<td>status</td>
+<td>enum</td>
+<td>GRNStatus</td>
+<td>Yes</td>
+<td>&#39;Draft&#39;</td>
+<td>System managed</td>
+</tr>
+<tr>
+<td>received_date</td>
+<td>string</td>
+<td>ISO 8601 Date</td>
+<td>Yes</td>
+<td>Current date</td>
+<td>User input or current date</td>
+</tr>
+<tr>
+<td>delivery_note_ref</td>
+<td>string</td>
+<td>Text</td>
+<td>No</td>
+<td>null</td>
+<td>User input</td>
+</tr>
+<tr>
+<td>invoice_ref</td>
+<td>string</td>
+<td>Text</td>
+<td>No</td>
+<td>null</td>
+<td>User input</td>
+</tr>
+<tr>
+<td>received_by</td>
+<td>string</td>
+<td>User ID</td>
+<td>Yes</td>
+<td>Current user ID</td>
+<td>From authentication context</td>
+</tr>
+<tr>
+<td>currency</td>
+<td>enum</td>
+<td>CurrencyCode</td>
+<td>Yes</td>
+<td>-</td>
+<td>From PO or user selection</td>
+</tr>
+<tr>
+<td>exchange_rate</td>
+<td>number</td>
+<td>Decimal(10,6)</td>
+<td>Yes</td>
+<td>1.0</td>
+<td>From currency service</td>
+</tr>
+<tr>
+<td>notes</td>
+<td>string</td>
+<td>Text</td>
+<td>No</td>
+<td>null</td>
+<td>User input</td>
+</tr>
+<tr>
+<td>created_at</td>
+<td>string</td>
+<td>ISO 8601 DateTime</td>
+<td>Yes</td>
+<td>Current timestamp</td>
+<td>System generated</td>
+</tr>
+<tr>
+<td>updated_at</td>
+<td>string</td>
+<td>ISO 8601 DateTime</td>
+<td>Yes</td>
+<td>Current timestamp</td>
+<td>System updated on change</td>
+</tr>
+</tbody></table>
+<h3 id="2-grnitem-interface">2. GRNItem Interface</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Format</th>
+<th>Required</th>
+<th>Default</th>
+<th>Derived From</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>string</td>
+<td>UUID</td>
+<td>Yes</td>
+<td>Generated</td>
+<td>System generated UUID</td>
+</tr>
+<tr>
+<td>grn_id</td>
+<td>string</td>
+<td>UUID</td>
+<td>Yes</td>
+<td>-</td>
+<td>Parent GRN reference</td>
+</tr>
+<tr>
+<td>product_id</td>
+<td>string</td>
+<td>UUID</td>
+<td>Yes</td>
+<td>-</td>
+<td>Product reference</td>
+</tr>
+<tr>
+<td>po_item_id</td>
+<td>string</td>
+<td>UUID</td>
+<td>No</td>
+<td>null</td>
+<td>Source PO item reference</td>
+</tr>
+<tr>
+<td>ordered_quantity</td>
+<td>number</td>
+<td>Decimal(10,3)</td>
+<td>No</td>
+<td>null</td>
+<td>From PO item</td>
+</tr>
+<tr>
+<td>received_quantity</td>
+<td>number</td>
+<td>Decimal(10,3)</td>
+<td>Yes</td>
+<td>-</td>
+<td>User input</td>
+</tr>
+<tr>
+<td>unit_cost</td>
+<td>number</td>
+<td>Decimal(10,2)</td>
+<td>Yes</td>
+<td>-</td>
+<td>User input or from PO</td>
+</tr>
+<tr>
+<td>total_cost</td>
+<td>number</td>
+<td>Decimal(15,2)</td>
+<td>Yes</td>
+<td>Calculated</td>
+<td>received_quantity * unit_cost</td>
+</tr>
+<tr>
+<td>batch_number</td>
+<td>string</td>
+<td>Text</td>
+<td>No</td>
+<td>null</td>
+<td>User input</td>
+</tr>
+<tr>
+<td>expiry_date</td>
+<td>string</td>
+<td>ISO 8601 Date</td>
+<td>No</td>
+<td>null</td>
+<td>User input</td>
+</tr>
+<tr>
+<td>location_id</td>
+<td>string</td>
+<td>UUID</td>
+<td>Yes</td>
+<td>-</td>
+<td>User selection</td>
+</tr>
+<tr>
+<td>condition</td>
+<td>enum</td>
+<td>ItemCondition</td>
+<td>Yes</td>
+<td>&#39;Good&#39;</td>
+<td>User selection</td>
+</tr>
+<tr>
+<td>notes</td>
+<td>string</td>
+<td>Text</td>
+<td>No</td>
+<td>null</td>
+<td>User input</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="purchase-order-schemas">Purchase Order Schemas</h2>
+<h3 id="1-purchaseorder-interface">1. PurchaseOrder Interface</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Format</th>
+<th>Required</th>
+<th>Default</th>
+<th>Derived From</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>po_id</td>
+<td>string</td>
+<td>Auto-generated format</td>
+<td>Yes</td>
+<td>Generated</td>
+<td>System pattern: PO-YYYY-NNN</td>
+</tr>
+<tr>
+<td>number</td>
+<td>string</td>
+<td>Same as po_id</td>
+<td>Yes</td>
+<td>Generated</td>
+<td>System generated</td>
+</tr>
+<tr>
+<td>vendor_id</td>
+<td>number</td>
+<td>Integer</td>
+<td>Yes</td>
+<td>-</td>
+<td>User selection</td>
+</tr>
+<tr>
+<td>vendor_name</td>
+<td>string</td>
+<td>Text</td>
+<td>Yes</td>
+<td>-</td>
+<td>From vendor record</td>
+</tr>
+<tr>
+<td>vendor_email</td>
+<td>string</td>
+<td>Email format</td>
+<td>No</td>
+<td>null</td>
+<td>From vendor record</td>
+</tr>
+<tr>
+<td>order_date</td>
+<td>string</td>
+<td>ISO 8601 Date</td>
+<td>Yes</td>
+<td>Current date</td>
+<td>User input or current date</td>
+</tr>
+<tr>
+<td>delivery_date</td>
+<td>string</td>
+<td>ISO 8601 Date</td>
+<td>Yes</td>
+<td>-</td>
+<td>User input</td>
+</tr>
+<tr>
+<td>status</td>
+<td>enum</td>
+<td>POStatus</td>
+<td>Yes</td>
+<td>&#39;Draft&#39;</td>
+<td>System managed</td>
+</tr>
+<tr>
+<td>currency_code</td>
+<td>enum</td>
+<td>CurrencyCode</td>
+<td>Yes</td>
+<td>-</td>
+<td>User selection or vendor default</td>
+</tr>
+<tr>
+<td>base_currency_code</td>
+<td>enum</td>
+<td>CurrencyCode</td>
+<td>Yes</td>
+<td>System currency</td>
+<td>System configuration</td>
+</tr>
+<tr>
+<td>exchange_rate</td>
+<td>number</td>
+<td>Decimal(10,6)</td>
+<td>Yes</td>
+<td>1.0</td>
+<td>From currency service</td>
+</tr>
+<tr>
+<td>credit_terms</td>
+<td>string</td>
+<td>Text</td>
+<td>No</td>
+<td>null</td>
+<td>User input or vendor default</td>
+</tr>
+<tr>
+<td>description</td>
+<td>string</td>
+<td>Text</td>
+<td>No</td>
+<td>null</td>
+<td>User input</td>
+</tr>
+<tr>
+<td>remarks</td>
+<td>string</td>
+<td>Text</td>
+<td>No</td>
+<td>null</td>
+<td>User input</td>
+</tr>
+<tr>
+<td>sub_total_price</td>
+<td>number</td>
+<td>Decimal(15,2)</td>
+<td>Yes</td>
+<td>0</td>
+<td>Calculated from items</td>
+</tr>
+<tr>
+<td>discount_amount</td>
+<td>number</td>
+<td>Decimal(15,2)</td>
+<td>Yes</td>
+<td>0</td>
+<td>User input</td>
+</tr>
+<tr>
+<td>net_amount</td>
+<td>number</td>
+<td>Decimal(15,2)</td>
+<td>Yes</td>
+<td>Calculated</td>
+<td>sub_total - discount</td>
+</tr>
+<tr>
+<td>tax_amount</td>
+<td>number</td>
+<td>Decimal(15,2)</td>
+<td>Yes</td>
+<td>0</td>
+<td>Calculated from items</td>
+</tr>
+<tr>
+<td>total_amount</td>
+<td>number</td>
+<td>Decimal(15,2)</td>
+<td>Yes</td>
+<td>Calculated</td>
+<td>net_amount + tax_amount</td>
+</tr>
+<tr>
+<td>created_at</td>
+<td>string</td>
+<td>ISO 8601 DateTime</td>
+<td>Yes</td>
+<td>Current timestamp</td>
+<td>System generated</td>
+</tr>
+<tr>
+<td>updated_at</td>
+<td>string</td>
+<td>ISO 8601 DateTime</td>
+<td>Yes</td>
+<td>Current timestamp</td>
+<td>System updated on change</td>
+</tr>
+</tbody></table>
+<h3 id="2-purchaseorderitem-interface">2. PurchaseOrderItem Interface</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Format</th>
+<th>Required</th>
+<th>Default</th>
+<th>Derived From</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>string</td>
+<td>UUID</td>
+<td>Yes</td>
+<td>Generated</td>
+<td>System generated UUID</td>
+</tr>
+<tr>
+<td>po_id</td>
+<td>string</td>
+<td>PO reference</td>
+<td>Yes</td>
+<td>-</td>
+<td>Parent PO reference</td>
+</tr>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>Text</td>
+<td>Yes</td>
+<td>-</td>
+<td>User input or from product</td>
+</tr>
+<tr>
+<td>description</td>
+<td>string</td>
+<td>Text</td>
+<td>No</td>
+<td>null</td>
+<td>User input or from product</td>
+</tr>
+<tr>
+<td>ordered_quantity</td>
+<td>number</td>
+<td>Decimal(10,3)</td>
+<td>Yes</td>
+<td>-</td>
+<td>User input</td>
+</tr>
+<tr>
+<td>received_quantity</td>
+<td>number</td>
+<td>Decimal(10,3)</td>
+<td>Yes</td>
+<td>0</td>
+<td>Updated from GRN</td>
+</tr>
+<tr>
+<td>remaining_quantity</td>
+<td>number</td>
+<td>Decimal(10,3)</td>
+<td>Yes</td>
+<td>Calculated</td>
+<td>ordered - received</td>
+</tr>
+<tr>
+<td>order_unit</td>
+<td>string</td>
+<td>Unit code</td>
+<td>Yes</td>
+<td>-</td>
+<td>User selection</td>
+</tr>
+<tr>
+<td>unit_price</td>
+<td>number</td>
+<td>Decimal(10,2)</td>
+<td>Yes</td>
+<td>-</td>
+<td>User input</td>
+</tr>
+<tr>
+<td>tax_rate</td>
+<td>number</td>
+<td>Percentage</td>
+<td>Yes</td>
+<td>0</td>
+<td>From tax configuration</td>
+</tr>
+<tr>
+<td>discount_rate</td>
+<td>number</td>
+<td>Percentage</td>
+<td>Yes</td>
+<td>0</td>
+<td>User input</td>
+</tr>
+<tr>
+<td>sub_total_price</td>
+<td>number</td>
+<td>Decimal(15,2)</td>
+<td>Yes</td>
+<td>Calculated</td>
+<td>quantity * unit_price</td>
+</tr>
+<tr>
+<td>tax_amount</td>
+<td>number</td>
+<td>Decimal(15,2)</td>
+<td>Yes</td>
+<td>Calculated</td>
+<td>sub_total * tax_rate</td>
+</tr>
+<tr>
+<td>total_amount</td>
+<td>number</td>
+<td>Decimal(15,2)</td>
+<td>Yes</td>
+<td>Calculated</td>
+<td>sub_total + tax - discount</td>
+</tr>
+<tr>
+<td>status</td>
+<td>enum</td>
+<td>ItemStatus</td>
+<td>Yes</td>
+<td>&#39;Open&#39;</td>
+<td>System managed</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="inventory-management-schemas">Inventory Management Schemas</h2>
+<h3 id="1-inventoryitem-interface">1. InventoryItem Interface</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Format</th>
+<th>Required</th>
+<th>Default</th>
+<th>Derived From</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>string</td>
+<td>UUID</td>
+<td>Yes</td>
+<td>Generated</td>
+<td>System generated UUID</td>
+</tr>
+<tr>
+<td>product_id</td>
+<td>string</td>
+<td>UUID</td>
+<td>Yes</td>
+<td>-</td>
+<td>Product reference</td>
+</tr>
+<tr>
+<td>location_id</td>
+<td>string</td>
+<td>UUID</td>
+<td>Yes</td>
+<td>-</td>
+<td>Location reference</td>
+</tr>
+<tr>
+<td>current_stock</td>
+<td>number</td>
+<td>Decimal(10,3)</td>
+<td>Yes</td>
+<td>0</td>
+<td>System calculated</td>
+</tr>
+<tr>
+<td>reserved_stock</td>
+<td>number</td>
+<td>Decimal(10,3)</td>
+<td>Yes</td>
+<td>0</td>
+<td>System calculated</td>
+</tr>
+<tr>
+<td>available_stock</td>
+<td>number</td>
+<td>Decimal(10,3)</td>
+<td>Yes</td>
+<td>Calculated</td>
+<td>current - reserved</td>
+</tr>
+<tr>
+<td>reorder_point</td>
+<td>number</td>
+<td>Decimal(10,3)</td>
+<td>No</td>
+<td>null</td>
+<td>User configuration</td>
+</tr>
+<tr>
+<td>max_stock_level</td>
+<td>number</td>
+<td>Decimal(10,3)</td>
+<td>No</td>
+<td>null</td>
+<td>User configuration</td>
+</tr>
+<tr>
+<td>min_stock_level</td>
+<td>number</td>
+<td>Decimal(10,3)</td>
+<td>No</td>
+<td>null</td>
+<td>User configuration</td>
+</tr>
+<tr>
+<td>average_cost</td>
+<td>number</td>
+<td>Decimal(10,2)</td>
+<td>Yes</td>
+<td>0</td>
+<td>System calculated</td>
+</tr>
+<tr>
+<td>last_movement_date</td>
+<td>string</td>
+<td>ISO 8601 DateTime</td>
+<td>No</td>
+<td>null</td>
+<td>System updated</td>
+</tr>
+<tr>
+<td>last_count_date</td>
+<td>string</td>
+<td>ISO 8601 Date</td>
+<td>No</td>
+<td>null</td>
+<td>From physical counts</td>
+</tr>
+<tr>
+<td>valuation_method</td>
+<td>enum</td>
+<td>&#39;FIFO&#39;, &#39;LIFO&#39;, &#39;WEIGHTED_AVERAGE&#39;</td>
+<td>Yes</td>
+<td>&#39;WEIGHTED_AVERAGE&#39;</td>
+<td>System configuration</td>
+</tr>
+</tbody></table>
+<h3 id="2-stockmovement-interface">2. StockMovement Interface</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Format</th>
+<th>Required</th>
+<th>Default</th>
+<th>Derived From</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>string</td>
+<td>UUID</td>
+<td>Yes</td>
+<td>Generated</td>
+<td>System generated UUID</td>
+</tr>
+<tr>
+<td>inventory_item_id</td>
+<td>string</td>
+<td>UUID</td>
+<td>Yes</td>
+<td>-</td>
+<td>Inventory reference</td>
+</tr>
+<tr>
+<td>transaction_type</td>
+<td>enum</td>
+<td>MovementType</td>
+<td>Yes</td>
+<td>-</td>
+<td>System determined</td>
+</tr>
+<tr>
+<td>reference_type</td>
+<td>enum</td>
+<td>ReferenceType</td>
+<td>Yes</td>
+<td>-</td>
+<td>Source document type</td>
+</tr>
+<tr>
+<td>reference_id</td>
+<td>string</td>
+<td>UUID</td>
+<td>Yes</td>
+<td>-</td>
+<td>Source document ID</td>
+</tr>
+<tr>
+<td>quantity</td>
+<td>number</td>
+<td>Decimal(10,3)</td>
+<td>Yes</td>
+<td>-</td>
+<td>System or user input</td>
+</tr>
+<tr>
+<td>unit_cost</td>
+<td>number</td>
+<td>Decimal(10,2)</td>
+<td>No</td>
+<td>null</td>
+<td>From source transaction</td>
+</tr>
+<tr>
+<td>movement_date</td>
+<td>string</td>
+<td>ISO 8601 DateTime</td>
+<td>Yes</td>
+<td>Current timestamp</td>
+<td>System generated</td>
+</tr>
+<tr>
+<td>batch_number</td>
+<td>string</td>
+<td>Text</td>
+<td>No</td>
+<td>null</td>
+<td>From source or user input</td>
+</tr>
+<tr>
+<td>expiry_date</td>
+<td>string</td>
+<td>ISO 8601 Date</td>
+<td>No</td>
+<td>null</td>
+<td>From source or user input</td>
+</tr>
+<tr>
+<td>notes</td>
+<td>string</td>
+<td>Text</td>
+<td>No</td>
+<td>null</td>
+<td>User input</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="user-management-schemas">User Management Schemas</h2>
+<h3 id="1-user-interface">1. User Interface</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Format</th>
+<th>Required</th>
+<th>Default</th>
+<th>Derived From</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>string</td>
+<td>UUID</td>
+<td>Yes</td>
+<td>Generated</td>
+<td>System generated UUID</td>
+</tr>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>Text (100)</td>
+<td>Yes</td>
+<td>-</td>
+<td>User input</td>
+</tr>
+<tr>
+<td>email</td>
+<td>string</td>
+<td>Email format</td>
+<td>Yes</td>
+<td>-</td>
+<td>User input (unique)</td>
+</tr>
+<tr>
+<td>department</td>
+<td>string</td>
+<td>Department code</td>
+<td>Yes</td>
+<td>-</td>
+<td>User selection</td>
+</tr>
+<tr>
+<td>role</td>
+<td>enum</td>
+<td>UserRole</td>
+<td>Yes</td>
+<td>-</td>
+<td>Admin assignment</td>
+</tr>
+<tr>
+<td>permissions</td>
+<td>string[]</td>
+<td>Permission codes</td>
+<td>Yes</td>
+<td>[]</td>
+<td>Derived from role</td>
+</tr>
+<tr>
+<td>is_active</td>
+<td>boolean</td>
+<td>true/false</td>
+<td>Yes</td>
+<td>true</td>
+<td>Admin control</td>
+</tr>
+<tr>
+<td>last_login</td>
+<td>string</td>
+<td>ISO 8601 DateTime</td>
+<td>No</td>
+<td>null</td>
+<td>System updated</td>
+</tr>
+<tr>
+<td>created_at</td>
+<td>string</td>
+<td>ISO 8601 DateTime</td>
+<td>Yes</td>
+<td>Current timestamp</td>
+<td>System generated</td>
+</tr>
+<tr>
+<td>updated_at</td>
+<td>string</td>
+<td>ISO 8601 DateTime</td>
+<td>Yes</td>
+<td>Current timestamp</td>
+<td>System updated on change</td>
+</tr>
+</tbody></table>
+<h3 id="2-department-interface">2. Department Interface</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Format</th>
+<th>Required</th>
+<th>Default</th>
+<th>Derived From</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>string</td>
+<td>UUID</td>
+<td>Yes</td>
+<td>Generated</td>
+<td>System generated UUID</td>
+</tr>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>Text (100)</td>
+<td>Yes</td>
+<td>-</td>
+<td>Admin input</td>
+</tr>
+<tr>
+<td>code</td>
+<td>string</td>
+<td>Text (20)</td>
+<td>Yes</td>
+<td>-</td>
+<td>Admin input (unique)</td>
+</tr>
+<tr>
+<td>budget_codes</td>
+<td>string[]</td>
+<td>Budget codes</td>
+<td>No</td>
+<td>[]</td>
+<td>Admin configuration</td>
+</tr>
+<tr>
+<td>default_template_id</td>
+<td>string</td>
+<td>UUID</td>
+<td>No</td>
+<td>null</td>
+<td>Admin selection</td>
+</tr>
+<tr>
+<td>parent_department_id</td>
+<td>string</td>
+<td>UUID</td>
+<td>No</td>
+<td>null</td>
+<td>Hierarchical structure</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="commonshared-schemas">Common/Shared Schemas</h2>
+<h3 id="1-currency-and-money-types">1. Currency and Money Types</h3>
+<table>
+<thead>
+<tr>
+<th>Field/Type</th>
+<th>Type</th>
+<th>Format</th>
+<th>Values</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CurrencyCode</td>
+<td>enum</td>
+<td>ISO 4217</td>
+<td>&#39;MYR&#39;, &#39;USD&#39;, &#39;EUR&#39;, &#39;SGD&#39;, &#39;GBP&#39;</td>
+<td>&#39;MYR&#39;</td>
+</tr>
+<tr>
+<td>Money</td>
+<td>object</td>
+<td>{amount: number, currency: CurrencyCode}</td>
+<td>-</td>
+<td>-</td>
+</tr>
+</tbody></table>
+<h3 id="2-status-types">2. Status Types</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Values</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DocumentStatus</td>
+<td>&#39;draft&#39;, &#39;pending&#39;, &#39;approved&#39;, &#39;rejected&#39;, &#39;cancelled&#39;</td>
+<td>&#39;draft&#39;</td>
+</tr>
+<tr>
+<td>WorkflowStatus</td>
+<td>&#39;not_started&#39;, &#39;in_progress&#39;, &#39;completed&#39;, &#39;on_hold&#39;</td>
+<td>&#39;not_started&#39;</td>
+</tr>
+<tr>
+<td>ItemStatus</td>
+<td>&#39;active&#39;, &#39;inactive&#39;, &#39;discontinued&#39;, &#39;pending&#39;</td>
+<td>&#39;active&#39;</td>
+</tr>
+</tbody></table>
+<h3 id="3-audit-fields-common-to-all-entities">3. Audit Fields (Common to all entities)</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Format</th>
+<th>Required</th>
+<th>Default</th>
+<th>Derived From</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>created_at</td>
+<td>string</td>
+<td>ISO 8601 DateTime</td>
+<td>Yes</td>
+<td>Current timestamp</td>
+<td>System generated</td>
+</tr>
+<tr>
+<td>updated_at</td>
+<td>string</td>
+<td>ISO 8601 DateTime</td>
+<td>Yes</td>
+<td>Current timestamp</td>
+<td>System updated</td>
+</tr>
+<tr>
+<td>created_by</td>
+<td>string</td>
+<td>User ID</td>
+<td>Yes</td>
+<td>Current user ID</td>
+<td>Authentication context</td>
+</tr>
+<tr>
+<td>updated_by</td>
+<td>string</td>
+<td>User ID</td>
+<td>Yes</td>
+<td>Current user ID</td>
+<td>Authentication context</td>
+</tr>
+<tr>
+<td>version</td>
+<td>number</td>
+<td>Integer</td>
+<td>No</td>
+<td>1</td>
+<td>Auto-increment on updates</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="default-value-sources">Default Value Sources</h2>
+<h3 id="system-generated-defaults">System Generated Defaults</h3>
+<ul>
+<li><strong>UUIDs</strong>: All entity IDs are system-generated UUIDs</li>
+<li><strong>Reference Numbers</strong>: Auto-generated with patterns (PO-YYYY-NNN, GRN-YYYY-NNN, etc.)</li>
+<li><strong>Timestamps</strong>: Current timestamp for created_at/updated_at</li>
+<li><strong>User Context</strong>: Current user ID from authentication</li>
+</ul>
+<h3 id="configuration-defaults">Configuration Defaults</h3>
+<ul>
+<li><strong>Currency</strong>: System default currency (MYR)</li>
+<li><strong>Tax Rates</strong>: From tax configuration tables</li>
+<li><strong>Exchange Rates</strong>: From currency service</li>
+<li><strong>Approval Workflows</strong>: From workflow configuration</li>
+</ul>
+<h3 id="calculated-defaults">Calculated Defaults</h3>
+<ul>
+<li><strong>Total Amounts</strong>: Sum of item amounts</li>
+<li><strong>Remaining Quantities</strong>: Ordered minus received quantities</li>
+<li><strong>Available Stock</strong>: Current minus reserved stock</li>
+<li><strong>Margins</strong>: Base price minus cost price</li>
+</ul>
+<h3 id="user-context-defaults">User Context Defaults</h3>
+<ul>
+<li><strong>Department</strong>: User&#39;s assigned department</li>
+<li><strong>Location</strong>: User&#39;s default location</li>
+<li><strong>Permissions</strong>: Derived from user role</li>
+</ul>
+<hr>
+<h2 id="data-validation-rules">Data Validation Rules</h2>
+<h3 id="format-validations">Format Validations</h3>
+<ul>
+<li><strong>Email</strong>: Standard email format validation</li>
+<li><strong>Dates</strong>: ISO 8601 date/datetime format</li>
+<li><strong>Currency</strong>: Valid ISO 4217 currency codes</li>
+<li><strong>Decimals</strong>: Appropriate precision for monetary and quantity fields</li>
+</ul>
+<h3 id="business-rule-validations">Business Rule Validations</h3>
+<ul>
+<li><strong>Quantities</strong>: Must be positive for most operations</li>
+<li><strong>Prices</strong>: Must be positive and within reasonable ranges</li>
+<li><strong>References</strong>: Foreign key constraints maintained</li>
+<li><strong>Status Transitions</strong>: Follow defined workflow states</li>
+</ul>
+<h3 id="unique-constraints">Unique Constraints</h3>
+<ul>
+<li><strong>Reference Numbers</strong>: Unique within entity type</li>
+<li><strong>Email Addresses</strong>: Unique across users</li>
+<li><strong>Product Codes</strong>: Unique within organization</li>
+<li><strong>Department Codes</strong>: Unique within organization</li>
+</ul>
+<hr>
+<p><em>End of Comprehensive Schema Analysis</em></p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#carmen-erp-system-comprehensive-schema-analysis" class="level-1">Carmen ERP System - Comprehensive Schema Analysis</a>
+<a href="#overview" class="level-2">Overview</a>
+<a href="#table-of-contents" class="level-2">Table of Contents</a>
+<a href="#product-management-schemas" class="level-2">Product Management Schemas</a>
+<a href="#1-product-interface" class="level-3">1. Product Interface</a>
+<a href="#2-categoryitem-interface" class="level-3">2. CategoryItem Interface</a>
+<a href="#3-unit-interface" class="level-3">3. Unit Interface</a>
+<a href="#4-filtertype-interface" class="level-3">4. FilterType Interface</a>
+<a href="#purchase-request-template-schemas" class="level-2">Purchase Request Template Schemas</a>
+<a href="#1-purchaserequesttemplate-interface" class="level-3">1. PurchaseRequestTemplate Interface</a>
+<a href="#2-templateitem-interface" class="level-3">2. TemplateItem Interface</a>
+<a href="#credit-note-schemas" class="level-2">Credit Note Schemas</a>
+<a href="#1-creditnote-interface" class="level-3">1. CreditNote Interface</a>
+<a href="#2-creditnoteitem-interface" class="level-3">2. CreditNoteItem Interface</a>
+<a href="#goods-received-note-grn-schemas" class="level-2">Goods Received Note (GRN) Schemas</a>
+<a href="#1-goodsreceivenote-interface" class="level-3">1. GoodsReceiveNote Interface</a>
+<a href="#2-grnitem-interface" class="level-3">2. GRNItem Interface</a>
+<a href="#purchase-order-schemas" class="level-2">Purchase Order Schemas</a>
+<a href="#1-purchaseorder-interface" class="level-3">1. PurchaseOrder Interface</a>
+<a href="#2-purchaseorderitem-interface" class="level-3">2. PurchaseOrderItem Interface</a>
+<a href="#inventory-management-schemas" class="level-2">Inventory Management Schemas</a>
+<a href="#1-inventoryitem-interface" class="level-3">1. InventoryItem Interface</a>
+<a href="#2-stockmovement-interface" class="level-3">2. StockMovement Interface</a>
+<a href="#user-management-schemas" class="level-2">User Management Schemas</a>
+<a href="#1-user-interface" class="level-3">1. User Interface</a>
+<a href="#2-department-interface" class="level-3">2. Department Interface</a>
+<a href="#commonshared-schemas" class="level-2">Common/Shared Schemas</a>
+<a href="#1-currency-and-money-types" class="level-3">1. Currency and Money Types</a>
+<a href="#2-status-types" class="level-3">2. Status Types</a>
+<a href="#3-audit-fields-common-to-all-entities" class="level-3">3. Audit Fields (Common to all entities)</a>
+<a href="#default-value-sources" class="level-2">Default Value Sources</a>
+<a href="#system-generated-defaults" class="level-3">System Generated Defaults</a>
+<a href="#configuration-defaults" class="level-3">Configuration Defaults</a>
+<a href="#calculated-defaults" class="level-3">Calculated Defaults</a>
+<a href="#user-context-defaults" class="level-3">User Context Defaults</a>
+<a href="#data-validation-rules" class="level-2">Data Validation Rules</a>
+<a href="#format-validations" class="level-3">Format Validations</a>
+<a href="#business-rule-validations" class="level-3">Business Rule Validations</a>
+<a href="#unique-constraints" class="level-3">Unique Constraints</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

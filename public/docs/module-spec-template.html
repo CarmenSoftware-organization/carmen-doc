@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[Module Name] - Pages and Components Specification - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: var(--bg-gradient);
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr 300px;
+            gap: 2rem;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 1.5rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .back-to-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: var(--primary-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        .back-to-home:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        /* Content Area */
+        .doc-content {
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 260px 1fr 280px;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 1.5rem;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 2.5rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            .doc-nav {
+                display: none;
+            }
+            .doc-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </div>
+            <div class="doc-header-actions">
+                <a href="../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="SYSTEM-DOCUMENTATION-INDEX.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Documentation Index</span>
+                    </a>
+                    <a href="DOCUMENTATION-CATALOG.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Catalog</span>
+                    </a>
+                    <a href="DOCUMENTATION-SUMMARY-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Summary</span>
+                    </a>
+                    <a href="MODULE-VERIFICATION-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Module Verification</span>
+                    </a>
+                    <a href="SYSTEM-GAPS-AND-ROADMAP.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Gaps & Roadmap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="architecture/SYSTEM-ARCHITECTURE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-users"></i>
+                    <span>Stakeholders</span>
+                </div>
+                <div class="nav-items">
+                    <a href="stakeholders/BUSINESS-VALUE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                </div>
+                <div class="nav-items">
+                    <a href="pr/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Requests</span>
+                    </a>
+                    <a href="po/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Orders</span>
+                    </a>
+                    <a href="grn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Goods Received Note</span>
+                    </a>
+                    <a href="cn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Credit Notes</span>
+                    </a>
+                    <a href="prt/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>PR Templates</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-boxes"></i>
+                    <span>Inventory Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="inv/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Overview</span>
+                    </a>
+                    <a href="inv/inventory-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Specification</span>
+                    </a>
+                    <a href="inv/inventory-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Sitemap</span>
+                    </a>
+                    <a href="pc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Physical Count</span>
+                    </a>
+                    <a href="sc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Spot Check</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-handshake"></i>
+                    <span>Vendor Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="vm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Overview</span>
+                    </a>
+                    <a href="vm/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Module</span>
+                    </a>
+                    <a href="vm/MANAGE-VENDORS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Manage Vendors</span>
+                    </a>
+                    <a href="vm/TEMPLATES.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Templates</span>
+                    </a>
+                    <a href="vm/CAMPAIGNS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Campaigns</span>
+                    </a>
+                    <a href="vm/PRICELISTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Pricelists</span>
+                    </a>
+                    <a href="vm/VENDOR-PORTAL.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Portal</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cube"></i>
+                    <span>Product Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="pm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Overview</span>
+                    </a>
+                    <a href="pm/product-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Specification</span>
+                    </a>
+                    <a href="pm/product-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-store"></i>
+                    <span>Store Operations</span>
+                </div>
+                <div class="nav-items">
+                    <a href="store-ops/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Overview</span>
+                    </a>
+                    <a href="store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Module</span>
+                    </a>
+                    <a href="store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Requisitions</span>
+                    </a>
+                    <a href="store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Stock Replenishment</span>
+                    </a>
+                    <a href="store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Wastage Reporting</span>
+                    </a>
+                    <a href="store-ops/GLOSSARY.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Glossary</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Operational Planning</span>
+                </div>
+                <div class="nav-items">
+                    <a href="operational-planning/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Overview</span>
+                    </a>
+                    <a href="operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Module</span>
+                    </a>
+                    <a href="operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Menu Engineering</span>
+                    </a>
+                    <a href="operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Recipe Management</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cash-register"></i>
+                    <span>POS Integration</span>
+                </div>
+                <div class="nav-items">
+                    <a href="pos-integration/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Overview</span>
+                    </a>
+                    <a href="pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Module</span>
+                    </a>
+                    <a href="pos-integration/MAPPING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Mapping Subsystem</span>
+                    </a>
+                    <a href="pos-integration/TRANSACTIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Transaction Management</span>
+                    </a>
+                    <a href="pos-integration/REPORTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports & Analytics</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-items">
+                    <a href="dashboard/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Overview</span>
+                    </a>
+                    <a href="dashboard/sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>System Requirements</span>
+                </div>
+                <div class="nav-items">
+                    <a href="carmen-erp-system-requirements-documentation.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Requirements</span>
+                    </a>
+                    <a href="comprehensive-schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="module-name-pages-and-components-specification">[Module Name] - Pages and Components Specification</h1>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#pages-overview">Pages Overview</a></li>
+<li><a href="#modals-and-dialogs">Modals and Dialogs</a></li>
+<li><a href="#dropdown-fields-reference">Dropdown Fields Reference</a></li>
+<li><a href="#actions-and-buttons-reference">Actions and Buttons Reference</a></li>
+<li><a href="#form-components">Form Components</a></li>
+<li><a href="#data-display-components">Data Display Components</a></li>
+<li><a href="#glossary">Glossary</a></li>
+</ol>
+<hr>
+<h2 id="pages-overview">Pages Overview</h2>
+<h3 id="landing-page">Landing Page</h3>
+<p><strong>Path</strong>: <code>/[module-route]</code><br><strong>File</strong>: <code>app/(main)/[module-route]/page.tsx</code></p>
+<p><img src="screenshots/%5Bmodule%5D-landing.png" alt="Landing Page"><br><em>[Module] Landing Page - Main dashboard with module navigation</em></p>
+<p><strong>Purpose</strong>: Main entry point for [module name] module</p>
+<p><strong>Components</strong>:</p>
+<ul>
+<li>Module dashboard cards</li>
+<li>Quick navigation tiles</li>
+<li>Statistics overview</li>
+<li>Recent activity feed</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Navigate to [Primary Section]</li>
+<li>Navigate to [Secondary Section]</li>
+<li>Navigate to [Tertiary Section]</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Navigate to [Primary Section]</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click [Primary Section] Card"] --> Navigate["Navigate to /[route]"]
+    Navigate --> Display["Display [Page] Page"]
+
+</div>
+<p><strong>Navigate to [Secondary Section]</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click [Secondary Section] Card"] --> Navigate["Navigate to /[route]"]
+    Navigate --> Display["Display [Page] Page"]
+
+</div>
+<hr>
+<h3 id="list-page">List Page</h3>
+<p><strong>Path</strong>: <code>/[module-route]/[list-route]</code><br><strong>File</strong>: <code>app/(main)/[module-route]/[list-route]/page.tsx</code></p>
+<p><img src="screenshots/%5Bmodule%5D-list.png" alt="List Page"><br><em>[Entity] List - List view with search and filtering</em></p>
+<p><strong>Status</strong>: 🚧 Prototype / ✅ Production</p>
+<p><strong>Components</strong>:</p>
+<ul>
+<li>Data table with sorting</li>
+<li>Search bar</li>
+<li>Filter panel</li>
+<li>Pagination controls</li>
+<li>Action buttons</li>
+</ul>
+<p><strong>Table Columns</strong>:</p>
+<ul>
+<li>[Column 1 Name]</li>
+<li>[Column 2 Name]</li>
+<li>[Column 3 Name]</li>
+<li>[Column 4 Name]</li>
+<li>Status</li>
+<li>Actions</li>
+</ul>
+<p><strong>Filters</strong>:</p>
+<ul>
+<li>Status dropdown</li>
+<li>[Filter Field 1] (dropdown/text/date range)</li>
+<li>[Filter Field 2] (dropdown/text/date range)</li>
+<li>Date range picker</li>
+<li>Advanced filter</li>
+</ul>
+<p><strong>Sorting</strong>:</p>
+<ul>
+<li>Sort by [Field 1]</li>
+<li>Sort by [Field 2]</li>
+<li>Sort by Date</li>
+<li>Sort by Status</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Create New [Entity]</li>
+<li>Edit [Entity]</li>
+<li>View Details</li>
+<li>Delete [Entity]</li>
+<li>Export to Excel</li>
+<li>Print List</li>
+<li>Bulk Actions</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Create New [Entity]</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Create New"] --> Navigate["Navigate to New [Entity] Form"]
+    Navigate --> Display["Display Creation Form"]
+
+</div>
+<p><strong>Edit [Entity]</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Edit"] --> Navigate["Navigate to Edit Page"]
+    Navigate --> Display["Display Pre-populated Form"]
+
+</div>
+<p><strong>Delete [Entity]</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Delete"] --> Modal["Show Delete Confirmation Modal"]
+    Modal --> Delete["Delete [Entity] Record"]
+
+</div>
+<p><strong>Search</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Type["Type Search Query"] --> Search["Search [Entity] Records"]
+    Search --> Display["Display Filtered Results"]
+
+</div>
+<p><strong>Apply Filters</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Select["Select Filter Criteria"] --> Apply["Apply Filters"]
+    Apply --> Refresh["Refresh List View"]
+
+</div>
+<p><strong>Export to Excel</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Export"] --> Generate["Generate Excel File"]
+    Generate --> Download["Download File"]
+
+</div>
+<hr>
+<h3 id="detail-page">Detail Page</h3>
+<p><strong>Path</strong>: <code>/[module-route]/[list-route]/:id</code><br><strong>File</strong>: <code>app/(main)/[module-route]/[list-route]/[id]/page.tsx</code></p>
+<p><img src="screenshots/%5Bmodule%5D-detail.png" alt="Detail Page"><br><em>[Entity] Detail View - Comprehensive information display</em></p>
+<p><strong>Tabs</strong>:</p>
+<ul>
+<li>Overview</li>
+<li>[Tab 2 Name]</li>
+<li>[Tab 3 Name]</li>
+<li>[Tab 4 Name]</li>
+<li>Documents</li>
+<li>Activity Log</li>
+</ul>
+<p><strong>Overview Tab</strong>:</p>
+<p><strong>Basic Information</strong>:</p>
+<ul>
+<li>[Field 1]</li>
+<li>[Field 2]</li>
+<li><a href="Required">Field 3</a></li>
+<li>Status</li>
+<li>Created Date</li>
+<li>Last Modified</li>
+</ul>
+<p><strong>[Section 1 Name]</strong>:</p>
+<ul>
+<li>[Field 1]</li>
+<li>[Field 2]</li>
+<li><a href="Required">Field 3</a></li>
+</ul>
+<p><strong>[Section 2 Name]</strong>:</p>
+<ul>
+<li>[Field 1]</li>
+<li>[Field 2]</li>
+<li><a href="Required">Field 3</a></li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Back to List</li>
+<li>Edit [Entity]</li>
+<li>Delete [Entity]</li>
+<li>Print</li>
+<li>Download PDF</li>
+<li>[Custom Action 1]</li>
+<li>[Custom Action 2]</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Switch Tabs</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Tab"] --> Load["Load Tab Content"]
+    Load --> Display["Display Tab Data"]
+
+</div>
+<p><strong>Back to List</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Back"] --> Navigate["Navigate to List Page"]
+    Navigate --> Display["Display List View"]
+
+</div>
+<p><strong>Edit [Entity]</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Edit"] --> Navigate["Navigate to Edit Page"]
+    Navigate --> Display["Display Edit Form"]
+
+</div>
+<p><strong>Delete [Entity]</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Delete"] --> Modal["Show Delete Confirmation"]
+    Modal --> Delete["Delete Record"]
+    Delete --> Navigate["Navigate to List Page"]
+
+</div>
+<p><strong>Print</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Print"] --> Open["Open Print Dialog"]
+    Open --> Print["Print Detail View"]
+
+</div>
+<p><strong>Download PDF</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Download PDF"] --> Generate["Generate PDF Document"]
+    Generate --> Download["Download PDF File"]
+
+</div>
+<hr>
+<h3 id="newcreate-form">New/Create Form</h3>
+<p><strong>Path</strong>: <code>/[module-route]/[list-route]/new</code><br><strong>File</strong>: <code>app/(main)/[module-route]/[list-route]/new/page.tsx</code></p>
+<p><img src="screenshots/%5Bmodule%5D-new-form.png" alt="New Form"><br><em>New [Entity] Creation Form - Multi-section form with validation</em></p>
+<p><strong>Component</strong>: <code>[EntityName]Form</code></p>
+<p><strong>Form Sections</strong>:</p>
+<ol>
+<li><p><strong>Basic Information</strong></p>
+<ul>
+<li>[Field 1] (required)</li>
+<li>[Field 2] (dropdown)</li>
+<li><a href="Required">Field 3</a></li>
+<li>[Field 4] (required)</li>
+<li>[Field 5] (textarea)</li>
+</ul>
+</li>
+<li><p><strong>[Section 2 Name]</strong></p>
+<ul>
+<li>[Field 1] (required)</li>
+<li>[Field 2] (required, validated)</li>
+<li><a href="Required">Field 3</a> (required, validated)</li>
+<li>[Field 4]</li>
+</ul>
+</li>
+<li><p><strong>[Section 3 Name]</strong></p>
+<ul>
+<li>[Field 1] (dropdown, required)</li>
+<li>[Field 2] (required)</li>
+<li><a href="Required">Field 3</a> (required)</li>
+<li>[Field 4] (required)</li>
+<li>[Field 5] (dropdown, required)</li>
+</ul>
+</li>
+<li><p><strong>[Section 4 Name]</strong></p>
+<ul>
+<li>[Field 1] (dropdown)</li>
+<li>[Field 2] (currency input)</li>
+<li><a href="Required">Field 3</a> (dropdown)</li>
+</ul>
+</li>
+</ol>
+<p><strong>Dropdown Options</strong>:</p>
+<p><strong>[Dropdown 1 Name]</strong>:</p>
+<ul>
+<li>Option 1</li>
+<li>Option 2</li>
+<li>Option 3</li>
+<li>Option 4</li>
+</ul>
+<p><strong>[Dropdown 2 Name]</strong>:</p>
+<ul>
+<li>Option 1</li>
+<li>Option 2</li>
+<li>Option 3</li>
+</ul>
+<p><strong>[Dropdown 3 Name]</strong>:</p>
+<ul>
+<li>Option 1</li>
+<li>Option 2</li>
+<li>Option 3</li>
+</ul>
+<p><strong>Validation Rules</strong>:</p>
+<ul>
+<li>[Field 1]: Required, min 2 characters</li>
+<li>[Field 2]: Valid format validation</li>
+<li></li>
+<li>[Field 4]: Positive number</li>
+<li>[Field 5]: Date range validation</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Save [Entity]</li>
+<li>Save and Add Another</li>
+<li>Cancel</li>
+<li>Reset Form</li>
+</ul>
+<p><strong>Modal Dialogs</strong>:</p>
+<ul>
+<li>Unsaved Changes Warning (on cancel)</li>
+<li>Validation Error Summary</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Save [Entity]</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Save"] --> Validate["Validate Form"]
+    Validate --> Create["Create Record"]
+    Create --> Navigate["Navigate to Detail Page"]
+
+</div>
+<p><strong>Save and Add Another</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Save and Add Another"] --> Validate["Validate Form"]
+    Validate --> Create["Create Record"]
+    Create --> Clear["Clear Form Fields"]
+
+</div>
+<p><strong>Cancel</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Cancel"] --> Check["Check for Unsaved Changes"]
+    Check --> Modal["Show Unsaved Changes Warning"]
+    Modal --> Navigate["Navigate Back to List"]
+
+</div>
+<p><strong>Reset Form</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Reset Form"] --> Clear["Clear All Form Fields"]
+    Clear --> Reset["Reset to Default Values"]
+
+</div>
+<p><strong>Field Validation</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Blur["Field Blur Event"] --> Validate["Validate Field Value"]
+    Validate --> Show["Show Validation Error/Success"]
+
+</div>
+<p><strong>Dropdown Selection</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Dropdown"] --> Open["Open Dropdown Options"]
+    Open --> Select["Select Option"]
+
+</div>
+<hr>
+<h3 id="edit-form">Edit Form</h3>
+<p><strong>Path</strong>: <code>/[module-route]/[list-route]/:id/edit</code><br><strong>File</strong>: <code>app/(main)/[module-route]/[list-route]/[id]/edit/page.tsx</code></p>
+<p>Same form structure as New Form but pre-populated with existing data.</p>
+<p><strong>Additional Actions</strong>:</p>
+<ul>
+<li>Save Changes</li>
+<li>Cancel (revert to detail view)</li>
+<li>Delete [Entity]</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Save Changes</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Save Changes"] --> Validate["Validate Form"]
+    Validate --> Update["Update Record"]
+    Update --> Navigate["Navigate to Detail Page"]
+
+</div>
+<p><strong>Cancel Edit</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Cancel"] --> Check["Check for Unsaved Changes"]
+    Check --> Navigate["Navigate to Detail Page"]
+
+</div>
+<p><strong>Delete [Entity]</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Delete"] --> Modal["Show Delete Confirmation Modal"]
+    Modal --> Delete["Delete Record"]
+    Delete --> Navigate["Navigate to List Page"]
+
+</div>
+<hr>
+<h2 id="modals-and-dialogs">Modals and Dialogs</h2>
+<h3 id="1-advanced-filter-dialog">1. Advanced Filter Dialog</h3>
+<p><strong>Trigger</strong>: Click &quot;Advanced Filter&quot; button<br><strong>Component</strong>: <code>advanced-filter.tsx</code></p>
+<p><strong>Filter Fields</strong>:</p>
+<ul>
+<li>[Field 1] (text contains)</li>
+<li>[Field 2] (multi-select)</li>
+<li><a href="Required">Field 3</a> (dropdown)</li>
+<li>[Field 4] (date range)</li>
+<li>[Field 5] (range)</li>
+<li>[Field 6] (yes/no)</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Apply Filters</li>
+<li>Clear All</li>
+<li>Save Filter Preset</li>
+<li>Cancel</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Apply Filters</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Apply Filters"] --> Build["Build Filter Query"]
+    Build --> Filter["Apply Filters to List"]
+
+</div>
+<p><strong>Clear All Filters</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Clear All"] --> Reset["Reset All Filter Fields"]
+    Reset --> Refresh["Refresh List View"]
+
+</div>
+<p><strong>Save Filter Preset</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Save Preset"] --> Modal["Show Save Preset Dialog"]
+    Modal --> Save["Save Filter Configuration"]
+
+</div>
+<hr>
+<h3 id="2-delete-confirmation-dialog">2. Delete Confirmation Dialog</h3>
+<p><strong>Trigger</strong>: Click delete on [entity]<br><strong>Component</strong>: <code>[Entity]DeletionDialog.tsx</code></p>
+<p><strong>Displays</strong>:</p>
+<ul>
+<li>Warning message</li>
+<li>Dependency check results</li>
+<li>Impact summary (related records affected)</li>
+<li>Force delete option (if has dependencies)</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Confirm Delete</li>
+<li>Cancel</li>
+<li>View Dependencies</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Confirm Delete</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Confirm Delete"] --> Check["Check for Dependencies"]
+    Check --> Delete["Delete Record"]
+
+</div>
+<p><strong>View Dependencies</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click View Dependencies"] --> Display["Display Dependency List"]
+    Display --> Navigate["Navigate to Related Records"]
+
+</div>
+<hr>
+<h3 id="3-addedit-sub-entity-dialog">3. Add/Edit [Sub-Entity] Dialog</h3>
+<p><strong>Trigger</strong>: Add/Edit [sub-entity] buttons</p>
+<p><strong>Fields</strong>:</p>
+<ul>
+<li>[Field 1]</li>
+<li>[Field 2]</li>
+<li><a href="Required">Field 3</a></li>
+<li>[Field 4]</li>
+<li>[Field 5]</li>
+<li>Is Primary (toggle)</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Save</li>
+<li>Cancel</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Save [Sub-Entity]</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Save"] --> Validate["Validate Fields"]
+    Validate --> Save["Save to Parent Entity"]
+
+</div>
+<p><strong>Set Primary</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Toggle["Toggle Primary Flag"] --> Update["Update Primary Flag"]
+    Update --> Unset["Unset Other Primary Records"]
+
+</div>
+<hr>
+<h3 id="4-document-upload-dialog">4. Document Upload Dialog</h3>
+<p><strong>Trigger</strong>: Upload document buttons</p>
+<p><strong>Fields</strong>:</p>
+<ul>
+<li>Document Type (dropdown)</li>
+<li>Document Name</li>
+<li>File Upload</li>
+<li>Description</li>
+<li>Effective Date</li>
+<li>Expiry Date</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Upload</li>
+<li>Cancel</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Upload Document</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Upload"] --> Validate["Validate File"]
+    Validate --> Upload["Upload to Server"]
+    Upload --> Attach["Attach to Record"]
+
+</div>
+<hr>
+<h3 id="5-selection-dialog">5. Selection Dialog</h3>
+<p><strong>Trigger</strong>: Select [entity] in forms</p>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Search bar</li>
+<li>Category/Filter navigation</li>
+<li>List with checkboxes</li>
+<li>Selected items preview</li>
+<li>Bulk select/deselect</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Add Selected</li>
+<li>Clear Selection</li>
+<li>Cancel</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Search Items</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Type["Type Search Query"] --> Search["Search Catalog"]
+    Search --> Display["Display Matching Items"]
+
+</div>
+<p><strong>Select Items</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Check["Check Item Checkbox"] --> Add["Add to Selected Items"]
+    Add --> Update["Update Selection Preview"]
+
+</div>
+<p><strong>Add Selected Items</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Add Selected"] --> Validate["Validate Selection"]
+    Validate --> Add["Add Items to Form"]
+
+</div>
+<hr>
+<h2 id="dropdown-fields-reference">Dropdown Fields Reference</h2>
+<h3 id="status-dropdown">Status Dropdown</h3>
+<p><strong>Values</strong>: Active, Inactive, Draft, Pending, Completed<br><strong>Used in</strong>: [Entity] filters, forms</p>
+<h3 id="category-dropdown">[Category] Dropdown</h3>
+<p><strong>Values</strong>:</p>
+<ul>
+<li>Category 1</li>
+<li>Category 2</li>
+<li>Category 3</li>
+<li>Category 4</li>
+</ul>
+<p><strong>Used in</strong>: [Entity] forms, filters</p>
+<h3 id="type-dropdown">[Type] Dropdown</h3>
+<p><strong>Values</strong>:</p>
+<ul>
+<li>Type 1</li>
+<li>Type 2</li>
+<li>Type 3</li>
+<li>Type 4</li>
+</ul>
+<p><strong>Used in</strong>: [Entity] forms</p>
+<h3 id="date-range-picker">Date Range Picker</h3>
+<p><strong>Presets</strong>:</p>
+<ul>
+<li>Today</li>
+<li>Last 7 Days</li>
+<li>Last 30 Days</li>
+<li>Last Quarter</li>
+<li>Last Year</li>
+<li>Custom Range</li>
+</ul>
+<p><strong>Used in</strong>: Filters, reports</p>
+<hr>
+<h2 id="actions-and-buttons-reference">Actions and Buttons Reference</h2>
+<h3 id="global-actions-appearing-across-multiple-pages">Global Actions (appearing across multiple pages):</h3>
+<ul>
+<li><strong>Search</strong> - Real-time search</li>
+<li><strong>Filter</strong> - Open filter dialog</li>
+<li><strong>Export</strong> - Export to Excel/PDF</li>
+<li><strong>Add New</strong> - Create new record</li>
+<li><strong>Refresh</strong> - Reload data</li>
+<li><strong>Settings</strong> - Module settings</li>
+</ul>
+<h3 id="list-view-actions">List View Actions:</h3>
+<ul>
+<li><strong>View Details</strong> - Navigate to detail page</li>
+<li><strong>Edit</strong> - Edit mode or edit page</li>
+<li><strong>Duplicate</strong> - Clone record</li>
+<li><strong>Delete</strong> - Delete with confirmation</li>
+<li><strong>Export Single</strong> - Export single record</li>
+<li><strong>Bulk Select</strong> - Select multiple records</li>
+<li><strong>Bulk Actions</strong> - Actions on selected records</li>
+</ul>
+<h3 id="detail-view-actions">Detail View Actions:</h3>
+<ul>
+<li><strong>Back</strong> - Return to list</li>
+<li><strong>Edit</strong> - Enter edit mode</li>
+<li><strong>Save</strong> - Save changes</li>
+<li><strong>Cancel</strong> - Discard changes</li>
+<li><strong>Delete</strong> - Delete record</li>
+<li><strong>Print</strong> - Print view</li>
+<li><strong>Download PDF</strong> - Export to PDF</li>
+<li><strong>Share</strong> - Share record</li>
+<li><strong>Clone</strong> - Duplicate record</li>
+</ul>
+<h3 id="form-actions">Form Actions:</h3>
+<ul>
+<li><strong>Save</strong> - Save and return</li>
+<li><strong>Save and New</strong> - Save and create another</li>
+<li><strong>Save as Draft</strong> - Save without validation</li>
+<li><strong>Submit</strong> - Submit for review/approval</li>
+<li><strong>Cancel</strong> - Return without saving</li>
+<li><strong>Reset</strong> - Clear form fields</li>
+</ul>
+<hr>
+<h2 id="form-components">Form Components</h2>
+<h3 id="input-fields">Input Fields</h3>
+<ul>
+<li>Text input</li>
+<li>Number input</li>
+<li>Email input</li>
+<li>Phone input</li>
+<li>URL input</li>
+<li>Password input</li>
+<li>Textarea</li>
+<li>Rich text editor</li>
+</ul>
+<h3 id="selection-components">Selection Components</h3>
+<ul>
+<li>Dropdown select</li>
+<li>Multi-select</li>
+<li>Autocomplete</li>
+<li>Radio button group</li>
+<li>Checkbox group</li>
+<li>Toggle switch</li>
+<li>Date picker</li>
+<li>Date range picker</li>
+<li>Time picker</li>
+</ul>
+<h3 id="file-components">File Components</h3>
+<ul>
+<li>File upload (single)</li>
+<li>File upload (multiple)</li>
+<li>Image upload with preview</li>
+<li>Document manager</li>
+</ul>
+<h3 id="specialized-components">Specialized Components</h3>
+<ul>
+<li>Currency input</li>
+<li>Percentage input</li>
+<li>Color picker</li>
+<li>Rating selector</li>
+<li>Tag input</li>
+<li>[Custom Component 1]</li>
+<li>[Custom Component 2]</li>
+</ul>
+<hr>
+<h2 id="data-display-components">Data Display Components</h2>
+<h3 id="tables">Tables</h3>
+<ul>
+<li>Sortable columns</li>
+<li>Pagination</li>
+<li>Row selection</li>
+<li>Inline actions</li>
+<li>Expandable rows</li>
+<li>Column visibility toggle</li>
+<li>Column reordering</li>
+<li>Export functionality</li>
+</ul>
+<h3 id="cards">Cards</h3>
+<ul>
+<li>[Entity] card</li>
+<li>Summary card</li>
+<li>Statistics card</li>
+<li>Quick action card</li>
+</ul>
+<h3 id="lists">Lists</h3>
+<ul>
+<li>Simple list</li>
+<li>Detailed list</li>
+<li>Grouped list</li>
+<li>Hierarchical list</li>
+</ul>
+<h3 id="statisticsmetrics">Statistics/Metrics</h3>
+<ul>
+<li>KPI cards</li>
+<li>Summary widgets</li>
+<li>Progress indicators</li>
+<li>Status badges</li>
+<li>Charts and graphs</li>
+<li>Trend indicators</li>
+</ul>
+<h3 id="timelinehistory">Timeline/History</h3>
+<ul>
+<li>Activity feed</li>
+<li>Audit trail</li>
+<li>Change log</li>
+<li>Version history</li>
+</ul>
+<hr>
+<h2 id="glossary">Glossary</h2>
+<h3 id="a">A</h3>
+<p><strong>Active Status</strong>: [Definition of active status in this module context]</p>
+<p><strong>[Term A1]</strong>: [Definition]</p>
+<p><strong>[Term A2]</strong>: [Definition]</p>
+<h3 id="b">B</h3>
+<p><strong>[Term B1]</strong>: [Definition]</p>
+<p><strong>[Term B2]</strong>: [Definition]</p>
+<h3 id="c">C</h3>
+<p><strong>[Term C1]</strong>: [Definition]</p>
+<p><strong>[Term C2]</strong>: [Definition]</p>
+<h3 id="d">D</h3>
+<p><strong>[Term D1]</strong>: [Definition]</p>
+<p><strong>[Term D2]</strong>: [Definition]</p>
+<h3 id="e">E</h3>
+<p><strong>[Term E1]</strong>: [Definition]</p>
+<p><strong>[Term E2]</strong>: [Definition]</p>
+<h3 id="f">F</h3>
+<p><strong>[Term F1]</strong>: [Definition]</p>
+<p><strong>[Term F2]</strong>: [Definition]</p>
+<h3 id="g">G</h3>
+<p><strong>[Term G1]</strong>: [Definition]</p>
+<p><strong>[Term G2]</strong>: [Definition]</p>
+<h3 id="i">I</h3>
+<p><strong>Import</strong>: [Definition in module context]</p>
+<p><strong>[Term I1]</strong>: [Definition]</p>
+<h3 id="l">L</h3>
+<p><strong>[Term L1]</strong>: [Definition]</p>
+<p><strong>[Term L2]</strong>: [Definition]</p>
+<h3 id="m">M</h3>
+<p><strong>[Term M1]</strong>: [Definition]</p>
+<p><strong>[Term M2]</strong>: [Definition]</p>
+<h3 id="p">P</h3>
+<p><strong>[Term P1]</strong>: [Definition]</p>
+<p><strong>[Term P2]</strong>: [Definition]</p>
+<h3 id="r">R</h3>
+<p><strong>[Term R1]</strong>: [Definition]</p>
+<p><strong>[Term R2]</strong>: [Definition]</p>
+<h3 id="s">S</h3>
+<p><strong>Status</strong>: [Definition of status in this module context]</p>
+<p><strong>[Term S1]</strong>: [Definition]</p>
+<h3 id="t">T</h3>
+<p><strong>[Term T1]</strong>: [Definition]</p>
+<p><strong>[Term T2]</strong>: [Definition]</p>
+<h3 id="u">U</h3>
+<p><strong>[Term U1]</strong>: [Definition]</p>
+<p><strong>[Term U2]</strong>: [Definition]</p>
+<h3 id="v">V</h3>
+<p><strong>Validation</strong>: [Definition in module context]</p>
+<p><strong>[Term V1]</strong>: [Definition]</p>
+<h3 id="w">W</h3>
+<p><strong>Workflow</strong>: [Definition in module context]</p>
+<p><strong>[Term W1]</strong>: [Definition]</p>
+<hr>
+<h2 id="usage-instructions">Usage Instructions</h2>
+<p>This template provides a comprehensive structure for documenting any module&#39;s pages and components. When using this template:</p>
+<ol>
+<li><p><strong>Replace Placeholders</strong>:</p>
+<ul>
+<li><code>[Module Name]</code> - Replace with actual module name</li>
+<li><code>[module-route]</code> - Replace with URL route</li>
+<li><code>[Entity]</code> - Replace with primary entity name</li>
+<li><code>[Field N]</code> - Replace with actual field names</li>
+<li>All bracketed placeholders should be replaced with actual content</li>
+</ul>
+</li>
+<li><p><strong>Add Screenshots</strong>:</p>
+<ul>
+<li>Capture screenshots for all pages</li>
+<li>Save to <code>screenshots/</code> directory</li>
+<li>Update image paths in markdown</li>
+</ul>
+</li>
+<li><p><strong>Document Actions</strong>:</p>
+<ul>
+<li>Add Mermaid flowcharts for each action (one level deep)</li>
+<li>Follow the pattern: <code>Action → Immediate Result</code></li>
+<li>Keep flows simple and clear</li>
+</ul>
+</li>
+<li><p><strong>Complete Sections</strong>:</p>
+<ul>
+<li>Fill in all table columns</li>
+<li>Document all dropdown options</li>
+<li>List all validation rules</li>
+<li>Define all modal dialogs</li>
+</ul>
+</li>
+<li><p><strong>Glossary</strong>:</p>
+<ul>
+<li>Define all technical terms used in the module</li>
+<li>Include acronyms and abbreviations</li>
+<li>Add cross-references between related terms</li>
+<li>Organize alphabetically</li>
+</ul>
+</li>
+<li><p><strong>Keep Updated</strong>:</p>
+<ul>
+<li>Update status when pages change from prototype to production</li>
+<li>Add new pages as they are developed</li>
+<li>Keep action flows current with implementation</li>
+</ul>
+</li>
+</ol>
+<hr>
+<p><strong>Last Updated</strong>: [Date]<br><strong>Status</strong>: [Template / In Progress / Complete]<br><strong>Module</strong>: [Module Name]<br><strong>Version</strong>: 1.0</p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#module-name-pages-and-components-specification" class="level-1">[Module Name] - Pages and Components Specification</a>
+<a href="#table-of-contents" class="level-2">Table of Contents</a>
+<a href="#pages-overview" class="level-2">Pages Overview</a>
+<a href="#landing-page" class="level-3">Landing Page</a>
+<a href="#list-page" class="level-3">List Page</a>
+<a href="#detail-page" class="level-3">Detail Page</a>
+<a href="#newcreate-form" class="level-3">New/Create Form</a>
+<a href="#edit-form" class="level-3">Edit Form</a>
+<a href="#modals-and-dialogs" class="level-2">Modals and Dialogs</a>
+<a href="#1-advanced-filter-dialog" class="level-3">1. Advanced Filter Dialog</a>
+<a href="#2-delete-confirmation-dialog" class="level-3">2. Delete Confirmation Dialog</a>
+<a href="#3-addedit-sub-entity-dialog" class="level-3">3. Add/Edit [Sub-Entity] Dialog</a>
+<a href="#4-document-upload-dialog" class="level-3">4. Document Upload Dialog</a>
+<a href="#5-selection-dialog" class="level-3">5. Selection Dialog</a>
+<a href="#dropdown-fields-reference" class="level-2">Dropdown Fields Reference</a>
+<a href="#status-dropdown" class="level-3">Status Dropdown</a>
+<a href="#category-dropdown" class="level-3">[Category] Dropdown</a>
+<a href="#type-dropdown" class="level-3">[Type] Dropdown</a>
+<a href="#date-range-picker" class="level-3">Date Range Picker</a>
+<a href="#actions-and-buttons-reference" class="level-2">Actions and Buttons Reference</a>
+<a href="#global-actions-appearing-across-multiple-pages" class="level-3">Global Actions (appearing across multiple pages):</a>
+<a href="#list-view-actions" class="level-3">List View Actions:</a>
+<a href="#detail-view-actions" class="level-3">Detail View Actions:</a>
+<a href="#form-actions" class="level-3">Form Actions:</a>
+<a href="#form-components" class="level-2">Form Components</a>
+<a href="#input-fields" class="level-3">Input Fields</a>
+<a href="#selection-components" class="level-3">Selection Components</a>
+<a href="#file-components" class="level-3">File Components</a>
+<a href="#specialized-components" class="level-3">Specialized Components</a>
+<a href="#data-display-components" class="level-2">Data Display Components</a>
+<a href="#tables" class="level-3">Tables</a>
+<a href="#cards" class="level-3">Cards</a>
+<a href="#lists" class="level-3">Lists</a>
+<a href="#statisticsmetrics" class="level-3">Statistics/Metrics</a>
+<a href="#timelinehistory" class="level-3">Timeline/History</a>
+<a href="#glossary" class="level-2">Glossary</a>
+<a href="#a" class="level-3">A</a>
+<a href="#b" class="level-3">B</a>
+<a href="#c" class="level-3">C</a>
+<a href="#d" class="level-3">D</a>
+<a href="#e" class="level-3">E</a>
+<a href="#f" class="level-3">F</a>
+<a href="#g" class="level-3">G</a>
+<a href="#i" class="level-3">I</a>
+<a href="#l" class="level-3">L</a>
+<a href="#m" class="level-3">M</a>
+<a href="#p" class="level-3">P</a>
+<a href="#r" class="level-3">R</a>
+<a href="#s" class="level-3">S</a>
+<a href="#t" class="level-3">T</a>
+<a href="#u" class="level-3">U</a>
+<a href="#v" class="level-3">V</a>
+<a href="#w" class="level-3">W</a>
+<a href="#usage-instructions" class="level-2">Usage Instructions</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

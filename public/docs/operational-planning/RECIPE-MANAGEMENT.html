@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Management - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: var(--bg-gradient);
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr 300px;
+            gap: 2rem;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 1.5rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .back-to-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: var(--primary-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        .back-to-home:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        /* Content Area */
+        .doc-content {
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 260px 1fr 280px;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 1.5rem;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 2.5rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            .doc-nav {
+                display: none;
+            }
+            .doc-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </div>
+            <div class="doc-header-actions">
+                <a href="../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../SYSTEM-DOCUMENTATION-INDEX.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Documentation Index</span>
+                    </a>
+                    <a href="../DOCUMENTATION-CATALOG.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Catalog</span>
+                    </a>
+                    <a href="../DOCUMENTATION-SUMMARY-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Summary</span>
+                    </a>
+                    <a href="../MODULE-VERIFICATION-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Module Verification</span>
+                    </a>
+                    <a href="../SYSTEM-GAPS-AND-ROADMAP.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Gaps & Roadmap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../architecture/SYSTEM-ARCHITECTURE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-users"></i>
+                    <span>Stakeholders</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../stakeholders/BUSINESS-VALUE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pr/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Requests</span>
+                    </a>
+                    <a href="../po/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Orders</span>
+                    </a>
+                    <a href="../grn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Goods Received Note</span>
+                    </a>
+                    <a href="../cn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Credit Notes</span>
+                    </a>
+                    <a href="../prt/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>PR Templates</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-boxes"></i>
+                    <span>Inventory Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../inv/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Overview</span>
+                    </a>
+                    <a href="../inv/inventory-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Specification</span>
+                    </a>
+                    <a href="../inv/inventory-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Sitemap</span>
+                    </a>
+                    <a href="../pc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Physical Count</span>
+                    </a>
+                    <a href="../sc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Spot Check</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-handshake"></i>
+                    <span>Vendor Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../vm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Overview</span>
+                    </a>
+                    <a href="../vm/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Module</span>
+                    </a>
+                    <a href="../vm/MANAGE-VENDORS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Manage Vendors</span>
+                    </a>
+                    <a href="../vm/TEMPLATES.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Templates</span>
+                    </a>
+                    <a href="../vm/CAMPAIGNS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Campaigns</span>
+                    </a>
+                    <a href="../vm/PRICELISTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Pricelists</span>
+                    </a>
+                    <a href="../vm/VENDOR-PORTAL.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Portal</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cube"></i>
+                    <span>Product Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Overview</span>
+                    </a>
+                    <a href="../pm/product-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Specification</span>
+                    </a>
+                    <a href="../pm/product-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-store"></i>
+                    <span>Store Operations</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../store-ops/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Overview</span>
+                    </a>
+                    <a href="../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Module</span>
+                    </a>
+                    <a href="../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Requisitions</span>
+                    </a>
+                    <a href="../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Stock Replenishment</span>
+                    </a>
+                    <a href="../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Wastage Reporting</span>
+                    </a>
+                    <a href="../store-ops/GLOSSARY.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Glossary</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Operational Planning</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../operational-planning/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Overview</span>
+                    </a>
+                    <a href="../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Module</span>
+                    </a>
+                    <a href="../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Menu Engineering</span>
+                    </a>
+                    <a href="../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item active">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Recipe Management</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cash-register"></i>
+                    <span>POS Integration</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pos-integration/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Overview</span>
+                    </a>
+                    <a href="../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Module</span>
+                    </a>
+                    <a href="../pos-integration/MAPPING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Mapping Subsystem</span>
+                    </a>
+                    <a href="../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Transaction Management</span>
+                    </a>
+                    <a href="../pos-integration/REPORTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports & Analytics</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../dashboard/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Overview</span>
+                    </a>
+                    <a href="../dashboard/sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>System Requirements</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../carmen-erp-system-requirements-documentation.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Requirements</span>
+                    </a>
+                    <a href="../comprehensive-schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="recipe-management">Recipe Management</h1>
+<p><strong>Submodule</strong>: Recipe Management<br><strong>Route</strong>: <code>/operational-planning/recipe-management</code><br><strong>Status</strong>: ✅ Production<br><strong>Parent Module</strong>: <a href="./OPERATIONAL-PLANNING-MODULE.html">Operational Planning</a></p>
+<h2 id="overview">Overview</h2>
+<p>Recipe Management provides comprehensive tools for creating, organizing, and analyzing recipes. It includes cost tracking, margin analysis, sustainability metrics (CO₂ footprint), and hierarchical organization through categories and cuisine types.</p>
+<h2 id="screenshots">Screenshots</h2>
+<p><img src="./screenshots/recipe-library.png" alt="Recipe Library"><br><em>Recipe Library - Grid view showing recipe cards with key metrics</em></p>
+<p><img src="./screenshots/recipe-categories.png" alt="Recipe Categories"><br><em>Category Management - Hierarchical tree structure with expandable categories</em></p>
+<p><img src="./screenshots/cuisine-types.png" alt="Cuisine Types"><br><em>Cuisine Types - Regional cuisine classification table</em></p>
+<h2 id="module-structure">Module Structure</h2>
+<h3 id="1-recipe-library">1. Recipe Library</h3>
+<p><strong>Route</strong>: <code>/operational-planning/recipe-management/recipes</code></p>
+<p><strong>Purpose</strong>: Main recipe listing and management interface</p>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Grid and list view toggle</li>
+<li>Recipe cards with images</li>
+<li>Key metrics display (cost, price, margin, CO₂)</li>
+<li>Status indicators (draft, published)</li>
+<li>Search and filtering</li>
+<li>Bulk selection and operations</li>
+<li>Sort by multiple criteria</li>
+</ul>
+<p><strong>Recipe Card Information</strong>:</p>
+<ul>
+<li>Recipe name and image</li>
+<li>Publication status badge</li>
+<li>Cost per portion</li>
+<li>Selling price</li>
+<li>Margin percentage</li>
+<li>CO₂ equivalent per portion</li>
+<li>Category and cuisine tags</li>
+</ul>
+<h3 id="2-recipe-detail">2. Recipe Detail</h3>
+<p><strong>Route</strong>: <code>/operational-planning/recipe-management/recipes/[id]</code></p>
+<p><strong>Purpose</strong>: Full recipe information and editing</p>
+<p><strong>Sections</strong> (expected):</p>
+<ul>
+<li>Recipe overview</li>
+<li>Ingredients list with quantities</li>
+<li>Preparation instructions</li>
+<li>Cooking methods and times</li>
+<li>Nutrition information</li>
+<li>Cost breakdown</li>
+<li>Allergen information</li>
+<li>Notes and variations</li>
+</ul>
+<h3 id="3-new-recipe">3. New Recipe</h3>
+<p><strong>Route</strong>: <code>/operational-planning/recipe-management/recipes/new</code></p>
+<p><strong>Purpose</strong>: Recipe creation form</p>
+<p><strong>Form Sections</strong> (expected):</p>
+<ul>
+<li>Basic Information (name, description, category, cuisine)</li>
+<li>Ingredients (with unit conversion)</li>
+<li>Instructions (step-by-step)</li>
+<li>Timing (prep time, cook time, total time)</li>
+<li>Serving information (yields, portion sizes)</li>
+<li>Costing (ingredient costs, overhead)</li>
+<li>Pricing (selling price, margin targets)</li>
+<li>Media (images, videos)</li>
+</ul>
+<h3 id="4-categories">4. Categories</h3>
+<p><strong>Route</strong>: <code>/operational-planning/recipe-management/categories</code></p>
+<p><strong>Purpose</strong>: Hierarchical category organization</p>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>3-level hierarchy (Category → Subcategory → Item Group)</li>
+<li>Expandable tree structure</li>
+<li>Category codes</li>
+<li>Recipe count per category</li>
+<li>Active recipe tracking</li>
+<li>Average cost and margin by category</li>
+<li>Search and filtering</li>
+<li>CRUD operations</li>
+</ul>
+<p><strong>Data Displayed</strong>:</p>
+<ul>
+<li>Name and code</li>
+<li>Description</li>
+<li>Status (active/inactive)</li>
+<li>Total recipes</li>
+<li>Active recipes count</li>
+<li>Average cost per portion</li>
+<li>Average margin percentage</li>
+<li>Last updated date</li>
+<li>Actions menu</li>
+</ul>
+<h3 id="5-cuisine-types">5. Cuisine Types</h3>
+<p><strong>Route</strong>: <code>/operational-planning/recipe-management/cuisine-types</code></p>
+<p><strong>Purpose</strong>: Regional cuisine classification</p>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Cuisine type management</li>
+<li>Regional grouping</li>
+<li>Recipe count tracking</li>
+<li>Search and filtering</li>
+<li>CRUD operations</li>
+</ul>
+<p><strong>Data Displayed</strong>:</p>
+<ul>
+<li>Cuisine name and code</li>
+<li>Description</li>
+<li>Region (Asia, Europe, Americas, etc.)</li>
+<li>Status</li>
+<li>Total recipes</li>
+<li>Active recipes</li>
+<li>Last updated date</li>
+<li>Actions menu</li>
+</ul>
+<p><strong>Example Cuisine Types</strong>:</p>
+<ul>
+<li>Italian (ITA) - Europe</li>
+<li>Chinese (CHN) - Asia</li>
+<li>Mexican (MEX) - Americas</li>
+<li>Indian (IND) - Asia</li>
+<li>French (FRA) - Europe</li>
+<li>Japanese (JPN) - Asia</li>
+<li>Mediterranean (MED) - Europe</li>
+<li>Thai (THA) - Asia</li>
+</ul>
+<h2 id="key-metrics">Key Metrics</h2>
+<h3 id="cost-metrics">Cost Metrics</h3>
+<p><strong>Cost per Portion</strong></p>
+<ul>
+<li>Calculated from ingredient costs</li>
+<li>Includes overhead allocation</li>
+<li>Updated when ingredient prices change</li>
+</ul>
+<p><strong>Selling Price</strong></p>
+<ul>
+<li>Configured price per portion</li>
+<li>Can be manually set</li>
+<li>Used in margin calculations</li>
+</ul>
+<p><strong>Margin Percentage</strong></p>
+<ul>
+<li>Formula: <code>((Selling Price - Cost) / Selling Price) × 100</code></li>
+<li>Displayed on recipe cards</li>
+<li>Color-coded indicators:<ul>
+<li>Green: &gt;70%</li>
+<li>Yellow: 50-70%</li>
+<li>Red: &lt;50%</li>
+</ul>
+</li>
+</ul>
+<h3 id="sustainability-metrics">Sustainability Metrics</h3>
+<p><strong>CO₂ Equivalent per Portion</strong></p>
+<ul>
+<li>Carbon footprint calculation</li>
+<li>Based on ingredient sourcing and preparation</li>
+<li>Displayed in kilograms (kg)</li>
+<li>Helps promote sustainable menu choices</li>
+</ul>
+<p><strong>Example Values</strong>:</p>
+<ul>
+<li>Tiramisu: 0.8 kg CO₂eq</li>
+<li>Margherita Pizza: 2.1 kg CO₂eq</li>
+<li>Beef Wellington: 2.8 kg CO₂eq</li>
+</ul>
+<h3 id="category-metrics">Category Metrics</h3>
+<p><strong>Average Cost by Category</strong></p>
+<ul>
+<li>Mean cost across all recipes in category</li>
+<li>Useful for budget planning</li>
+<li>Updated in real-time</li>
+</ul>
+<p><strong>Average Margin by Category</strong></p>
+<ul>
+<li>Mean margin percentage</li>
+<li>Identifies profitable categories</li>
+<li>Guides menu engineering decisions</li>
+</ul>
+<h2 id="user-workflows">User Workflows</h2>
+<h3 id="create-new-recipe">Create New Recipe</h3>
+<ol>
+<li>Click &quot;Add Recipe&quot; or &quot;Create New Recipe&quot;</li>
+<li>Fill in basic information</li>
+<li>Add ingredients with quantities</li>
+<li>Enter preparation instructions</li>
+<li>Configure timing and serving info</li>
+<li>Upload images</li>
+<li>Set pricing and costing</li>
+<li>Save as draft or publish</li>
+</ol>
+<h3 id="edit-existing-recipe">Edit Existing Recipe</h3>
+<ol>
+<li>Search or browse to find recipe</li>
+<li>Click recipe card to open detail view</li>
+<li>Click &quot;Edit&quot; button</li>
+<li>Modify desired fields</li>
+<li>Save changes</li>
+<li>Optionally create new version</li>
+</ol>
+<h3 id="organize-categories">Organize Categories</h3>
+<ol>
+<li>Navigate to Categories page</li>
+<li>Click &quot;Add Category&quot; for new category</li>
+<li>Use &quot;Add Subcategory&quot; for hierarchy</li>
+<li>Drag-and-drop to reorganize (if supported)</li>
+<li>Assign recipes to categories</li>
+<li>Set category status (active/inactive)</li>
+</ol>
+<h3 id="manage-cuisine-types">Manage Cuisine Types</h3>
+<ol>
+<li>Navigate to Cuisine Types page</li>
+<li>Click &quot;Add Cuisine Type&quot;</li>
+<li>Enter name, code, and description</li>
+<li>Select region</li>
+<li>Save cuisine type</li>
+<li>Assign to recipes</li>
+</ol>
+<h2 id="technical-implementation">Technical Implementation</h2>
+<h3 id="components">Components</h3>
+<p><strong>RecipeList</strong></p>
+<ul>
+<li>Grid/list view rendering</li>
+<li>Pagination or infinite scroll</li>
+<li>Search and filter integration</li>
+</ul>
+<p><strong>RecipeCard</strong></p>
+<ul>
+<li>Compact recipe display</li>
+<li>Image with fallback</li>
+<li>Key metrics overlay</li>
+<li>Status badges</li>
+<li>Click to detail view</li>
+</ul>
+<p><strong>CategoryTree</strong></p>
+<ul>
+<li>Hierarchical data rendering</li>
+<li>Expand/collapse functionality</li>
+<li>Tree manipulation (add, edit, delete)</li>
+<li>Recipe count aggregation</li>
+</ul>
+<p><strong>CuisineTypeList</strong></p>
+<ul>
+<li>Table-based display</li>
+<li>Sorting and filtering</li>
+<li>CRUD operations</li>
+<li>Region grouping</li>
+</ul>
+<h3 id="data-models">Data Models</h3>
+<pre><code class="language-typescript">interface Recipe {
+  id: string
+  name: string
+  description: string
+  category: string
+  cuisineType: string
+  status: &#39;draft&#39; | &#39;published&#39;
+  costPerPortion: number
+  sellingPrice: number
+  margin: number
+  co2PerPortion: number
+  image?: string
+  ingredients: Ingredient[]
+  instructions: string[]
+  prepTime: number // minutes
+  cookTime: number
+  totalTime: number
+  servings: number
+  createdAt: Date
+  updatedAt: Date
+  createdBy: string
+}
+
+interface Ingredient {
+  productId: string
+  productName: string
+  quantity: number
+  unit: string
+  cost: number
+}
+
+interface Category {
+  id: string
+  name: string
+  code: string
+  description: string
+  status: &#39;active&#39; | &#39;inactive&#39;
+  parentId?: string
+  recipeCount: number
+  activeRecipeCount: number
+  averageCost: number
+  averageMargin: number
+  lastUpdated: Date
+}
+
+interface CuisineType {
+  id: string
+  name: string
+  code: string
+  description: string
+  region: string
+  status: &#39;active&#39; | &#39;inactive&#39;
+  recipeCount: number
+  activeRecipeCount: number
+  lastUpdated: Date
+}
+</code></pre>
+<h3 id="mock-data">Mock Data</h3>
+<p><strong>Sample Recipes</strong> (8 recipes in mock data):</p>
+<ol>
+<li>Coq au Vin - French, Main Course</li>
+<li>Spaghetti Carbonara - Italian, Main Course</li>
+<li>Beef Wellington - French, Main Course</li>
+<li>Tiramisu - Italian, Dessert</li>
+<li>Margherita Pizza - Italian, Main Course</li>
+<li>Chocolate Pound Cake - American, Dessert</li>
+<li>(Additional recipes...)</li>
+</ol>
+<h2 id="business-rules">Business Rules</h2>
+<h3 id="recipe-status-workflow">Recipe Status Workflow</h3>
+<p><strong>Draft</strong>:</p>
+<ul>
+<li>Editable by creator</li>
+<li>Not visible in public menus</li>
+<li>Can be deleted</li>
+<li>No cost tracking</li>
+</ul>
+<p><strong>Published</strong>:</p>
+<ul>
+<li>Locked for editing (versioning required)</li>
+<li>Visible in menu planning</li>
+<li>Cost tracking active</li>
+<li>Used in menu engineering</li>
+</ul>
+<h3 id="category-hierarchy">Category Hierarchy</h3>
+<ul>
+<li><strong>Level 1</strong>: Main categories (Appetizers, Main Courses, Desserts)</li>
+<li><strong>Level 2</strong>: Subcategories (Hot Appetizers, Cold Appetizers)</li>
+<li><strong>Level 3</strong>: Item groups (Seafood Appetizers, Meat Appetizers)</li>
+</ul>
+<p><strong>Rules</strong>:</p>
+<ul>
+<li>Maximum 3 levels deep</li>
+<li>Each category must have unique code</li>
+<li>Cannot delete category with recipes</li>
+<li>Inactive categories hide recipes from some views</li>
+</ul>
+<h3 id="pricing-rules">Pricing Rules</h3>
+<p><strong>Margin Thresholds</strong>:</p>
+<ul>
+<li>Target margin: ≥65%</li>
+<li>Acceptable margin: 50-65%</li>
+<li>Low margin alert: &lt;50%</li>
+</ul>
+<p><strong>Pricing Recommendations</strong>:</p>
+<ul>
+<li>Stars: Maintain current pricing</li>
+<li>Plow Horses: Increase price by 10-15%</li>
+<li>Puzzles: Consider reducing price</li>
+<li>Dogs: Review complete recipe cost</li>
+</ul>
+<h2 id="integration-points">Integration Points</h2>
+<h3 id="product-management">Product Management</h3>
+<ul>
+<li>Ingredient linking to products</li>
+<li>Cost updates from product prices</li>
+<li>Unit conversion from product master</li>
+</ul>
+<h3 id="inventory-management">Inventory Management</h3>
+<ul>
+<li>Stock availability check</li>
+<li>Recipe feasibility based on inventory</li>
+<li>Par level calculations</li>
+</ul>
+<h3 id="menu-engineering">Menu Engineering</h3>
+<ul>
+<li>Recipe performance data</li>
+<li>Popularity metrics</li>
+<li>Profitability analysis</li>
+</ul>
+<h3 id="procurement">Procurement</h3>
+<ul>
+<li>Ingredient sourcing</li>
+<li>Supplier pricing updates</li>
+<li>Cost variance alerts</li>
+</ul>
+<h2 id="future-enhancements">Future Enhancements</h2>
+<h3 id="short-term">Short Term</h3>
+<ol>
+<li>Recipe versioning system</li>
+<li>Allergen tracking and labeling</li>
+<li>Nutritional analysis integration</li>
+<li>Recipe scaling calculator</li>
+<li>Print-friendly recipe cards</li>
+</ol>
+<h3 id="medium-term">Medium Term</h3>
+<ol>
+<li>Recipe video uploads</li>
+<li>Collaborative editing</li>
+<li>Recipe approval workflow</li>
+<li>Ingredient substitution suggestions</li>
+<li>Batch costing for prep items</li>
+</ol>
+<h3 id="long-term">Long Term</h3>
+<ol>
+<li>AI-powered recipe recommendations</li>
+<li>Automated nutritional calculations</li>
+<li>Recipe optimization for cost/margin</li>
+<li>Integration with cooking equipment (IoT)</li>
+<li>Customer feedback integration</li>
+</ol>
+<h2 id="related-documentation">Related Documentation</h2>
+<ul>
+<li><a href="./OPERATIONAL-PLANNING-MODULE.html">Operational Planning Module</a></li>
+<li><a href="./MENU-ENGINEERING.html">Menu Engineering</a></li>
+<li><a href="../pm/">Product Management</a></li>
+<li><a href="../inv/">Inventory Management</a></li>
+</ul>
+<hr>
+<p><strong>Last Updated</strong>: October 10, 2025<br><strong>Version</strong>: 1.0<br><strong>Status</strong>: Production</p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#recipe-management" class="level-1">Recipe Management</a>
+<a href="#overview" class="level-2">Overview</a>
+<a href="#screenshots" class="level-2">Screenshots</a>
+<a href="#module-structure" class="level-2">Module Structure</a>
+<a href="#1-recipe-library" class="level-3">1. Recipe Library</a>
+<a href="#2-recipe-detail" class="level-3">2. Recipe Detail</a>
+<a href="#3-new-recipe" class="level-3">3. New Recipe</a>
+<a href="#4-categories" class="level-3">4. Categories</a>
+<a href="#5-cuisine-types" class="level-3">5. Cuisine Types</a>
+<a href="#key-metrics" class="level-2">Key Metrics</a>
+<a href="#cost-metrics" class="level-3">Cost Metrics</a>
+<a href="#sustainability-metrics" class="level-3">Sustainability Metrics</a>
+<a href="#category-metrics" class="level-3">Category Metrics</a>
+<a href="#user-workflows" class="level-2">User Workflows</a>
+<a href="#create-new-recipe" class="level-3">Create New Recipe</a>
+<a href="#edit-existing-recipe" class="level-3">Edit Existing Recipe</a>
+<a href="#organize-categories" class="level-3">Organize Categories</a>
+<a href="#manage-cuisine-types" class="level-3">Manage Cuisine Types</a>
+<a href="#technical-implementation" class="level-2">Technical Implementation</a>
+<a href="#components" class="level-3">Components</a>
+<a href="#data-models" class="level-3">Data Models</a>
+<a href="#mock-data" class="level-3">Mock Data</a>
+<a href="#business-rules" class="level-2">Business Rules</a>
+<a href="#recipe-status-workflow" class="level-3">Recipe Status Workflow</a>
+<a href="#category-hierarchy" class="level-3">Category Hierarchy</a>
+<a href="#pricing-rules" class="level-3">Pricing Rules</a>
+<a href="#integration-points" class="level-2">Integration Points</a>
+<a href="#product-management" class="level-3">Product Management</a>
+<a href="#inventory-management" class="level-3">Inventory Management</a>
+<a href="#menu-engineering" class="level-3">Menu Engineering</a>
+<a href="#procurement" class="level-3">Procurement</a>
+<a href="#future-enhancements" class="level-2">Future Enhancements</a>
+<a href="#short-term" class="level-3">Short Term</a>
+<a href="#medium-term" class="level-3">Medium Term</a>
+<a href="#long-term" class="level-3">Long Term</a>
+<a href="#related-documentation" class="level-2">Related Documentation</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Module - Documentation Completion Summary - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: var(--bg-gradient);
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr 300px;
+            gap: 2rem;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 1.5rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .back-to-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: var(--primary-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        .back-to-home:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        /* Content Area */
+        .doc-content {
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 260px 1fr 280px;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 1.5rem;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 2.5rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            .doc-nav {
+                display: none;
+            }
+            .doc-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </div>
+            <div class="doc-header-actions">
+                <a href="../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../SYSTEM-DOCUMENTATION-INDEX.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Documentation Index</span>
+                    </a>
+                    <a href="../DOCUMENTATION-CATALOG.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Catalog</span>
+                    </a>
+                    <a href="../DOCUMENTATION-SUMMARY-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Summary</span>
+                    </a>
+                    <a href="../MODULE-VERIFICATION-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Module Verification</span>
+                    </a>
+                    <a href="../SYSTEM-GAPS-AND-ROADMAP.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Gaps & Roadmap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../architecture/SYSTEM-ARCHITECTURE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-users"></i>
+                    <span>Stakeholders</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../stakeholders/BUSINESS-VALUE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pr/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Requests</span>
+                    </a>
+                    <a href="../po/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Orders</span>
+                    </a>
+                    <a href="../grn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Goods Received Note</span>
+                    </a>
+                    <a href="../cn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Credit Notes</span>
+                    </a>
+                    <a href="../prt/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>PR Templates</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-boxes"></i>
+                    <span>Inventory Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../inv/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Overview</span>
+                    </a>
+                    <a href="../inv/inventory-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Specification</span>
+                    </a>
+                    <a href="../inv/inventory-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Sitemap</span>
+                    </a>
+                    <a href="../pc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Physical Count</span>
+                    </a>
+                    <a href="../sc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Spot Check</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-handshake"></i>
+                    <span>Vendor Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../vm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Overview</span>
+                    </a>
+                    <a href="../vm/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Module</span>
+                    </a>
+                    <a href="../vm/MANAGE-VENDORS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Manage Vendors</span>
+                    </a>
+                    <a href="../vm/TEMPLATES.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Templates</span>
+                    </a>
+                    <a href="../vm/CAMPAIGNS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Campaigns</span>
+                    </a>
+                    <a href="../vm/PRICELISTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Pricelists</span>
+                    </a>
+                    <a href="../vm/VENDOR-PORTAL.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Portal</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cube"></i>
+                    <span>Product Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Overview</span>
+                    </a>
+                    <a href="../pm/product-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Specification</span>
+                    </a>
+                    <a href="../pm/product-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-store"></i>
+                    <span>Store Operations</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../store-ops/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Overview</span>
+                    </a>
+                    <a href="../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Module</span>
+                    </a>
+                    <a href="../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Requisitions</span>
+                    </a>
+                    <a href="../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Stock Replenishment</span>
+                    </a>
+                    <a href="../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Wastage Reporting</span>
+                    </a>
+                    <a href="../store-ops/GLOSSARY.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Glossary</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Operational Planning</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../operational-planning/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Overview</span>
+                    </a>
+                    <a href="../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Module</span>
+                    </a>
+                    <a href="../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Menu Engineering</span>
+                    </a>
+                    <a href="../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Recipe Management</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cash-register"></i>
+                    <span>POS Integration</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pos-integration/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Overview</span>
+                    </a>
+                    <a href="../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Module</span>
+                    </a>
+                    <a href="../pos-integration/MAPPING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Mapping Subsystem</span>
+                    </a>
+                    <a href="../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Transaction Management</span>
+                    </a>
+                    <a href="../pos-integration/REPORTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports & Analytics</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../dashboard/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Overview</span>
+                    </a>
+                    <a href="../dashboard/sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>System Requirements</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../carmen-erp-system-requirements-documentation.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Requirements</span>
+                    </a>
+                    <a href="../comprehensive-schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="dashboard-module-documentation-completion-summary">Dashboard Module - Documentation Completion Summary</h1>
+<h2 id="completion-status-complete">Completion Status: ✅ Complete</h2>
+<p><strong>Date Completed</strong>: October 2, 2025<br><strong>Module</strong>: Dashboard<br><strong>Documentation Location</strong>: <code>/docs/documents/dashboard/</code></p>
+<h2 id="documentation-deliverables">Documentation Deliverables</h2>
+<h3 id="-core-documentation-files">✅ Core Documentation Files</h3>
+<ol>
+<li><p><strong>README.md</strong> - Main module documentation</p>
+<ul>
+<li>Overview and key features</li>
+<li>Page structure and components</li>
+<li>Data flow and state management</li>
+<li>User interactions and navigation flows</li>
+<li>Responsive design and accessibility</li>
+<li>Performance considerations</li>
+<li>Security and permissions</li>
+<li>Integration points and future enhancements</li>
+</ul>
+</li>
+<li><p><strong>sitemap.md</strong> - Visual navigation and flow diagrams</p>
+<ul>
+<li>Navigation hierarchy (Mermaid)</li>
+<li>User flow diagram</li>
+<li>Route structure</li>
+<li>Component interaction flow</li>
+<li>Data flow architecture</li>
+<li>Integration map</li>
+<li>State management flow</li>
+<li>Permission-based navigation</li>
+<li>Mobile navigation flow</li>
+</ul>
+</li>
+<li><p><strong>components/components-overview.md</strong> - Detailed component documentation</p>
+<ul>
+<li>Dashboard Header Component</li>
+<li>Dashboard Cards Component (Metrics &amp; Status)</li>
+<li>Dashboard Chart Component (3 chart types)</li>
+<li>Dashboard Data Table Component</li>
+<li>Component interactions and dependencies</li>
+<li>Shared utilities and testing considerations</li>
+</ul>
+</li>
+<li><p><strong>business-logic/dashboard-business-rules.md</strong> - Business rules and logic</p>
+<ul>
+<li>Data aggregation rules for all metrics</li>
+<li>Status alert calculation rules</li>
+<li>Chart data aggregation logic</li>
+<li>Permission-based data filtering</li>
+<li>Activity feed business rules</li>
+<li>Validation rules and error handling</li>
+<li>Performance and caching rules</li>
+<li>Integration rules and audit trail</li>
+</ul>
+</li>
+<li><p><strong>api/api-specifications.md</strong> - API and integration specs</p>
+<ul>
+<li>Complete endpoint specifications</li>
+<li>Request/response schemas</li>
+<li>WebSocket event definitions</li>
+<li>Data models and type definitions</li>
+<li>Caching strategy</li>
+<li>Error handling and rate limiting</li>
+<li>Security considerations</li>
+<li>Performance optimization</li>
+</ul>
+</li>
+</ol>
+<h3 id="-directory-structure-created">📁 Directory Structure Created</h3>
+<pre><code>docs/documents/dashboard/
+├── README.md
+├── sitemap.md
+├── COMPLETION_SUMMARY.md
+├── components/
+│   └── components-overview.md
+├── business-logic/
+│   └── dashboard-business-rules.md
+├── api/
+│   └── api-specifications.md
+├── screenshots/
+│   ├── pages/
+│   ├── modals/
+│   └── components/
+└── pages/
+</code></pre>
+<h2 id="module-analysis-summary">Module Analysis Summary</h2>
+<h3 id="components-analyzed">Components Analyzed</h3>
+<ul>
+<li>✅ Dashboard main page (<code>/app/(main)/dashboard/page.tsx</code>)</li>
+<li>✅ Dashboard header component</li>
+<li>✅ Dashboard cards component (metrics &amp; status)</li>
+<li>✅ Dashboard chart component (3 visualizations)</li>
+<li>✅ Dashboard data table component</li>
+</ul>
+<h3 id="key-features-documented">Key Features Documented</h3>
+<h4>1. Metrics Dashboard</h4>
+<ul>
+<li>Total Orders with trend analysis</li>
+<li>Active Suppliers count and growth</li>
+<li>Inventory Value with change indicators</li>
+<li>Monthly Spend with budget tracking</li>
+</ul>
+<h4>2. Status Alerts</h4>
+<ul>
+<li>Critical Stock Items (12 items threshold)</li>
+<li>Orders Pending Approval (8 pending)</li>
+<li>Completed Deliveries (156 this week)</li>
+</ul>
+<h4>3. Data Visualizations</h4>
+<ul>
+<li>Order Trends (Area Chart) - 6 months</li>
+<li>Spend Analysis (Bar Chart) - Monthly spend</li>
+<li>Supplier Network Growth (Line Chart) - Dual metrics</li>
+</ul>
+<h4>4. Activity Feed</h4>
+<ul>
+<li>Recent activities table with 6 activity types</li>
+<li>Sortable columns with status and priority badges</li>
+<li>Action menu (View/Edit/Delete)</li>
+<li>Responsive table design</li>
+</ul>
+<h4>5. Navigation &amp; Controls</h4>
+<ul>
+<li>Global search functionality</li>
+<li>Notifications bell</li>
+<li>Settings access</li>
+<li>Sidebar toggle</li>
+</ul>
+<h3 id="business-rules-defined">Business Rules Defined</h3>
+<h4>Calculation Rules</h4>
+<ul>
+<li>Order count aggregation (current month vs previous)</li>
+<li>Supplier activity tracking (90-day window)</li>
+<li>Inventory valuation (current prices)</li>
+<li>Monthly spend calculation (approved orders only)</li>
+</ul>
+<h4>Alert Thresholds</h4>
+<ul>
+<li>Critical stock: Below minimum quantity</li>
+<li>Pending approvals: By authorization level</li>
+<li>Delivery tracking: Weekly completion metrics</li>
+</ul>
+<h4>Permission Filters</h4>
+<ul>
+<li>Staff: Department-only access</li>
+<li>Department Manager: Team-wide metrics</li>
+<li>Financial Manager: Full financial visibility</li>
+<li>Purchasing Staff: Procurement metrics</li>
+<li>Executive: System-wide access</li>
+</ul>
+<h3 id="api-specifications">API Specifications</h3>
+<h4>Endpoints Defined</h4>
+<ol>
+<li><code>GET /api/dashboard/metrics</code> - Aggregated metrics</li>
+<li><code>GET /api/dashboard/charts</code> - Time-series data</li>
+<li><code>GET /api/dashboard/activities</code> - Recent activities</li>
+<li><code>GET /api/dashboard/permissions</code> - User permissions</li>
+<li><code>POST /api/dashboard/export</code> - Data export</li>
+</ol>
+<h4>WebSocket Events</h4>
+<ul>
+<li>metrics:update - Real-time metric updates</li>
+<li>activity:new - New activity notifications</li>
+<li>alert:critical - Critical alerts</li>
+<li>status:change - Status updates</li>
+</ul>
+<h4>Data Models</h4>
+<ul>
+<li>Metric Model (value, change, trend)</li>
+<li>Activity Model (type, status, priority, actions)</li>
+<li>Chart Data Model (dataPoints, aggregation)</li>
+</ul>
+<h3 id="technical-stack-identified">Technical Stack Identified</h3>
+<p><strong>Frontend</strong>:</p>
+<ul>
+<li>Next.js 14 App Router</li>
+<li>React Server Components</li>
+<li>TypeScript with strict mode</li>
+<li>Tailwind CSS styling</li>
+<li>Shadcn/ui components</li>
+</ul>
+<p><strong>Libraries</strong>:</p>
+<ul>
+<li>Recharts for data visualization</li>
+<li>Lucide React for icons</li>
+<li>React Hook Form (future forms)</li>
+<li>Zod validation (future)</li>
+</ul>
+<p><strong>State Management</strong>:</p>
+<ul>
+<li>Client state for UI interactions</li>
+<li>Server state for data (future React Query)</li>
+<li>WebSocket for real-time updates (planned)</li>
+</ul>
+<h2 id="screenshots-status">Screenshots Status</h2>
+<h3 id="-screenshots-not-captured">⚠️ Screenshots Not Captured</h3>
+<p><strong>Reason</strong>: Development server not running during documentation</p>
+<p><strong>Required Screenshots</strong> (to be captured when server available):</p>
+<ol>
+<li>Main dashboard view (desktop)</li>
+<li>Main dashboard view (mobile)</li>
+<li>Metric cards section</li>
+<li>Status cards section</li>
+<li>Order trends chart</li>
+<li>Spend analysis chart</li>
+<li>Supplier growth chart</li>
+<li>Activities table</li>
+<li>Action dropdown menu</li>
+<li>Search functionality</li>
+<li>Notifications panel</li>
+<li>Settings access</li>
+</ol>
+<p><strong>Screenshot Locations</strong> (prepared):</p>
+<ul>
+<li><code>/docs/documents/dashboard/screenshots/pages/</code></li>
+<li><code>/docs/documents/dashboard/screenshots/components/</code></li>
+<li><code>/docs/documents/dashboard/screenshots/modals/</code></li>
+</ul>
+<h2 id="integration-points-documented">Integration Points Documented</h2>
+<h3 id="connected-modules">Connected Modules</h3>
+<ol>
+<li><strong>Procurement</strong> - Purchase requests, orders, GRN data</li>
+<li><strong>Inventory Management</strong> - Stock levels, adjustments</li>
+<li><strong>Vendor Management</strong> - Supplier metrics</li>
+<li><strong>Finance</strong> - Spend analysis, budget tracking</li>
+<li><strong>Reporting &amp; Analytics</strong> - Chart data sources</li>
+<li><strong>System Administration</strong> - User permissions</li>
+</ol>
+<h3 id="shared-components">Shared Components</h3>
+<ul>
+<li>UI components from <code>/components/ui</code></li>
+<li>Chart components from shadcn/ui</li>
+<li>Icon library: Lucide React</li>
+<li>User context system</li>
+</ul>
+<h2 id="future-enhancements-identified">Future Enhancements Identified</h2>
+<h3 id="planned-features">Planned Features</h3>
+<ol>
+<li>Customizable widget layout</li>
+<li>Real-time WebSocket updates</li>
+<li>Advanced filtering capabilities</li>
+<li>PDF/Excel export functionality</li>
+<li>Drill-down analytics</li>
+<li>Alert management system</li>
+<li>Multi-location dashboards</li>
+<li>Comparative period analysis</li>
+</ol>
+<h3 id="technical-debt">Technical Debt</h3>
+<ol>
+<li>Replace mock data with API integration</li>
+<li>Implement error boundaries</li>
+<li>Add comprehensive loading states</li>
+<li>Enhance mobile table UX</li>
+<li>Add unit and integration tests</li>
+<li>Implement real-time updates</li>
+<li>Add chart performance optimization</li>
+</ol>
+<h2 id="documentation-quality-metrics">Documentation Quality Metrics</h2>
+<h3 id="coverage">Coverage</h3>
+<ul>
+<li>✅ All components documented</li>
+<li>✅ Business rules defined</li>
+<li>✅ API specifications complete</li>
+<li>✅ Integration points mapped</li>
+<li>✅ User flows diagrammed</li>
+<li>⚠️ Screenshots pending (server required)</li>
+</ul>
+<h3 id="depth">Depth</h3>
+<ul>
+<li>Detailed component analysis</li>
+<li>Complete business logic coverage</li>
+<li>Comprehensive API documentation</li>
+<li>Visual Mermaid diagrams</li>
+<li>Code examples and schemas</li>
+<li>Security and performance considerations</li>
+</ul>
+<h3 id="usefulness">Usefulness</h3>
+<ul>
+<li>Developer onboarding guide</li>
+<li>API integration reference</li>
+<li>Business stakeholder overview</li>
+<li>Testing strategy foundation</li>
+<li>Future enhancement roadmap</li>
+</ul>
+<h2 id="related-documentation-links">Related Documentation Links</h2>
+<ul>
+<li><a href="../pr/README.html">Purchase Request Module</a></li>
+<li><a href="../po/README.html">Purchase Order Module</a></li>
+<li><a href="../inv/README.html">Inventory Management</a></li>
+<li><a href="../so/README.html">Stock Overview</a></li>
+<li><a href="../vm/README.html">Vendor Management</a> - Next module to document</li>
+<li><a href="/lib/context/user-context.tsx">User Context System</a></li>
+</ul>
+<h2 id="next-steps">Next Steps</h2>
+<h3 id="for-dashboard-module">For Dashboard Module</h3>
+<ol>
+<li><p><strong>Capture Screenshots</strong>:</p>
+<ul>
+<li>Start development server</li>
+<li>Navigate to /dashboard</li>
+<li>Capture all planned screenshots</li>
+<li>Link screenshots in documentation</li>
+</ul>
+</li>
+<li><p><strong>API Implementation</strong>:</p>
+<ul>
+<li>Create API routes based on specifications</li>
+<li>Implement data aggregation logic</li>
+<li>Set up WebSocket server</li>
+<li>Configure caching strategy</li>
+</ul>
+</li>
+<li><p><strong>Testing</strong>:</p>
+<ul>
+<li>Write unit tests for components</li>
+<li>Create integration tests</li>
+<li>Add E2E tests for user flows</li>
+<li>Performance testing for charts</li>
+</ul>
+</li>
+</ol>
+<h3 id="for-next-module-vendor-management">For Next Module: Vendor Management</h3>
+<ul>
+<li>Analyze vendor management structure</li>
+<li>Document vendor list, profiles, and relationships</li>
+<li>Map pricelist management</li>
+<li>Document campaign features</li>
+<li>Capture vendor portal functionality</li>
+</ul>
+<h2 id="lessons-learned">Lessons Learned</h2>
+<h3 id="best-practices-applied">Best Practices Applied</h3>
+<ul>
+<li>Comprehensive component analysis before documentation</li>
+<li>Visual diagrams for complex flows</li>
+<li>Detailed API specifications for future development</li>
+<li>Business rules clearly separated from technical docs</li>
+<li>Modular documentation structure</li>
+</ul>
+<h3 id="improvements-for-next-modules">Improvements for Next Modules</h3>
+<ul>
+<li>Run development server first for screenshots</li>
+<li>Create component interaction diagrams earlier</li>
+<li>Include more code examples</li>
+<li>Add troubleshooting section</li>
+<li>Create quick reference guide</li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>The Dashboard module documentation is <strong>complete and comprehensive</strong>, providing:</p>
+<ul>
+<li>Full technical documentation for developers</li>
+<li>Business logic reference for stakeholders</li>
+<li>API specifications for backend implementation</li>
+<li>Visual diagrams for understanding flows</li>
+<li>Foundation for testing and future enhancements</li>
+</ul>
+<p><strong>Only missing item</strong>: Screenshots (pending development server)</p>
+<p><strong>Next Module</strong>: Vendor Management (vm) - Ready to begin analysis</p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#dashboard-module-documentation-completion-summary" class="level-1">Dashboard Module - Documentation Completion Summary</a>
+<a href="#completion-status-complete" class="level-2">Completion Status: ✅ Complete</a>
+<a href="#documentation-deliverables" class="level-2">Documentation Deliverables</a>
+<a href="#-core-documentation-files" class="level-3">✅ Core Documentation Files</a>
+<a href="#-directory-structure-created" class="level-3">📁 Directory Structure Created</a>
+<a href="#module-analysis-summary" class="level-2">Module Analysis Summary</a>
+<a href="#components-analyzed" class="level-3">Components Analyzed</a>
+<a href="#key-features-documented" class="level-3">Key Features Documented</a>
+<a href="#business-rules-defined" class="level-3">Business Rules Defined</a>
+<a href="#api-specifications" class="level-3">API Specifications</a>
+<a href="#technical-stack-identified" class="level-3">Technical Stack Identified</a>
+<a href="#screenshots-status" class="level-2">Screenshots Status</a>
+<a href="#-screenshots-not-captured" class="level-3">⚠️ Screenshots Not Captured</a>
+<a href="#integration-points-documented" class="level-2">Integration Points Documented</a>
+<a href="#connected-modules" class="level-3">Connected Modules</a>
+<a href="#shared-components" class="level-3">Shared Components</a>
+<a href="#future-enhancements-identified" class="level-2">Future Enhancements Identified</a>
+<a href="#planned-features" class="level-3">Planned Features</a>
+<a href="#technical-debt" class="level-3">Technical Debt</a>
+<a href="#documentation-quality-metrics" class="level-2">Documentation Quality Metrics</a>
+<a href="#coverage" class="level-3">Coverage</a>
+<a href="#depth" class="level-3">Depth</a>
+<a href="#usefulness" class="level-3">Usefulness</a>
+<a href="#related-documentation-links" class="level-2">Related Documentation Links</a>
+<a href="#next-steps" class="level-2">Next Steps</a>
+<a href="#for-dashboard-module" class="level-3">For Dashboard Module</a>
+<a href="#for-next-module-vendor-management" class="level-3">For Next Module: Vendor Management</a>
+<a href="#lessons-learned" class="level-2">Lessons Learned</a>
+<a href="#best-practices-applied" class="level-3">Best Practices Applied</a>
+<a href="#improvements-for-next-modules" class="level-3">Improvements for Next Modules</a>
+<a href="#conclusion" class="level-2">Conclusion</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

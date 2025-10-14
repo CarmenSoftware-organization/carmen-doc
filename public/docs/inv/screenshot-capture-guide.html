@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Screenshot Capture Guide - Inventory Management Module - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: var(--bg-gradient);
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr 300px;
+            gap: 2rem;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 1.5rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .back-to-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: var(--primary-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        .back-to-home:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        /* Content Area */
+        .doc-content {
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 260px 1fr 280px;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 1.5rem;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 2.5rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            .doc-nav {
+                display: none;
+            }
+            .doc-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </div>
+            <div class="doc-header-actions">
+                <a href="../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../SYSTEM-DOCUMENTATION-INDEX.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Documentation Index</span>
+                    </a>
+                    <a href="../DOCUMENTATION-CATALOG.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Catalog</span>
+                    </a>
+                    <a href="../DOCUMENTATION-SUMMARY-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Summary</span>
+                    </a>
+                    <a href="../MODULE-VERIFICATION-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Module Verification</span>
+                    </a>
+                    <a href="../SYSTEM-GAPS-AND-ROADMAP.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Gaps & Roadmap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../architecture/SYSTEM-ARCHITECTURE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-users"></i>
+                    <span>Stakeholders</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../stakeholders/BUSINESS-VALUE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pr/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Requests</span>
+                    </a>
+                    <a href="../po/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Orders</span>
+                    </a>
+                    <a href="../grn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Goods Received Note</span>
+                    </a>
+                    <a href="../cn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Credit Notes</span>
+                    </a>
+                    <a href="../prt/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>PR Templates</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-boxes"></i>
+                    <span>Inventory Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../inv/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Overview</span>
+                    </a>
+                    <a href="../inv/inventory-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Specification</span>
+                    </a>
+                    <a href="../inv/inventory-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Sitemap</span>
+                    </a>
+                    <a href="../pc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Physical Count</span>
+                    </a>
+                    <a href="../sc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Spot Check</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-handshake"></i>
+                    <span>Vendor Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../vm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Overview</span>
+                    </a>
+                    <a href="../vm/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Module</span>
+                    </a>
+                    <a href="../vm/MANAGE-VENDORS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Manage Vendors</span>
+                    </a>
+                    <a href="../vm/TEMPLATES.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Templates</span>
+                    </a>
+                    <a href="../vm/CAMPAIGNS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Campaigns</span>
+                    </a>
+                    <a href="../vm/PRICELISTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Pricelists</span>
+                    </a>
+                    <a href="../vm/VENDOR-PORTAL.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Portal</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cube"></i>
+                    <span>Product Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Overview</span>
+                    </a>
+                    <a href="../pm/product-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Specification</span>
+                    </a>
+                    <a href="../pm/product-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-store"></i>
+                    <span>Store Operations</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../store-ops/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Overview</span>
+                    </a>
+                    <a href="../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Module</span>
+                    </a>
+                    <a href="../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Requisitions</span>
+                    </a>
+                    <a href="../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Stock Replenishment</span>
+                    </a>
+                    <a href="../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Wastage Reporting</span>
+                    </a>
+                    <a href="../store-ops/GLOSSARY.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Glossary</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Operational Planning</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../operational-planning/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Overview</span>
+                    </a>
+                    <a href="../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Module</span>
+                    </a>
+                    <a href="../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Menu Engineering</span>
+                    </a>
+                    <a href="../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Recipe Management</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cash-register"></i>
+                    <span>POS Integration</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pos-integration/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Overview</span>
+                    </a>
+                    <a href="../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Module</span>
+                    </a>
+                    <a href="../pos-integration/MAPPING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Mapping Subsystem</span>
+                    </a>
+                    <a href="../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Transaction Management</span>
+                    </a>
+                    <a href="../pos-integration/REPORTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports & Analytics</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../dashboard/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Overview</span>
+                    </a>
+                    <a href="../dashboard/sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>System Requirements</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../carmen-erp-system-requirements-documentation.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Requirements</span>
+                    </a>
+                    <a href="../comprehensive-schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="screenshot-capture-guide-inventory-management-module">Screenshot Capture Guide - Inventory Management Module</h1>
+<h2 id="overview">Overview</h2>
+<p>This guide outlines the systematic process for capturing screenshots of all Inventory Management module pages and components.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<ol>
+<li>Development server running (<code>npm run dev</code>)</li>
+<li>Navigate to <code>http://localhost:3000</code></li>
+<li>Login with appropriate user credentials</li>
+<li>Browser DevTools open (F12)</li>
+</ol>
+<h2 id="screenshot-naming-convention">Screenshot Naming Convention</h2>
+<p>Format: <code>{module}-{page}-{component}-{state}.png</code></p>
+<p>Example: <code>inv-stock-overview-summary-cards.png</code></p>
+<h2 id="pages-to-capture">Pages to Capture</h2>
+<h3 id="1-main-dashboard">1. Main Dashboard</h3>
+<p><strong>Route:</strong> <code>/inventory-management</code></p>
+<p><strong>Screenshots needed:</strong></p>
+<ol>
+<li><code>inv-dashboard-full-view.png</code> - Full page view</li>
+<li><code>inv-dashboard-inventory-levels-widget.png</code> - Inventory levels bar chart</li>
+<li><code>inv-dashboard-value-trend-widget.png</code> - Value trend line chart</li>
+<li><code>inv-dashboard-turnover-widget.png</code> - Turnover pie chart</li>
+<li><code>inv-dashboard-alerts-widgets.png</code> - Low stock, upcoming counts, recent transfers cards</li>
+<li><code>inv-dashboard-drag-drop-demo.png</code> - During widget drag operation</li>
+</ol>
+<p><strong>Browser console commands:</strong></p>
+<pre><code class="language-javascript">// Capture full page
+await page.screenshot({ path: &#39;inv-dashboard-full-view.png&#39;, fullPage: true });
+
+// Capture specific widget (use selector)
+const widget = await page.$(&#39;.inventory-levels-widget&#39;);
+await widget.screenshot({ path: &#39;inv-dashboard-inventory-levels-widget.png&#39; });
+</code></pre>
+<hr>
+<h3 id="2-stock-overview">2. Stock Overview</h3>
+<p><strong>Route:</strong> <code>/inventory-management/stock-overview</code></p>
+<h4>2.1 Main Overview Page</h4>
+<p><strong>Screenshots needed:</strong></p>
+<ol>
+<li><code>inv-stock-overview-header.png</code> - Header with location selector</li>
+<li><code>inv-stock-overview-summary-cards.png</code> - All 4 summary cards</li>
+<li><code>inv-stock-overview-tab-overview.png</code> - Overview tab with charts</li>
+<li><code>inv-stock-overview-stock-distribution-chart.png</code> - Stock distribution bar chart</li>
+<li><code>inv-stock-overview-value-distribution-chart.png</code> - Value distribution pie chart</li>
+<li><code>inv-stock-overview-quick-actions.png</code> - Quick actions grid</li>
+<li><code>inv-stock-overview-tab-performance.png</code> - Performance tab</li>
+<li><code>inv-stock-overview-performance-chart.png</code> - Location performance bar chart</li>
+<li><code>inv-stock-overview-performance-table.png</code> - Performance details table</li>
+<li><code>inv-stock-overview-tab-transfers.png</code> - Transfer suggestions tab</li>
+<li><code>inv-stock-overview-transfer-suggestions.png</code> - Transfer suggestion cards</li>
+<li><code>inv-stock-overview-location-filter.png</code> - With location filter applied</li>
+</ol>
+<hr>
+<h4>2.2 Inventory Balance</h4>
+<p><strong>Route:</strong> <code>/inventory-management/stock-overview/inventory-balance</code></p>
+<p><strong>Screenshots needed:</strong></p>
+<ol>
+<li><code>inv-balance-full-page.png</code> - Full report view</li>
+<li><code>inv-balance-filter-panel-expanded.png</code> - Filter panel open</li>
+<li><code>inv-balance-filter-panel-collapsed.png</code> - Filter panel collapsed</li>
+<li><code>inv-balance-table-category-view.png</code> - Grouped by category</li>
+<li><code>inv-balance-table-product-view.png</code> - Product level detail</li>
+<li><code>inv-balance-table-lot-view.png</code> - With lots expanded</li>
+<li><code>inv-balance-movement-history-panel.png</code> - Movement history side panel</li>
+<li><code>inv-balance-export-options.png</code> - Export dropdown menu</li>
+</ol>
+<p><strong>Capture steps:</strong></p>
+<pre><code>1. Navigate to page
+2. Apply filters (date range, location)
+3. Capture full page
+4. Expand filter panel → Capture
+5. Collapse filter panel → Capture
+6. Click on product to show movement history → Capture
+7. Click export button → Capture dropdown
+</code></pre>
+<hr>
+<h4>2.3 Stock Cards</h4>
+<p><strong>Route:</strong> <code>/inventory-management/stock-overview/stock-cards</code></p>
+<p><strong>Screenshots needed:</strong></p>
+<ol>
+<li><code>inv-stock-cards-grid-view.png</code> - Grid layout of cards</li>
+<li><code>inv-stock-cards-search-filter.png</code> - With filters applied</li>
+<li><code>inv-stock-cards-single-card.png</code> - Close-up of one card</li>
+</ol>
+<hr>
+<h4>2.4 Stock Card Detail</h4>
+<p><strong>Route:</strong> <code>/inventory-management/stock-overview/stock-card</code></p>
+<p><strong>Screenshots needed:</strong></p>
+<ol>
+<li><code>inv-stock-card-detail-full.png</code> - Full page view</li>
+<li><code>inv-stock-card-general-info.png</code> - General information panel</li>
+<li><code>inv-stock-card-lot-info.png</code> - Lot information table</li>
+<li><code>inv-stock-card-movement-history.png</code> - Movement history table</li>
+<li><code>inv-stock-card-valuation.png</code> - Valuation panel</li>
+<li><code>inv-stock-card-quick-filters.png</code> - Quick filter buttons</li>
+<li><code>inv-stock-card-filtered-movements.png</code> - After applying filter</li>
+</ol>
+<hr>
+<h4>2.5 Slow Moving</h4>
+<p><strong>Route:</strong> <code>/inventory-management/stock-overview/slow-moving</code></p>
+<p><strong>Screenshots needed:</strong></p>
+<ol>
+<li><code>inv-slow-moving-full-page.png</code> - Complete page (when implemented)</li>
+<li><code>inv-slow-moving-filters.png</code> - Filter section</li>
+<li><code>inv-slow-moving-table.png</code> - Items table with aging data</li>
+</ol>
+<hr>
+<h4>2.6 Inventory Aging</h4>
+<p><strong>Route:</strong> <code>/inventory-management/stock-overview/inventory-aging</code></p>
+<p><strong>Screenshots needed:</strong></p>
+<ol>
+<li><code>inv-aging-full-page.png</code> - Complete page (when implemented)</li>
+<li><code>inv-aging-summary-cards.png</code> - Aging summary metrics</li>
+<li><code>inv-aging-buckets-table.png</code> - Aging buckets table</li>
+<li><code>inv-aging-chart.png</code> - Visual representation of aging</li>
+</ol>
+<hr>
+<h3 id="3-stock-in">3. Stock In</h3>
+<p><strong>Route:</strong> <code>/inventory-management/stock-in</code></p>
+<p><strong>Screenshots needed:</strong></p>
+<ol>
+<li><code>inv-stock-in-list.png</code> - List of receipts</li>
+<li><code>inv-stock-in-filters.png</code> - Filter bar active</li>
+<li><code>inv-stock-in-detail.png</code> - Receipt detail view</li>
+<li><code>inv-stock-in-header-info.png</code> - Header information section</li>
+<li><code>inv-stock-in-items-table.png</code> - Items table</li>
+<li><code>inv-stock-in-add-item-modal.png</code> - Item lookup modal</li>
+<li><code>inv-stock-in-journal-entry.png</code> - Auto-generated journal entry</li>
+<li><code>inv-stock-in-post-receipt.png</code> - Post action confirmation</li>
+</ol>
+<hr>
+<h3 id="4-inventory-adjustments">4. Inventory Adjustments</h3>
+<p><strong>Route:</strong> <code>/inventory-management/inventory-adjustments</code></p>
+<p><strong>Screenshots needed:</strong></p>
+<ol>
+<li><code>inv-adjustments-list.png</code> - Adjustments list page</li>
+<li><code>inv-adjustments-filters.png</code> - Filter bar</li>
+<li><code>inv-adjustments-detail-header.png</code> - Adjustment detail header</li>
+<li><code>inv-adjustments-info-panel.png</code> - Information panel</li>
+<li><code>inv-adjustments-stock-movement-table.png</code> - Stock movement items</li>
+<li><code>inv-adjustments-lot-details.png</code> - Lot details expanded</li>
+<li><code>inv-adjustments-summary-panel.png</code> - Totals summary</li>
+<li><code>inv-adjustments-journal-tab.png</code> - Journal entries tab</li>
+<li><code>inv-adjustments-journal-header.png</code> - Journal header details</li>
+<li><code>inv-adjustments-journal-table.png</code> - Journal entry lines</li>
+<li><code>inv-adjustments-stock-movement-tab.png</code> - Stock movement tab</li>
+<li><code>inv-adjustments-create-new.png</code> - New adjustment form (when implemented)</li>
+</ol>
+<hr>
+<h3 id="5-physical-count">5. Physical Count</h3>
+<p><strong>Route:</strong> <code>/inventory-management/physical-count</code></p>
+<h4>5.1 Wizard Steps</h4>
+<p><strong>Screenshots needed:</strong></p>
+<ol>
+<li><code>inv-physical-count-step-1-setup.png</code> - Setup step</li>
+<li><code>inv-physical-count-step-2-location.png</code> - Location selection</li>
+<li><code>inv-physical-count-step-3-items.png</code> - Item review</li>
+<li><code>inv-physical-count-step-4-review.png</code> - Final review</li>
+<li><code>inv-physical-count-step-indicator.png</code> - Step indicator close-up</li>
+<li><code>inv-physical-count-wizard-full.png</code> - Full wizard view</li>
+</ol>
+<h4>5.2 Active Count</h4>
+<p><strong>Route:</strong> <code>/inventory-management/physical-count/active/[id]</code></p>
+<p><strong>Screenshots needed:</strong></p>
+<ol>
+<li><code>inv-physical-count-active-full.png</code> - Active count page</li>
+<li><code>inv-physical-count-progress.png</code> - Progress indicator</li>
+<li><code>inv-physical-count-item-entry.png</code> - Item entry form</li>
+<li><code>inv-physical-count-variance-highlight.png</code> - Items with variance</li>
+</ol>
+<h4>5.3 Dashboard</h4>
+<p><strong>Route:</strong> <code>/inventory-management/physical-count/dashboard</code></p>
+<p><strong>Screenshots needed:</strong></p>
+<ol>
+<li><code>inv-physical-count-dashboard-full.png</code> - Full dashboard</li>
+<li><code>inv-physical-count-summary-cards.png</code> - Summary metrics</li>
+<li><code>inv-physical-count-counts-table.png</code> - Counts table</li>
+<li><code>inv-physical-count-charts.png</code> - Trend charts</li>
+</ol>
+<hr>
+<h3 id="6-spot-check">6. Spot Check</h3>
+<p><strong>Route:</strong> <code>/inventory-management/spot-check</code></p>
+<h4>6.1 Main Page</h4>
+<p><strong>Screenshots needed:</strong></p>
+<ol>
+<li><code>inv-spot-check-list-view.png</code> - List view</li>
+<li><code>inv-spot-check-grid-view.png</code> - Grid view</li>
+<li><code>inv-spot-check-filters.png</code> - Filter bar</li>
+<li><code>inv-spot-check-location-filter-panel.png</code> - Location filter expanded</li>
+<li><code>inv-spot-check-list-item.png</code> - Single list item detail</li>
+<li><code>inv-spot-check-grid-card.png</code> - Single grid card</li>
+</ol>
+<h4>6.2 New Spot Check</h4>
+<p><strong>Route:</strong> <code>/inventory-management/spot-check/new</code></p>
+<p><strong>Screenshots needed:</strong></p>
+<ol>
+<li><code>inv-spot-check-new-step-1.png</code> - Setup step</li>
+<li><code>inv-spot-check-new-step-2.png</code> - Item selection</li>
+<li><code>inv-spot-check-new-random-picker.png</code> - Random item selection UI</li>
+<li><code>inv-spot-check-new-step-3.png</code> - Review step</li>
+</ol>
+<h4>6.3 Active Spot Check</h4>
+<p><strong>Route:</strong> <code>/inventory-management/spot-check/active/[id]</code></p>
+<p><strong>Screenshots needed:</strong></p>
+<ol>
+<li><code>inv-spot-check-active-full.png</code> - Active check page</li>
+<li><code>inv-spot-check-count-items-form.png</code> - Item counting form</li>
+<li><code>inv-spot-check-variance-flagged.png</code> - Variance highlighted</li>
+</ol>
+<h4>6.4 Completed</h4>
+<p><strong>Route:</strong> <code>/inventory-management/spot-check/completed</code></p>
+<p><strong>Screenshots needed:</strong></p>
+<ol>
+<li><code>inv-spot-check-completed-list.png</code> - Completed checks list</li>
+<li><code>inv-spot-check-completed-detail.png</code> - Completed check detail</li>
+</ol>
+<h4>6.5 Dashboard</h4>
+<p><strong>Route:</strong> <code>/inventory-management/spot-check/dashboard</code></p>
+<p><strong>Screenshots needed:</strong></p>
+<ol>
+<li><code>inv-spot-check-dashboard-full.png</code> - Full dashboard</li>
+<li><code>inv-spot-check-summary-cards.png</code> - Summary metrics</li>
+<li><code>inv-spot-check-charts.png</code> - Accuracy and variance charts</li>
+<li><code>inv-spot-check-recent-table.png</code> - Recent checks table</li>
+</ol>
+<hr>
+<h3 id="7-fractional-inventory">7. Fractional Inventory</h3>
+<p><strong>Route:</strong> <code>/inventory-management/fractional-inventory</code></p>
+<h4>7.1 Inventory Dashboard Tab</h4>
+<p><strong>Screenshots needed:</strong></p>
+<ol>
+<li><code>inv-fractional-dashboard-full.png</code> - Full dashboard</li>
+<li><code>inv-fractional-summary-cards.png</code> - Summary cards</li>
+<li><code>inv-fractional-stock-table.png</code> - Fractional stock table</li>
+<li><code>inv-fractional-filters.png</code> - Filter options</li>
+<li><code>inv-fractional-quality-grades.png</code> - Quality grade indicators</li>
+<li><code>inv-fractional-expiry-warning.png</code> - Expiring items highlighted</li>
+</ol>
+<h4>7.2 Conversion Modal</h4>
+<p><strong>Screenshots needed:</strong></p>
+<ol>
+<li><code>inv-fractional-conversion-modal-split.png</code> - Split operation form</li>
+<li><code>inv-fractional-conversion-modal-combine.png</code> - Combine operation form</li>
+<li><code>inv-fractional-conversion-confirmation.png</code> - Confirmation screen</li>
+</ol>
+<h4>7.3 Conversion Tracking Tab</h4>
+<p><strong>Screenshots needed:</strong></p>
+<ol>
+<li><code>inv-fractional-tracking-full.png</code> - Tracking tab</li>
+<li><code>inv-fractional-tracking-table.png</code> - Conversions history table</li>
+<li><code>inv-fractional-tracking-filters.png</code> - Filter options</li>
+<li><code>inv-fractional-tracking-charts.png</code> - Conversion and waste charts</li>
+</ol>
+<hr>
+<h3 id="8-period-end">8. Period End</h3>
+<p><strong>Route:</strong> <code>/inventory-management/period-end</code></p>
+<p><strong>Screenshots needed:</strong></p>
+<ol>
+<li><code>inv-period-end-list.png</code> - Period records table</li>
+<li><code>inv-period-end-header.png</code> - Header with date picker</li>
+<li><code>inv-period-end-status-badges.png</code> - Different status indicators</li>
+<li><code>inv-period-end-detail.png</code> - Period detail page (when clicking row)</li>
+<li><code>inv-period-end-checklist.png</code> - Period end checklist</li>
+<li><code>inv-period-end-reports.png</code> - Reports section</li>
+</ol>
+<hr>
+<h3 id="9-physical-count-management">9. Physical Count Management</h3>
+<p><strong>Route:</strong> <code>/inventory-management/physical-count-management</code></p>
+<p><strong>Screenshots needed:</strong></p>
+<ol>
+<li><code>inv-count-mgmt-full.png</code> - Full page view</li>
+<li><code>inv-count-mgmt-list.png</code> - Counts list</li>
+<li><code>inv-count-mgmt-filters.png</code> - Filter bar</li>
+<li><code>inv-count-mgmt-count-card.png</code> - Single count card</li>
+<li><code>inv-count-mgmt-detail-form.png</code> - Count detail form modal</li>
+<li><code>inv-count-mgmt-progress.png</code> - Progress indicator</li>
+</ol>
+<hr>
+<h2 id="common-components-screenshots">Common Components Screenshots</h2>
+<h3 id="modals-and-dialogs">Modals and Dialogs</h3>
+<ol>
+<li><code>component-location-selection-modal.png</code></li>
+<li><code>component-item-lookup-modal.png</code></li>
+<li><code>component-lot-entry-modal.png</code></li>
+<li><code>component-confirmation-dialog.png</code></li>
+</ol>
+<h3 id="dropdowns">Dropdowns</h3>
+<ol>
+<li><code>component-department-dropdown.png</code></li>
+<li><code>component-location-dropdown.png</code></li>
+<li><code>component-reason-dropdown.png</code></li>
+<li><code>component-status-dropdown.png</code></li>
+</ol>
+<h3 id="tables">Tables</h3>
+<ol>
+<li><code>component-grouped-table-collapsed.png</code></li>
+<li><code>component-grouped-table-expanded.png</code></li>
+<li><code>component-sortable-table.png</code></li>
+<li><code>component-paginated-table.png</code></li>
+</ol>
+<h3 id="cards">Cards</h3>
+<ol>
+<li><code>component-metric-card.png</code></li>
+<li><code>component-status-card.png</code></li>
+<li><code>component-chart-card.png</code></li>
+</ol>
+<h3 id="charts">Charts</h3>
+<ol>
+<li><code>component-bar-chart.png</code></li>
+<li><code>component-line-chart.png</code></li>
+<li><code>component-pie-chart.png</code></li>
+</ol>
+<h3 id="other">Other</h3>
+<ol>
+<li><code>component-step-indicator.png</code></li>
+<li><code>component-export-button.png</code></li>
+<li><code>component-filter-panel.png</code></li>
+<li><code>component-search-box.png</code></li>
+</ol>
+<hr>
+<h2 id="capture-process">Capture Process</h2>
+<h3 id="using-browser-devtools">Using Browser DevTools</h3>
+<pre><code class="language-javascript">// Open Console (F12)
+
+// 1. Full page screenshot
+document.querySelector(&#39;html&#39;).requestFullscreen();
+// Then use browser screenshot tool (Ctrl+Shift+S in Firefox, Cmd+Shift+P &gt; &quot;screenshot&quot; in Chrome)
+
+// 2. Specific element screenshot (Chrome DevTools)
+// Right-click element in Elements tab &gt; &quot;Capture node screenshot&quot;
+
+// 3. Programmatic capture (using Puppeteer or Playwright - see script below)
+</code></pre>
+<h3 id="using-provided-script">Using Provided Script</h3>
+<p>Create and run: <code>capture-inv-screenshots.js</code></p>
+<pre><code class="language-javascript">const puppeteer = require(&#39;puppeteer&#39;);
+const fs = require(&#39;fs&#39;);
+const path = require(&#39;path&#39;);
+
+const baseUrl = &#39;http://localhost:3000&#39;;
+const outputDir = &#39;docs/documents/inv/screenshots&#39;;
+
+// Ensure output directory exists
+if (!fs.existsSync(outputDir)) {
+  fs.mkdirSync(outputDir, { recursive: true });
+}
+
+const screenshots = [
+  // Dashboard
+  { url: &#39;/inventory-management&#39;, name: &#39;inv-dashboard-full-view&#39;, fullPage: true },
+
+  // Stock Overview
+  { url: &#39;/inventory-management/stock-overview&#39;, name: &#39;inv-stock-overview-full&#39;, fullPage: true },
+
+  // ... add all routes
+];
+
+async function captureScreenshots() {
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+
+  // Set viewport
+  await page.setViewport({ width: 1920, height: 1080 });
+
+  for (const shot of screenshots) {
+    try {
+      await page.goto(baseUrl + shot.url, { waitUntil: &#39;networkidle0&#39; });
+
+      // Wait for content to load
+      await page.waitForTimeout(2000);
+
+      const screenshotPath = path.join(outputDir, `${shot.name}.png`);
+
+      if (shot.selector) {
+        const element = await page.$(shot.selector);
+        await element.screenshot({ path: screenshotPath });
+      } else {
+        await page.screenshot({
+          path: screenshotPath,
+          fullPage: shot.fullPage || false
+        });
+      }
+
+      console.log(`✓ Captured: ${shot.name}.png`);
+    } catch (error) {
+      console.error(`✗ Failed to capture ${shot.name}:`, error.message);
+    }
+  }
+
+  await browser.close();
+  console.log(&#39;Screenshot capture complete!&#39;);
+}
+
+captureScreenshots();
+</code></pre>
+<hr>
+<h2 id="manual-capture-checklist">Manual Capture Checklist</h2>
+<p>For each page:</p>
+<ul>
+<li><input disabled="" type="checkbox"> Full page view (scrolled to top)</li>
+<li><input disabled="" type="checkbox"> With filters applied</li>
+<li><input disabled="" type="checkbox"> With modals/dropdowns open</li>
+<li><input disabled="" type="checkbox"> Mobile view (375px width)</li>
+<li><input disabled="" type="checkbox"> Tablet view (768px width)</li>
+<li><input disabled="" type="checkbox"> Error states (if applicable)</li>
+<li><input disabled="" type="checkbox"> Empty states (if applicable)</li>
+<li><input disabled="" type="checkbox"> Loading states</li>
+</ul>
+<hr>
+<h2 id="image-specifications">Image Specifications</h2>
+<ul>
+<li><strong>Format:</strong> PNG</li>
+<li><strong>Quality:</strong> High (lossless)</li>
+<li><strong>Desktop Resolution:</strong> 1920x1080</li>
+<li><strong>Mobile Resolution:</strong> 375x667</li>
+<li><strong>Tablet Resolution:</strong> 768x1024</li>
+<li><strong>DPI:</strong> 72 (screen) or 150 (documentation)</li>
+</ul>
+<hr>
+<h2 id="file-organization">File Organization</h2>
+<pre><code>docs/documents/inv/screenshots/
+├── dashboard/
+│   ├── inv-dashboard-full-view.png
+│   ├── inv-dashboard-inventory-levels-widget.png
+│   └── ...
+├── stock-overview/
+│   ├── inv-stock-overview-full.png
+│   ├── inv-stock-overview-summary-cards.png
+│   └── ...
+├── stock-in/
+├── inventory-adjustments/
+├── physical-count/
+├── spot-check/
+├── fractional-inventory/
+├── period-end/
+├── count-management/
+└── components/
+    ├── modals/
+    ├── dropdowns/
+    ├── tables/
+    └── charts/
+</code></pre>
+<hr>
+<h2 id="post-capture-tasks">Post-Capture Tasks</h2>
+<ol>
+<li>Review all screenshots for clarity</li>
+<li>Crop unnecessary white space</li>
+<li>Annotate key features (using tool like Snagit or Preview)</li>
+<li>Add captions/labels if needed</li>
+<li>Compress images (using TinyPNG or similar)</li>
+<li>Insert into pages-and-components-spec.md</li>
+<li>Update README with screenshot locations</li>
+</ol>
+<hr>
+<h2 id="integration-with-documentation">Integration with Documentation</h2>
+<p>Add screenshots to spec document using:</p>
+<pre><code class="language-markdown">### Screenshot: Dashboard Full View
+![Dashboard](./inventory-management-dashboard.png)
+*Figure 1: Main Inventory Management Dashboard with draggable widgets*
+</code></pre>
+<hr>
+<h2 id="notes">Notes</h2>
+<ul>
+<li>Capture in light mode (default theme)</li>
+<li>Use consistent test data for all screenshots</li>
+<li>Highlight interactive elements where helpful</li>
+<li>Show realistic but not sensitive data</li>
+<li>Include both desktop and mobile views for responsive components</li>
+<li>Document any special states (errors, warnings, empty states)</li>
+</ul>
+<hr>
+<h2 id="estimated-time">Estimated Time</h2>
+<ul>
+<li><strong>Setup:</strong> 30 minutes</li>
+<li><strong>Main pages:</strong> 2-3 hours</li>
+<li><strong>Sub-pages:</strong> 2-3 hours</li>
+<li><strong>Components:</strong> 1-2 hours</li>
+<li><strong>Review &amp; annotation:</strong> 1-2 hours</li>
+<li><strong>Total:</strong> 6-10 hours</li>
+</ul>
+<hr>
+<p>This systematic approach ensures comprehensive visual documentation of the entire Inventory Management module.</p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#screenshot-capture-guide-inventory-management-module" class="level-1">Screenshot Capture Guide - Inventory Management Module</a>
+<a href="#overview" class="level-2">Overview</a>
+<a href="#prerequisites" class="level-2">Prerequisites</a>
+<a href="#screenshot-naming-convention" class="level-2">Screenshot Naming Convention</a>
+<a href="#pages-to-capture" class="level-2">Pages to Capture</a>
+<a href="#1-main-dashboard" class="level-3">1. Main Dashboard</a>
+<a href="#2-stock-overview" class="level-3">2. Stock Overview</a>
+<a href="#3-stock-in" class="level-3">3. Stock In</a>
+<a href="#4-inventory-adjustments" class="level-3">4. Inventory Adjustments</a>
+<a href="#5-physical-count" class="level-3">5. Physical Count</a>
+<a href="#6-spot-check" class="level-3">6. Spot Check</a>
+<a href="#7-fractional-inventory" class="level-3">7. Fractional Inventory</a>
+<a href="#8-period-end" class="level-3">8. Period End</a>
+<a href="#9-physical-count-management" class="level-3">9. Physical Count Management</a>
+<a href="#common-components-screenshots" class="level-2">Common Components Screenshots</a>
+<a href="#modals-and-dialogs" class="level-3">Modals and Dialogs</a>
+<a href="#dropdowns" class="level-3">Dropdowns</a>
+<a href="#tables" class="level-3">Tables</a>
+<a href="#cards" class="level-3">Cards</a>
+<a href="#charts" class="level-3">Charts</a>
+<a href="#other" class="level-3">Other</a>
+<a href="#capture-process" class="level-2">Capture Process</a>
+<a href="#using-browser-devtools" class="level-3">Using Browser DevTools</a>
+<a href="#using-provided-script" class="level-3">Using Provided Script</a>
+<a href="#manual-capture-checklist" class="level-2">Manual Capture Checklist</a>
+<a href="#image-specifications" class="level-2">Image Specifications</a>
+<a href="#file-organization" class="level-2">File Organization</a>
+<a href="#post-capture-tasks" class="level-2">Post-Capture Tasks</a>
+<a href="#integration-with-documentation" class="level-2">Integration with Documentation</a>
+<a href="#notes" class="level-2">Notes</a>
+<a href="#estimated-time" class="level-2">Estimated Time</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

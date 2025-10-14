@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carmen ERP - System Gaps and Implementation Roadmap - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: var(--bg-gradient);
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr 300px;
+            gap: 2rem;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 1.5rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .back-to-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: var(--primary-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        .back-to-home:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        /* Content Area */
+        .doc-content {
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 260px 1fr 280px;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 1.5rem;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 2.5rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            .doc-nav {
+                display: none;
+            }
+            .doc-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </div>
+            <div class="doc-header-actions">
+                <a href="../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="SYSTEM-DOCUMENTATION-INDEX.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Documentation Index</span>
+                    </a>
+                    <a href="DOCUMENTATION-CATALOG.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Catalog</span>
+                    </a>
+                    <a href="DOCUMENTATION-SUMMARY-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Summary</span>
+                    </a>
+                    <a href="MODULE-VERIFICATION-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Module Verification</span>
+                    </a>
+                    <a href="SYSTEM-GAPS-AND-ROADMAP.html" class="nav-item active">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Gaps & Roadmap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="architecture/SYSTEM-ARCHITECTURE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-users"></i>
+                    <span>Stakeholders</span>
+                </div>
+                <div class="nav-items">
+                    <a href="stakeholders/BUSINESS-VALUE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                </div>
+                <div class="nav-items">
+                    <a href="pr/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Requests</span>
+                    </a>
+                    <a href="po/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Orders</span>
+                    </a>
+                    <a href="grn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Goods Received Note</span>
+                    </a>
+                    <a href="cn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Credit Notes</span>
+                    </a>
+                    <a href="prt/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>PR Templates</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-boxes"></i>
+                    <span>Inventory Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="inv/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Overview</span>
+                    </a>
+                    <a href="inv/inventory-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Specification</span>
+                    </a>
+                    <a href="inv/inventory-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Sitemap</span>
+                    </a>
+                    <a href="pc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Physical Count</span>
+                    </a>
+                    <a href="sc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Spot Check</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-handshake"></i>
+                    <span>Vendor Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="vm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Overview</span>
+                    </a>
+                    <a href="vm/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Module</span>
+                    </a>
+                    <a href="vm/MANAGE-VENDORS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Manage Vendors</span>
+                    </a>
+                    <a href="vm/TEMPLATES.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Templates</span>
+                    </a>
+                    <a href="vm/CAMPAIGNS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Campaigns</span>
+                    </a>
+                    <a href="vm/PRICELISTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Pricelists</span>
+                    </a>
+                    <a href="vm/VENDOR-PORTAL.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Portal</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cube"></i>
+                    <span>Product Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="pm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Overview</span>
+                    </a>
+                    <a href="pm/product-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Specification</span>
+                    </a>
+                    <a href="pm/product-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-store"></i>
+                    <span>Store Operations</span>
+                </div>
+                <div class="nav-items">
+                    <a href="store-ops/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Overview</span>
+                    </a>
+                    <a href="store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Module</span>
+                    </a>
+                    <a href="store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Requisitions</span>
+                    </a>
+                    <a href="store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Stock Replenishment</span>
+                    </a>
+                    <a href="store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Wastage Reporting</span>
+                    </a>
+                    <a href="store-ops/GLOSSARY.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Glossary</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Operational Planning</span>
+                </div>
+                <div class="nav-items">
+                    <a href="operational-planning/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Overview</span>
+                    </a>
+                    <a href="operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Module</span>
+                    </a>
+                    <a href="operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Menu Engineering</span>
+                    </a>
+                    <a href="operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Recipe Management</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cash-register"></i>
+                    <span>POS Integration</span>
+                </div>
+                <div class="nav-items">
+                    <a href="pos-integration/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Overview</span>
+                    </a>
+                    <a href="pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Module</span>
+                    </a>
+                    <a href="pos-integration/MAPPING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Mapping Subsystem</span>
+                    </a>
+                    <a href="pos-integration/TRANSACTIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Transaction Management</span>
+                    </a>
+                    <a href="pos-integration/REPORTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports & Analytics</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-items">
+                    <a href="dashboard/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Overview</span>
+                    </a>
+                    <a href="dashboard/sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>System Requirements</span>
+                </div>
+                <div class="nav-items">
+                    <a href="carmen-erp-system-requirements-documentation.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Requirements</span>
+                    </a>
+                    <a href="comprehensive-schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="carmen-erp-system-gaps-and-implementation-roadmap">Carmen ERP - System Gaps and Implementation Roadmap</h1>
+<blockquote>
+<p><strong>Document Type:</strong> Gap Analysis &amp; Project Roadmap<br><strong>Last Updated:</strong> October 9, 2025<br><strong>Version:</strong> 1.0<br><strong>Status:</strong> Active Planning</p>
+</blockquote>
+<hr>
+<h2 id="-related-documentation">📚 Related Documentation</h2>
+<ul>
+<li><strong><a href="./SYSTEM-DOCUMENTATION-INDEX.html">System Documentation Index</a></strong> - Main navigation hub</li>
+<li><strong><a href="./architecture/SYSTEM-ARCHITECTURE.html">System Architecture</a></strong> - Technical architecture details</li>
+<li><strong><a href="./stakeholders/BUSINESS-VALUE.html">Business Value &amp; ROI</a></strong> - Business case and ROI analysis</li>
+<li><strong><a href="./DOCUMENTATION-CATALOG.html">Documentation Catalog</a></strong> - Complete asset inventory</li>
+<li><strong><a href="./DOCUMENTATION-SUMMARY-REPORT.html">Documentation Summary</a></strong> - Executive summary</li>
+</ul>
+<hr>
+<h2 id="-executive-summary">📋 Executive Summary</h2>
+<p>This document outlines the identified gaps between the current implementation and the complete system requirements, along with a prioritized roadmap for closing these gaps.</p>
+<h3 id="overall-implementation-status">Overall Implementation Status</h3>
+<ul>
+<li><strong>Total Features Planned:</strong> 65</li>
+<li><strong>Features Implemented:</strong> 46</li>
+<li><strong>Implementation Rate:</strong> 71%</li>
+<li><strong>Features in Gap:</strong> 19</li>
+<li><strong>Critical Gaps:</strong> 5</li>
+<li><strong>Priority Gaps:</strong> 7</li>
+<li><strong>Future Enhancement Gaps:</strong> 7</li>
+</ul>
+<hr>
+<h2 id="-critical-gaps-high-priority">🔴 Critical Gaps (High Priority)</h2>
+<p>These gaps represent core functionality that should be implemented immediately for system completeness.</p>
+<h3 id="1-reporting-amp-analytics-core-reports-suite">1. Reporting &amp; Analytics - Core Reports Suite</h3>
+<p><strong>Priority:</strong> Critical 🔴<br><strong>Module:</strong> Reporting &amp; Analytics<br><strong>Impact:</strong> High - Business intelligence and decision making<br><strong>Dependencies:</strong> All operational modules</p>
+<p><strong>Description:</strong><br>The reporting module is minimally implemented with only consumption analytics. Core business reports are missing.</p>
+<p><strong>Required Reports:</strong></p>
+<h4>Operational Reports</h4>
+<ul>
+<li>Daily transaction summary</li>
+<li>Order fulfillment rates</li>
+<li>Inventory turnover</li>
+<li>Stock availability</li>
+</ul>
+<h4>Financial Reports</h4>
+<ul>
+<li>Spend analysis by category</li>
+<li>Budget vs. actual</li>
+<li>Cost variance analysis</li>
+<li>AP/AR aging</li>
+</ul>
+<h4>Inventory Reports</h4>
+<ul>
+<li>Stock valuation</li>
+<li>Slow-moving items</li>
+<li>Stockout analysis</li>
+<li>Reorder recommendations</li>
+</ul>
+<h4>Vendor Performance</h4>
+<ul>
+<li>On-time delivery rates</li>
+<li>Quality metrics</li>
+<li>Price competitiveness</li>
+<li>Vendor scorecards</li>
+</ul>
+<p><strong>Technical Scope:</strong></p>
+<pre><code>Files to Create:
+- app/(main)/reporting-analytics/operational-reports/page.tsx
+- app/(main)/reporting-analytics/financial-reports/page.tsx
+- app/(main)/reporting-analytics/inventory-reports/page.tsx
+- app/(main)/reporting-analytics/vendor-performance/page.tsx
+- app/(main)/reporting-analytics/cost-analysis/page.tsx
+- app/(main)/reporting-analytics/sales-analysis/page.tsx
+- components/reports/ReportBuilder.tsx
+- components/reports/ReportViewer.tsx
+- components/reports/ChartComponents.tsx
+</code></pre>
+<p><strong>Estimated Effort:</strong> 15-20 days<br><strong>Target:</strong> Phase 1 - Q4 2025 / Q1 2026</p>
+<hr>
+<h3 id="2-product-management-reports">2. Product Management - Reports</h3>
+<p><strong>Priority:</strong> Medium-High 🟡<br><strong>Module:</strong> Product Management<br><strong>Impact:</strong> Medium - Analytics for product performance<br><strong>Dependencies:</strong> Product data, inventory transactions</p>
+<p><strong>Description:</strong><br>Product performance reporting is missing.</p>
+<p><strong>Required Reports:</strong></p>
+<ul>
+<li>Product usage analysis</li>
+<li>Product profitability</li>
+<li>Product lifecycle analysis</li>
+<li>ABC classification</li>
+</ul>
+<p><strong>Technical Scope:</strong></p>
+<pre><code>Files to Create:
+- app/(main)/product-management/reports/page.tsx
+- components/product/ProductReports.tsx
+</code></pre>
+<p><strong>Estimated Effort:</strong> 3-4 days<br><strong>Target:</strong> Phase 2 - Q1 2026</p>
+<hr>
+<h3 id="3-finance-budget-planning-and-control">3. Finance - Budget Planning and Control</h3>
+<p><strong>Priority:</strong> Medium-High 🟡<br><strong>Module:</strong> Finance<br><strong>Impact:</strong> Medium - Financial planning and control<br><strong>Dependencies:</strong> Department management, cost centers</p>
+<p><strong>Description:</strong><br>Budget planning functionality is required for financial management.</p>
+<p><strong>Required Features:</strong></p>
+<ul>
+<li>Budget creation by department/cost center</li>
+<li>Budget allocation and distribution</li>
+<li>Budget tracking and monitoring</li>
+<li>Variance analysis</li>
+<li>Budget revision workflows</li>
+</ul>
+<p><strong>Technical Scope:</strong></p>
+<pre><code>Files to Create:
+- app/(main)/finance/budget-planning-and-control/page.tsx
+- app/(main)/finance/budget-planning-and-control/[id]/page.tsx
+- app/(main)/finance/budget-planning-and-control/new/page.tsx
+- components/finance/BudgetForm.tsx
+- components/finance/BudgetTracker.tsx
+</code></pre>
+<p><strong>Estimated Effort:</strong> 8-10 days<br><strong>Target:</strong> Phase 2 - Q1 2026</p>
+<hr>
+<h3 id="4-operational-planning-demand-forecasting">4. Operational Planning - Demand Forecasting</h3>
+<p><strong>Priority:</strong> Medium 🟡<br><strong>Module:</strong> Operational Planning<br><strong>Impact:</strong> Medium - Inventory optimization<br><strong>Dependencies:</strong> Recipe data, historical sales, POS integration</p>
+<p><strong>Description:</strong><br>Demand forecasting for intelligent inventory planning.</p>
+<p><strong>Required Features:</strong></p>
+<ul>
+<li>Historical demand analysis</li>
+<li>Trend identification</li>
+<li>Seasonal adjustment</li>
+<li>Forecast generation</li>
+<li>Forecast accuracy tracking</li>
+</ul>
+<p><strong>Technical Scope:</strong></p>
+<pre><code>Files to Create:
+- app/(main)/operational-planning/demand-forecasting/page.tsx
+- components/operational-planning/ForecastDashboard.tsx
+- lib/algorithms/demand-forecasting.ts
+</code></pre>
+<p><strong>Estimated Effort:</strong> 10-12 days<br><strong>Target:</strong> Phase 2 - Q1 2026</p>
+<hr>
+<h3 id="5-operational-planning-inventory-planning">5. Operational Planning - Inventory Planning</h3>
+<p><strong>Priority:</strong> Medium 🟡<br><strong>Module:</strong> Operational Planning<br><strong>Impact:</strong> Medium - Automated replenishment<br><strong>Dependencies:</strong> Demand forecasting, supplier lead times</p>
+<p><strong>Description:</strong><br>Intelligent inventory planning based on demand forecasts.</p>
+<p><strong>Required Features:</strong></p>
+<ul>
+<li>Reorder point calculation</li>
+<li>Safety stock calculation</li>
+<li>Order quantity optimization</li>
+<li>Supplier selection</li>
+<li>Automated PR generation</li>
+</ul>
+<p><strong>Technical Scope:</strong></p>
+<pre><code>Files to Create:
+- app/(main)/operational-planning/inventory-planning/page.tsx
+- components/operational-planning/InventoryPlanner.tsx
+- lib/algorithms/inventory-optimization.ts
+</code></pre>
+<p><strong>Estimated Effort:</strong> 10-12 days<br><strong>Target:</strong> Phase 2 - Q1 2026</p>
+<hr>
+<h2 id="-priority-gaps-medium-priority">🟡 Priority Gaps (Medium Priority)</h2>
+<p>These gaps represent important functionality that should be implemented in Phase 2.</p>
+<h3 id="6-9-system-administration-gaps">6-9. System Administration Gaps</h3>
+<h4>6. General Settings</h4>
+<p><strong>Impact:</strong> Medium<br><strong>Description:</strong> System-wide configuration settings<br><strong>Effort:</strong> 3-4 days<br><strong>Target:</strong> Phase 2</p>
+<h4>7. Notification Preferences</h4>
+<p><strong>Impact:</strong> Medium<br><strong>Description:</strong> User notification configuration<br><strong>Effort:</strong> 4-5 days<br><strong>Target:</strong> Phase 2</p>
+<h4>8. License Management</h4>
+<p><strong>Impact:</strong> Medium<br><strong>Description:</strong> User license and subscription management<br><strong>Effort:</strong> 5-6 days<br><strong>Target:</strong> Phase 2</p>
+<h4>9. Data Backup and Recovery</h4>
+<p><strong>Impact:</strong> High (but operational, not feature)<br><strong>Description:</strong> Backup configuration and restore capabilities<br><strong>Effort:</strong> 7-10 days<br><strong>Target:</strong> Phase 2</p>
+<hr>
+<h2 id="-future-enhancement-gaps-low-priority">🟢 Future Enhancement Gaps (Low Priority)</h2>
+<p>These gaps represent nice-to-have features for future phases.</p>
+<h3 id="10-13-production-module-entire-module">10-13. Production Module (Entire Module)</h3>
+<p><strong>Priority:</strong> Low - Future Phase 🟢<br><strong>Module:</strong> Production<br><strong>Impact:</strong> Low - Not core to initial rollout<br><strong>Status:</strong> Planned for Phase 3</p>
+<p>The entire Production module is currently not implemented:</p>
+<h4>Features to Implement:</h4>
+<ol>
+<li><p><strong>Recipe Execution</strong></p>
+<ul>
+<li>Production order creation</li>
+<li>Ingredient allocation</li>
+<li>Production tracking</li>
+<li>Yield recording</li>
+</ul>
+</li>
+<li><p><strong>Batch Production</strong></p>
+<ul>
+<li>Batch planning</li>
+<li>Multi-recipe batches</li>
+<li>Batch tracking</li>
+<li>Cost allocation</li>
+</ul>
+</li>
+<li><p><strong>Wastage Tracking</strong></p>
+<ul>
+<li>Production wastage recording</li>
+<li>Wastage categorization</li>
+<li>Cost impact analysis</li>
+</ul>
+</li>
+<li><p><strong>Quality Control</strong></p>
+<ul>
+<li>Quality checks</li>
+<li>QC documentation</li>
+<li>Non-conformance tracking</li>
+<li>Corrective actions</li>
+</ul>
+</li>
+</ol>
+<p><strong>Total Estimated Effort:</strong> 25-30 days<br><strong>Target:</strong> Phase 3 - Q2 2026</p>
+<hr>
+<h3 id="14-18-help-amp-support-module-entire-module">14-18. Help &amp; Support Module (Entire Module)</h3>
+<p><strong>Priority:</strong> Low - Post-Launch 🟢<br><strong>Module:</strong> Help &amp; Support<br><strong>Impact:</strong> Low - Can be handled externally initially<br><strong>Status:</strong> Planned for Phase 3</p>
+<p>Features to Implement:</p>
+<ol>
+<li>User Manuals</li>
+<li>Video Tutorials</li>
+<li>FAQs</li>
+<li>Support Ticket System</li>
+<li>System Updates and Release Notes</li>
+</ol>
+<p><strong>Total Estimated Effort:</strong> 15-20 days<br><strong>Target:</strong> Phase 3 - Post-Launch</p>
+<hr>
+<h2 id="-gap-analysis-summary">📊 Gap Analysis Summary</h2>
+<h3 id="gaps-by-module">Gaps by Module</h3>
+<div class="mermaid">
+pie title "Gaps by Module"
+    "System Administration" : 4
+    "Reporting & Analytics" : 1
+    "Production" : 4
+    "Help & Support" : 5
+    "Operational Planning" : 2
+    "Finance" : 1
+    "Product Management" : 1
+    "Others" : 1
+
+</div>
+<h3 id="gaps-by-priority">Gaps by Priority</h3>
+<div class="mermaid">
+pie title "Gaps by Priority"
+    "Critical (High)" : 5
+    "Priority (Medium)" : 7
+    "Future (Low)" : 7
+
+</div>
+<h3 id="implementation-effort-estimate">Implementation Effort Estimate</h3>
+<table>
+<thead>
+<tr>
+<th>Priority</th>
+<th>Total Gaps</th>
+<th>Est. Days</th>
+<th>Est. Weeks</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Critical</td>
+<td>5</td>
+<td>46-58</td>
+<td>9-12</td>
+</tr>
+<tr>
+<td>Priority</td>
+<td>7</td>
+<td>19-25</td>
+<td>4-5</td>
+</tr>
+<tr>
+<td>Future</td>
+<td>7</td>
+<td>40-50</td>
+<td>8-10</td>
+</tr>
+<tr>
+<td><strong>TOTAL</strong></td>
+<td><strong>19</strong></td>
+<td><strong>105-133</strong></td>
+<td><strong>21-27</strong></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="-implementation-roadmap">🗺️ Implementation Roadmap</h2>
+<h3 id="phase-1-critical-gaps-q4-2025">Phase 1: Critical Gaps (Q4 2025)</h3>
+<p><strong>Duration:</strong> 9-12 weeks<br><strong>Focus:</strong> Core system completeness</p>
+<div class="mermaid">
+gantt
+    title Phase 1 - Critical Gaps Implementation
+    dateFormat  YYYY-MM-DD
+    section Reporting
+    Operational Reports       :2025-10-15, 5d
+    Financial Reports         :2025-10-22, 5d
+    Inventory Reports         :2025-10-29, 5d
+    Vendor Performance        :2025-11-05, 5d
+    section Other
+    Product Reports           :2025-11-12, 4d
+    Budget Planning           :2025-11-18, 10d
+    Demand Forecasting        :2025-11-30, 12d
+    Inventory Planning        :2025-12-14, 12d
+
+</div>
+<h4>Deliverables:</h4>
+<ul>
+<li>✅ Core Reporting Suite (Operational, Financial, Inventory, Vendor Performance)</li>
+<li>✅ Product Reports</li>
+<li>✅ Budget Planning</li>
+<li>✅ Demand Forecasting</li>
+<li>✅ Inventory Planning</li>
+</ul>
+<hr>
+<h3 id="phase-2-priority-gaps-q1-2026">Phase 2: Priority Gaps (Q1 2026)</h3>
+<p><strong>Duration:</strong> 4-5 weeks<br><strong>Focus:</strong> System Administration enhancements</p>
+<h4>Deliverables:</h4>
+<ul>
+<li>✅ General Settings</li>
+<li>✅ Notification Preferences</li>
+<li>✅ License Management</li>
+<li>✅ Data Backup/Recovery</li>
+</ul>
+<hr>
+<h3 id="phase-3-future-enhancements-q2-2026">Phase 3: Future Enhancements (Q2 2026)</h3>
+<p><strong>Duration:</strong> 8-10 weeks<br><strong>Focus:</strong> Complete feature set</p>
+<h4>Deliverables:</h4>
+<ul>
+<li>✅ Production Module (Complete)</li>
+<li>✅ Help &amp; Support Module (Complete)</li>
+<li>✅ Advanced Analytics</li>
+<li>✅ Mobile Optimization</li>
+</ul>
+<hr>
+<h2 id="-gap-closure-strategy">🎯 Gap Closure Strategy</h2>
+<h3 id="prioritization-criteria">Prioritization Criteria</h3>
+<p>Gaps are prioritized based on:</p>
+<ol>
+<li><strong>Business Impact</strong> (40%)</li>
+<li><strong>User Demand</strong> (25%)</li>
+<li><strong>Technical Dependencies</strong> (20%)</li>
+<li><strong>Implementation Complexity</strong> (15%)</li>
+</ol>
+<h3 id="resource-allocation">Resource Allocation</h3>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Team Size</th>
+<th>Duration</th>
+<th>Focus Areas</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Phase 1</td>
+<td>3-4 developers</td>
+<td>14-17 weeks</td>
+<td>System Admin, Reporting</td>
+</tr>
+<tr>
+<td>Phase 2</td>
+<td>2-3 developers</td>
+<td>9-12 weeks</td>
+<td>Planning, Configuration</td>
+</tr>
+<tr>
+<td>Phase 3</td>
+<td>2-3 developers</td>
+<td>8-10 weeks</td>
+<td>Production, Support</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="-success-metrics">📈 Success Metrics</h2>
+<h3 id="phase-1-success-criteria">Phase 1 Success Criteria</h3>
+<ul>
+<li>✅ All critical gaps closed</li>
+<li>✅ Core reporting suite available (Operational, Financial, Inventory, Vendor)</li>
+<li>✅ Advanced planning features operational (Demand Forecasting, Inventory Planning)</li>
+<li>✅ Budget planning and control implemented</li>
+<li>✅ 92%+ system implementation rate</li>
+</ul>
+<h3 id="phase-2-success-criteria">Phase 2 Success Criteria</h3>
+<ul>
+<li>✅ All priority gaps closed</li>
+<li>✅ System administration enhancements complete</li>
+<li>✅ System configuration complete</li>
+<li>✅ 98%+ system implementation rate</li>
+</ul>
+<h3 id="phase-3-success-criteria">Phase 3 Success Criteria</h3>
+<ul>
+<li>✅ All planned features implemented</li>
+<li>✅ Production module operational</li>
+<li>✅ Help system available</li>
+<li>✅ 100% system implementation rate</li>
+</ul>
+<hr>
+<h2 id="-gap-tracking-process">🔄 Gap Tracking Process</h2>
+<h3 id="monthly-reviews">Monthly Reviews</h3>
+<ul>
+<li>Gap status assessment</li>
+<li>Priority re-evaluation</li>
+<li>Resource allocation review</li>
+<li>Timeline adjustments</li>
+</ul>
+<h3 id="stakeholder-communication">Stakeholder Communication</h3>
+<ul>
+<li>Monthly progress reports</li>
+<li>Quarterly roadmap updates</li>
+<li>Ad-hoc critical gap notifications</li>
+</ul>
+<hr>
+<h2 id="-additional-implemented-features">📝 Additional Implemented Features</h2>
+<p>The following features were implemented but are not in the main menu structure:</p>
+<h3 id="inventory-management-extras">Inventory Management Extras</h3>
+<ul>
+<li><strong>Fractional Inventory:</strong> <code>/inventory-management/fractional-inventory</code></li>
+<li><strong>Physical Count:</strong> <code>/inventory-management/physical-count</code></li>
+<li><strong>Stock-In:</strong> <code>/inventory-management/stock-in</code></li>
+<li><strong>Stock Card (Single):</strong> <code>/inventory-management/stock-overview/stock-card</code></li>
+</ul>
+<h3 id="procurement-extras">Procurement Extras</h3>
+<ul>
+<li><strong>Vendor Comparison:</strong> <code>/procurement/vendor-comparison</code></li>
+</ul>
+<h3 id="reporting-extras">Reporting Extras</h3>
+<ul>
+<li><strong>Consumption Analytics:</strong> <code>/reporting-analytics/consumption-analytics</code></li>
+</ul>
+<h3 id="system-administration-extras">System Administration Extras</h3>
+<ul>
+<li><strong>Account Code Mapping:</strong> <code>/system-administration/account-code-mapping</code></li>
+</ul>
+<h3 id="vendor-management-extras">Vendor Management Extras</h3>
+<ul>
+<li><strong>Vendors (Alternate):</strong> <code>/vendor-management/vendors</code></li>
+</ul>
+<p><strong>Recommendation:</strong> These features should be integrated into the main navigation menu structure.</p>
+<hr>
+<h2 id="-gap-reporting">📧 Gap Reporting</h2>
+<p>To report new gaps or update existing gap status:</p>
+<ol>
+<li>Submit via project management system</li>
+<li>Include business justification</li>
+<li>Estimate business impact</li>
+<li>Suggest priority level</li>
+</ol>
+<p><strong>Contact:</strong> <a href="mailto:project-management@carmen-erp.com">project-management@carmen-erp.com</a></p>
+<hr>
+<h2 id="-related-documents">📚 Related Documents</h2>
+<ul>
+<li><a href="./SYSTEM-DOCUMENTATION-INDEX.html">System Documentation Index</a></li>
+<li><a href="./architecture/SYSTEM-ARCHITECTURE.html">System Architecture</a></li>
+<li><a href="./modules/README.html">Module Specifications</a></li>
+<li><a href="./carmen-erp-system-requirements-documentation.html">Business Requirements</a></li>
+</ul>
+<hr>
+<h2 id="-version-history">📜 Version History</h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Changes</th>
+<th>Author</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1.0</td>
+<td>2025-10-09</td>
+<td>Initial gap analysis and roadmap</td>
+<td>Documentation Team</td>
+</tr>
+</tbody></table>
+<hr>
+<p><strong>Last Updated:</strong> October 9, 2025<br><strong>Next Review:</strong> November 1, 2025<br><strong>Review Frequency:</strong> Monthly</p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#carmen-erp-system-gaps-and-implementation-roadmap" class="level-1">Carmen ERP - System Gaps and Implementation Roadmap</a>
+<a href="#-related-documentation" class="level-2">📚 Related Documentation</a>
+<a href="#-executive-summary" class="level-2">📋 Executive Summary</a>
+<a href="#overall-implementation-status" class="level-3">Overall Implementation Status</a>
+<a href="#-critical-gaps-high-priority" class="level-2">🔴 Critical Gaps (High Priority)</a>
+<a href="#1-reporting-amp-analytics-core-reports-suite" class="level-3">1. Reporting &amp; Analytics - Core Reports Suite</a>
+<a href="#2-product-management-reports" class="level-3">2. Product Management - Reports</a>
+<a href="#3-finance-budget-planning-and-control" class="level-3">3. Finance - Budget Planning and Control</a>
+<a href="#4-operational-planning-demand-forecasting" class="level-3">4. Operational Planning - Demand Forecasting</a>
+<a href="#5-operational-planning-inventory-planning" class="level-3">5. Operational Planning - Inventory Planning</a>
+<a href="#-priority-gaps-medium-priority" class="level-2">🟡 Priority Gaps (Medium Priority)</a>
+<a href="#6-9-system-administration-gaps" class="level-3">6-9. System Administration Gaps</a>
+<a href="#-future-enhancement-gaps-low-priority" class="level-2">🟢 Future Enhancement Gaps (Low Priority)</a>
+<a href="#10-13-production-module-entire-module" class="level-3">10-13. Production Module (Entire Module)</a>
+<a href="#14-18-help-amp-support-module-entire-module" class="level-3">14-18. Help &amp; Support Module (Entire Module)</a>
+<a href="#-gap-analysis-summary" class="level-2">📊 Gap Analysis Summary</a>
+<a href="#gaps-by-module" class="level-3">Gaps by Module</a>
+<a href="#gaps-by-priority" class="level-3">Gaps by Priority</a>
+<a href="#implementation-effort-estimate" class="level-3">Implementation Effort Estimate</a>
+<a href="#-implementation-roadmap" class="level-2">🗺️ Implementation Roadmap</a>
+<a href="#phase-1-critical-gaps-q4-2025" class="level-3">Phase 1: Critical Gaps (Q4 2025)</a>
+<a href="#phase-2-priority-gaps-q1-2026" class="level-3">Phase 2: Priority Gaps (Q1 2026)</a>
+<a href="#phase-3-future-enhancements-q2-2026" class="level-3">Phase 3: Future Enhancements (Q2 2026)</a>
+<a href="#-gap-closure-strategy" class="level-2">🎯 Gap Closure Strategy</a>
+<a href="#prioritization-criteria" class="level-3">Prioritization Criteria</a>
+<a href="#resource-allocation" class="level-3">Resource Allocation</a>
+<a href="#-success-metrics" class="level-2">📈 Success Metrics</a>
+<a href="#phase-1-success-criteria" class="level-3">Phase 1 Success Criteria</a>
+<a href="#phase-2-success-criteria" class="level-3">Phase 2 Success Criteria</a>
+<a href="#phase-3-success-criteria" class="level-3">Phase 3 Success Criteria</a>
+<a href="#-gap-tracking-process" class="level-2">🔄 Gap Tracking Process</a>
+<a href="#monthly-reviews" class="level-3">Monthly Reviews</a>
+<a href="#stakeholder-communication" class="level-3">Stakeholder Communication</a>
+<a href="#-additional-implemented-features" class="level-2">📝 Additional Implemented Features</a>
+<a href="#inventory-management-extras" class="level-3">Inventory Management Extras</a>
+<a href="#procurement-extras" class="level-3">Procurement Extras</a>
+<a href="#reporting-extras" class="level-3">Reporting Extras</a>
+<a href="#system-administration-extras" class="level-3">System Administration Extras</a>
+<a href="#vendor-management-extras" class="level-3">Vendor Management Extras</a>
+<a href="#-gap-reporting" class="level-2">📧 Gap Reporting</a>
+<a href="#-related-documents" class="level-2">📚 Related Documents</a>
+<a href="#-version-history" class="level-2">📜 Version History</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

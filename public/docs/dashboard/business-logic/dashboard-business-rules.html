@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Business Logic & Rules - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: var(--bg-gradient);
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr 300px;
+            gap: 2rem;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 1.5rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .back-to-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: var(--primary-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        .back-to-home:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        /* Content Area */
+        .doc-content {
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 260px 1fr 280px;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 1.5rem;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 2.5rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            .doc-nav {
+                display: none;
+            }
+            .doc-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </div>
+            <div class="doc-header-actions">
+                <a href="../../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../SYSTEM-DOCUMENTATION-INDEX.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Documentation Index</span>
+                    </a>
+                    <a href="../../DOCUMENTATION-CATALOG.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Catalog</span>
+                    </a>
+                    <a href="../../DOCUMENTATION-SUMMARY-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Summary</span>
+                    </a>
+                    <a href="../../MODULE-VERIFICATION-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Module Verification</span>
+                    </a>
+                    <a href="../../SYSTEM-GAPS-AND-ROADMAP.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Gaps & Roadmap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../architecture/SYSTEM-ARCHITECTURE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-users"></i>
+                    <span>Stakeholders</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../stakeholders/BUSINESS-VALUE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../pr/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Requests</span>
+                    </a>
+                    <a href="../../po/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Orders</span>
+                    </a>
+                    <a href="../../grn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Goods Received Note</span>
+                    </a>
+                    <a href="../../cn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Credit Notes</span>
+                    </a>
+                    <a href="../../prt/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>PR Templates</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-boxes"></i>
+                    <span>Inventory Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../inv/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Overview</span>
+                    </a>
+                    <a href="../../inv/inventory-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Specification</span>
+                    </a>
+                    <a href="../../inv/inventory-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Sitemap</span>
+                    </a>
+                    <a href="../../pc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Physical Count</span>
+                    </a>
+                    <a href="../../sc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Spot Check</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-handshake"></i>
+                    <span>Vendor Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../vm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Overview</span>
+                    </a>
+                    <a href="../../vm/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Module</span>
+                    </a>
+                    <a href="../../vm/MANAGE-VENDORS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Manage Vendors</span>
+                    </a>
+                    <a href="../../vm/TEMPLATES.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Templates</span>
+                    </a>
+                    <a href="../../vm/CAMPAIGNS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Campaigns</span>
+                    </a>
+                    <a href="../../vm/PRICELISTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Pricelists</span>
+                    </a>
+                    <a href="../../vm/VENDOR-PORTAL.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Portal</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cube"></i>
+                    <span>Product Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../pm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Overview</span>
+                    </a>
+                    <a href="../../pm/product-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Specification</span>
+                    </a>
+                    <a href="../../pm/product-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-store"></i>
+                    <span>Store Operations</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../store-ops/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Overview</span>
+                    </a>
+                    <a href="../../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Module</span>
+                    </a>
+                    <a href="../../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Requisitions</span>
+                    </a>
+                    <a href="../../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Stock Replenishment</span>
+                    </a>
+                    <a href="../../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Wastage Reporting</span>
+                    </a>
+                    <a href="../../store-ops/GLOSSARY.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Glossary</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Operational Planning</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../operational-planning/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Overview</span>
+                    </a>
+                    <a href="../../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Module</span>
+                    </a>
+                    <a href="../../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Menu Engineering</span>
+                    </a>
+                    <a href="../../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Recipe Management</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cash-register"></i>
+                    <span>POS Integration</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../pos-integration/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Overview</span>
+                    </a>
+                    <a href="../../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Module</span>
+                    </a>
+                    <a href="../../pos-integration/MAPPING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Mapping Subsystem</span>
+                    </a>
+                    <a href="../../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Transaction Management</span>
+                    </a>
+                    <a href="../../pos-integration/REPORTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports & Analytics</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../dashboard/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Overview</span>
+                    </a>
+                    <a href="../../dashboard/sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>System Requirements</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../carmen-erp-system-requirements-documentation.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Requirements</span>
+                    </a>
+                    <a href="../../comprehensive-schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="dashboard-business-logic-amp-rules">Dashboard Business Logic &amp; Rules</h1>
+<h2 id="overview">Overview</h2>
+<p>The Dashboard module implements core business rules for data aggregation, user permissions, and system-wide metrics calculation. This document outlines all business logic, validation rules, and workflow processes.</p>
+<h2 id="data-aggregation-rules">Data Aggregation Rules</h2>
+<h3 id="metric-calculation-rules">Metric Calculation Rules</h3>
+<h4>1. Total Orders Calculation</h4>
+<p><strong>Rule</strong>: Count all purchase orders created in the current calendar month</p>
+<p><strong>Formula</strong>:</p>
+<pre><code class="language-typescript">totalOrders = COUNT(PurchaseOrder WHERE
+  createdAt &gt;= startOfMonth(currentDate) AND
+  createdAt &lt;= endOfMonth(currentDate)
+)
+</code></pre>
+<p><strong>Trend Calculation</strong>:</p>
+<pre><code class="language-typescript">currentMonthOrders = orders in current month
+previousMonthOrders = orders in previous month
+changePercentage = ((currentMonthOrders - previousMonthOrders) / previousMonthOrders) * 100
+trend = changePercentage &gt; 0 ? &#39;up&#39; : &#39;down&#39;
+</code></pre>
+<p><strong>Business Constraints</strong>:</p>
+<ul>
+<li>Only count orders with status: Draft, Pending, Approved, Processing, Complete</li>
+<li>Exclude: Cancelled, Rejected orders</li>
+<li>Filter by user&#39;s authorized departments if not executive role</li>
+</ul>
+<h4>2. Active Suppliers Calculation</h4>
+<p><strong>Rule</strong>: Count suppliers with active status and recent activity</p>
+<p><strong>Formula</strong>:</p>
+<pre><code class="language-typescript">activeSuppliers = COUNT(Vendor WHERE
+  isActive = true AND
+  lastActivityDate &gt;= (currentDate - 90 days) AND
+  verificationStatus = &#39;verified&#39;
+)
+</code></pre>
+<p><strong>Trend Calculation</strong>:</p>
+<pre><code class="language-typescript">currentActiveSuppliers = active suppliers now
+previousActiveSuppliers = active suppliers 30 days ago
+changePercentage = ((currentActiveSuppliers - previousActiveSuppliers) / previousActiveSuppliers) * 100
+</code></pre>
+<p><strong>Business Constraints</strong>:</p>
+<ul>
+<li>Only count verified suppliers</li>
+<li>Must have at least one transaction in last 90 days</li>
+<li>Exclude suspended or blacklisted suppliers</li>
+<li>Filter by user&#39;s authorized vendor relationships</li>
+</ul>
+<h4>3. Inventory Value Calculation</h4>
+<p><strong>Rule</strong>: Sum total value of all inventory items at current prices</p>
+<p><strong>Formula</strong>:</p>
+<pre><code class="language-typescript">inventoryValue = SUM(
+  InventoryItem.quantity * InventoryItem.unitPrice
+  WHERE InventoryItem.status = &#39;active&#39;
+)
+</code></pre>
+<p><strong>Trend Calculation</strong>:</p>
+<pre><code class="language-typescript">currentInventoryValue = current total value
+previousInventoryValue = value 30 days ago
+changePercentage = ((currentInventoryValue - previousInventoryValue) / previousInventoryValue) * 100
+</code></pre>
+<p><strong>Business Constraints</strong>:</p>
+<ul>
+<li>Use current unit price, not historical cost</li>
+<li>Only count items in active locations</li>
+<li>Exclude expired, damaged, or disposed items</li>
+<li>Apply write-off adjustments</li>
+<li>Filter by user&#39;s authorized locations</li>
+</ul>
+<h4>4. Monthly Spend Calculation</h4>
+<p><strong>Rule</strong>: Sum all approved procurement expenditures for current month</p>
+<p><strong>Formula</strong>:</p>
+<pre><code class="language-typescript">monthlySpend = SUM(
+  PurchaseOrder.totalAmount
+  WHERE PurchaseOrder.approvalDate &gt;= startOfMonth(currentDate) AND
+        PurchaseOrder.approvalDate &lt;= endOfMonth(currentDate) AND
+        PurchaseOrder.status IN [&#39;Approved&#39;, &#39;Processing&#39;, &#39;Complete&#39;]
+)
+</code></pre>
+<p><strong>Trend Calculation</strong>:</p>
+<pre><code class="language-typescript">currentMonthSpend = spend in current month
+previousMonthSpend = spend in previous month
+changePercentage = ((currentMonthSpend - previousMonthSpend) / previousMonthSpend) * 100
+</code></pre>
+<p><strong>Business Constraints</strong>:</p>
+<ul>
+<li>Only count approved orders</li>
+<li>Include taxes and shipping costs</li>
+<li>Exclude cancelled or rejected orders</li>
+<li>Apply budget category filters</li>
+<li>Filter by user&#39;s authorized budget access</li>
+</ul>
+<h3 id="status-alert-calculation-rules">Status Alert Calculation Rules</h3>
+<h4>1. Critical Stock Items</h4>
+<p><strong>Rule</strong>: Identify items below minimum threshold or approaching expiry</p>
+<p><strong>Criteria</strong>:</p>
+<pre><code class="language-typescript">criticalItems = InventoryItem WHERE (
+  currentQuantity &lt;= minimumQuantity OR
+  (expiryDate - currentDate) &lt;= criticalExpiryDays OR
+  stockTurnoverRate &lt; minimumTurnoverRate
+)
+</code></pre>
+<p><strong>Threshold Definitions</strong>:</p>
+<ul>
+<li><strong>Minimum Quantity</strong>: Set per item in product master</li>
+<li><strong>Critical Expiry Days</strong>: 7 days for perishables, 30 days for non-perishables</li>
+<li><strong>Minimum Turnover Rate</strong>: Based on item category (calculated monthly)</li>
+</ul>
+<p><strong>Priority Assignment</strong>:</p>
+<pre><code class="language-typescript">priority = {
+  currentQuantity = 0 → &#39;critical&#39;,
+  currentQuantity &lt;= (minimumQuantity * 0.5) → &#39;high&#39;,
+  (expiryDate - currentDate) &lt;= 3 days → &#39;critical&#39;,
+  (expiryDate - currentDate) &lt;= 7 days → &#39;high&#39;,
+  default → &#39;medium&#39;
+}
+</code></pre>
+<p><strong>Business Constraints</strong>:</p>
+<ul>
+<li>Auto-trigger purchase request when critical threshold reached</li>
+<li>Notify department manager via email/notification</li>
+<li>Consider lead time in reorder calculations</li>
+<li>Filter by user&#39;s location access</li>
+</ul>
+<h4>2. Orders Pending Approval</h4>
+<p><strong>Rule</strong>: Count orders awaiting approval at user&#39;s authorization level</p>
+<p><strong>Criteria</strong>:</p>
+<pre><code class="language-typescript">pendingOrders = PurchaseRequest WHERE (
+  status = &#39;Pending Approval&#39; AND
+  currentApprovalLevel = user.approvalLevel AND
+  assignedApprover = user.id
+)
+</code></pre>
+<p><strong>Approval Level Logic</strong>:</p>
+<pre><code class="language-typescript">approvalLevel = {
+  amount &lt;= 1000 → &#39;Department Manager&#39;,
+  amount &lt;= 5000 → &#39;Finance Manager&#39;,
+  amount &gt; 5000 → &#39;Executive Approval&#39;
+}
+</code></pre>
+<p><strong>Aging Rules</strong>:</p>
+<pre><code class="language-typescript">urgency = {
+  pendingDays &gt; 7 → &#39;overdue&#39;,
+  pendingDays &gt; 3 → &#39;urgent&#39;,
+  default → &#39;normal&#39;
+}
+</code></pre>
+<p><strong>Business Constraints</strong>:</p>
+<ul>
+<li>Show only orders assigned to current user</li>
+<li>Include delegated approvals when user is backup approver</li>
+<li>Sort by priority and age</li>
+<li>Auto-escalate after 7 days without action</li>
+</ul>
+<h4>3. Completed Deliveries</h4>
+<p><strong>Rule</strong>: Count successfully completed deliveries in current week</p>
+<p><strong>Criteria</strong>:</p>
+<pre><code class="language-typescript">completedDeliveries = GoodsReceivedNote WHERE (
+  status = &#39;Complete&#39; AND
+  completionDate &gt;= startOfWeek(currentDate) AND
+  completionDate &lt;= endOfWeek(currentDate) AND
+  qualityCheckStatus = &#39;Passed&#39;
+)
+</code></pre>
+<p><strong>Week Definition</strong>: Monday to Sunday</p>
+<p><strong>Business Constraints</strong>:</p>
+<ul>
+<li>Only count GRNs with passed quality checks</li>
+<li>Exclude partial deliveries (count when fully received)</li>
+<li>Filter by user&#39;s location access</li>
+<li>Include only verified receipts</li>
+</ul>
+<h2 id="chart-data-aggregation">Chart Data Aggregation</h2>
+<h3 id="order-trends-chart">Order Trends Chart</h3>
+<p><strong>Time Period</strong>: Last 6 months, aggregated by month</p>
+<p><strong>Calculation</strong>:</p>
+<pre><code class="language-typescript">monthlyOrders = GROUP BY month(createdAt)
+  COUNT(PurchaseOrder)
+  WHERE createdAt &gt;= (currentDate - 6 months)
+</code></pre>
+<p><strong>Business Rules</strong>:</p>
+<ul>
+<li>Include all order statuses except Cancelled</li>
+<li>Group by order creation date, not approval date</li>
+<li>Handle partial months (prorate for current month)</li>
+<li>Fill missing months with zero values</li>
+</ul>
+<h3 id="spend-analysis-chart">Spend Analysis Chart</h3>
+<p><strong>Time Period</strong>: Last 6 months, aggregated by month</p>
+<p><strong>Calculation</strong>:</p>
+<pre><code class="language-typescript">monthlySpend = GROUP BY month(approvalDate)
+  SUM(PurchaseOrder.totalAmount)
+  WHERE approvalDate &gt;= (currentDate - 6 months)
+</code></pre>
+<p><strong>Business Rules</strong>:</p>
+<ul>
+<li>Only include approved orders</li>
+<li>Use approval date, not creation date</li>
+<li>Convert all amounts to base currency</li>
+<li>Round to nearest thousand for display</li>
+</ul>
+<h3 id="supplier-network-growth-chart">Supplier Network Growth Chart</h3>
+<p><strong>Time Period</strong>: Last 6 months, showing correlation</p>
+<p><strong>Calculations</strong>:</p>
+<pre><code class="language-typescript">monthlySuppliersAndOrders = {
+  suppliers: COUNT(DISTINCT Vendor WHERE lastActivityDate in month),
+  orders: COUNT(PurchaseOrder WHERE createdAt in month)
+} GROUP BY month
+</code></pre>
+<p><strong>Business Rules</strong>:</p>
+<ul>
+<li>Count only active suppliers for each month</li>
+<li>Show relationship between supplier count and order volume</li>
+<li>Include new supplier onboarding metrics</li>
+<li>Calculate supplier utilization rate</li>
+</ul>
+<h2 id="permission-based-data-filtering">Permission-Based Data Filtering</h2>
+<h3 id="role-based-visibility-rules">Role-Based Visibility Rules</h3>
+<h4>Staff Role</h4>
+<p><strong>Data Access</strong>:</p>
+<ul>
+<li>Own department metrics only</li>
+<li>Own created/assigned activities</li>
+<li>Limited supplier information</li>
+<li>Department-level inventory</li>
+</ul>
+<p><strong>Calculation Adjustments</strong>:</p>
+<pre><code class="language-typescript">WHERE department = user.department AND
+      (createdBy = user.id OR assignedTo = user.id)
+</code></pre>
+<h4>Department Manager Role</h4>
+<p><strong>Data Access</strong>:</p>
+<ul>
+<li>Department-wide metrics</li>
+<li>All team member activities</li>
+<li>Department budget and spend</li>
+<li>Department inventory across locations</li>
+</ul>
+<p><strong>Calculation Adjustments</strong>:</p>
+<pre><code class="language-typescript">WHERE department = user.department
+</code></pre>
+<h4>Financial Manager Role</h4>
+<p><strong>Data Access</strong>:</p>
+<ul>
+<li>All financial metrics</li>
+<li>Cross-department spend analysis</li>
+<li>Budget utilization</li>
+<li>Payment and invoice status</li>
+</ul>
+<p><strong>Calculation Adjustments</strong>:</p>
+<pre><code class="language-typescript">// No department filter for financial data
+WHERE (financial access scope applies)
+</code></pre>
+<h4>Purchasing Staff Role</h4>
+<p><strong>Data Access</strong>:</p>
+<ul>
+<li>Procurement metrics</li>
+<li>Vendor performance data</li>
+<li>Order status across departments</li>
+<li>Inventory levels for purchasing decisions</li>
+</ul>
+<p><strong>Calculation Adjustments</strong>:</p>
+<pre><code class="language-typescript">WHERE (procurement_related = true)
+</code></pre>
+<h4>Executive Role</h4>
+<p><strong>Data Access</strong>:</p>
+<ul>
+<li>All system metrics</li>
+<li>Cross-department analytics</li>
+<li>Strategic KPIs</li>
+<li>Enterprise-wide visibility</li>
+</ul>
+<p><strong>Calculation Adjustments</strong>:</p>
+<pre><code class="language-typescript">// No filters - full system access
+</code></pre>
+<h2 id="activity-feed-business-rules">Activity Feed Business Rules</h2>
+<h3 id="activity-types-and-sources">Activity Types and Sources</h3>
+<h4>1. Purchase Request Activities</h4>
+<p><strong>Tracked Events</strong>:</p>
+<ul>
+<li>Creation, Submission, Approval, Rejection, Modification</li>
+</ul>
+<p><strong>Priority Assignment</strong>:</p>
+<pre><code class="language-typescript">priority = {
+  status = &#39;Rejected&#39; → &#39;high&#39;,
+  urgency = &#39;urgent&#39; → &#39;high&#39;,
+  amount &gt; departmentThreshold → &#39;medium&#39;,
+  default → &#39;low&#39;
+}
+</code></pre>
+<h4>2. Purchase Order Activities</h4>
+<p><strong>Tracked Events</strong>:</p>
+<ul>
+<li>Creation, Approval, Processing, Completion, Cancellation</li>
+</ul>
+<p><strong>Priority Assignment</strong>:</p>
+<pre><code class="language-typescript">priority = {
+  status = &#39;Processing&#39; AND deliveryDate - currentDate &lt;= 2 → &#39;high&#39;,
+  amount &gt; 5000 → &#39;medium&#39;,
+  default → &#39;low&#39;
+}
+</code></pre>
+<h4>3. Goods Receipt Activities</h4>
+<p><strong>Tracked Events</strong>:</p>
+<ul>
+<li>Receipt, Quality Check, Approval, Rejection</li>
+</ul>
+<p><strong>Priority Assignment</strong>:</p>
+<pre><code class="language-typescript">priority = {
+  qualityCheckStatus = &#39;Failed&#39; → &#39;critical&#39;,
+  hasDiscrepancy = true → &#39;high&#39;,
+  default → &#39;low&#39;
+}
+</code></pre>
+<h4>4. Stock Adjustment Activities</h4>
+<p><strong>Tracked Events</strong>:</p>
+<ul>
+<li>Adjustment Creation, Approval, Completion</li>
+</ul>
+<p><strong>Priority Assignment</strong>:</p>
+<pre><code class="language-typescript">priority = {
+  adjustmentType = &#39;Write-off&#39; → &#39;high&#39;,
+  adjustmentAmount &gt; significantThreshold → &#39;medium&#39;,
+  default → &#39;low&#39;
+}
+</code></pre>
+<h4>5. Vendor Invoice Activities</h4>
+<p><strong>Tracked Events</strong>:</p>
+<ul>
+<li>Receipt, Verification, Approval, Payment</li>
+</ul>
+<p><strong>Priority Assignment</strong>:</p>
+<pre><code class="language-typescript">priority = {
+  paymentDueDate - currentDate &lt;= 3 → &#39;high&#39;,
+  hasDiscrepancy = true → &#39;high&#39;,
+  amount &gt; 10000 → &#39;medium&#39;,
+  default → &#39;low&#39;
+}
+</code></pre>
+<h4>6. Quality Check Activities</h4>
+<p><strong>Tracked Events</strong>:</p>
+<ul>
+<li>Check Performed, Pass/Fail Status, Follow-up Actions</li>
+</ul>
+<p><strong>Priority Assignment</strong>:</p>
+<pre><code class="language-typescript">priority = {
+  status = &#39;Failed&#39; → &#39;critical&#39;,
+  requiresImmediate Action = true → &#39;high&#39;,
+  default → &#39;medium&#39;
+}
+</code></pre>
+<h3 id="activity-feed-filtering-rules">Activity Feed Filtering Rules</h3>
+<p><strong>Default Display</strong>: Last 10 activities</p>
+<p><strong>Filtering Criteria</strong>:</p>
+<pre><code class="language-typescript">recentActivities = Activities WHERE (
+  createdAt &gt;= (currentDate - 7 days) AND
+  (
+    user.role = &#39;Executive&#39; OR
+    department = user.department OR
+    createdBy = user.id OR
+    assignedTo = user.id
+  )
+) ORDER BY createdAt DESC LIMIT 10
+</code></pre>
+<p><strong>Pagination</strong>: Load 10 more on scroll/click</p>
+<p><strong>Real-time Updates</strong>: WebSocket connection for live activity stream (future)</p>
+<h2 id="validation-rules">Validation Rules</h2>
+<h3 id="metric-display-validation">Metric Display Validation</h3>
+<h4>Number Formatting</h4>
+<pre><code class="language-typescript">formatNumber(value) {
+  if (value &gt;= 1000000) return `${(value/1000000).toFixed(1)}M`
+  if (value &gt;= 1000) return `${(value/1000).toFixed(1)}K`
+  return value.toString()
+}
+</code></pre>
+<h4>Currency Formatting</h4>
+<pre><code class="language-typescript">formatCurrency(value, currency = &#39;USD&#39;) {
+  return new Intl.NumberFormat(&#39;en-US&#39;, {
+    style: &#39;currency&#39;,
+    currency: currency,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
+  }).format(value)
+}
+</code></pre>
+<h4>Percentage Formatting</h4>
+<pre><code class="language-typescript">formatPercentage(value) {
+  const sign = value &gt;= 0 ? &#39;+&#39; : &#39;&#39;
+  return `${sign}${value.toFixed(1)}%`
+}
+</code></pre>
+<h4>Date Formatting</h4>
+<pre><code class="language-typescript">formatDate(date) {
+  return new Intl.DateTimeFormat(&#39;en-US&#39;, {
+    year: &#39;numeric&#39;,
+    month: &#39;short&#39;,
+    day: &#39;numeric&#39;
+  }).format(date)
+}
+</code></pre>
+<h2 id="error-handling-rules">Error Handling Rules</h2>
+<h3 id="data-fetch-failures">Data Fetch Failures</h3>
+<pre><code class="language-typescript">onMetricsFetchError() {
+  // Show last cached values with warning indicator
+  // Display &quot;Data may be outdated&quot; message
+  // Retry fetch after exponential backoff
+  // Log error to monitoring service
+}
+</code></pre>
+<h3 id="calculation-errors">Calculation Errors</h3>
+<pre><code class="language-typescript">onCalculationError() {
+  // Show &quot;N/A&quot; or &quot;--&quot; for failed metric
+  // Log detailed error for debugging
+  // Continue rendering other metrics
+  // Alert user if critical metric fails
+}
+</code></pre>
+<h3 id="permission-errors">Permission Errors</h3>
+<pre><code class="language-typescript">onPermissionError() {
+  // Hide unauthorized metrics
+  // Show appropriate &quot;No access&quot; message
+  // Log security event
+  // Redirect if completely unauthorized
+}
+</code></pre>
+<h2 id="performance-rules">Performance Rules</h2>
+<h3 id="caching-strategy">Caching Strategy</h3>
+<pre><code class="language-typescript">cacheRules = {
+  metrics: 5 minutes,
+  chartData: 15 minutes,
+  activities: 1 minute,
+  userPermissions: 30 minutes
+}
+</code></pre>
+<h3 id="data-refresh-rules">Data Refresh Rules</h3>
+<pre><code class="language-typescript">refreshRules = {
+  autoRefresh: every 60 seconds (if tab active),
+  manualRefresh: button click,
+  onActivity: when user creates/modifies data,
+  onFocus: when tab regains focus
+}
+</code></pre>
+<h3 id="query-optimization">Query Optimization</h3>
+<pre><code class="language-typescript">optimizationRules = {
+  useIndexes: true,
+  aggregateOnServer: true,
+  limitResultSet: true,
+  useMaterializedViews: for complex calculations
+}
+</code></pre>
+<h2 id="integration-rules">Integration Rules</h2>
+<h3 id="external-system-integration">External System Integration</h3>
+<h4>ERP System</h4>
+<ul>
+<li>Sync order and spend data hourly</li>
+<li>Reconcile inventory values daily</li>
+<li>Update supplier status real-time</li>
+</ul>
+<h4>Accounting System</h4>
+<ul>
+<li>Sync financial metrics daily</li>
+<li>Validate invoice amounts on receipt</li>
+<li>Update budget tracking real-time</li>
+</ul>
+<h4>Notification System</h4>
+<ul>
+<li>Send alerts for critical thresholds</li>
+<li>Email digest for pending approvals</li>
+<li>Push notifications for urgent items</li>
+</ul>
+<h2 id="audit-trail-rules">Audit Trail Rules</h2>
+<h3 id="activity-logging">Activity Logging</h3>
+<p>All dashboard interactions logged:</p>
+<pre><code class="language-typescript">auditLog = {
+  userId: user.id,
+  action: &#39;view_dashboard&#39; | &#39;click_metric&#39; | &#39;view_activity&#39;,
+  timestamp: currentTimestamp,
+  ipAddress: request.ip,
+  metadata: {
+    role: user.role,
+    department: user.department,
+    metricsViewed: [...],
+    filtersApplied: {...}
+  }
+}
+</code></pre>
+<h3 id="compliance-requirements">Compliance Requirements</h3>
+<ul>
+<li>Log all data access for SOX compliance</li>
+<li>Track permission changes</li>
+<li>Monitor unusual access patterns</li>
+<li>Retain logs for 7 years</li>
+</ul>
+<h2 id="future-business-rules">Future Business Rules</h2>
+<h3 id="planned-enhancements">Planned Enhancements</h3>
+<ol>
+<li><strong>AI-Powered Insights</strong>: Anomaly detection in metrics</li>
+<li><strong>Predictive Analytics</strong>: Forecast future trends</li>
+<li><strong>Custom Dashboards</strong>: User-configurable widgets</li>
+<li><strong>Multi-currency Support</strong>: Real-time conversion</li>
+<li><strong>Advanced Filtering</strong>: Complex query builder</li>
+<li><strong>Scheduled Reports</strong>: Automated email digests</li>
+<li><strong>Benchmark Comparisons</strong>: Industry standard comparisons</li>
+<li><strong>Goal Tracking</strong>: KPI targets and progress</li>
+</ol>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#dashboard-business-logic-amp-rules" class="level-1">Dashboard Business Logic &amp; Rules</a>
+<a href="#overview" class="level-2">Overview</a>
+<a href="#data-aggregation-rules" class="level-2">Data Aggregation Rules</a>
+<a href="#metric-calculation-rules" class="level-3">Metric Calculation Rules</a>
+<a href="#status-alert-calculation-rules" class="level-3">Status Alert Calculation Rules</a>
+<a href="#chart-data-aggregation" class="level-2">Chart Data Aggregation</a>
+<a href="#order-trends-chart" class="level-3">Order Trends Chart</a>
+<a href="#spend-analysis-chart" class="level-3">Spend Analysis Chart</a>
+<a href="#supplier-network-growth-chart" class="level-3">Supplier Network Growth Chart</a>
+<a href="#permission-based-data-filtering" class="level-2">Permission-Based Data Filtering</a>
+<a href="#role-based-visibility-rules" class="level-3">Role-Based Visibility Rules</a>
+<a href="#activity-feed-business-rules" class="level-2">Activity Feed Business Rules</a>
+<a href="#activity-types-and-sources" class="level-3">Activity Types and Sources</a>
+<a href="#activity-feed-filtering-rules" class="level-3">Activity Feed Filtering Rules</a>
+<a href="#validation-rules" class="level-2">Validation Rules</a>
+<a href="#metric-display-validation" class="level-3">Metric Display Validation</a>
+<a href="#error-handling-rules" class="level-2">Error Handling Rules</a>
+<a href="#data-fetch-failures" class="level-3">Data Fetch Failures</a>
+<a href="#calculation-errors" class="level-3">Calculation Errors</a>
+<a href="#permission-errors" class="level-3">Permission Errors</a>
+<a href="#performance-rules" class="level-2">Performance Rules</a>
+<a href="#caching-strategy" class="level-3">Caching Strategy</a>
+<a href="#data-refresh-rules" class="level-3">Data Refresh Rules</a>
+<a href="#query-optimization" class="level-3">Query Optimization</a>
+<a href="#integration-rules" class="level-2">Integration Rules</a>
+<a href="#external-system-integration" class="level-3">External System Integration</a>
+<a href="#audit-trail-rules" class="level-2">Audit Trail Rules</a>
+<a href="#activity-logging" class="level-3">Activity Logging</a>
+<a href="#compliance-requirements" class="level-3">Compliance Requirements</a>
+<a href="#future-business-rules" class="level-2">Future Business Rules</a>
+<a href="#planned-enhancements" class="level-3">Planned Enhancements</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

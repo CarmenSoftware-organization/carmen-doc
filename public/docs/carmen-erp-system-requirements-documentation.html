@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carmen ERP System - Complete System Requirements & Documentation - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: var(--bg-gradient);
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr 300px;
+            gap: 2rem;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 1.5rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .back-to-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: var(--primary-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        .back-to-home:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        /* Content Area */
+        .doc-content {
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 260px 1fr 280px;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 1.5rem;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 2.5rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            .doc-nav {
+                display: none;
+            }
+            .doc-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </div>
+            <div class="doc-header-actions">
+                <a href="../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="SYSTEM-DOCUMENTATION-INDEX.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Documentation Index</span>
+                    </a>
+                    <a href="DOCUMENTATION-CATALOG.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Catalog</span>
+                    </a>
+                    <a href="DOCUMENTATION-SUMMARY-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Summary</span>
+                    </a>
+                    <a href="MODULE-VERIFICATION-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Module Verification</span>
+                    </a>
+                    <a href="SYSTEM-GAPS-AND-ROADMAP.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Gaps & Roadmap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="architecture/SYSTEM-ARCHITECTURE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-users"></i>
+                    <span>Stakeholders</span>
+                </div>
+                <div class="nav-items">
+                    <a href="stakeholders/BUSINESS-VALUE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                </div>
+                <div class="nav-items">
+                    <a href="pr/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Requests</span>
+                    </a>
+                    <a href="po/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Orders</span>
+                    </a>
+                    <a href="grn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Goods Received Note</span>
+                    </a>
+                    <a href="cn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Credit Notes</span>
+                    </a>
+                    <a href="prt/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>PR Templates</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-boxes"></i>
+                    <span>Inventory Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="inv/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Overview</span>
+                    </a>
+                    <a href="inv/inventory-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Specification</span>
+                    </a>
+                    <a href="inv/inventory-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Sitemap</span>
+                    </a>
+                    <a href="pc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Physical Count</span>
+                    </a>
+                    <a href="sc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Spot Check</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-handshake"></i>
+                    <span>Vendor Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="vm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Overview</span>
+                    </a>
+                    <a href="vm/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Module</span>
+                    </a>
+                    <a href="vm/MANAGE-VENDORS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Manage Vendors</span>
+                    </a>
+                    <a href="vm/TEMPLATES.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Templates</span>
+                    </a>
+                    <a href="vm/CAMPAIGNS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Campaigns</span>
+                    </a>
+                    <a href="vm/PRICELISTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Pricelists</span>
+                    </a>
+                    <a href="vm/VENDOR-PORTAL.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Portal</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cube"></i>
+                    <span>Product Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="pm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Overview</span>
+                    </a>
+                    <a href="pm/product-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Specification</span>
+                    </a>
+                    <a href="pm/product-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-store"></i>
+                    <span>Store Operations</span>
+                </div>
+                <div class="nav-items">
+                    <a href="store-ops/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Overview</span>
+                    </a>
+                    <a href="store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Module</span>
+                    </a>
+                    <a href="store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Requisitions</span>
+                    </a>
+                    <a href="store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Stock Replenishment</span>
+                    </a>
+                    <a href="store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Wastage Reporting</span>
+                    </a>
+                    <a href="store-ops/GLOSSARY.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Glossary</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Operational Planning</span>
+                </div>
+                <div class="nav-items">
+                    <a href="operational-planning/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Overview</span>
+                    </a>
+                    <a href="operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Module</span>
+                    </a>
+                    <a href="operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Menu Engineering</span>
+                    </a>
+                    <a href="operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Recipe Management</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cash-register"></i>
+                    <span>POS Integration</span>
+                </div>
+                <div class="nav-items">
+                    <a href="pos-integration/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Overview</span>
+                    </a>
+                    <a href="pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Module</span>
+                    </a>
+                    <a href="pos-integration/MAPPING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Mapping Subsystem</span>
+                    </a>
+                    <a href="pos-integration/TRANSACTIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Transaction Management</span>
+                    </a>
+                    <a href="pos-integration/REPORTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports & Analytics</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-items">
+                    <a href="dashboard/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Overview</span>
+                    </a>
+                    <a href="dashboard/sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>System Requirements</span>
+                </div>
+                <div class="nav-items">
+                    <a href="carmen-erp-system-requirements-documentation.html" class="nav-item active">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Requirements</span>
+                    </a>
+                    <a href="comprehensive-schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="carmen-erp-system-complete-system-requirements-amp-documentation">Carmen ERP System - Complete System Requirements &amp; Documentation</h1>
+<h2 id="system-overview">System Overview</h2>
+<p>Carmen is a comprehensive hospitality-focused Enterprise Resource Planning (ERP) system designed for hotels, restaurants, and hospitality operations. The system manages procurement, inventory, vendor relationships, operational planning, and financial operations through a unified web-based platform.</p>
+<p><strong>Vision</strong>: A complete end-to-end hospitality management system that streamlines operations from procurement to service delivery, with intelligent automation, real-time analytics, and seamless integration across all hotel departments.</p>
+<hr>
+<h2 id="1-authentication-amp-user-management">1. Authentication &amp; User Management</h2>
+<h3 id="current-implementation">Current Implementation</h3>
+<p>The system uses a mock authentication system for prototype development with no real authentication or session management.</p>
+<h3 id="features-implemented">Features Implemented</h3>
+<ul>
+<li><strong>Simple User Context</strong>: Mock user authentication system (<code>lib/context/simple-user-context.tsx</code>)</li>
+<li><strong>User Switching</strong>: Ability to switch between different mock users for testing</li>
+<li><strong>Role System</strong>: Mock roles including staff, manager, financial-manager, purchasing-staff, chef</li>
+<li><strong>Department/Location Context</strong>: Users can switch between departments and locations</li>
+</ul>
+<h3 id="technical-implementation">Technical Implementation</h3>
+<pre><code class="language-typescript">// Simple mock authentication
+const DEFAULT_MOCK_USER = mockUsers[0]
+- Mock user data from centralized mock data files
+- Client-side context provider for user state
+- No real authentication, sessions, or security
+</code></pre>
+<h3 id="flow-diagram">Flow Diagram</h3>
+<div class="mermaid">
+sequenceDiagram
+    participant User
+    participant AuthSystem
+    participant UserContext
+    participant PermissionEngine
+    participant Application
+
+    User->>AuthSystem: Login credentials + MFA
+    AuthSystem->>AuthSystem: Validate credentials & MFA
+    AuthSystem->>PermissionEngine: Load user roles & permissions
+    PermissionEngine->>UserContext: Create secure user session
+    UserContext->>UserContext: Initialize department & location context
+    UserContext->>Application: Grant access to authorized features
+    Application-->>User: Display personalized interface
+
+    User->>UserContext: Switch department/role
+    UserContext->>PermissionEngine: Validate switch permissions
+    PermissionEngine->>UserContext: Update active context
+    UserContext->>Application: Refresh feature access
+    Application-->>User: Update interface permissions
+
+</div>
+<h3 id="limitations">Limitations</h3>
+<ul>
+<li>No real authentication system</li>
+<li>No password validation</li>
+<li>No session management</li>
+<li>All authentication is mocked for development</li>
+</ul>
+<hr>
+<h2 id="2-dashboard-amp-analytics">2. Dashboard &amp; Analytics</h2>
+<h3 id="current-implementation">Current Implementation</h3>
+<p>The dashboard displays static mock data with basic charts and tables showing hospitality metrics.</p>
+<h3 id="features-implemented">Features Implemented</h3>
+<h4>Dashboard Cards (<code>dashboard-cards.tsx</code>)</h4>
+<ul>
+<li><strong>Total Orders</strong>: Hardcoded value of 1,234</li>
+<li><strong>Active Suppliers</strong>: Hardcoded value of 89</li>
+<li><strong>Inventory Value</strong>: Hardcoded value of $45,231</li>
+<li><strong>Monthly Spend</strong>: Hardcoded value of $89,432</li>
+</ul>
+<h4>Dashboard Charts (<code>dashboard-chart.tsx</code>)</h4>
+<ul>
+<li><strong>Order Trends Chart</strong>: Area chart showing mock monthly order data</li>
+<li><strong>Spend Analysis Chart</strong>: Bar chart displaying mock procurement spend</li>
+<li><strong>Supplier Network Growth</strong>: Line chart with mock supplier and order correlation</li>
+</ul>
+<h4>Recent Activities Table (<code>dashboard-data-table.tsx</code>)</h4>
+<ul>
+<li>Displays 6 hardcoded activity records</li>
+<li>Shows Purchase Requests, Purchase Orders, Goods Receipt, Stock Adjustment, Vendor Invoice, Quality Check</li>
+<li>Each record has mock data for status, priority, reviewer, and date</li>
+</ul>
+<h3 id="data-structure">Data Structure</h3>
+<pre><code class="language-typescript">const chartData = [
+  { month: &quot;Jan&quot;, orders: 186, spend: 45000, suppliers: 12 },
+  { month: &quot;Feb&quot;, orders: 305, spend: 52000, suppliers: 15 },
+  // ... more hardcoded monthly data
+]
+</code></pre>
+<h3 id="flow-diagram">Flow Diagram</h3>
+<div class="mermaid">
+flowchart TD
+    A[User Accesses Dashboard] --> B[Load User Context & Preferences]
+    B --> C[Real-time Data Aggregation]
+    C --> D[Procurement Data Stream]
+    C --> E[Inventory Data Stream]
+    C --> F[Financial Data Stream]
+    C --> G[Operational Data Stream]
+
+    D --> H[KPI Calculation Engine]
+    E --> H
+    F --> H
+    G --> H
+
+    H --> I[Anomaly Detection]
+    H --> J[Trend Analysis]
+    H --> K[Predictive Modeling]
+
+    I --> L[Smart Alerts Generation]
+    J --> M[Interactive Charts & Visualizations]
+    K --> N[Forecasting & Recommendations]
+
+    L --> O[Personalized Dashboard Display]
+    M --> O
+    N --> O
+
+    O --> P[User Interaction & Drill-down]
+    P --> Q[Detailed Analysis & Actions]
+
+</div>
+<h3 id="limitations">Limitations</h3>
+<ul>
+<li>All data is hardcoded/static</li>
+<li>No real-time data fetching</li>
+<li>No dynamic calculations or aggregations</li>
+<li>Charts display mock trends only</li>
+</ul>
+<hr>
+<h2 id="3-procurement-management">3. Procurement Management</h2>
+<h3 id="current-implementation">Current Implementation</h3>
+<p>Basic procurement interface with mock purchase request data and list views.</p>
+<h3 id="features-implemented">Features Implemented</h3>
+<h4>Purchase Requests List (<code>ModernPurchaseRequestList.tsx</code>)</h4>
+<ul>
+<li><strong>List View</strong>: Table and card view modes for purchase requests</li>
+<li><strong>Mock Data</strong>: Uses <code>mockPRListData.ts</code> with sample purchase request records</li>
+<li><strong>View Modes</strong>: Toggle between table and card display</li>
+<li><strong>Selection</strong>: Multi-select functionality for purchase requests</li>
+<li><strong>Actions</strong>: Placeholder buttons for create, download, print (non-functional)</li>
+</ul>
+<h4>Purchase Request Data</h4>
+<ul>
+<li>Sample purchase requests with realistic hospitality data</li>
+<li>Fields: ID, reference number, requestor, status, workflow stage, estimated total</li>
+<li>Workflow statuses: pending, approved, completed</li>
+<li>Request types: General Purchase, Emergency, Capital Expenditure</li>
+</ul>
+<h3 id="data-structure">Data Structure</h3>
+<pre><code class="language-typescript">export const mockPRListData: PurchaseRequest[] = [
+  {
+    id: &#39;pr-2024-001&#39;,
+    refNumber: &#39;PR-2024-001&#39;,
+    description: &#39;Kitchen Equipment and Food Supplies for Grand Ballroom Event&#39;,
+    requestor: { name: &#39;Chef Maria Rodriguez&#39;, department: &#39;Food &amp; Beverage&#39; },
+    status: DocumentStatus.Completed,
+    estimatedTotal: 15750.00,
+    // ... more mock fields
+  }
+]
+</code></pre>
+<h3 id="flow-diagram">Flow Diagram</h3>
+<div class="mermaid">
+stateDiagram-v2
+    [*] --> Draft_Request
+    Draft_Request --> Submitted : Submit with Approvers
+    Submitted --> Department_Review : Auto Route by Rules
+    Department_Review --> Manager_Approval : Department Head Approves
+    Department_Review --> Purchasing_Review : Direct to Procurement
+    Manager_Approval --> Purchasing_Review : Escalate by Value
+
+    Purchasing_Review --> Vendor_Selection : Approve for Sourcing
+    Vendor_Selection --> RFQ_Process : Multiple Vendors
+    Vendor_Selection --> Direct_Order : Preferred Vendor
+
+    RFQ_Process --> Quote_Evaluation : Receive Proposals
+    Quote_Evaluation --> Vendor_Selection : Select Best Quote
+
+    Direct_Order --> Purchase_Order : Generate PO
+    Purchase_Order --> Order_Tracking : Monitor Delivery
+    Order_Tracking --> Goods_Receipt : Delivery Received
+
+    Goods_Receipt --> Quality_Check : Inspection Process
+    Quality_Check --> Receipt_Complete : Accept Goods
+    Quality_Check --> Discrepancy_Handling : Quality Issues
+
+    Discrepancy_Handling --> Vendor_Resolution : Work with Vendor
+    Vendor_Resolution --> Receipt_Complete : Resolved
+    Vendor_Resolution --> Return_Process : Return Goods
+
+    Receipt_Complete --> Invoice_Matching : 3-Way Match
+    Invoice_Matching --> Payment_Processing : Approved for Payment
+    Payment_Processing --> [*] : Transaction Complete
+
+    Purchasing_Review --> Rejected : Reject Request
+    Department_Review --> Rejected : Decline
+    Rejected --> [*] : Process Ends
+
+</div>
+<h3 id="limitations">Limitations</h3>
+<ul>
+<li>No create/edit functionality</li>
+<li>No approval workflow implementation</li>
+<li>No integration with vendor or inventory systems</li>
+<li>All data is static mock data</li>
+</ul>
+<hr>
+<h2 id="4-vendor-management">4. Vendor Management</h2>
+<h3 id="current-implementation">Current Implementation</h3>
+<p>Multi-module vendor management system with working features and prototype demonstrations.</p>
+<h3 id="features-implemented">Features Implemented</h3>
+<h4>Vendor Management Dashboard (<code>page.tsx</code>)</h4>
+<ul>
+<li><strong>Quick Stats</strong>: Total vendors (25), active contracts (18), price updates (45), pending approvals (3)</li>
+<li><strong>Module Navigation</strong>: Links to different vendor management sections</li>
+<li><strong>Development Status</strong>: Clear indication of what&#39;s implemented vs. prototype</li>
+</ul>
+<h4>Module Structure</h4>
+<ol>
+<li><strong>Manage Vendors</strong>: ✅ Fully implemented (links to <code>/vendor-management/manage-vendors</code>)</li>
+<li><strong>Price Lists</strong>: ✅ Implemented (links to <code>/vendor-management/pricelists</code>)</li>
+<li><strong>Pricelist Templates</strong>: 🚧 UI Prototype only (marked as &quot;Demo Only&quot;)</li>
+<li><strong>Pricing Campaigns</strong>: 🚧 UI Prototype only (marked as &quot;Demo Only&quot;)</li>
+<li><strong>Analytics &amp; Reports</strong>: ❌ Coming Soon (disabled button)</li>
+</ol>
+<h3 id="implementation-status">Implementation Status</h3>
+<pre><code class="language-typescript">// Actual implementation markers in the code
+&lt;Badge className=&quot;bg-orange-100 text-orange-700&quot;&gt;Prototype&lt;/Badge&gt;
+&lt;Badge variant=&quot;outline&quot; className=&quot;text-orange-600 border-orange-200&quot;&gt;Demo Only&lt;/Badge&gt;
+&lt;Button variant=&quot;outline&quot; size=&quot;sm&quot; disabled&gt;Coming Soon&lt;/Button&gt;
+</code></pre>
+<h3 id="prototype-features">Prototype Features</h3>
+<ul>
+<li>Pricelist template management UI (no backend functionality)</li>
+<li>Pricing campaign management UI (no backend functionality)</li>
+<li>Vendor portal demo interface</li>
+</ul>
+<h3 id="flow-diagram">Flow Diagram</h3>
+<div class="mermaid">
+graph TD
+    A[Vendor Application] --> B[Initial Screening]
+    B --> C[Document Collection]
+    C --> D[Verification Process]
+    D --> E[Credit & Reference Check]
+    E --> F{Qualification Met?}
+
+    F -->|Yes| G[Approved Vendor]
+    F -->|No| H[Rejected/Conditional]
+
+    G --> I[Contract Negotiation]
+    I --> J[Contract Execution]
+    J --> K[Active Vendor Status]
+
+    K --> L[Performance Monitoring]
+    L --> M[Quarterly Review]
+    M --> N[Scorecard Generation]
+
+    N --> O{Performance Acceptable?}
+    O -->|Yes| P[Maintain Status]
+    O -->|No| Q[Improvement Plan]
+
+    Q --> R[Performance Monitoring Period]
+    R --> S{Improved?}
+    S -->|Yes| P
+    S -->|No| T[Probation/Termination]
+
+    P --> L
+
+    U[Certification Monitoring] --> V[Expiry Alerts]
+    V --> W[Renewal Process]
+    W --> X[Compliance Verification]
+
+    Y[Risk Assessment] --> Z[Financial Monitoring]
+    Z --> AA[Risk Score Update]
+    AA --> BB{High Risk?}
+    BB -->|Yes| CC[Risk Mitigation]
+    BB -->|No| DD[Continue Monitoring]
+
+</div>
+<h3 id="limitations">Limitations</h3>
+<ul>
+<li>Price management features are UI prototypes only</li>
+<li>No real data integration for pricing</li>
+<li>Analytics module not implemented</li>
+<li>Templates and campaigns are demonstration interfaces only</li>
+</ul>
+<hr>
+<h2 id="5-system-navigation">5. System Navigation</h2>
+<h3 id="current-implementation">Current Implementation</h3>
+<p>Multi-level sidebar navigation system with responsive design and collapsible sections.</p>
+<h3 id="features-implemented">Features Implemented</h3>
+<h4>Sidebar Navigation (<code>sidebar.tsx</code>)</h4>
+<ul>
+<li><strong>Multi-level Menu</strong>: Supports up to 3 levels of nesting</li>
+<li><strong>Responsive Design</strong>: Collapsible sidebar with mobile sheet overlay</li>
+<li><strong>Dynamic Icons</strong>: Uses Lucide React icons throughout</li>
+<li><strong>Active State</strong>: Highlights current page/section</li>
+</ul>
+<h4>Available Modules</h4>
+<p>Based on existing page files:</p>
+<ul>
+<li>Dashboard</li>
+<li>Procurement</li>
+<li>Inventory Management</li>
+<li>Vendor Management</li>
+<li>Product Management</li>
+<li>Operational Planning</li>
+<li>Production</li>
+<li>Store Operations</li>
+<li>Finance</li>
+<li>Reporting &amp; Analytics</li>
+<li>System Administration</li>
+<li>Help &amp; Support</li>
+<li>Style Guide</li>
+</ul>
+<h3 id="navigation-structure">Navigation Structure</h3>
+<pre><code class="language-typescript">interface MenuItem {
+  title: string;
+  path: string;
+  icon: string;
+  subItems: Array&lt;SubMenuItem&gt;;
+}
+</code></pre>
+<h3 id="navigation-flow-diagram">Navigation Flow Diagram</h3>
+<div class="mermaid">
+flowchart TD
+    A[App Loads] --> B[SidebarProvider Initializes]
+    B --> C[Load Navigation Menu Structure]
+
+    C --> D[Main Menu Items]
+    D --> E[Dashboard - Working]
+    D --> F[Procurement - Partial]
+    D --> G[Inventory Management - Unknown]
+    D --> H[Vendor Management - Working]
+    D --> I[Product Management - Unknown]
+    D --> J[Other Modules - Various]
+
+    K[User Clicks Menu Item] --> L{Has Submenu?}
+    L -->|Yes| M[Expand Submenu]
+    L -->|No| N[Navigate to Page]
+
+    M --> O[Show Sub-items]
+    O --> P[User Clicks Sub-item]
+    P --> N
+
+    N --> Q{Page Exists?}
+    Q -->|Yes| R[Load Page Content]
+    Q -->|No| S[Empty/Placeholder Page]
+
+    T[Mobile View] --> U[Sidebar Collapses]
+    U --> V[Sheet Overlay Mode]
+    V --> W[Touch-friendly Navigation]
+
+    X[Desktop View] --> Y[Persistent Sidebar]
+    Y --> Z[Multi-level Expansion]
+
+</div>
+<h3 id="limitations">Limitations</h3>
+<ul>
+<li>Many module pages are placeholder/empty implementations</li>
+<li>Navigation structure exists but content varies by module</li>
+<li>Some modules are fully implemented, others are basic stubs</li>
+</ul>
+<hr>
+<h2 id="6-user-interface-system">6. User Interface System</h2>
+<h3 id="current-implementation">Current Implementation</h3>
+<p>Consistent UI component system based on Tailwind CSS and Shadcn/ui components.</p>
+<h3 id="components-implemented">Components Implemented</h3>
+<ul>
+<li><strong>Cards</strong>: Used throughout for metric display and module navigation</li>
+<li><strong>Tables</strong>: Data tables with sorting, filtering, selection capabilities</li>
+<li><strong>Charts</strong>: Area, bar, and line charts using Recharts library</li>
+<li><strong>Forms</strong>: React Hook Form integration with Zod validation</li>
+<li><strong>Navigation</strong>: Sidebar, dropdown menus, breadcrumbs</li>
+<li><strong>Badges</strong>: Status indicators, labels, categories</li>
+<li><strong>Buttons</strong>: Various sizes, variants, and states</li>
+</ul>
+<h3 id="design-system">Design System</h3>
+<ul>
+<li><strong>Typography</strong>: Consistent font sizing and hierarchy</li>
+<li><strong>Colors</strong>: Tailwind CSS color palette with semantic usage</li>
+<li><strong>Spacing</strong>: Consistent padding and margin patterns</li>
+<li><strong>Icons</strong>: Lucide React icon library throughout</li>
+<li><strong>Responsive</strong>: Mobile-first design approach</li>
+</ul>
+<h3 id="limitations">Limitations</h3>
+<ul>
+<li>No comprehensive design system documentation</li>
+<li>Some components are basic implementations</li>
+<li>Limited accessibility testing and compliance</li>
+</ul>
+<hr>
+<h2 id="7-data-architecture">7. Data Architecture</h2>
+<h3 id="current-implementation">Current Implementation</h3>
+<p>Mock data system with TypeScript types and centralized data management.</p>
+<h3 id="type-system-libtypes">Type System (<code>lib/types/</code>)</h3>
+<ul>
+<li><strong>Centralized Types</strong>: All interfaces defined in <code>lib/types/</code> barrel exports</li>
+<li><strong>Domain Types</strong>: User, Vendor, PurchaseRequest, Inventory, Product, Recipe, Finance</li>
+<li><strong>Common Types</strong>: Money, DocumentStatus, WorkflowStatus, Currency</li>
+<li><strong>Type Guards</strong>: Runtime validation functions</li>
+<li><strong>Converters</strong>: Data transformation utilities</li>
+</ul>
+<h3 id="mock-data-system-libmock-data">Mock Data System (<code>lib/mock-data/</code>)</h3>
+<ul>
+<li><strong>Centralized Mock Data</strong>: All sample data in <code>lib/mock-data/</code></li>
+<li><strong>Factory Functions</strong>: Functions to create mock entities with overrides</li>
+<li><strong>Realistic Data</strong>: Mock data reflects actual hospitality scenarios</li>
+<li><strong>Data Consistency</strong>: Cross-referenced mock data between modules</li>
+</ul>
+<h3 id="data-structure-example">Data Structure Example</h3>
+<pre><code class="language-typescript">// Type definition
+export interface PurchaseRequest {
+  id: string;
+  refNumber: string;
+  requestor: User;
+  status: DocumentStatus;
+  estimatedTotal: number;
+  // ... additional fields
+}
+
+// Mock data usage
+import { mockPRListData } from &#39;@/lib/mock-data&#39;
+const displayData = useMemo(() =&gt; mockPRListData, [])
+</code></pre>
+<h3 id="data-flow-diagram">Data Flow Diagram</h3>
+<div class="mermaid">
+flowchart TD
+    A[Application Starts] --> B[Import Type Definitions]
+    B --> C[lib/types/index.ts - Barrel Exports]
+
+    C --> D[Domain-Specific Types]
+    D --> E[User, Vendor, PurchaseRequest]
+    D --> F[Inventory, Product, Recipe]
+    D --> G[Finance, Common Types]
+
+    H[Component Needs Data] --> I[Import from lib/mock-data]
+    I --> J[Centralized Mock Data Files]
+
+    J --> K[mockUsers, mockVendors]
+    J --> L[mockPRListData, mockInventory]
+    J --> M[Factory Functions Available]
+
+    N[Runtime Usage] --> O[Component Uses Mock Data]
+    O --> P[Display in UI Components]
+
+    Q[Type Safety] --> R[TypeScript Validation]
+    R --> S[Compile-time Checking]
+
+    T[No Persistence] --> U[Client-side State Only]
+    U --> V[Page Refresh = Data Reset]
+
+    W[Type Guards Available] --> X[Runtime Type Validation]
+    X --> Y[isUser and isPurchaseRequest functions]
+
+    Z[Converters Available] --> AA[Data Transformation]
+    AA --> BB[formatMoney and convertTypes functions]
+
+</div>
+<h3 id="limitations">Limitations</h3>
+<ul>
+<li>No real database integration</li>
+<li>All data persistence is client-side only</li>
+<li>No data validation at runtime</li>
+<li>Mock data doesn&#39;t reflect real business complexity</li>
+</ul>
+<hr>
+<h2 id="technical-architecture">Technical Architecture</h2>
+<h3 id="frontend-technology-stack">Frontend Technology Stack</h3>
+<ul>
+<li><strong>Framework</strong>: Next.js 14 with App Router</li>
+<li><strong>Language</strong>: TypeScript with strict mode</li>
+<li><strong>Styling</strong>: Tailwind CSS + Shadcn/ui components</li>
+<li><strong>State Management</strong>: Zustand for global state, React Query for server state</li>
+<li><strong>Form Handling</strong>: React Hook Form with Zod validation</li>
+<li><strong>Charts</strong>: Recharts library for data visualization</li>
+<li><strong>Icons</strong>: Lucide React icon system</li>
+</ul>
+<h3 id="project-structure">Project Structure</h3>
+<pre><code>app/(main)/              # Main application routes
+  dashboard/            # ✅ Fully implemented with mock data
+  procurement/         # ✅ Basic list views implemented
+  vendor-management/   # ✅ Mixed: working features + prototypes
+  [other-modules]/     # ❓ Various implementation levels
+components/ui/          # ✅ Shadcn/ui component library
+lib/
+  types/               # ✅ Centralized TypeScript definitions
+  mock-data/          # ✅ Centralized mock data system
+  context/            # ✅ User context and state management
+</code></pre>
+<h3 id="development-environment">Development Environment</h3>
+<ul>
+<li><strong>Node.js</strong>: v20.14.0</li>
+<li><strong>Package Manager</strong>: npm v10.7.0</li>
+<li><strong>Build System</strong>: Next.js built-in build system</li>
+<li><strong>Development Server</strong>: Next.js dev server on port 3003</li>
+</ul>
+<hr>
+<h2 id="implementation-status-summary">Implementation Status Summary</h2>
+<h3 id="-fully-implemented">✅ Fully Implemented</h3>
+<ul>
+<li><strong>Dashboard</strong>: Working interface with mock data and charts</li>
+<li><strong>Basic Navigation</strong>: Multi-level sidebar with responsive design</li>
+<li><strong>User Context</strong>: Mock authentication and role switching</li>
+<li><strong>UI Components</strong>: Consistent component library</li>
+<li><strong>Type System</strong>: Comprehensive TypeScript definitions</li>
+<li><strong>Mock Data</strong>: Realistic sample data across domains</li>
+</ul>
+<h3 id="-partially-implemented">🚧 Partially Implemented</h3>
+<ul>
+<li><strong>Procurement</strong>: List views work, but no CRUD operations</li>
+<li><strong>Vendor Management</strong>: Core features work, price management is prototype only</li>
+</ul>
+<h3 id="-not-implemented">❌ Not Implemented</h3>
+<ul>
+<li><strong>Real Authentication</strong>: All authentication is mocked</li>
+<li><strong>Data Persistence</strong>: No database or API integration</li>
+<li><strong>Business Logic</strong>: No real workflow or calculation engines</li>
+<li><strong>Advanced Features</strong>: Most modules are basic stubs or placeholders</li>
+</ul>
+<h3 id="-ui-prototypes-only">🎨 UI Prototypes Only</h3>
+<ul>
+<li><strong>Pricelist Templates</strong>: Visual interface with no functionality</li>
+<li><strong>Pricing Campaigns</strong>: Demo screens with mock interactions</li>
+<li><strong>Advanced Analytics</strong>: UI mockups planned but not built</li>
+</ul>
+<hr>
+<p>This documentation reflects the actual state of the Carmen ERP prototype as implemented in the source code. The system provides a solid foundation for hospitality ERP functionality with working user interfaces, consistent design patterns, and extensible architecture, but currently operates entirely on mock data without real business logic implementation.</p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#carmen-erp-system-complete-system-requirements-amp-documentation" class="level-1">Carmen ERP System - Complete System Requirements &amp; Documentation</a>
+<a href="#system-overview" class="level-2">System Overview</a>
+<a href="#1-authentication-amp-user-management" class="level-2">1. Authentication &amp; User Management</a>
+<a href="#current-implementation" class="level-3">Current Implementation</a>
+<a href="#features-implemented" class="level-3">Features Implemented</a>
+<a href="#technical-implementation" class="level-3">Technical Implementation</a>
+<a href="#flow-diagram" class="level-3">Flow Diagram</a>
+<a href="#limitations" class="level-3">Limitations</a>
+<a href="#2-dashboard-amp-analytics" class="level-2">2. Dashboard &amp; Analytics</a>
+<a href="#current-implementation" class="level-3">Current Implementation</a>
+<a href="#features-implemented" class="level-3">Features Implemented</a>
+<a href="#data-structure" class="level-3">Data Structure</a>
+<a href="#flow-diagram" class="level-3">Flow Diagram</a>
+<a href="#limitations" class="level-3">Limitations</a>
+<a href="#3-procurement-management" class="level-2">3. Procurement Management</a>
+<a href="#current-implementation" class="level-3">Current Implementation</a>
+<a href="#features-implemented" class="level-3">Features Implemented</a>
+<a href="#data-structure" class="level-3">Data Structure</a>
+<a href="#flow-diagram" class="level-3">Flow Diagram</a>
+<a href="#limitations" class="level-3">Limitations</a>
+<a href="#4-vendor-management" class="level-2">4. Vendor Management</a>
+<a href="#current-implementation" class="level-3">Current Implementation</a>
+<a href="#features-implemented" class="level-3">Features Implemented</a>
+<a href="#implementation-status" class="level-3">Implementation Status</a>
+<a href="#prototype-features" class="level-3">Prototype Features</a>
+<a href="#flow-diagram" class="level-3">Flow Diagram</a>
+<a href="#limitations" class="level-3">Limitations</a>
+<a href="#5-system-navigation" class="level-2">5. System Navigation</a>
+<a href="#current-implementation" class="level-3">Current Implementation</a>
+<a href="#features-implemented" class="level-3">Features Implemented</a>
+<a href="#navigation-structure" class="level-3">Navigation Structure</a>
+<a href="#navigation-flow-diagram" class="level-3">Navigation Flow Diagram</a>
+<a href="#limitations" class="level-3">Limitations</a>
+<a href="#6-user-interface-system" class="level-2">6. User Interface System</a>
+<a href="#current-implementation" class="level-3">Current Implementation</a>
+<a href="#components-implemented" class="level-3">Components Implemented</a>
+<a href="#design-system" class="level-3">Design System</a>
+<a href="#limitations" class="level-3">Limitations</a>
+<a href="#7-data-architecture" class="level-2">7. Data Architecture</a>
+<a href="#current-implementation" class="level-3">Current Implementation</a>
+<a href="#type-system-libtypes" class="level-3">Type System (lib/types/)</a>
+<a href="#mock-data-system-libmock-data" class="level-3">Mock Data System (lib/mock-data/)</a>
+<a href="#data-structure-example" class="level-3">Data Structure Example</a>
+<a href="#data-flow-diagram" class="level-3">Data Flow Diagram</a>
+<a href="#limitations" class="level-3">Limitations</a>
+<a href="#technical-architecture" class="level-2">Technical Architecture</a>
+<a href="#frontend-technology-stack" class="level-3">Frontend Technology Stack</a>
+<a href="#project-structure" class="level-3">Project Structure</a>
+<a href="#development-environment" class="level-3">Development Environment</a>
+<a href="#implementation-status-summary" class="level-2">Implementation Status Summary</a>
+<a href="#-fully-implemented" class="level-3">✅ Fully Implemented</a>
+<a href="#-partially-implemented" class="level-3">🚧 Partially Implemented</a>
+<a href="#-not-implemented" class="level-3">❌ Not Implemented</a>
+<a href="#-ui-prototypes-only" class="level-3">🎨 UI Prototypes Only</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

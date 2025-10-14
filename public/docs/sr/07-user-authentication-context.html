@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feature: User Authentication and Context Management - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: var(--bg-gradient);
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr 300px;
+            gap: 2rem;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 1.5rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .back-to-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: var(--primary-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        .back-to-home:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        /* Content Area */
+        .doc-content {
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 260px 1fr 280px;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 1.5rem;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 2.5rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            .doc-nav {
+                display: none;
+            }
+            .doc-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </div>
+            <div class="doc-header-actions">
+                <a href="../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../SYSTEM-DOCUMENTATION-INDEX.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Documentation Index</span>
+                    </a>
+                    <a href="../DOCUMENTATION-CATALOG.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Catalog</span>
+                    </a>
+                    <a href="../DOCUMENTATION-SUMMARY-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Summary</span>
+                    </a>
+                    <a href="../MODULE-VERIFICATION-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Module Verification</span>
+                    </a>
+                    <a href="../SYSTEM-GAPS-AND-ROADMAP.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Gaps & Roadmap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../architecture/SYSTEM-ARCHITECTURE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-users"></i>
+                    <span>Stakeholders</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../stakeholders/BUSINESS-VALUE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pr/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Requests</span>
+                    </a>
+                    <a href="../po/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Orders</span>
+                    </a>
+                    <a href="../grn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Goods Received Note</span>
+                    </a>
+                    <a href="../cn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Credit Notes</span>
+                    </a>
+                    <a href="../prt/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>PR Templates</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-boxes"></i>
+                    <span>Inventory Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../inv/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Overview</span>
+                    </a>
+                    <a href="../inv/inventory-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Specification</span>
+                    </a>
+                    <a href="../inv/inventory-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Sitemap</span>
+                    </a>
+                    <a href="../pc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Physical Count</span>
+                    </a>
+                    <a href="../sc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Spot Check</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-handshake"></i>
+                    <span>Vendor Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../vm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Overview</span>
+                    </a>
+                    <a href="../vm/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Module</span>
+                    </a>
+                    <a href="../vm/MANAGE-VENDORS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Manage Vendors</span>
+                    </a>
+                    <a href="../vm/TEMPLATES.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Templates</span>
+                    </a>
+                    <a href="../vm/CAMPAIGNS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Campaigns</span>
+                    </a>
+                    <a href="../vm/PRICELISTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Pricelists</span>
+                    </a>
+                    <a href="../vm/VENDOR-PORTAL.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Portal</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cube"></i>
+                    <span>Product Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Overview</span>
+                    </a>
+                    <a href="../pm/product-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Specification</span>
+                    </a>
+                    <a href="../pm/product-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-store"></i>
+                    <span>Store Operations</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../store-ops/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Overview</span>
+                    </a>
+                    <a href="../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Module</span>
+                    </a>
+                    <a href="../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Requisitions</span>
+                    </a>
+                    <a href="../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Stock Replenishment</span>
+                    </a>
+                    <a href="../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Wastage Reporting</span>
+                    </a>
+                    <a href="../store-ops/GLOSSARY.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Glossary</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Operational Planning</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../operational-planning/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Overview</span>
+                    </a>
+                    <a href="../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Module</span>
+                    </a>
+                    <a href="../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Menu Engineering</span>
+                    </a>
+                    <a href="../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Recipe Management</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cash-register"></i>
+                    <span>POS Integration</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pos-integration/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Overview</span>
+                    </a>
+                    <a href="../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Module</span>
+                    </a>
+                    <a href="../pos-integration/MAPPING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Mapping Subsystem</span>
+                    </a>
+                    <a href="../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Transaction Management</span>
+                    </a>
+                    <a href="../pos-integration/REPORTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports & Analytics</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../dashboard/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Overview</span>
+                    </a>
+                    <a href="../dashboard/sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>System Requirements</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../carmen-erp-system-requirements-documentation.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Requirements</span>
+                    </a>
+                    <a href="../comprehensive-schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="feature-user-authentication-and-context-management">Feature: User Authentication and Context Management</h1>
+<h2 id="description">Description</h2>
+<p>The Carmen ERP User Authentication and Context Management System provides a sophisticated multi-role, multi-department, and multi-location user management framework. The system features dynamic user context switching allowing users to operate with different roles across various departments and locations within a single session. It implements role-based access control with granular permissions, price visibility controls based on user roles, and comprehensive user profile management with department and location assignments.</p>
+<h2 id="process-flow-step-by-step">Process Flow (Step by Step)</h2>
+<h3 id="user-authentication">User Authentication</h3>
+<ol>
+<li>User accesses the system and is authenticated through SimpleUserProvider context</li>
+<li>System loads user profile with available roles, departments, and locations</li>
+<li>Default user context is established based on user&#39;s primary role and assignment</li>
+<li>Authentication state is maintained throughout the session with automatic refresh</li>
+<li>System provides role-based navigation filtering and feature access control</li>
+</ol>
+<h3 id="context-switching">Context Switching</h3>
+<ol start="6">
+<li>User can switch active role via UserContextSwitcher component</li>
+<li>System validates role availability and updates user context immediately</li>
+<li>Navigation and feature availability updates based on new role permissions</li>
+<li>Price visibility toggles automatically based on role-specific settings</li>
+<li>Department switching updates operational context and data filtering</li>
+<li>Location switching affects inventory visibility and operational scope</li>
+<li>All context changes are logged for audit and tracking purposes</li>
+</ol>
+<h3 id="role-based-access-control">Role-Based Access Control</h3>
+<ol start="13">
+<li>System implements granular permission system through role definitions</li>
+<li>Each role has specific capabilities: staff, department-manager, financial-manager, purchasing-staff, counter, chef</li>
+<li>Permission validation occurs at component and API levels</li>
+<li>Price visibility controlled by user.context.showPrices flag based on role</li>
+<li>Workflow approval rights determined by role and department combination</li>
+<li>Feature access dynamically filtered based on role permissions</li>
+</ol>
+<h3 id="user-profile-management">User Profile Management</h3>
+<ol start="19">
+<li>Comprehensive user profiles include personal information, role assignments, and preferences</li>
+<li>Multi-department assignments allow users to operate across organizational units</li>
+<li>Location assignments define physical or logical operational scope</li>
+<li>User preferences include language settings, notification preferences, and UI customizations</li>
+<li>Profile updates require appropriate approval workflows based on change sensitivity</li>
+</ol>
+<h2 id="flow-diagram-mermaid">Flow Diagram (Mermaid)</h2>
+<div class="mermaid">
+flowchart TD
+    A[User Login] --> B[Authentication Check]
+    B --> C[Load User Profile]
+    C --> D[Initialize User Context]
+    D --> E[Set Default Role/Department/Location]
+    E --> F[Apply Permission Filters]
+    F --> G[Render User Interface]
+
+    G --> H{Context Change Requested?}
+    H -->|Role Switch| I[Validate Role Availability]
+    H -->|Department Switch| J[Validate Department Access]
+    H -->|Location Switch| K[Validate Location Access]
+    H -->|No Change| L[Continue Session]
+
+    I --> M[Update Role Context]
+    J --> N[Update Department Context]
+    K --> O[Update Location Context]
+
+    M --> P[Refresh Permissions]
+    N --> P
+    O --> P
+    P --> Q[Update Navigation]
+    Q --> R[Update Feature Access]
+    R --> S[Update Price Visibility]
+    S --> T[Log Context Change]
+    T --> G
+
+    L --> U{Session Expired?}
+    U -->|Yes| V[Re-authenticate]
+    U -->|No| G
+    V --> B
+
+    G --> W[API Request]
+    W --> X[Validate Permissions]
+    X --> Y{Authorized?}
+    Y -->|Yes| Z[Process Request]
+    Y -->|No| AA[Return Unauthorized]
+    Z --> G
+    AA --> BB[Show Error Message]
+    BB --> G
+
+</div>
+<h2 id="screen-capture-locations">Screen Capture Locations</h2>
+<ul>
+<li>Capture: Login screen with authentication form</li>
+<li>Capture: User context switcher showing available roles, departments, and locations</li>
+<li>Capture: Navigation menu showing role-based filtering of available options</li>
+<li>Capture: Price visibility differences between staff and manager views</li>
+<li>Capture: User profile management with role assignments and preferences</li>
+<li>Capture: Permission-based feature access (showing enabled/disabled states)</li>
+<li>Capture: Audit log showing context changes and user activities</li>
+<li>Capture: Multi-department user accessing different department contexts</li>
+</ul>
+<h2 id="schema-entities-plain-text">Schema Entities (Plain Text)</h2>
+<p>User: Core user entity with id, name, email, role, department, location, availableRoles, availableDepartments, availableLocations, preferences, and context settings.<br>UserContext: Active session context with currentRole, currentDepartment, currentLocation, showPrices flag, and operational preferences.<br>Role: Role definition with name, description, permissions array, and system capabilities.<br>Department: Organizational unit with id, name, description, parent department, and operational scope.<br>Location: Physical or logical location with id, name, type, address, and operational parameters.<br>Permission: Granular permission with resource, action, scope, and conditions.<br>UserSession: Session management with sessionId, userId, loginTime, lastActivity, and contextHistory.</p>
+<h2 id="major-authentication-and-context-features">Major Authentication and Context Features</h2>
+<h3 id="authentication-system">Authentication System</h3>
+<ul>
+<li><strong>Simple User Provider</strong>: Mock authentication system for prototype development</li>
+<li><strong>Session Management</strong>: Persistent session state with automatic refresh</li>
+<li><strong>Role Validation</strong>: Dynamic role availability checking and assignment</li>
+<li><strong>Security Context</strong>: Comprehensive security context maintained throughout session</li>
+<li><strong>Audit Trail</strong>: Complete logging of authentication events and context changes</li>
+</ul>
+<h3 id="dynamic-context-switching">Dynamic Context Switching</h3>
+<ul>
+<li><strong>Real-Time Role Switching</strong>: Immediate role changes with permission updates</li>
+<li><strong>Department Context</strong>: Switch operational context between departments</li>
+<li><strong>Location Context</strong>: Change location scope for inventory and operations</li>
+<li><strong>Context History</strong>: Track context changes for audit and user experience</li>
+<li><strong>Validation Rules</strong>: Ensure users only access authorized contexts</li>
+</ul>
+<h3 id="role-based-access-control">Role-Based Access Control</h3>
+<ul>
+<li><strong>Granular Permissions</strong>: Fine-grained permission system for features and data</li>
+<li><strong>Hierarchical Roles</strong>: Role hierarchy with inheritance of permissions</li>
+<li><strong>Department-Specific Permissions</strong>: Role permissions scoped to departments</li>
+<li><strong>Dynamic Feature Access</strong>: Real-time feature availability based on role</li>
+<li><strong>API-Level Security</strong>: Permission validation at all system integration points</li>
+</ul>
+<h3 id="price-visibility-management">Price Visibility Management</h3>
+<ul>
+<li><strong>Role-Based Price Display</strong>: Price visibility controlled by user role</li>
+<li><strong>Dynamic Price Hiding</strong>: Real-time price display control throughout system</li>
+<li><strong>Permission Override</strong>: Administrative override for price visibility</li>
+<li><strong>Context-Sensitive Display</strong>: Price visibility changes with role switching</li>
+<li><strong>Audit Compliance</strong>: Tracking of price access for compliance purposes</li>
+</ul>
+<h3 id="user-profile-management">User Profile Management</h3>
+<ul>
+<li><strong>Multi-Role Assignment</strong>: Users can hold multiple roles simultaneously</li>
+<li><strong>Department Assignments</strong>: Users assigned to multiple departments</li>
+<li><strong>Location Access</strong>: Location-based access control and assignment</li>
+<li><strong>Preference Management</strong>: User-specific system preferences and customizations</li>
+<li><strong>Profile Validation</strong>: Validation rules for user assignments and combinations</li>
+</ul>
+<h3 id="integration-and-workflow">Integration and Workflow</h3>
+<ul>
+<li><strong>Workflow Integration</strong>: Role-based approval and workflow routing</li>
+<li><strong>Navigation Filtering</strong>: Dynamic menu and feature filtering</li>
+<li><strong>Data Access Control</strong>: Role-based data filtering and access control</li>
+<li><strong>Cross-Module Integration</strong>: Consistent permission model across all modules</li>
+<li><strong>Scalable Architecture</strong>: Support for complex organizational structures</li>
+</ul>
+<h2 id="ambiguities-amp-assumptions">Ambiguities &amp; Assumptions</h2>
+<p>Assumption: Users can hold multiple roles but only one role is active at any given time during a session.<br>Assumption: Price visibility is primarily controlled by role but can be overridden by specific permissions.<br>Ambiguity: The specific permission matrix for each role and the inheritance rules between roles are not explicitly defined.<br>Assumption: Context switching is immediate and does not require re-authentication within the same session.<br>Ambiguity: The exact business rules for department and location access validation need detailed specification.<br>Assumption: All user context changes are logged for audit purposes and compliance tracking.<br>Assumption: The system supports complex organizational hierarchies with multiple levels of departments and locations.<br>Ambiguity: Integration with external authentication systems (LDAP, Active Directory) and single sign-on capabilities are not clearly specified.</p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#feature-user-authentication-and-context-management" class="level-1">Feature: User Authentication and Context Management</a>
+<a href="#description" class="level-2">Description</a>
+<a href="#process-flow-step-by-step" class="level-2">Process Flow (Step by Step)</a>
+<a href="#user-authentication" class="level-3">User Authentication</a>
+<a href="#context-switching" class="level-3">Context Switching</a>
+<a href="#role-based-access-control" class="level-3">Role-Based Access Control</a>
+<a href="#user-profile-management" class="level-3">User Profile Management</a>
+<a href="#flow-diagram-mermaid" class="level-2">Flow Diagram (Mermaid)</a>
+<a href="#screen-capture-locations" class="level-2">Screen Capture Locations</a>
+<a href="#schema-entities-plain-text" class="level-2">Schema Entities (Plain Text)</a>
+<a href="#major-authentication-and-context-features" class="level-2">Major Authentication and Context Features</a>
+<a href="#authentication-system" class="level-3">Authentication System</a>
+<a href="#dynamic-context-switching" class="level-3">Dynamic Context Switching</a>
+<a href="#role-based-access-control" class="level-3">Role-Based Access Control</a>
+<a href="#price-visibility-management" class="level-3">Price Visibility Management</a>
+<a href="#user-profile-management" class="level-3">User Profile Management</a>
+<a href="#integration-and-workflow" class="level-3">Integration and Workflow</a>
+<a href="#ambiguities-amp-assumptions" class="level-2">Ambiguities &amp; Assumptions</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

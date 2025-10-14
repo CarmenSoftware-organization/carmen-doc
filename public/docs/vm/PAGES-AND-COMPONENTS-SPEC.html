@@ -1,0 +1,2725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Management - Pages and Components Specification - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: var(--bg-gradient);
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr 300px;
+            gap: 2rem;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 1.5rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .back-to-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: var(--primary-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        .back-to-home:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        /* Content Area */
+        .doc-content {
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 260px 1fr 280px;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 1.5rem;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 2.5rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            .doc-nav {
+                display: none;
+            }
+            .doc-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </div>
+            <div class="doc-header-actions">
+                <a href="../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../SYSTEM-DOCUMENTATION-INDEX.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Documentation Index</span>
+                    </a>
+                    <a href="../DOCUMENTATION-CATALOG.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Catalog</span>
+                    </a>
+                    <a href="../DOCUMENTATION-SUMMARY-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Summary</span>
+                    </a>
+                    <a href="../MODULE-VERIFICATION-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Module Verification</span>
+                    </a>
+                    <a href="../SYSTEM-GAPS-AND-ROADMAP.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Gaps & Roadmap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../architecture/SYSTEM-ARCHITECTURE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-users"></i>
+                    <span>Stakeholders</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../stakeholders/BUSINESS-VALUE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pr/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Requests</span>
+                    </a>
+                    <a href="../po/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Orders</span>
+                    </a>
+                    <a href="../grn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Goods Received Note</span>
+                    </a>
+                    <a href="../cn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Credit Notes</span>
+                    </a>
+                    <a href="../prt/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>PR Templates</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-boxes"></i>
+                    <span>Inventory Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../inv/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Overview</span>
+                    </a>
+                    <a href="../inv/inventory-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Specification</span>
+                    </a>
+                    <a href="../inv/inventory-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Sitemap</span>
+                    </a>
+                    <a href="../pc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Physical Count</span>
+                    </a>
+                    <a href="../sc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Spot Check</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-handshake"></i>
+                    <span>Vendor Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../vm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Overview</span>
+                    </a>
+                    <a href="../vm/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Module</span>
+                    </a>
+                    <a href="../vm/MANAGE-VENDORS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Manage Vendors</span>
+                    </a>
+                    <a href="../vm/TEMPLATES.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Templates</span>
+                    </a>
+                    <a href="../vm/CAMPAIGNS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Campaigns</span>
+                    </a>
+                    <a href="../vm/PRICELISTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Pricelists</span>
+                    </a>
+                    <a href="../vm/VENDOR-PORTAL.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Portal</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cube"></i>
+                    <span>Product Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Overview</span>
+                    </a>
+                    <a href="../pm/product-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Specification</span>
+                    </a>
+                    <a href="../pm/product-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-store"></i>
+                    <span>Store Operations</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../store-ops/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Overview</span>
+                    </a>
+                    <a href="../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Module</span>
+                    </a>
+                    <a href="../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Requisitions</span>
+                    </a>
+                    <a href="../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Stock Replenishment</span>
+                    </a>
+                    <a href="../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Wastage Reporting</span>
+                    </a>
+                    <a href="../store-ops/GLOSSARY.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Glossary</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Operational Planning</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../operational-planning/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Overview</span>
+                    </a>
+                    <a href="../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Module</span>
+                    </a>
+                    <a href="../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Menu Engineering</span>
+                    </a>
+                    <a href="../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Recipe Management</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cash-register"></i>
+                    <span>POS Integration</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pos-integration/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Overview</span>
+                    </a>
+                    <a href="../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Module</span>
+                    </a>
+                    <a href="../pos-integration/MAPPING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Mapping Subsystem</span>
+                    </a>
+                    <a href="../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Transaction Management</span>
+                    </a>
+                    <a href="../pos-integration/REPORTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports & Analytics</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../dashboard/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Overview</span>
+                    </a>
+                    <a href="../dashboard/sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>System Requirements</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../carmen-erp-system-requirements-documentation.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Requirements</span>
+                    </a>
+                    <a href="../comprehensive-schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="vendor-management-pages-and-components-specification">Vendor Management - Pages and Components Specification</h1>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#pages-overview">Pages Overview</a></li>
+<li><a href="#modals-and-dialogs">Modals and Dialogs</a></li>
+<li><a href="#dropdown-fields-reference">Dropdown Fields Reference</a></li>
+<li><a href="#actions-and-buttons-reference">Actions and Buttons Reference</a></li>
+<li><a href="#form-components">Form Components</a></li>
+<li><a href="#data-display-components">Data Display Components</a></li>
+<li><a href="#glossary">Glossary</a></li>
+</ol>
+<hr>
+<h2 id="pages-overview">Pages Overview</h2>
+<h3 id="landing-page">Landing Page</h3>
+<p><strong>Path</strong>: <code>/vendor-management</code><br><strong>File</strong>: <code>app/(main)/vendor-management/page.tsx</code></p>
+<p><img src="screenshots/vm-landing.png" alt="Landing Page"><br><em>Vendor Management Landing Page - Main dashboard with module navigation</em></p>
+<p><strong>Purpose</strong>: Main entry point for vendor management module</p>
+<p><strong>Components</strong>:</p>
+<ul>
+<li>Module dashboard cards</li>
+<li>Quick navigation tiles</li>
+<li>Statistics overview</li>
+<li>Recent activity feed</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Navigate to Manage Vendors</li>
+<li>Navigate to Templates</li>
+<li>Navigate to Campaigns</li>
+<li>Navigate to Pricelists</li>
+<li>Try Vendor Portal Demo</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Navigate to Manage Vendors</strong></p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Manage Vendors Card"] --> Navigate["Navigate to /manage-vendors"]
+    Navigate --> Display["Display Vendor List Page"]
+
+</div>
+<p><strong>Navigate to Templates</strong></p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Templates Card"] --> Navigate["Navigate to /templates"]
+    Navigate --> Display["Display Templates List"]
+
+</div>
+<p><strong>Navigate to Campaigns</strong></p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Campaigns Card"] --> Navigate["Navigate to /campaigns"]
+    Navigate --> Display["Display Campaigns List"]
+
+</div>
+<p><strong>Navigate to Pricelists</strong></p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Pricelists Card"] --> Navigate["Navigate to /pricelists"]
+    Navigate --> Display["Display Pricelists List"]
+
+</div>
+<p><strong>Try Vendor Portal Demo</strong></p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Try Demo Button"] --> Navigate["Navigate to /vendor-portal/sample"]
+    Navigate --> Display["Display Vendor Portal Interface"]
+
+</div>
+<hr>
+<h3 id="manage-vendors-list-page">Manage Vendors - List Page</h3>
+<p><strong>Path</strong>: <code>/vendor-management/manage-vendors</code><br><strong>File</strong>: <code>app/(main)/vendor-management/manage-vendors/page.tsx</code></p>
+<p><img src="screenshots/vm-vendor-list.png" alt="Vendor List"><br><em>Vendor List Page - Table view with filtering and search</em></p>
+<p><img src="screenshots/vm-vendor-list-search.png" alt="Vendor List Search"><br><em>Vendor List with Active Search - Real-time filtering</em></p>
+<p><img src="screenshots/vm-vendor-list-status-dropdown.png" alt="Status Dropdown"><br><em>Status Filter Dropdown - Active/Inactive selection</em></p>
+<p><strong>Components Used</strong>:</p>
+<ul>
+<li><code>VendorSearchBar</code> - Global search functionality</li>
+<li><code>VendorFilters</code> - Status and advanced filtering</li>
+<li><code>modern-vendor-list</code> - Table/card view component</li>
+<li><code>VendorCard</code> - Card view display</li>
+<li><code>advanced-filter</code> - Advanced filter dialog</li>
+</ul>
+<p><strong>Dropdown Fields</strong>:</p>
+<ol>
+<li><p><strong>Status Filter</strong></p>
+<ul>
+<li>Options: All, Active, Inactive</li>
+<li>Location: Top toolbar</li>
+<li>Component: <code>VendorFilters</code></li>
+</ul>
+</li>
+<li><p><strong>View Toggle</strong></p>
+<ul>
+<li>Options: Table View, Card View</li>
+<li>Location: Top toolbar</li>
+<li>Default: Table View</li>
+</ul>
+</li>
+<li><p><strong>Items Per Page</strong></p>
+<ul>
+<li>Options: 10, 25, 50, 100</li>
+<li>Location: Bottom pagination</li>
+<li>Default: 25</li>
+</ul>
+</li>
+<li><p><strong>Sort By</strong></p>
+<ul>
+<li>Options: Name (A-Z), Name (Z-A), Date Added (Newest), Date Added (Oldest)</li>
+<li>Location: Top toolbar</li>
+</ul>
+</li>
+</ol>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li><strong>Add Vendor</strong> - Opens new vendor form</li>
+<li><strong>Search</strong> - Real-time search across vendor fields</li>
+<li><strong>Filter</strong> - Open advanced filter dialog</li>
+<li><strong>Export</strong> - Export filtered results to Excel</li>
+<li><strong>View Details</strong> - Navigate to vendor detail page</li>
+<li><strong>Edit</strong> - Open edit mode for vendor</li>
+<li><strong>Duplicate</strong> - Duplicate vendor record</li>
+<li><strong>Delete</strong> - Delete vendor (with dependency check)</li>
+</ul>
+<p><strong>Modals</strong>:</p>
+<ul>
+<li>Advanced Filter Dialog</li>
+<li>Delete Confirmation Dialog</li>
+<li>Duplicate Vendor Dialog</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Add Vendor</strong></p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Add Vendor Button"] --> Navigate["Navigate to /manage-vendors/new"]
+    Navigate --> Display["Display New Vendor Form"]
+
+</div>
+<p><strong>Search Vendors</strong></p>
+<div class="mermaid">
+flowchart LR
+    Type["Type in Search Box"] --> Debounce["Debounce 300ms"]
+    Debounce --> Filter["Filter Vendor List"]
+    Filter --> Update["Update Display in Real-time"]
+
+</div>
+<p><strong>Filter by Status</strong></p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Status Dropdown"] --> Open["Open Dropdown Menu"]
+    Open --> Select["Select Status: All/Active/Inactive"]
+    Select --> Filter["Filter Vendor List"]
+    Filter --> Update["Update Display"]
+
+</div>
+<p><strong>Open Advanced Filter</strong></p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Advanced Filter Button"] --> Open["Open Advanced Filter Dialog"]
+    Open --> Configure["Configure Filter Criteria"]
+    Configure --> Apply["Click Apply"]
+    Apply --> Filter["Filter Vendor List"]
+    Filter --> Close["Close Dialog"]
+    Close --> Update["Update Display"]
+
+</div>
+<p><strong>Export Vendors</strong></p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Export Button"] --> Gather["Gather Filtered Data"]
+    Gather --> Generate["Generate Excel File"]
+    Generate --> Download["Trigger Browser Download"]
+
+</div>
+<p><strong>View Vendor Details</strong></p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Vendor Row or View Button"] --> Navigate["Navigate to /manage-vendors/:id"]
+    Navigate --> Load["Load Vendor Data"]
+    Load --> Display["Display Detail Page with Tabs"]
+
+</div>
+<p><strong>Edit Vendor</strong></p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Edit Button in Actions Menu"] --> Check["Check Permissions"]
+    Check --> Navigate["Navigate to Edit Mode"]
+    Navigate --> Display["Display Editable Form"]
+
+</div>
+<p><strong>Duplicate Vendor</strong></p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Duplicate in Actions Menu"] --> Open["Open Duplicate Dialog"]
+    Open --> Confirm["Confirm Duplication"]
+    Confirm --> Clone["Clone Vendor Data"]
+    Clone --> Navigate["Navigate to New Vendor Form"]
+    Navigate --> Populate["Populate with Cloned Data"]
+
+</div>
+<p><strong>Delete Vendor</strong></p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Delete in Actions Menu"] --> Check["Check Dependencies"]
+    Check --> Warn{Has Dependencies?}
+    Warn -->|Yes| ShowWarning["Show Warning Dialog with List"]
+    Warn -->|No| ShowConfirm["Show Simple Confirmation"]
+    ShowWarning --> ChoiceWarn{User Choice}
+    ShowConfirm --> ChoiceSimple{User Choice}
+    ChoiceWarn -->|Force Delete| Delete["Delete Vendor and Relations"]
+    ChoiceWarn -->|Cancel| Close["Close Dialog"]
+    ChoiceSimple -->|Confirm| Delete
+    ChoiceSimple -->|Cancel| Close
+    Delete --> Refresh["Refresh List"]
+    Close --> Stay["Stay on Page"]
+
+</div>
+<p><strong>Toggle View Mode</strong></p>
+<div class="mermaid">
+flowchart LR
+    Click["Click View Toggle Button"] --> Switch{Current View}
+    Switch -->|Table| ShowCards["Switch to Card View"]
+    Switch -->|Card| ShowTable["Switch to Table View"]
+    ShowCards --> Update["Update Display"]
+    ShowTable --> Update
+
+</div>
+<hr>
+<h3 id="manage-vendors-detail-page">Manage Vendors - Detail Page</h3>
+<p><strong>Path</strong>: <code>/vendor-management/manage-vendors/:id</code><br><strong>File</strong>: <code>app/(main)/vendor-management/manage-vendors/[id]/page.tsx</code></p>
+<p><img src="screenshots/vm-vendor-detail-overview.png" alt="Vendor Detail Overview"><br><em>Vendor Detail Page - Overview Tab with all vendor information</em></p>
+<p><strong>Tab Navigation</strong>:</p>
+<ol>
+<li><strong>Overview Tab</strong> (default)</li>
+<li><strong>Pricelists Tab</strong></li>
+<li><strong>Contacts Tab</strong></li>
+<li><strong>Certifications Tab</strong></li>
+</ol>
+<p><strong>Components by Tab</strong>:</p>
+<h4>Overview Tab Components:</h4>
+<ul>
+<li><code>basic-info-section</code> - Company information display</li>
+<li><code>addresses-section</code> - Primary address card</li>
+<li><code>contacts-section</code> - Primary contact card</li>
+<li><code>certifications-section</code> - Certifications summary</li>
+<li><code>environmental-section</code> - Environmental profile</li>
+</ul>
+<p><strong>Fields Displayed</strong> (Overview):</p>
+<ul>
+<li>Company Name</li>
+<li>Business Type (dropdown values from mock data)</li>
+<li>Registration Number</li>
+<li>Tax ID</li>
+<li>Primary Address</li>
+<li>Primary Contact</li>
+<li>Payment Terms</li>
+<li>Credit Limit</li>
+<li>Status (Active/Inactive toggle)</li>
+</ul>
+<h4>Pricelists Tab Components:</h4>
+<ul>
+<li><code>vendor-pricelists-section</code> - Pricelist management</li>
+<li>Pricelist table with columns:<ul>
+<li>Pricelist Number</li>
+<li>Effective Date</li>
+<li>Expiry Date</li>
+<li>Status</li>
+<li>Item Count</li>
+<li>Actions</li>
+</ul>
+</li>
+</ul>
+<p><strong>Pricelists Tab Actions</strong>:</p>
+<ul>
+<li>View Pricelist Details</li>
+<li>Add New Pricelist</li>
+<li>Edit Pricelist</li>
+<li>Delete Pricelist</li>
+<li>Download Pricelist</li>
+</ul>
+<h4>Contacts Tab Components:</h4>
+<ul>
+<li><code>contacts-tab</code> - Multi-contact management</li>
+<li><code>addresses-tab</code> - Multi-address management</li>
+</ul>
+<p><strong>Contact Fields</strong>:</p>
+<ul>
+<li>Contact Name</li>
+<li>Role/Title</li>
+<li>Email</li>
+<li>Phone</li>
+<li>Mobile</li>
+<li>Is Primary (toggle)</li>
+</ul>
+<p><strong>Address Fields</strong>:</p>
+<ul>
+<li>Address Type (dropdown: Billing, Shipping, Office)</li>
+<li>Street Address</li>
+<li>City</li>
+<li>State/Province</li>
+<li>Postal Code</li>
+<li>Country</li>
+<li>Is Primary (toggle)</li>
+</ul>
+<p><strong>Contacts Tab Actions</strong>:</p>
+<ul>
+<li>Add Contact</li>
+<li>Edit Contact</li>
+<li>Delete Contact</li>
+<li>Set as Primary Contact</li>
+<li>Add Address</li>
+<li>Edit Address</li>
+<li>Delete Address</li>
+<li>Set as Primary Address</li>
+</ul>
+<h4>Certifications Tab:</h4>
+<p><strong>Fields</strong>:</p>
+<ul>
+<li>Certification Name</li>
+<li>Certification Number</li>
+<li>Issuing Authority</li>
+<li>Issue Date</li>
+<li>Expiry Date</li>
+<li>Status (Valid/Expired/Expiring Soon)</li>
+<li>Document Upload</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Add Certification</li>
+<li>Edit Certification</li>
+<li>Delete Certification</li>
+<li>View Document</li>
+<li>Upload Document</li>
+<li>Download Document</li>
+</ul>
+<p><strong>Page-Level Actions</strong> (all tabs):</p>
+<ul>
+<li>Back to List</li>
+<li>Edit Vendor</li>
+<li>Delete Vendor</li>
+<li>Print</li>
+<li>Export to PDF</li>
+</ul>
+<p><strong>Modals</strong>:</p>
+<ul>
+<li>Add Contact Dialog</li>
+<li>Edit Contact Dialog</li>
+<li>Add Address Dialog</li>
+<li>Edit Address Dialog</li>
+<li>Add Certification Dialog</li>
+<li>Edit Certification Dialog</li>
+<li>Delete Confirmation Dialog</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Switch Tab</strong></p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Tab Button"] --> Load["Load Tab Content"]
+    Load --> Display["Display Tab Data"]
+
+</div>
+<p><strong>Back to List</strong></p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Back Button"] --> Navigate["Navigate to /manage-vendors"]
+    Navigate --> Display["Display Vendor List"]
+
+</div>
+<p><strong>Edit Vendor</strong></p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Edit Button"] --> Check["Check Permissions"]
+    Check --> Navigate["Enter Edit Mode"]
+    Navigate --> Enable["Enable Form Fields"]
+
+</div>
+<p><strong>Delete Vendor</strong></p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Delete Button"] --> Check["Check Dependencies"]
+    Check --> Dialog["Show Deletion Dialog"]
+    Dialog --> Choice{User Confirms?}
+    Choice -->|Yes| Delete["Delete Vendor"]
+    Choice -->|No| Cancel["Cancel"]
+    Delete --> Navigate["Navigate to List"]
+    Cancel --> Stay["Stay on Page"]
+
+</div>
+<p><strong>Print Page</strong></p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Print Button"] --> Format["Format for Print"]
+    Format --> Open["Open Print Dialog"]
+
+</div>
+<p><strong>Export to PDF</strong></p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Export PDF Button"] --> Generate["Generate PDF Document"]
+    Generate --> Download["Trigger Download"]
+
+</div>
+<p><strong>Add Contact (Contacts Tab)</strong></p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Add Contact Button"] --> Open["Open Add Contact Dialog"]
+    Open --> Fill["Fill Contact Form"]
+    Fill --> Validate["Validate Fields"]
+    Validate --> Save["Click Save"]
+    Save --> Create["Create Contact Record"]
+    Create --> Close["Close Dialog"]
+    Close --> Refresh["Refresh Contacts List"]
+
+</div>
+<p><strong>Edit Contact (Contacts Tab)</strong></p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Edit on Contact"] --> Open["Open Edit Contact Dialog"]
+    Open --> Populate["Populate with Existing Data"]
+    Populate --> Modify["Modify Fields"]
+    Modify --> Validate["Validate Changes"]
+    Validate --> Save["Click Save"]
+    Save --> Update["Update Contact Record"]
+    Update --> Close["Close Dialog"]
+    Close --> Refresh["Refresh Contacts List"]
+
+</div>
+<p><strong>Delete Contact (Contacts Tab)</strong></p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Delete on Contact"] --> Check{Is Primary?}
+    Check -->|Yes| Warn["Show Warning: Cannot Delete Primary"]
+    Check -->|No| Confirm["Show Confirmation Dialog"]
+    Confirm --> Choice{User Confirms?}
+    Choice -->|Yes| Delete["Delete Contact"]
+    Choice -->|No| Cancel["Cancel"]
+    Delete --> Refresh["Refresh Contacts List"]
+    Warn --> Close["Close"]
+    Cancel --> Close
+
+</div>
+<p><strong>Set as Primary Contact</strong></p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Set as Primary"] --> Update["Update Primary Status"]
+    Update --> Demote["Demote Current Primary"]
+    Demote --> Promote["Promote Selected Contact"]
+    Promote --> Refresh["Refresh Display"]
+
+</div>
+<p><strong>Add Address (Contacts Tab)</strong></p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Add Address Button"] --> Open["Open Add Address Dialog"]
+    Open --> Fill["Fill Address Form"]
+    Fill --> Select["Select Address Type"]
+    Select --> Validate["Validate Fields"]
+    Validate --> Save["Click Save"]
+    Save --> Create["Create Address Record"]
+    Create --> Close["Close Dialog"]
+    Close --> Refresh["Refresh Addresses List"]
+
+</div>
+<p><strong>Add New Pricelist (Pricelists Tab)</strong></p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Add Pricelist Button"] --> Navigate["Navigate to Pricelist Creation"]
+    Navigate --> Preselect["Pre-select Current Vendor"]
+    Preselect --> Display["Display Pricelist Form"]
+
+</div>
+<p><strong>View Pricelist Details (Pricelists Tab)</strong></p>
+<div class="mermaid">
+flowchart LR
+    Click["Click View on Pricelist Row"] --> Navigate["Navigate to Pricelist Detail"]
+    Navigate --> Load["Load Pricelist Data"]
+    Load --> Display["Display Pricelist Items"]
+
+</div>
+<p><strong>Download Pricelist (Pricelists Tab)</strong></p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Download on Pricelist"] --> Gather["Gather Pricelist Data"]
+    Gather --> Generate["Generate Excel File"]
+    Generate --> Download["Trigger Browser Download"]
+
+</div>
+<p><strong>Add Certification (Certifications Tab)</strong></p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Add Certification"] --> Open["Open Certification Dialog"]
+    Open --> Fill["Fill Certification Form"]
+    Fill --> Upload["Upload Document (Optional)"]
+    Upload --> Validate["Validate Fields and Dates"]
+    Validate --> Save["Click Save"]
+    Save --> Create["Create Certification Record"]
+    Create --> Close["Close Dialog"]
+    Close --> Refresh["Refresh Certifications List"]
+
+</div>
+<p><strong>View Document (Certifications Tab)</strong></p>
+<div class="mermaid">
+flowchart LR
+    Click["Click View Document"] --> Fetch["Fetch Document URL"]
+    Fetch --> Open["Open in New Tab or Modal"]
+
+</div>
+<p><strong>Upload Document (Certifications Tab)</strong></p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Upload Button"] --> Browse["Open File Browser"]
+    Browse --> Select["Select File"]
+    Select --> Validate["Validate File Type and Size"]
+    Validate --> Upload["Upload to Server"]
+    Upload --> Link["Link to Certification"]
+    Link --> Refresh["Refresh Display"]
+
+</div>
+<hr>
+<h3 id="new-vendor-form">New Vendor Form</h3>
+<p><strong>Path</strong>: <code>/vendor-management/manage-vendors/new</code><br><strong>File</strong>: <code>app/(main)/vendor-management/manage-vendors/new/page.tsx</code></p>
+<p><img src="screenshots/vm-new-vendor-form.png" alt="New Vendor Form"><br><em>New Vendor Creation Form - Multi-section form with validation</em></p>
+<p><img src="screenshots/vm-vendors-new-alt.png" alt="New Vendor Alt Path"><br><em>New Vendor Form (Alternative Path) - Alternative routing interface</em></p>
+<p><strong>Component</strong>: <code>VendorForm</code></p>
+<p><strong>Form Sections</strong>:</p>
+<ol>
+<li><p><strong>Basic Information</strong></p>
+<ul>
+<li>Company Name (required)</li>
+<li>Business Type (dropdown)</li>
+<li>Registration Number</li>
+<li>Tax ID</li>
+<li>Website URL</li>
+<li>Description (textarea)</li>
+</ul>
+</li>
+<li><p><strong>Primary Contact</strong></p>
+<ul>
+<li>Contact Name (required)</li>
+<li>Email (required, validated)</li>
+<li>Phone (required, validated)</li>
+<li>Mobile</li>
+<li>Role/Title</li>
+</ul>
+</li>
+<li><p><strong>Primary Address</strong></p>
+<ul>
+<li>Address Type (dropdown: Billing, Shipping, Office)</li>
+<li>Street Address (required)</li>
+<li>City (required)</li>
+<li>State/Province</li>
+<li>Postal Code (required)</li>
+<li>Country (dropdown, required)</li>
+</ul>
+</li>
+<li><p><strong>Payment Terms</strong></p>
+<ul>
+<li>Payment Terms (dropdown: Net 30, Net 60, Net 90, Custom)</li>
+<li>Credit Limit (currency input)</li>
+<li>Currency (dropdown)</li>
+</ul>
+</li>
+<li><p><strong>Tax Configuration</strong></p>
+<ul>
+<li>Tax ID</li>
+<li>Tax Registration Number</li>
+<li>Tax Rate (percentage)</li>
+<li>Tax Exempt (checkbox)</li>
+</ul>
+</li>
+</ol>
+<p><strong>Dropdown Options</strong>:</p>
+<p><strong>Business Type</strong>:</p>
+<ul>
+<li>Manufacturer</li>
+<li>Distributor</li>
+<li>Wholesaler</li>
+<li>Retailer</li>
+<li>Service Provider</li>
+<li>Contractor</li>
+<li>Supplier</li>
+</ul>
+<p><strong>Address Type</strong>:</p>
+<ul>
+<li>Billing Address</li>
+<li>Shipping Address</li>
+<li>Office Address</li>
+<li>Warehouse Address</li>
+</ul>
+<p><strong>Payment Terms</strong>:</p>
+<ul>
+<li>Net 30 Days</li>
+<li>Net 60 Days</li>
+<li>Net 90 Days</li>
+<li>Due on Receipt</li>
+<li>Custom Terms</li>
+</ul>
+<p><strong>Country</strong>: (Standard country list)</p>
+<p><strong>Currency</strong>:</p>
+<ul>
+<li>USD - US Dollar</li>
+<li>EUR - Euro</li>
+<li>GBP - British Pound</li>
+<li>JPY - Japanese Yen</li>
+<li>(etc.)</li>
+</ul>
+<p><strong>Validation Rules</strong>:</p>
+<ul>
+<li>Company Name: Required, min 2 characters</li>
+<li>Email: Valid email format</li>
+<li>Phone: Valid phone format</li>
+<li>Postal Code: Required</li>
+<li>Tax ID: Optional but validated format if provided</li>
+<li>Credit Limit: Positive number</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Save Vendor</li>
+<li>Save and Add Another</li>
+<li>Cancel</li>
+<li>Reset Form</li>
+</ul>
+<p><strong>Modal Dialogs</strong>:</p>
+<ul>
+<li>Unsaved Changes Warning (on cancel)</li>
+<li>Validation Error Summary</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Save Vendor</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Save Vendor"] --> Validate["Validate Form"]
+    Validate --> Create["Create Vendor Record"]
+    Create --> Navigate["Navigate to Vendor Detail Page"]
+
+</div>
+<p><strong>Save and Add Another</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Save and Add Another"] --> Validate["Validate Form"]
+    Validate --> Create["Create Vendor Record"]
+    Create --> Clear["Clear Form Fields"]
+
+</div>
+<p><strong>Cancel</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Cancel"] --> Check["Check for Unsaved Changes"]
+    Check --> Modal["Show Unsaved Changes Warning"]
+    Modal --> Navigate["Navigate Back to Vendor List"]
+
+</div>
+<p><strong>Reset Form</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Reset Form"] --> Clear["Clear All Form Fields"]
+    Clear --> Reset["Reset to Default Values"]
+
+</div>
+<p><strong>Field Validation</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Blur["Field Blur Event"] --> Validate["Validate Field Value"]
+    Validate --> Show["Show Validation Error/Success"]
+
+</div>
+<p><strong>Business Type Selection</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Business Type Dropdown"] --> Open["Open Dropdown Options"]
+    Open --> Select["Select Business Type"]
+
+</div>
+<p><strong>Address Type Selection</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Address Type Dropdown"] --> Open["Open Dropdown Options"]
+    Open --> Select["Select Address Type"]
+
+</div>
+<p><strong>Payment Terms Selection</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Payment Terms Dropdown"] --> Open["Open Dropdown Options"]
+    Open --> Select["Select Payment Terms"]
+
+</div>
+<p><strong>Country Selection</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Country Dropdown"] --> Open["Open Searchable Country List"]
+    Open --> Select["Select Country"]
+
+</div>
+<p><strong>Currency Selection</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Currency Dropdown"] --> Open["Open Currency Options"]
+    Open --> Select["Select Currency"]
+
+</div>
+<hr>
+<h3 id="vendor-edit-page-alternative">Vendor Edit Page (Alternative)</h3>
+<p><strong>Path</strong>: <code>/vendor-management/vendors/:id/edit</code><br><strong>File</strong>: <code>app/(main)/vendor-management/vendors/[id]/edit/page.tsx</code></p>
+<p>Same form structure as New Vendor but pre-populated with existing data.</p>
+<p><strong>Additional Actions</strong>:</p>
+<ul>
+<li>Save Changes</li>
+<li>Cancel (revert to detail view)</li>
+<li>Delete Vendor</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Save Changes</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Save Changes"] --> Validate["Validate Form"]
+    Validate --> Update["Update Vendor Record"]
+    Update --> Navigate["Navigate to Vendor Detail Page"]
+
+</div>
+<p><strong>Cancel Edit</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Cancel"] --> Check["Check for Unsaved Changes"]
+    Check --> Navigate["Navigate to Vendor Detail Page"]
+
+</div>
+<p><strong>Delete Vendor</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Delete Vendor"] --> Modal["Show Delete Confirmation Modal"]
+    Modal --> Delete["Delete Vendor Record"]
+    Delete --> Navigate["Navigate to Vendor List"]
+
+</div>
+<hr>
+<h3 id="pricelist-settings">Pricelist Settings</h3>
+<p><strong>Path</strong>: <code>/vendor-management/vendors/:id/pricelist-settings</code><br><strong>File</strong>: <code>app/(main)/vendor-management/vendors/[id]/pricelist-settings/page.tsx</code></p>
+<p><strong>Purpose</strong>: Configure pricelist-specific settings for a vendor</p>
+<p><strong>Settings Available</strong>:</p>
+<ul>
+<li>Default Currency</li>
+<li>Default Payment Terms</li>
+<li>Auto-approve Pricelists (toggle)</li>
+<li>Price Update Notifications (toggle)</li>
+<li>Minimum Order Quantity Settings</li>
+<li>Volume Discount Configuration</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Update Default Currency</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Select["Select Default Currency"] --> Update["Update Vendor Pricelist Settings"]
+    Update --> Save["Save Settings"]
+
+</div>
+<p><strong>Update Payment Terms</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Select["Select Payment Terms"] --> Update["Update Vendor Pricelist Settings"]
+    Update --> Save["Save Settings"]
+
+</div>
+<p><strong>Toggle Auto-approve Pricelists</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Toggle["Toggle Auto-approve Switch"] --> Update["Update Setting Value"]
+    Update --> Save["Save Settings"]
+
+</div>
+<p><strong>Configure MOQ Settings</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Configure MOQ"] --> Open["Open MOQ Settings Modal"]
+    Open --> Save["Save MOQ Configuration"]
+
+</div>
+<p><strong>Configure Volume Discounts</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Configure Discounts"] --> Open["Open Volume Discount Modal"]
+    Open --> Save["Save Discount Configuration"]
+
+</div>
+<hr>
+<h3 id="templates-list-page">Templates - List Page</h3>
+<p><strong>Path</strong>: <code>/vendor-management/templates</code><br><strong>File</strong>: <code>app/(main)/vendor-management/templates/page.tsx</code></p>
+<p><img src="screenshots/vm-templates-list.png" alt="Templates List"><br><em>Pricelist Templates List - Template management interface</em></p>
+<p><strong>Status</strong>: 🚧 Prototype</p>
+<p><strong>Components</strong>:</p>
+<ul>
+<li>Template list table</li>
+<li>Template cards</li>
+</ul>
+<p><strong>Table Columns</strong>:</p>
+<ul>
+<li>Template Name</li>
+<li>Created Date</li>
+<li>Last Modified</li>
+<li>Product Count</li>
+<li>Status (Active/Draft)</li>
+<li>Actions</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Create New Template</li>
+<li>Edit Template</li>
+<li>Duplicate Template</li>
+<li>Preview Template</li>
+<li>Delete Template</li>
+<li>Download Excel Template</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Create New Template</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Create New Template"] --> Navigate["Navigate to New Template Form"]
+    Navigate --> Display["Display Template Form"]
+
+</div>
+<p><strong>Edit Template</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Edit Template"] --> Navigate["Navigate to Edit Template Page"]
+    Navigate --> Display["Display Pre-populated Form"]
+
+</div>
+<p><strong>Duplicate Template</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Duplicate Template"] --> Copy["Copy Template Data"]
+    Copy --> Navigate["Navigate to New Template Form with Copied Data"]
+
+</div>
+<p><strong>Preview Template</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Preview Template"] --> Open["Open Template Preview Modal"]
+    Open --> Display["Display Template Structure"]
+
+</div>
+<p><strong>Delete Template</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Delete Template"] --> Modal["Show Delete Confirmation Modal"]
+    Modal --> Delete["Delete Template Record"]
+
+</div>
+<p><strong>Download Excel Template</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Download Excel"] --> Generate["Generate Excel File"]
+    Generate --> Download["Download Template File"]
+
+</div>
+<hr>
+<h3 id="templates-newedit">Templates - New/Edit</h3>
+<p><strong>Path</strong>: <code>/vendor-management/templates/new</code> or <code>/vendor-management/templates/:id/edit</code><br><strong>Files</strong>:</p>
+<ul>
+<li><code>app/(main)/vendor-management/templates/new/page.tsx</code></li>
+<li><code>app/(main)/vendor-management/templates/[id]/edit/page.tsx</code></li>
+</ul>
+<p><img src="screenshots/vm-template-new.png" alt="New Template"><br><em>New Template Creation - Product selection and custom fields configuration</em></p>
+<p><strong>Components Used</strong>:</p>
+<ul>
+<li><code>ProductSelectionComponent</code> - Product picker with search</li>
+<li><code>CustomFieldsComponent</code> - Custom field configuration</li>
+<li><code>MOQPricingComponent</code> - MOQ pricing structure</li>
+<li><code>ExcelTemplateCustomizer</code> - Excel template layout</li>
+<li><code>TemplatePreview</code> - Preview before saving</li>
+</ul>
+<p><strong>Form Sections</strong>:</p>
+<ol>
+<li><p><strong>Template Information</strong></p>
+<ul>
+<li>Template Name (required)</li>
+<li>Description</li>
+<li>Template Type (dropdown)</li>
+</ul>
+</li>
+<li><p><strong>Product Selection</strong></p>
+<ul>
+<li>Search and select products</li>
+<li>Multi-select with categories</li>
+<li>Product tree view</li>
+<li>Selected products list</li>
+</ul>
+</li>
+<li><p><strong>Custom Fields Configuration</strong></p>
+<ul>
+<li>Add custom column</li>
+<li>Field name</li>
+<li>Field type (dropdown: Text, Number, Date, Dropdown)</li>
+<li>Required toggle</li>
+<li>Default value</li>
+</ul>
+</li>
+<li><p><strong>MOQ Pricing Structure</strong></p>
+<ul>
+<li>Define quantity tiers</li>
+<li>Pricing per tier</li>
+<li>Unit selection</li>
+<li>Volume discounts</li>
+</ul>
+</li>
+<li><p><strong>Excel Template Layout</strong></p>
+<ul>
+<li>Column order</li>
+<li>Header customization</li>
+<li>Branding options</li>
+</ul>
+</li>
+</ol>
+<p><strong>Dropdowns</strong>:</p>
+<p><strong>Template Type</strong>:</p>
+<ul>
+<li>Standard Pricelist</li>
+<li>RFQ Template</li>
+<li>Contract Template</li>
+<li>Catalog Template</li>
+</ul>
+<p><strong>Field Type</strong>:</p>
+<ul>
+<li>Text</li>
+<li>Number</li>
+<li>Currency</li>
+<li>Date</li>
+<li>Dropdown</li>
+<li>Yes/No</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Save Template</li>
+<li>Save as Draft</li>
+<li>Preview</li>
+<li>Generate Excel</li>
+<li>Cancel</li>
+</ul>
+<p><strong>Modals</strong>:</p>
+<ul>
+<li>Product Selection Dialog</li>
+<li>Custom Field Editor</li>
+<li>MOQ Tier Configuration</li>
+<li>Preview Dialog</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Save Template</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Save Template"] --> Validate["Validate Form"]
+    Validate --> Create["Create Template Record"]
+    Create --> Navigate["Navigate to Templates List"]
+
+</div>
+<p><strong>Save as Draft</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Save as Draft"] --> Save["Save Template as Draft"]
+    Save --> Stay["Stay on Current Page"]
+
+</div>
+<p><strong>Preview Template</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Preview"] --> Open["Open Preview Dialog"]
+    Open --> Display["Display Template Structure"]
+
+</div>
+<p><strong>Generate Excel</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Generate Excel"] --> Create["Create Excel File"]
+    Create --> Download["Download Excel Template"]
+
+</div>
+<p><strong>Add Product</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Add Product"] --> Open["Open Product Selection Dialog"]
+    Open --> Add["Add Selected Products"]
+
+</div>
+<p><strong>Add Custom Field</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Add Custom Field"] --> Open["Open Custom Field Editor"]
+    Open --> Add["Add Field to Template"]
+
+</div>
+<p><strong>Configure MOQ Tier</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Configure MOQ"] --> Open["Open MOQ Tier Configuration"]
+    Open --> Save["Save Tier Settings"]
+
+</div>
+<p><strong>Template Type Selection</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Template Type Dropdown"] --> Open["Open Template Type Options"]
+    Open --> Select["Select Template Type"]
+
+</div>
+<hr>
+<h3 id="campaigns-list-page">Campaigns - List Page</h3>
+<p><strong>Path</strong>: <code>/vendor-management/campaigns</code><br><strong>File</strong>: <code>app/(main)/vendor-management/campaigns/page.tsx</code></p>
+<p><img src="screenshots/vm-campaigns-list.png" alt="Campaigns List"><br><em>RFP Campaigns List - Campaign management and tracking</em></p>
+<p><strong>Status</strong>: 🚧 Prototype</p>
+<p><strong>Table Columns</strong>:</p>
+<ul>
+<li>Campaign Name</li>
+<li>Template Used</li>
+<li>Start Date</li>
+<li>End Date</li>
+<li>Vendors Invited</li>
+<li>Responses Received</li>
+<li>Status</li>
+<li>Actions</li>
+</ul>
+<p><strong>Campaign Status Options</strong>:</p>
+<ul>
+<li>Draft</li>
+<li>Active</li>
+<li>Completed</li>
+<li>Cancelled</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Create Campaign</li>
+<li>Edit Campaign</li>
+<li>View Responses</li>
+<li>Send Reminders</li>
+<li>Close Campaign</li>
+<li>Export Results</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Create Campaign</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Create Campaign"] --> Navigate["Navigate to New Campaign Form"]
+    Navigate --> Display["Display Campaign Form"]
+
+</div>
+<p><strong>Edit Campaign</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Edit Campaign"] --> Navigate["Navigate to Edit Campaign Page"]
+    Navigate --> Display["Display Pre-populated Form"]
+
+</div>
+<p><strong>View Responses</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click View Responses"] --> Navigate["Navigate to Campaign Detail Page"]
+    Navigate --> Display["Display Vendor Responses"]
+
+</div>
+<p><strong>Send Reminders</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Send Reminders"] --> Modal["Show Reminder Confirmation"]
+    Modal --> Send["Send Email Reminders to Vendors"]
+
+</div>
+<p><strong>Close Campaign</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Close Campaign"] --> Modal["Show Close Confirmation Modal"]
+    Modal --> Update["Update Campaign Status to Completed"]
+
+</div>
+<p><strong>Export Results</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Export Results"] --> Generate["Generate Comparison Report"]
+    Generate --> Download["Download Excel File"]
+
+</div>
+<hr>
+<h3 id="campaigns-newdetail">Campaigns - New/Detail</h3>
+<p><strong>Path</strong>: <code>/vendor-management/campaigns/new</code> or <code>/vendor-management/campaigns/:id</code><br><strong>Files</strong>:</p>
+<ul>
+<li><code>app/(main)/vendor-management/campaigns/new/page.tsx</code></li>
+<li><code>app/(main)/vendor-management/campaigns/[id]/page.tsx</code></li>
+</ul>
+<p><img src="screenshots/vm-campaign-new.png" alt="New Campaign"><br><em>New Campaign Creation - Vendor selection and invitation management</em></p>
+<p><strong>Form Sections</strong>:</p>
+<ol>
+<li><p><strong>Campaign Information</strong></p>
+<ul>
+<li>Campaign Name</li>
+<li>Description</li>
+<li>Template Selection</li>
+<li>Start Date</li>
+<li>End Date</li>
+</ul>
+</li>
+<li><p><strong>Vendor Selection</strong></p>
+<ul>
+<li>Multi-select vendor list</li>
+<li>Filter by category</li>
+<li>Bulk select options</li>
+</ul>
+</li>
+<li><p><strong>Invitation Settings</strong></p>
+<ul>
+<li>Email template</li>
+<li>Send immediately or schedule</li>
+<li>Reminder schedule</li>
+</ul>
+</li>
+<li><p><strong>Response Tracking</strong> (Detail view only)</p>
+<ul>
+<li>Vendors invited</li>
+<li>Responses received</li>
+<li>Pending responses</li>
+<li>Response deadline</li>
+</ul>
+</li>
+</ol>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Save Campaign</li>
+<li>Send Invitations</li>
+<li>Schedule Campaign</li>
+<li>Cancel Campaign</li>
+<li>View Vendor Responses</li>
+<li>Send Reminder</li>
+</ul>
+<p><strong>Modals</strong>:</p>
+<ul>
+<li>Vendor Selection Dialog</li>
+<li>Email Preview</li>
+<li>Schedule Confirmation</li>
+<li>Response Detail View</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Save Campaign</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Save Campaign"] --> Validate["Validate Form"]
+    Validate --> Create["Create Campaign Record"]
+    Create --> Navigate["Navigate to Campaigns List"]
+
+</div>
+<p><strong>Send Invitations</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Send Invitations"] --> Modal["Show Email Preview Modal"]
+    Modal --> Send["Send Invitations to Selected Vendors"]
+
+</div>
+<p><strong>Schedule Campaign</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Schedule Campaign"] --> Modal["Show Schedule Confirmation Modal"]
+    Modal --> Schedule["Schedule Campaign for Future Date"]
+
+</div>
+<p><strong>Select Vendors</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Select Vendors"] --> Open["Open Vendor Selection Dialog"]
+    Open --> Add["Add Selected Vendors to Campaign"]
+
+</div>
+<p><strong>Preview Email</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Preview Email"] --> Open["Open Email Preview Modal"]
+    Open --> Display["Display Email Template"]
+
+</div>
+<p><strong>View Vendor Responses</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click View Response"] --> Open["Open Response Detail Modal"]
+    Open --> Display["Display Vendor Submission"]
+
+</div>
+<p><strong>Send Reminder</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Send Reminder"] --> Modal["Show Reminder Confirmation"]
+    Modal --> Send["Send Reminder Email to Vendors"]
+
+</div>
+<p><strong>Template Selection</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Template Dropdown"] --> Open["Open Template Options"]
+    Open --> Select["Select Template"]
+
+</div>
+<hr>
+<h3 id="pricelists-list-page">Pricelists - List Page</h3>
+<p><strong>Path</strong>: <code>/vendor-management/pricelists</code><br><strong>File</strong>: <code>app/(main)/vendor-management/pricelists/page.tsx</code></p>
+<p><img src="screenshots/vm-pricelists-list.png" alt="Pricelists List"><br><em>Pricelists Management - Price list viewing and editing</em></p>
+<p><strong>Status</strong>: 🚧 Prototype</p>
+<p><strong>Table Columns</strong>:</p>
+<ul>
+<li>Pricelist Number</li>
+<li>Vendor Name</li>
+<li>Effective Date</li>
+<li>Expiry Date</li>
+<li>Currency</li>
+<li>Item Count</li>
+<li>Status</li>
+<li>Actions</li>
+</ul>
+<p><strong>Status Options</strong>:</p>
+<ul>
+<li>Draft</li>
+<li>Pending Review</li>
+<li>Active</li>
+<li>Expired</li>
+<li>Rejected</li>
+</ul>
+<p><strong>Filters</strong>:</p>
+<ul>
+<li>Status dropdown</li>
+<li>Vendor filter</li>
+<li>Date range picker</li>
+<li>Currency filter</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Create Pricelist</li>
+<li>Edit Pricelist</li>
+<li>Review Pricelist</li>
+<li>Approve/Reject</li>
+<li>Download</li>
+<li>Delete</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Create Pricelist</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Create Pricelist"] --> Navigate["Navigate to New Pricelist Form"]
+    Navigate --> Display["Display Pricelist Form"]
+
+</div>
+<p><strong>Edit Pricelist</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Edit Pricelist"] --> Navigate["Navigate to Edit Pricelist Page"]
+    Navigate --> Display["Display Pre-populated Form"]
+
+</div>
+<p><strong>Review Pricelist</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Review Pricelist"] --> Open["Open Review Modal"]
+    Open --> Display["Display Pricelist Details"]
+
+</div>
+<p><strong>Approve Pricelist</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Approve"] --> Modal["Show Approval Confirmation"]
+    Modal --> Update["Update Status to Active"]
+
+</div>
+<p><strong>Reject Pricelist</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Reject"] --> Modal["Show Rejection Reason Modal"]
+    Modal --> Update["Update Status to Rejected"]
+
+</div>
+<p><strong>Download Pricelist</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Download"] --> Generate["Generate Excel File"]
+    Generate --> Download["Download Pricelist File"]
+
+</div>
+<p><strong>Delete Pricelist</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Delete"] --> Modal["Show Delete Confirmation Modal"]
+    Modal --> Delete["Delete Pricelist Record"]
+
+</div>
+<p><strong>Filter by Status</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Status Filter"] --> Open["Open Status Options"]
+    Open --> Filter["Apply Status Filter"]
+
+</div>
+<p><strong>Filter by Vendor</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Vendor Filter"] --> Open["Open Vendor Selection"]
+    Open --> Filter["Apply Vendor Filter"]
+
+</div>
+<hr>
+<h3 id="pricelists-edit">Pricelists - Edit</h3>
+<p><strong>Path</strong>: <code>/vendor-management/pricelists/:id/edit</code> or <code>/vendor-management/pricelists/:id/edit-new</code><br><strong>Files</strong>:</p>
+<ul>
+<li><code>app/(main)/vendor-management/pricelists/[id]/edit/page.tsx</code></li>
+<li><code>app/(main)/vendor-management/pricelists/[id]/edit-new/page.tsx</code></li>
+</ul>
+<p><img src="screenshots/vm-pricelist-new.png" alt="New Pricelist"><br><em>New Pricelist Creation - Product pricing configuration</em></p>
+<p><img src="screenshots/vm-pricelist-add.png" alt="Add Pricelist"><br><em>Add Pricelist Form - Alternative creation interface</em></p>
+<p><strong>Components</strong>:</p>
+<ul>
+<li><code>StaffPricelistForm</code> - Staff editing interface</li>
+<li><code>PricelistProductEditingComponent</code> - Product-level editing</li>
+</ul>
+<p><strong>Pricelist Header</strong>:</p>
+<ul>
+<li>Vendor (readonly)</li>
+<li>Effective Date</li>
+<li>Expiry Date</li>
+<li>Currency</li>
+<li>Payment Terms</li>
+<li>Notes</li>
+</ul>
+<p><strong>Product Line Items</strong>:<br>Each item has:</p>
+<ul>
+<li>Product Name/Code</li>
+<li>Description</li>
+<li>Unit of Measure</li>
+<li>MOQ (Minimum Order Quantity)</li>
+<li>Base Price</li>
+<li>Tier Pricing (multiple tiers)</li>
+<li>Discount Percentage</li>
+<li>Final Price (calculated)</li>
+<li>Status (Active/Inactive)</li>
+</ul>
+<p><strong>Bulk Actions</strong>:</p>
+<ul>
+<li>Apply percentage increase/decrease</li>
+<li>Copy pricing from another pricelist</li>
+<li>Delete selected items</li>
+<li>Set MOQ for selected</li>
+</ul>
+<p><strong>Validation</strong>:</p>
+<ul>
+<li>Price &gt; 0</li>
+<li>Effective date &lt; Expiry date</li>
+<li>All required fields filled</li>
+<li>No duplicate products</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Save Draft</li>
+<li>Submit for Review</li>
+<li>Save and Publish</li>
+<li>Cancel</li>
+<li>Export to Excel</li>
+<li>Import from Excel</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Save Draft</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Save Draft"] --> Validate["Validate Basic Fields"]
+    Validate --> Save["Save Pricelist as Draft"]
+
+</div>
+<p><strong>Submit for Review</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Submit for Review"] --> Validate["Validate All Fields"]
+    Validate --> Update["Update Status to Pending Review"]
+
+</div>
+<p><strong>Save and Publish</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Save and Publish"] --> Validate["Validate All Fields"]
+    Validate --> Publish["Update Status to Active"]
+
+</div>
+<p><strong>Add Product Line</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Add Product"] --> Open["Open Product Selection"]
+    Open --> Add["Add Product to Pricelist"]
+
+</div>
+<p><strong>Delete Product Line</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Delete Product"] --> Modal["Show Delete Confirmation"]
+    Modal --> Remove["Remove Product from Pricelist"]
+
+</div>
+<p><strong>Apply Percentage Change</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Apply Percentage"] --> Modal["Show Percentage Input Modal"]
+    Modal --> Update["Update All Selected Product Prices"]
+
+</div>
+<p><strong>Copy Pricing</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Copy Pricing"] --> Modal["Show Pricelist Selection Modal"]
+    Modal --> Copy["Copy Prices from Selected Pricelist"]
+
+</div>
+<p><strong>Export to Excel</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Export"] --> Generate["Generate Excel File"]
+    Generate --> Download["Download Pricelist Excel"]
+
+</div>
+<p><strong>Import from Excel</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Import"] --> Upload["Open File Upload Dialog"]
+    Upload --> Validate["Validate Excel Data"]
+    Validate --> Import["Import Products and Prices"]
+
+</div>
+<hr>
+<h3 id="vendor-portal-demo">Vendor Portal (Demo)</h3>
+<p><strong>Path</strong>: <code>/vendor-management/vendor-portal/sample</code><br><strong>File</strong>: <code>app/(main)/vendor-management/vendor-portal/sample/page.tsx</code></p>
+<p><img src="screenshots/vm-vendor-portal.png" alt="Vendor Portal"><br><em>Vendor Self-Service Portal - External vendor price entry interface</em></p>
+<p><strong>Status</strong>: 🚧 Prototype/Demo</p>
+<p><strong>Purpose</strong>: External vendor self-service portal for price entry</p>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Token-based authentication (simulated)</li>
+<li>Campaign/template view</li>
+<li>Price entry form</li>
+<li>Auto-save functionality</li>
+<li>Validation feedback</li>
+<li>Submit confirmation</li>
+</ul>
+<p><strong>Form Fields</strong> (per product):</p>
+<ul>
+<li>Product Name (readonly)</li>
+<li>Product Code (readonly)</li>
+<li>Description (readonly)</li>
+<li>Your Price (editable)</li>
+<li>MOQ (editable)</li>
+<li>Lead Time Days (editable)</li>
+<li>Notes (textarea)</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Save Draft (auto-save every 30s)</li>
+<li>Submit Pricelist</li>
+<li>Download Template</li>
+<li>Cancel</li>
+</ul>
+<p><strong>Validation</strong>:</p>
+<ul>
+<li>All prices must be positive</li>
+<li>MOQ must be positive integer</li>
+<li>Lead time reasonable (1-365 days)</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Auto-Save Draft</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Timer["30 Second Timer"] --> Save["Save Current Form State"]
+    Save --> Show["Show Auto-save Indicator"]
+
+</div>
+<p><strong>Submit Pricelist</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Submit Pricelist"] --> Validate["Validate All Entries"]
+    Validate --> Modal["Show Submission Confirmation"]
+    Modal --> Submit["Submit Pricelist to System"]
+
+</div>
+<p><strong>Download Template</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Download Template"] --> Generate["Generate Excel Template"]
+    Generate --> Download["Download Template File"]
+
+</div>
+<p><strong>Edit Product Price</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Edit["Edit Price Field"] --> Validate["Validate Price Value"]
+    Validate --> Update["Update Product Price"]
+
+</div>
+<p><strong>Edit MOQ</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Edit["Edit MOQ Field"] --> Validate["Validate MOQ Value"]
+    Validate --> Update["Update Product MOQ"]
+
+</div>
+<hr>
+<h2 id="modals-and-dialogs">Modals and Dialogs</h2>
+<h3 id="1-advanced-filter-dialog">1. Advanced Filter Dialog</h3>
+<p><strong>Trigger</strong>: Click &quot;Advanced Filter&quot; button<br><strong>Component</strong>: <code>advanced-filter.tsx</code></p>
+<p><strong>Filter Fields</strong>:</p>
+<ul>
+<li>Company Name (text contains)</li>
+<li>Business Type (multi-select)</li>
+<li>Status (dropdown)</li>
+<li>Registration Date (date range)</li>
+<li>Credit Limit (range)</li>
+<li>Has Active Pricelists (yes/no)</li>
+<li>Payment Terms (multi-select)</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Apply Filters</li>
+<li>Clear All</li>
+<li>Save Filter Preset</li>
+<li>Cancel</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Apply Filters</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Apply Filters"] --> Build["Build Filter Query"]
+    Build --> Filter["Apply Filters to List"]
+
+</div>
+<p><strong>Clear All Filters</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Clear All"] --> Reset["Reset All Filter Fields"]
+    Reset --> Refresh["Refresh List View"]
+
+</div>
+<p><strong>Save Filter Preset</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Save Preset"] --> Modal["Show Save Preset Dialog"]
+    Modal --> Save["Save Filter Configuration"]
+
+</div>
+<h3 id="2-vendor-deletion-dialog">2. Vendor Deletion Dialog</h3>
+<p><strong>Trigger</strong>: Click delete on vendor<br><strong>Component</strong>: <code>VendorDeletionDialog.tsx</code></p>
+<p><strong>Displays</strong>:</p>
+<ul>
+<li>Warning message</li>
+<li>Dependency check results</li>
+<li>Impact summary (POs, PRs affected)</li>
+<li>Force delete option (if has dependencies)</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Confirm Delete</li>
+<li>Cancel</li>
+<li>View Dependencies</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Confirm Delete</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Confirm Delete"] --> Check["Check for Dependencies"]
+    Check --> Delete["Delete Vendor Record"]
+
+</div>
+<p><strong>View Dependencies</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click View Dependencies"] --> Display["Display Dependency List"]
+    Display --> Navigate["Navigate to Related Records"]
+
+</div>
+<h3 id="3-addedit-contact-dialog">3. Add/Edit Contact Dialog</h3>
+<p><strong>Trigger</strong>: Add/Edit contact buttons</p>
+<p><strong>Fields</strong>:</p>
+<ul>
+<li>Contact Name</li>
+<li>Role/Title</li>
+<li>Email</li>
+<li>Phone</li>
+<li>Mobile</li>
+<li>Is Primary Contact (toggle)</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Save</li>
+<li>Cancel</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Save Contact</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Save"] --> Validate["Validate Contact Fields"]
+    Validate --> Save["Save Contact to Vendor"]
+
+</div>
+<p><strong>Set Primary Contact</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Toggle["Toggle Primary Contact"] --> Update["Update Primary Contact Flag"]
+    Update --> Unset["Unset Other Primary Contacts"]
+
+</div>
+<h3 id="4-addedit-address-dialog">4. Add/Edit Address Dialog</h3>
+<p><strong>Trigger</strong>: Add/Edit address buttons</p>
+<p><strong>Fields</strong>:</p>
+<ul>
+<li>Address Type</li>
+<li>Street Address</li>
+<li>City</li>
+<li>State/Province</li>
+<li>Postal Code</li>
+<li>Country</li>
+<li>Is Primary Address (toggle)</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Save</li>
+<li>Cancel</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Save Address</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Save"] --> Validate["Validate Address Fields"]
+    Validate --> Save["Save Address to Vendor"]
+
+</div>
+<p><strong>Set Primary Address</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Toggle["Toggle Primary Address"] --> Update["Update Primary Address Flag"]
+    Update --> Unset["Unset Other Primary Addresses"]
+
+</div>
+<h3 id="5-addedit-certification-dialog">5. Add/Edit Certification Dialog</h3>
+<p><strong>Trigger</strong>: Add/Edit certification buttons</p>
+<p><strong>Fields</strong>:</p>
+<ul>
+<li>Certification Name</li>
+<li>Certification Number</li>
+<li>Issuing Authority</li>
+<li>Issue Date</li>
+<li>Expiry Date</li>
+<li>Document Upload</li>
+<li>Notes</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Save</li>
+<li>Upload Document</li>
+<li>Cancel</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Save Certification</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Save"] --> Validate["Validate Certification Fields"]
+    Validate --> Save["Save Certification to Vendor"]
+
+</div>
+<p><strong>Upload Document</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Upload"] --> Open["Open File Upload Dialog"]
+    Open --> Upload["Upload Certification Document"]
+
+</div>
+<h3 id="6-product-selection-dialog">6. Product Selection Dialog</h3>
+<p><strong>Trigger</strong>: Add products in templates</p>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Search bar</li>
+<li>Category tree navigation</li>
+<li>Product list with checkboxes</li>
+<li>Selected products preview</li>
+<li>Bulk select/deselect</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Add Selected</li>
+<li>Clear Selection</li>
+<li>Cancel</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Search Products</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Type["Type Search Query"] --> Search["Search Product Catalog"]
+    Search --> Display["Display Matching Products"]
+
+</div>
+<p><strong>Select Products</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Check["Check Product Checkbox"] --> Add["Add to Selected Products"]
+    Add --> Update["Update Selection Preview"]
+
+</div>
+<p><strong>Add Selected Products</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Add Selected"] --> Validate["Validate Selection"]
+    Validate --> Add["Add Products to Template"]
+
+</div>
+<p><strong>Browse Categories</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Category Node"] --> Expand["Expand Category Tree"]
+    Expand --> Display["Display Category Products"]
+
+</div>
+<h3 id="7-email-preview-dialog">7. Email Preview Dialog</h3>
+<p><strong>Trigger</strong>: Preview campaign invitation</p>
+<p><strong>Displays</strong>:</p>
+<ul>
+<li>Email subject</li>
+<li>Email body</li>
+<li>Vendor portal link</li>
+<li>Campaign details</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Send Now</li>
+<li>Edit Template</li>
+<li>Cancel</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Send Now</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Send Now"] --> Confirm["Show Send Confirmation"]
+    Confirm --> Send["Send Email to Vendors"]
+
+</div>
+<p><strong>Edit Template</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Edit Template"] --> Close["Close Preview"]
+    Close --> Open["Open Email Template Editor"]
+
+</div>
+<hr>
+<h2 id="dropdown-fields-reference">Dropdown Fields Reference</h2>
+<h3 id="status-dropdown">Status Dropdown</h3>
+<p><strong>Values</strong>: Active, Inactive<br><strong>Used in</strong>: Vendor filters, vendor form</p>
+<h3 id="business-type-dropdown">Business Type Dropdown</h3>
+<p><strong>Values</strong>:</p>
+<ul>
+<li>Manufacturer</li>
+<li>Distributor</li>
+<li>Wholesaler</li>
+<li>Retailer</li>
+<li>Service Provider</li>
+<li>Contractor</li>
+<li>Supplier</li>
+</ul>
+<p><strong>Used in</strong>: Vendor form, advanced filters</p>
+<h3 id="payment-terms-dropdown">Payment Terms Dropdown</h3>
+<p><strong>Values</strong>:</p>
+<ul>
+<li>Net 30 Days</li>
+<li>Net 60 Days</li>
+<li>Net 90 Days</li>
+<li>Due on Receipt</li>
+<li>Custom Terms</li>
+</ul>
+<p><strong>Used in</strong>: Vendor form, pricelist settings</p>
+<h3 id="address-type-dropdown">Address Type Dropdown</h3>
+<p><strong>Values</strong>:</p>
+<ul>
+<li>Billing Address</li>
+<li>Shipping Address</li>
+<li>Office Address</li>
+<li>Warehouse Address</li>
+</ul>
+<p><strong>Used in</strong>: Address forms</p>
+<h3 id="currency-dropdown">Currency Dropdown</h3>
+<p><strong>Values</strong>: USD, EUR, GBP, JPY, CAD, AUD, etc.<br><strong>Used in</strong>: Vendor form, pricelist forms</p>
+<h3 id="template-type-dropdown">Template Type Dropdown</h3>
+<p><strong>Values</strong>:</p>
+<ul>
+<li>Standard Pricelist</li>
+<li>RFQ Template</li>
+<li>Contract Template</li>
+<li>Catalog Template</li>
+</ul>
+<p><strong>Used in</strong>: Template forms</p>
+<h3 id="campaign-status-dropdown">Campaign Status Dropdown</h3>
+<p><strong>Values</strong>: Draft, Active, Completed, Cancelled<br><strong>Used in</strong>: Campaign filters</p>
+<h3 id="pricelist-status-dropdown">Pricelist Status Dropdown</h3>
+<p><strong>Values</strong>: Draft, Pending Review, Active, Expired, Rejected<br><strong>Used in</strong>: Pricelist filters</p>
+<hr>
+<h2 id="actions-and-buttons-reference">Actions and Buttons Reference</h2>
+<h3 id="global-actions-appearing-across-multiple-pages">Global Actions (appearing across multiple pages):</h3>
+<ul>
+<li><strong>Search</strong> - Real-time search</li>
+<li><strong>Filter</strong> - Open filter dialog</li>
+<li><strong>Export</strong> - Export to Excel</li>
+<li><strong>Add New</strong> - Create new record</li>
+<li><strong>Refresh</strong> - Reload data</li>
+<li><strong>Settings</strong> - Module settings</li>
+</ul>
+<h3 id="list-view-actions">List View Actions:</h3>
+<ul>
+<li><strong>View Details</strong> - Navigate to detail page</li>
+<li><strong>Edit</strong> - Edit mode or edit page</li>
+<li><strong>Duplicate</strong> - Clone record</li>
+<li><strong>Delete</strong> - Delete with confirmation</li>
+<li><strong>Export Single</strong> - Export single record</li>
+</ul>
+<h3 id="detail-view-actions">Detail View Actions:</h3>
+<ul>
+<li><strong>Back</strong> - Return to list</li>
+<li><strong>Edit</strong> - Enter edit mode</li>
+<li><strong>Save</strong> - Save changes</li>
+<li><strong>Cancel</strong> - Discard changes</li>
+<li><strong>Delete</strong> - Delete record</li>
+<li><strong>Print</strong> - Print view</li>
+<li><strong>Download PDF</strong> - Export to PDF</li>
+</ul>
+<h3 id="form-actions">Form Actions:</h3>
+<ul>
+<li><strong>Save</strong> - Save record</li>
+<li><strong>Save and Add Another</strong> - Save and reset form</li>
+<li><strong>Save Draft</strong> - Save as draft</li>
+<li><strong>Submit</strong> - Submit for review/approval</li>
+<li><strong>Cancel</strong> - Discard and return</li>
+<li><strong>Reset</strong> - Clear form</li>
+</ul>
+<h3 id="bulk-actions-multi-select">Bulk Actions (multi-select):</h3>
+<ul>
+<li><strong>Delete Selected</strong> - Bulk delete</li>
+<li><strong>Export Selected</strong> - Bulk export</li>
+<li><strong>Update Status</strong> - Bulk status change</li>
+<li><strong>Apply Action</strong> - Custom bulk operations</li>
+</ul>
+<hr>
+<h2 id="form-components">Form Components</h2>
+<h3 id="text-input-fields">Text Input Fields</h3>
+<ul>
+<li>Standard text input</li>
+<li>Email input (validated)</li>
+<li>Phone input (formatted)</li>
+<li>URL input (validated)</li>
+<li>Number input (numeric keyboard)</li>
+<li>Currency input (formatted with symbol)</li>
+</ul>
+<h3 id="selectdropdown-fields">Select/Dropdown Fields</h3>
+<ul>
+<li>Single select dropdown</li>
+<li>Multi-select dropdown</li>
+<li>Searchable dropdown</li>
+<li>Country selector</li>
+<li>Currency selector</li>
+</ul>
+<h3 id="datetime-fields">Date/Time Fields</h3>
+<ul>
+<li>Date picker</li>
+<li>Date range picker</li>
+<li>Time picker</li>
+<li>DateTime picker</li>
+</ul>
+<h3 id="rich-input-fields">Rich Input Fields</h3>
+<ul>
+<li>Textarea (multiline)</li>
+<li>Rich text editor</li>
+<li>File upload (with preview)</li>
+<li>Image upload (with cropping)</li>
+<li>Document upload (with validation)</li>
+</ul>
+<h3 id="togglecheckbox-fields">Toggle/Checkbox Fields</h3>
+<ul>
+<li>Checkbox</li>
+<li>Toggle switch</li>
+<li>Radio button group</li>
+<li>Checkbox group</li>
+</ul>
+<h3 id="specialized-components">Specialized Components</h3>
+<ul>
+<li>Product selector</li>
+<li>Vendor selector</li>
+<li>Category tree selector</li>
+<li>MOQ tier builder</li>
+<li>Custom field builder</li>
+</ul>
+<hr>
+<h2 id="data-display-components">Data Display Components</h2>
+<h3 id="tables">Tables</h3>
+<ul>
+<li>Sortable columns</li>
+<li>Pagination</li>
+<li>Row selection</li>
+<li>Inline actions</li>
+<li>Expandable rows</li>
+<li>Column visibility toggle</li>
+</ul>
+<h3 id="cards">Cards</h3>
+<ul>
+<li>Vendor card</li>
+<li>Template card</li>
+<li>Campaign card</li>
+<li>Pricelist card</li>
+</ul>
+<h3 id="lists">Lists</h3>
+<ul>
+<li>Contact list</li>
+<li>Address list</li>
+<li>Certification list</li>
+<li>Product list</li>
+</ul>
+<h3 id="statisticsmetrics">Statistics/Metrics</h3>
+<ul>
+<li>KPI cards</li>
+<li>Summary widgets</li>
+<li>Progress indicators</li>
+<li>Status badges</li>
+</ul>
+<h3 id="timelinehistory">Timeline/History</h3>
+<ul>
+<li>Activity feed</li>
+<li>Audit trail</li>
+<li>Change log</li>
+</ul>
+<hr>
+<h2 id="glossary">Glossary</h2>
+<h3 id="a">A</h3>
+<p><strong>Active Status</strong>: A vendor or pricelist that is currently operational and available for use in procurement processes.</p>
+<p><strong>Address Type</strong>: Classification of vendor addresses (Billing, Shipping, Office, Warehouse) to organize contact information.</p>
+<p><strong>Advanced Filter</strong>: Enhanced filtering capability allowing multiple criteria to be combined for precise vendor searches.</p>
+<p><strong>Approval Workflow</strong>: Process by which pricelists or vendor changes are reviewed and approved before becoming active.</p>
+<p><strong>Audit Trail</strong>: Historical record of all changes made to vendor records, pricelists, and related data.</p>
+<h3 id="b">B</h3>
+<p><strong>Bulk Actions</strong>: Operations that can be applied to multiple records simultaneously (e.g., price updates, status changes).</p>
+<p><strong>Business Type</strong>: Classification of vendors by their primary business model (Manufacturer, Distributor, Wholesaler, Retailer, Service Provider, Contractor, Supplier).</p>
+<h3 id="c">C</h3>
+<p><strong>Campaign</strong>: An organized request for pricing (RFP/RFQ) sent to multiple vendors simultaneously using a template.</p>
+<p><strong>Campaign Status</strong>: Current state of a pricing campaign (Draft, Active, Completed, Cancelled).</p>
+<p><strong>Catalog Template</strong>: Pricelist template designed for vendor product catalogs.</p>
+<p><strong>Certification</strong>: Official documents proving vendor compliance with industry standards, regulations, or quality requirements.</p>
+<p><strong>Contact</strong>: Individual person associated with a vendor, including their role, email, phone, and primary contact designation.</p>
+<p><strong>Contract Template</strong>: Pricelist template designed for long-term vendor contracts.</p>
+<p><strong>Credit Limit</strong>: Maximum amount of credit extended to a vendor for purchases.</p>
+<p><strong>Currency</strong>: Monetary unit used for pricing (USD, EUR, GBP, JPY, etc.).</p>
+<p><strong>Custom Fields</strong>: User-defined data fields that can be added to pricelist templates for specific information requirements.</p>
+<h3 id="d">D</h3>
+<p><strong>Dependency Check</strong>: Process that identifies related records (POs, PRs) before allowing vendor deletion.</p>
+<p><strong>Draft Status</strong>: Initial state of pricelists or campaigns that are being created but not yet active.</p>
+<h3 id="e">E</h3>
+<p><strong>Effective Date</strong>: Date when a pricelist becomes active and pricing becomes valid.</p>
+<p><strong>Email Template</strong>: Pre-formatted email message used for campaign invitations to vendors.</p>
+<p><strong>Expiry Date</strong>: Date when a pricelist expires and pricing is no longer valid.</p>
+<p><strong>Export</strong>: Function to download data in Excel or PDF format for external use.</p>
+<h3 id="f">F</h3>
+<p><strong>Field Type</strong>: Data type for custom fields (Text, Number, Currency, Date, Dropdown, Yes/No).</p>
+<p><strong>Filter Preset</strong>: Saved filter configuration that can be reused for common search scenarios.</p>
+<p><strong>Force Delete</strong>: Option to delete a vendor record even when dependencies exist.</p>
+<h3 id="g">G</h3>
+<p><strong>GRN (Goods Received Note)</strong>: Document recording receipt of goods from a vendor (referenced in dependency checks).</p>
+<h3 id="i">I</h3>
+<p><strong>Import</strong>: Function to upload data from Excel files into the system.</p>
+<p><strong>Inactive Status</strong>: A vendor or pricelist that is not currently available for use in procurement.</p>
+<p><strong>Invitation Settings</strong>: Configuration for how and when campaign invitations are sent to vendors.</p>
+<p><strong>Issuing Authority</strong>: Organization that grants certifications to vendors.</p>
+<h3 id="l">L</h3>
+<p><strong>Lead Time</strong>: Number of days required for a vendor to deliver products after order placement.</p>
+<h3 id="m">M</h3>
+<p><strong>MOQ (Minimum Order Quantity)</strong>: Smallest quantity of a product that a vendor is willing to sell in a single order.</p>
+<p><strong>MOQ Pricing</strong>: Tiered pricing structure where unit prices change based on order quantity thresholds.</p>
+<p><strong>MOQ Tier</strong>: Specific quantity level in a tiered pricing structure (e.g., 1-99 units, 100-499 units).</p>
+<h3 id="p">P</h3>
+<p><strong>Payment Terms</strong>: Agreement specifying when payment is due (Net 30, Net 60, Net 90, Due on Receipt, Custom Terms).</p>
+<p><strong>Pending Review</strong>: Status indicating a pricelist has been submitted and awaits approval.</p>
+<p><strong>Primary Address</strong>: Main address designated for a vendor, typically used as default for transactions.</p>
+<p><strong>Primary Contact</strong>: Main point of contact designated for a vendor, used as default for communications.</p>
+<p><strong>Pricelist</strong>: Document containing product pricing information from a vendor, including MOQs, tier pricing, and terms.</p>
+<p><strong>Pricelist Number</strong>: Unique identifier assigned to each pricelist for tracking purposes.</p>
+<p><strong>Pricelist Status</strong>: Current state of a pricelist (Draft, Pending Review, Active, Expired, Rejected).</p>
+<p><strong>Product Code</strong>: Unique identifier for a product in the catalog.</p>
+<p><strong>Product Selection</strong>: Interface for choosing products to include in templates or pricelists.</p>
+<h3 id="r">R</h3>
+<p><strong>Registration Number</strong>: Official business registration identifier for a vendor.</p>
+<p><strong>Response Tracking</strong>: System for monitoring vendor responses to campaign invitations.</p>
+<p><strong>RFP (Request for Proposal)</strong>: Formal request sent to vendors asking for detailed proposals.</p>
+<p><strong>RFQ (Request for Quotation)</strong>: Formal request sent to vendors asking for pricing information.</p>
+<p><strong>RFQ Template</strong>: Pricelist template designed specifically for RFQ campaigns.</p>
+<h3 id="s">S</h3>
+<p><strong>Standard Pricelist</strong>: Basic pricelist template for general vendor pricing.</p>
+<p><strong>Status Badge</strong>: Visual indicator showing the current status of records (Active, Inactive, Draft, etc.).</p>
+<p><strong>Submit for Review</strong>: Action to send a draft pricelist to reviewers for approval.</p>
+<h3 id="t">T</h3>
+<p><strong>Tax Exempt</strong>: Designation indicating a vendor is exempt from certain tax requirements.</p>
+<p><strong>Tax ID</strong>: Tax identification number assigned to a vendor by tax authorities.</p>
+<p><strong>Tax Rate</strong>: Percentage of tax applied to transactions with a vendor.</p>
+<p><strong>Tax Registration Number</strong>: Official registration number for tax purposes.</p>
+<p><strong>Template</strong>: Pre-configured structure for collecting vendor pricing information, defining which products and fields are included.</p>
+<p><strong>Template Type</strong>: Classification of templates (Standard Pricelist, RFQ Template, Contract Template, Catalog Template).</p>
+<p><strong>Tier Pricing</strong>: Pricing structure where unit price varies based on quantity purchased (see MOQ Pricing).</p>
+<h3 id="u">U</h3>
+<p><strong>Unit of Measure</strong>: Measurement unit for products (each, box, kg, liter, etc.).</p>
+<p><strong>Unsaved Changes Warning</strong>: Dialog that alerts users when attempting to leave a form with uncommitted changes.</p>
+<h3 id="v">V</h3>
+<p><strong>Validation</strong>: Process of checking data for correctness, completeness, and compliance with business rules.</p>
+<p><strong>Vendor</strong>: External supplier or service provider from whom goods or services are purchased.</p>
+<p><strong>Vendor Comparison</strong>: Analysis tool for comparing pricing and terms across multiple vendors.</p>
+<p><strong>Vendor Portal</strong>: Self-service web interface where vendors can view requests and submit pricing information.</p>
+<p><strong>Volume Discount</strong>: Price reduction applied when purchasing larger quantities (see MOQ Pricing, Tier Pricing).</p>
+<h3 id="w">W</h3>
+<p><strong>Workflow</strong>: Automated process for routing pricelists or vendor changes through approval steps.</p>
+<hr>
+<p><strong>Last Updated</strong>: 2025-10-02<br><strong>Status</strong>: Complete specification for all pages, modals, dropdowns, actions, and glossary</p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#vendor-management-pages-and-components-specification" class="level-1">Vendor Management - Pages and Components Specification</a>
+<a href="#table-of-contents" class="level-2">Table of Contents</a>
+<a href="#pages-overview" class="level-2">Pages Overview</a>
+<a href="#landing-page" class="level-3">Landing Page</a>
+<a href="#manage-vendors-list-page" class="level-3">Manage Vendors - List Page</a>
+<a href="#manage-vendors-detail-page" class="level-3">Manage Vendors - Detail Page</a>
+<a href="#new-vendor-form" class="level-3">New Vendor Form</a>
+<a href="#vendor-edit-page-alternative" class="level-3">Vendor Edit Page (Alternative)</a>
+<a href="#pricelist-settings" class="level-3">Pricelist Settings</a>
+<a href="#templates-list-page" class="level-3">Templates - List Page</a>
+<a href="#templates-newedit" class="level-3">Templates - New/Edit</a>
+<a href="#campaigns-list-page" class="level-3">Campaigns - List Page</a>
+<a href="#campaigns-newdetail" class="level-3">Campaigns - New/Detail</a>
+<a href="#pricelists-list-page" class="level-3">Pricelists - List Page</a>
+<a href="#pricelists-edit" class="level-3">Pricelists - Edit</a>
+<a href="#vendor-portal-demo" class="level-3">Vendor Portal (Demo)</a>
+<a href="#modals-and-dialogs" class="level-2">Modals and Dialogs</a>
+<a href="#1-advanced-filter-dialog" class="level-3">1. Advanced Filter Dialog</a>
+<a href="#2-vendor-deletion-dialog" class="level-3">2. Vendor Deletion Dialog</a>
+<a href="#3-addedit-contact-dialog" class="level-3">3. Add/Edit Contact Dialog</a>
+<a href="#4-addedit-address-dialog" class="level-3">4. Add/Edit Address Dialog</a>
+<a href="#5-addedit-certification-dialog" class="level-3">5. Add/Edit Certification Dialog</a>
+<a href="#6-product-selection-dialog" class="level-3">6. Product Selection Dialog</a>
+<a href="#7-email-preview-dialog" class="level-3">7. Email Preview Dialog</a>
+<a href="#dropdown-fields-reference" class="level-2">Dropdown Fields Reference</a>
+<a href="#status-dropdown" class="level-3">Status Dropdown</a>
+<a href="#business-type-dropdown" class="level-3">Business Type Dropdown</a>
+<a href="#payment-terms-dropdown" class="level-3">Payment Terms Dropdown</a>
+<a href="#address-type-dropdown" class="level-3">Address Type Dropdown</a>
+<a href="#currency-dropdown" class="level-3">Currency Dropdown</a>
+<a href="#template-type-dropdown" class="level-3">Template Type Dropdown</a>
+<a href="#campaign-status-dropdown" class="level-3">Campaign Status Dropdown</a>
+<a href="#pricelist-status-dropdown" class="level-3">Pricelist Status Dropdown</a>
+<a href="#actions-and-buttons-reference" class="level-2">Actions and Buttons Reference</a>
+<a href="#global-actions-appearing-across-multiple-pages" class="level-3">Global Actions (appearing across multiple pages):</a>
+<a href="#list-view-actions" class="level-3">List View Actions:</a>
+<a href="#detail-view-actions" class="level-3">Detail View Actions:</a>
+<a href="#form-actions" class="level-3">Form Actions:</a>
+<a href="#bulk-actions-multi-select" class="level-3">Bulk Actions (multi-select):</a>
+<a href="#form-components" class="level-2">Form Components</a>
+<a href="#text-input-fields" class="level-3">Text Input Fields</a>
+<a href="#selectdropdown-fields" class="level-3">Select/Dropdown Fields</a>
+<a href="#datetime-fields" class="level-3">Date/Time Fields</a>
+<a href="#rich-input-fields" class="level-3">Rich Input Fields</a>
+<a href="#togglecheckbox-fields" class="level-3">Toggle/Checkbox Fields</a>
+<a href="#specialized-components" class="level-3">Specialized Components</a>
+<a href="#data-display-components" class="level-2">Data Display Components</a>
+<a href="#tables" class="level-3">Tables</a>
+<a href="#cards" class="level-3">Cards</a>
+<a href="#lists" class="level-3">Lists</a>
+<a href="#statisticsmetrics" class="level-3">Statistics/Metrics</a>
+<a href="#timelinehistory" class="level-3">Timeline/History</a>
+<a href="#glossary" class="level-2">Glossary</a>
+<a href="#a" class="level-3">A</a>
+<a href="#b" class="level-3">B</a>
+<a href="#c" class="level-3">C</a>
+<a href="#d" class="level-3">D</a>
+<a href="#e" class="level-3">E</a>
+<a href="#f" class="level-3">F</a>
+<a href="#g" class="level-3">G</a>
+<a href="#i" class="level-3">I</a>
+<a href="#l" class="level-3">L</a>
+<a href="#m" class="level-3">M</a>
+<a href="#p" class="level-3">P</a>
+<a href="#r" class="level-3">R</a>
+<a href="#s" class="level-3">S</a>
+<a href="#t" class="level-3">T</a>
+<a href="#u" class="level-3">U</a>
+<a href="#v" class="level-3">V</a>
+<a href="#w" class="level-3">W</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

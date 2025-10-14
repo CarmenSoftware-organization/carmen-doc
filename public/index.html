@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carmen ERP - Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </div>
+            <div class="header-actions">
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="searchInput" placeholder="Search documentation..." class="search-input">
+                </div>
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h3>Documentation</h3>
+                <button class="sidebar-close" id="sidebarClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <nav class="nav-menu" id="navMenu">
+                <!-- Navigation will be dynamically populated -->
+                <div class="nav-loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <span>Loading navigation...</span>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <div class="content-wrapper">
+                <!-- Breadcrumb (hidden on home page) -->
+                <div class="breadcrumb hidden" id="breadcrumb">
+                    <a href="#" class="breadcrumb-item" data-file="">Home</a>
+                </div>
+
+                <!-- Content -->
+                <article class="content" id="content">
+                    <div class="welcome-screen">
+                        <div class="welcome-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <h1>Welcome to Carmen ERP Documentation</h1>
+                        <p class="welcome-subtitle">A comprehensive hospitality management system built with Next.js, TypeScript, and modern React patterns.</p>
+
+                        <div class="quick-links">
+                            <h2>Quick Start</h2>
+                            <div class="link-grid">
+                                <a href="docs/SYSTEM-DOCUMENTATION-INDEX.html" class="link-card">
+                                    <i class="fas fa-home"></i>
+                                    <h3>System Overview</h3>
+                                    <p>Get started with the system architecture and overview</p>
+                                </a>
+                                <a href="docs/architecture/SYSTEM-ARCHITECTURE.html" class="link-card">
+                                    <i class="fas fa-sitemap"></i>
+                                    <h3>Architecture</h3>
+                                    <p>Explore the technical architecture and design patterns</p>
+                                </a>
+                                <a href="docs/DOCUMENTATION-CATALOG.html" class="link-card">
+                                    <i class="fas fa-list"></i>
+                                    <h3>Documentation Catalog</h3>
+                                    <p>Browse all available documentation assets</p>
+                                </a>
+                                <a href="docs/stakeholders/BUSINESS-VALUE.html" class="link-card">
+                                    <i class="fas fa-chart-line"></i>
+                                    <h3>Business Value</h3>
+                                    <p>Understand the ROI and business benefits</p>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="modules-overview">
+                            <h2>System Modules</h2>
+                            <div class="modules-grid">
+                                <div class="module-card">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    <h4>Procurement</h4>
+                                    <p>Purchase requests, orders, and GRN management</p>
+                                </div>
+                                <div class="module-card">
+                                    <i class="fas fa-boxes"></i>
+                                    <h4>Inventory</h4>
+                                    <p>Stock tracking, physical counts, and adjustments</p>
+                                </div>
+                                <div class="module-card">
+                                    <i class="fas fa-handshake"></i>
+                                    <h4>Vendor Management</h4>
+                                    <p>Vendor relationships and price list management</p>
+                                </div>
+                                <div class="module-card">
+                                    <i class="fas fa-cube"></i>
+                                    <h4>Product Management</h4>
+                                    <p>Product catalog and category management</p>
+                                </div>
+                                <div class="module-card">
+                                    <i class="fas fa-store"></i>
+                                    <h4>Store Operations</h4>
+                                    <p>Store requisitions and wastage reporting</p>
+                                </div>
+                                <div class="module-card">
+                                    <i class="fas fa-utensils"></i>
+                                    <h4>Recipe Management</h4>
+                                    <p>Recipe library and menu engineering</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Table of Contents -->
+                <aside class="toc" id="toc">
+                    <div class="toc-header">
+                        <h4>On This Page</h4>
+                    </div>
+                    <nav class="toc-nav" id="tocNav">
+                        <!-- Table of contents will be dynamically populated -->
+                    </nav>
+                </aside>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="app.js"></script>
+</body>
+</html>

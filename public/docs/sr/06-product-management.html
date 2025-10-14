@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feature: Product Management and Catalog System - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: var(--bg-gradient);
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr 300px;
+            gap: 2rem;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 1.5rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .back-to-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: var(--primary-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        .back-to-home:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        /* Content Area */
+        .doc-content {
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 260px 1fr 280px;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 1.5rem;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 2.5rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            .doc-nav {
+                display: none;
+            }
+            .doc-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </div>
+            <div class="doc-header-actions">
+                <a href="../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../SYSTEM-DOCUMENTATION-INDEX.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Documentation Index</span>
+                    </a>
+                    <a href="../DOCUMENTATION-CATALOG.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Catalog</span>
+                    </a>
+                    <a href="../DOCUMENTATION-SUMMARY-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Summary</span>
+                    </a>
+                    <a href="../MODULE-VERIFICATION-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Module Verification</span>
+                    </a>
+                    <a href="../SYSTEM-GAPS-AND-ROADMAP.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Gaps & Roadmap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../architecture/SYSTEM-ARCHITECTURE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-users"></i>
+                    <span>Stakeholders</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../stakeholders/BUSINESS-VALUE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pr/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Requests</span>
+                    </a>
+                    <a href="../po/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Orders</span>
+                    </a>
+                    <a href="../grn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Goods Received Note</span>
+                    </a>
+                    <a href="../cn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Credit Notes</span>
+                    </a>
+                    <a href="../prt/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>PR Templates</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-boxes"></i>
+                    <span>Inventory Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../inv/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Overview</span>
+                    </a>
+                    <a href="../inv/inventory-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Specification</span>
+                    </a>
+                    <a href="../inv/inventory-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Sitemap</span>
+                    </a>
+                    <a href="../pc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Physical Count</span>
+                    </a>
+                    <a href="../sc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Spot Check</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-handshake"></i>
+                    <span>Vendor Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../vm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Overview</span>
+                    </a>
+                    <a href="../vm/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Module</span>
+                    </a>
+                    <a href="../vm/MANAGE-VENDORS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Manage Vendors</span>
+                    </a>
+                    <a href="../vm/TEMPLATES.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Templates</span>
+                    </a>
+                    <a href="../vm/CAMPAIGNS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Campaigns</span>
+                    </a>
+                    <a href="../vm/PRICELISTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Pricelists</span>
+                    </a>
+                    <a href="../vm/VENDOR-PORTAL.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Portal</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cube"></i>
+                    <span>Product Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Overview</span>
+                    </a>
+                    <a href="../pm/product-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Specification</span>
+                    </a>
+                    <a href="../pm/product-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-store"></i>
+                    <span>Store Operations</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../store-ops/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Overview</span>
+                    </a>
+                    <a href="../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Module</span>
+                    </a>
+                    <a href="../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Requisitions</span>
+                    </a>
+                    <a href="../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Stock Replenishment</span>
+                    </a>
+                    <a href="../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Wastage Reporting</span>
+                    </a>
+                    <a href="../store-ops/GLOSSARY.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Glossary</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Operational Planning</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../operational-planning/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Overview</span>
+                    </a>
+                    <a href="../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Module</span>
+                    </a>
+                    <a href="../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Menu Engineering</span>
+                    </a>
+                    <a href="../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Recipe Management</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cash-register"></i>
+                    <span>POS Integration</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pos-integration/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Overview</span>
+                    </a>
+                    <a href="../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Module</span>
+                    </a>
+                    <a href="../pos-integration/MAPPING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Mapping Subsystem</span>
+                    </a>
+                    <a href="../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Transaction Management</span>
+                    </a>
+                    <a href="../pos-integration/REPORTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports & Analytics</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../dashboard/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Overview</span>
+                    </a>
+                    <a href="../dashboard/sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>System Requirements</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../carmen-erp-system-requirements-documentation.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Requirements</span>
+                    </a>
+                    <a href="../comprehensive-schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="feature-product-management-and-catalog-system">Feature: Product Management and Catalog System</h1>
+<h2 id="description">Description</h2>
+<p>The Carmen ERP Product Management System provides comprehensive product catalog management with sophisticated product profiling, multi-unit conversions, environmental impact tracking, location assignment management, and inventory integration. The system supports complex product configurations including pricing structures, tax management, unit conversions for ordering/inventory/recipes, location-specific parameters, and environmental sustainability metrics. Products can be configured for sale items, ingredients, or both, with complete lifecycle management from creation to discontinuation.</p>
+<h2 id="process-flow-step-by-step">Process Flow (Step by Step)</h2>
+<h3 id="product-catalog-management">Product Catalog Management</h3>
+<ol>
+<li>User navigates to <code>/product-management/products</code> to access product catalog</li>
+<li>System displays product list with filtering by category, status, and search functionality</li>
+<li>User can create new products via &quot;Add Product&quot; button or edit existing products</li>
+<li>Product creation includes comprehensive tabs: General, Inventory, Order Units, Ingredient Units, Locations, Environmental Impact</li>
+<li>System validates product information including unique product codes and barcode verification</li>
+<li>Product profile setup includes category assignment, item group classification, and primary unit designation</li>
+<li>Advanced pricing configuration supports base price, standard cost, tax types, and deviation limits</li>
+<li>System maintains product relationships with vendors through pricing and procurement integration</li>
+</ol>
+<h3 id="unit-conversion-management">Unit Conversion Management</h3>
+<ol start="9">
+<li>System supports three types of unit conversions: Inventory, Order, and Recipe units</li>
+<li>Conversion factors enable seamless unit transitions (e.g., KG to Grams, Liters to Bottles)</li>
+<li>Order units facilitate procurement processes with vendor-specific ordering units</li>
+<li>Recipe units enable recipe management with precise ingredient measurements</li>
+<li>System validates conversion factor accuracy and prevents circular conversion chains</li>
+<li>Bulk conversion updates support mass product unit changes</li>
+</ol>
+<h3 id="location-assignment-system">Location Assignment System</h3>
+<ol start="15">
+<li>Products can be assigned to multiple storage locations with specific parameters</li>
+<li>Location assignments include min/max quantities, reorder points, and par levels</li>
+<li>System tracks location-specific inventory levels and movement restrictions</li>
+<li>Assignment validation ensures logical min/max relationships and stock level constraints</li>
+<li>Bulk location assignment supports consistent parameter application across products</li>
+<li>Integration with inventory management provides real-time location-specific stock updates</li>
+</ol>
+<h3 id="environmental-impact-tracking">Environmental Impact Tracking</h3>
+<ol start="21">
+<li>System captures comprehensive environmental metrics: carbon footprint, water usage, recyclability</li>
+<li>Sustainability certifications tracking includes Organic, Fair Trade, MSC, FSC certifications</li>
+<li>Energy efficiency ratings from A (most efficient) to F (least efficient) classification</li>
+<li>Biodegradability and packaging recyclability percentages for environmental compliance</li>
+<li>Environmental reports support sustainability initiatives and regulatory compliance</li>
+<li>Integration with procurement provides supplier environmental performance tracking</li>
+</ol>
+<h3 id="category-and-classification-system">Category and Classification System</h3>
+<ol start="27">
+<li>Hierarchical category structure supports Category → Subcategory → Item Group organization</li>
+<li>Dynamic category management allows real-time classification updates</li>
+<li>Item groups enable cross-category product clustering (e.g., Organic Products, Premium Items)</li>
+<li>Classification affects reporting, pricing strategies, and procurement workflows</li>
+<li>Bulk reclassification supports organizational structure changes</li>
+</ol>
+<h2 id="flow-diagram-mermaid">Flow Diagram (Mermaid)</h2>
+<div class="mermaid">
+flowchart TD
+    A[Access Product Management] --> B[Product Catalog View]
+    B --> C{Action Required?}
+    C -->|Create New| D[New Product Form]
+    C -->|Edit Existing| E[Product Detail Page]
+    C -->|View Catalog| F[Filtered Product List]
+
+    D --> G[General Information Tab]
+    G --> H[Inventory Configuration Tab]
+    H --> I[Order Units Setup Tab]
+    I --> J[Ingredient Units Tab]
+    J --> K[Location Assignment Tab]
+    K --> L[Environmental Impact Tab]
+    L --> M[Save Product]
+
+    E --> N[Tabbed Detail Interface]
+    N --> O{Edit Mode?}
+    O -->|Yes| G
+    O -->|No| P[View Product Information]
+
+    M --> Q[Product Validation]
+    Q --> R{Validation Passed?}
+    R -->|Yes| S[Create Product Record]
+    R -->|No| T[Show Validation Errors]
+    T --> G
+
+    S --> U[Update Unit Conversions]
+    U --> V[Assign Locations]
+    V --> W[Generate Inventory Records]
+    W --> X[Integration Updates]
+
+    P --> Y[Unit Conversion Management]
+    Y --> Z[Add/Edit Conversions]
+    Z --> AA[Validate Conversion Factors]
+    AA --> BB[Update Unit Relationships]
+
+    F --> CC[Category Management]
+    CC --> DD[Category Hierarchy Updates]
+    DD --> EE[Product Reclassification]
+
+    X --> FF[Procurement Integration]
+    X --> GG[Inventory Integration]
+    X --> HH[Recipe Integration]
+    BB --> FF
+    EE --> II[Reporting Updates]
+
+</div>
+<h2 id="screen-capture-locations">Screen Capture Locations</h2>
+<ul>
+<li>Capture: Product catalog list with category filters and search functionality</li>
+<li>Capture: New product creation form showing General tab with complete product information</li>
+<li>Capture: Unit conversions setup showing inventory, order, and recipe unit relationships</li>
+<li>Capture: Location assignment tab with min/max quantities and reorder points</li>
+<li>Capture: Environmental impact tab with sustainability metrics and certifications</li>
+<li>Capture: Product detail view with all tabs and comprehensive product information</li>
+<li>Capture: Category management interface showing hierarchical structure</li>
+<li>Capture: Bulk operations interface for mass product updates</li>
+<li>Capture: Product integration with procurement showing vendor pricing associations</li>
+</ul>
+<h2 id="schema-entities-plain-text">Schema Entities (Plain Text)</h2>
+<p>Product: Core product entity with productCode, name, description, localDescription, category hierarchy, primaryInventoryUnit, pricing, costs, deviationLimits, stockLevels, flags (isActive, isForSale, isIngredient), physicalAttributes (weight, shelfLife, size, color, barcode), and environmentalMetrics.<br>UnitConversion: Unit relationship with productId, fromUnit, toUnit, conversionFactor, unitType (INVENTORY/ORDER/RECIPE), and validation rules.<br>LocationAssignment: Product-location relationship with productId, locationId, minQuantity, maxQuantity, reorderPoint, parLevel, and status.<br>ProductCategory: Hierarchical classification with categoryId, name, parentCategory, subcategories, and itemGroups.<br>EnvironmentalMetrics: Sustainability tracking with carbonFootprint, waterUsage, packagingRecyclability, biodegradabilityMonths, energyEfficiencyRating, and sustainableCertification.<br>PricingConfiguration: Product pricing with basePrice, standardCost, lastCost, currency, taxType, taxRate, priceDeviationLimit, and quantityDeviationLimit.</p>
+<h2 id="major-product-management-features">Major Product Management Features</h2>
+<h3 id="product-catalog">Product Catalog</h3>
+<ul>
+<li><strong>Comprehensive Profiling</strong>: Complete product information including descriptions, categories, and classifications</li>
+<li><strong>Multi-Language Support</strong>: Local language descriptions for international operations</li>
+<li><strong>Barcode Management</strong>: Barcode generation and validation with duplicate checking</li>
+<li><strong>Status Management</strong>: Active/inactive status with workflow impact control</li>
+<li><strong>Bulk Operations</strong>: Mass updates for pricing, categories, and status changes</li>
+</ul>
+<h3 id="unit-management-system">Unit Management System</h3>
+<ul>
+<li><strong>Multi-Unit Support</strong>: Inventory, order, and recipe unit conversions</li>
+<li><strong>Conversion Validation</strong>: Mathematical validation and circular reference prevention</li>
+<li><strong>Unit Relationships</strong>: Complex conversion chains with accuracy verification</li>
+<li><strong>Procurement Integration</strong>: Seamless vendor ordering unit management</li>
+<li><strong>Recipe Integration</strong>: Precise ingredient measurement conversions</li>
+</ul>
+<h3 id="advanced-pricing-configuration">Advanced Pricing Configuration</h3>
+<ul>
+<li><strong>Flexible Pricing</strong>: Base prices with standard and last cost tracking</li>
+<li><strong>Tax Management</strong>: Multiple tax types (Added, Included, None) with rate configuration</li>
+<li><strong>Deviation Controls</strong>: Price and quantity deviation limits for procurement control</li>
+<li><strong>Cost Tracking</strong>: Historical cost analysis and variance reporting</li>
+<li><strong>Currency Support</strong>: Multi-currency pricing with automatic conversion</li>
+</ul>
+<h3 id="location-based-management">Location-Based Management</h3>
+<ul>
+<li><strong>Multi-Location Assignment</strong>: Products assigned to multiple storage locations</li>
+<li><strong>Parameter Configuration</strong>: Location-specific min/max quantities and reorder points</li>
+<li><strong>Inventory Integration</strong>: Real-time location-specific stock tracking</li>
+<li><strong>Par Level Management</strong>: Optimal stock level maintenance per location</li>
+<li><strong>Transfer Management</strong>: Inter-location transfer capability and tracking</li>
+</ul>
+<h3 id="environmental-sustainability">Environmental Sustainability</h3>
+<ul>
+<li><strong>Carbon Footprint Tracking</strong>: CO2 equivalent measurements per product unit</li>
+<li><strong>Water Usage Monitoring</strong>: Water consumption metrics for sustainability reporting</li>
+<li><strong>Recyclability Assessment</strong>: Packaging recyclability percentage tracking</li>
+<li><strong>Certification Management</strong>: Sustainability certification tracking and expiry monitoring</li>
+<li><strong>Energy Efficiency</strong>: Product energy efficiency rating and classification</li>
+<li><strong>Biodegradability</strong>: Natural decomposition timeframe tracking</li>
+</ul>
+<h3 id="category-and-classification">Category and Classification</h3>
+<ul>
+<li><strong>Hierarchical Organization</strong>: Category → Subcategory → Item Group structure</li>
+<li><strong>Dynamic Classification</strong>: Real-time category updates with workflow integration</li>
+<li><strong>Cross-Category Grouping</strong>: Item groups spanning multiple categories</li>
+<li><strong>Reporting Integration</strong>: Classification-based reporting and analytics</li>
+<li><strong>Bulk Reclassification</strong>: Mass category updates with validation</li>
+</ul>
+<h2 id="ambiguities-amp-assumptions">Ambiguities &amp; Assumptions</h2>
+<p>Assumption: Product codes must be unique across the entire system and cannot be reused even after product deletion.<br>Assumption: Unit conversion factors are bidirectional and automatically calculate reverse conversions.<br>Ambiguity: The specific business rules for automatic reorder point calculations based on historical consumption are not defined.<br>Assumption: Environmental impact metrics are required for sustainability reporting and compliance tracking.<br>Ambiguity: Integration timing with external systems (POS, e-commerce) for product catalog synchronization needs clarification.<br>Assumption: Location assignments support both physical locations and virtual/logical location categories.<br>Assumption: Tax configuration supports multi-jurisdiction tax rules with location-based tax rate determination.<br>Ambiguity: The exact workflow for handling discontinued products and their impact on existing procurement/inventory processes requires specification.</p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#feature-product-management-and-catalog-system" class="level-1">Feature: Product Management and Catalog System</a>
+<a href="#description" class="level-2">Description</a>
+<a href="#process-flow-step-by-step" class="level-2">Process Flow (Step by Step)</a>
+<a href="#product-catalog-management" class="level-3">Product Catalog Management</a>
+<a href="#unit-conversion-management" class="level-3">Unit Conversion Management</a>
+<a href="#location-assignment-system" class="level-3">Location Assignment System</a>
+<a href="#environmental-impact-tracking" class="level-3">Environmental Impact Tracking</a>
+<a href="#category-and-classification-system" class="level-3">Category and Classification System</a>
+<a href="#flow-diagram-mermaid" class="level-2">Flow Diagram (Mermaid)</a>
+<a href="#screen-capture-locations" class="level-2">Screen Capture Locations</a>
+<a href="#schema-entities-plain-text" class="level-2">Schema Entities (Plain Text)</a>
+<a href="#major-product-management-features" class="level-2">Major Product Management Features</a>
+<a href="#product-catalog" class="level-3">Product Catalog</a>
+<a href="#unit-management-system" class="level-3">Unit Management System</a>
+<a href="#advanced-pricing-configuration" class="level-3">Advanced Pricing Configuration</a>
+<a href="#location-based-management" class="level-3">Location-Based Management</a>
+<a href="#environmental-sustainability" class="level-3">Environmental Sustainability</a>
+<a href="#category-and-classification" class="level-3">Category and Classification</a>
+<a href="#ambiguities-amp-assumptions" class="level-2">Ambiguities &amp; Assumptions</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

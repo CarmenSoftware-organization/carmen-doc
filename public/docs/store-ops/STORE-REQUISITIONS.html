@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store Requisitions Submodule - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: var(--bg-gradient);
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr 300px;
+            gap: 2rem;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 1.5rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .back-to-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: var(--primary-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        .back-to-home:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        /* Content Area */
+        .doc-content {
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 260px 1fr 280px;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 1.5rem;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 2.5rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            .doc-nav {
+                display: none;
+            }
+            .doc-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </div>
+            <div class="doc-header-actions">
+                <a href="../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../SYSTEM-DOCUMENTATION-INDEX.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Documentation Index</span>
+                    </a>
+                    <a href="../DOCUMENTATION-CATALOG.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Catalog</span>
+                    </a>
+                    <a href="../DOCUMENTATION-SUMMARY-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Summary</span>
+                    </a>
+                    <a href="../MODULE-VERIFICATION-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Module Verification</span>
+                    </a>
+                    <a href="../SYSTEM-GAPS-AND-ROADMAP.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Gaps & Roadmap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../architecture/SYSTEM-ARCHITECTURE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-users"></i>
+                    <span>Stakeholders</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../stakeholders/BUSINESS-VALUE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pr/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Requests</span>
+                    </a>
+                    <a href="../po/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Orders</span>
+                    </a>
+                    <a href="../grn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Goods Received Note</span>
+                    </a>
+                    <a href="../cn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Credit Notes</span>
+                    </a>
+                    <a href="../prt/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>PR Templates</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-boxes"></i>
+                    <span>Inventory Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../inv/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Overview</span>
+                    </a>
+                    <a href="../inv/inventory-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Specification</span>
+                    </a>
+                    <a href="../inv/inventory-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Sitemap</span>
+                    </a>
+                    <a href="../pc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Physical Count</span>
+                    </a>
+                    <a href="../sc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Spot Check</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-handshake"></i>
+                    <span>Vendor Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../vm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Overview</span>
+                    </a>
+                    <a href="../vm/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Module</span>
+                    </a>
+                    <a href="../vm/MANAGE-VENDORS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Manage Vendors</span>
+                    </a>
+                    <a href="../vm/TEMPLATES.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Templates</span>
+                    </a>
+                    <a href="../vm/CAMPAIGNS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Campaigns</span>
+                    </a>
+                    <a href="../vm/PRICELISTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Pricelists</span>
+                    </a>
+                    <a href="../vm/VENDOR-PORTAL.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Portal</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cube"></i>
+                    <span>Product Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Overview</span>
+                    </a>
+                    <a href="../pm/product-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Specification</span>
+                    </a>
+                    <a href="../pm/product-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-store"></i>
+                    <span>Store Operations</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../store-ops/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Overview</span>
+                    </a>
+                    <a href="../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Module</span>
+                    </a>
+                    <a href="../store-ops/STORE-REQUISITIONS.html" class="nav-item active">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Requisitions</span>
+                    </a>
+                    <a href="../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Stock Replenishment</span>
+                    </a>
+                    <a href="../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Wastage Reporting</span>
+                    </a>
+                    <a href="../store-ops/GLOSSARY.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Glossary</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Operational Planning</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../operational-planning/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Overview</span>
+                    </a>
+                    <a href="../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Module</span>
+                    </a>
+                    <a href="../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Menu Engineering</span>
+                    </a>
+                    <a href="../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Recipe Management</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cash-register"></i>
+                    <span>POS Integration</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pos-integration/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Overview</span>
+                    </a>
+                    <a href="../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Module</span>
+                    </a>
+                    <a href="../pos-integration/MAPPING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Mapping Subsystem</span>
+                    </a>
+                    <a href="../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Transaction Management</span>
+                    </a>
+                    <a href="../pos-integration/REPORTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports & Analytics</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../dashboard/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Overview</span>
+                    </a>
+                    <a href="../dashboard/sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>System Requirements</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../carmen-erp-system-requirements-documentation.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Requirements</span>
+                    </a>
+                    <a href="../comprehensive-schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="store-requisitions-submodule">Store Requisitions Submodule</h1>
+<p><strong>Submodule</strong>: Store Requisitions<br><strong>Route</strong>: <code>/store-operations/store-requisitions</code><br><strong>Status</strong>: ✅ Production<br><strong>Last Updated</strong>: 2025-10-02</p>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#pages">Pages</a></li>
+<li><a href="#modals-and-dialogues">Modals and Dialogues</a></li>
+<li><a href="#dropdown-fields">Dropdown Fields</a></li>
+<li><a href="#actions-and-buttons">Actions and Buttons</a></li>
+<li><a href="#form-components">Form Components</a></li>
+<li><a href="#data-display-components">Data Display Components</a></li>
+</ol>
+<hr>
+<h2 id="pages">Pages</h2>
+<h3 id="1-store-requisition-list-page">1. Store Requisition List Page</h3>
+<p><strong>Path</strong>: <code>/store-operations/store-requisitions</code><br><strong>Component</strong>: <code>StoreRequisitionListComponent</code><br><strong>Screenshot</strong>: <img src="store-requisitions-list-table.png" alt="Store Requisitions List - Table View"></p>
+<h4>Page Structure</h4>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│ Store Requisition List                                      │
+│ Manage and track store requisitions across all locations    │
+│                                          [Export] [+ New]    │
+├─────────────────────────────────────────────────────────────┤
+│ [Search...]  [Status Filter]  [Saved Filters] [Add Filters] │
+│                                           [Table] [Card]     │
+├─────────────────────────────────────────────────────────────┤
+│                                                               │
+│  SR #    Date    Request To   Location   Store   Status...  │
+│  ───────────────────────────────────────────────────────...  │
+│  Data rows with workflow stages and amounts...               │
+│                                                               │
+├─────────────────────────────────────────────────────────────┤
+│  Page 1 of N                                 [&lt; &gt; Goto &gt;&gt;]  │
+└─────────────────────────────────────────────────────────────┘
+</code></pre>
+<h4>Features</h4>
+<p><strong>Search and Filtering</strong>:</p>
+<ul>
+<li>Global search across requisition number, description, location</li>
+<li>Status filter dropdown (All, Draft, In Process, Complete, Reject, Void)</li>
+<li>Advanced filter builder with multiple conditions</li>
+<li>Saved filter presets</li>
+</ul>
+<p><strong>View Modes</strong>:</p>
+<ul>
+<li>Table view with sortable columns</li>
+<li>Card view with compact information cards</li>
+<li>View toggle button</li>
+</ul>
+<p><strong>Table Columns</strong>:</p>
+<ol>
+<li>SR # (Requisition Number) - Clickable link to detail page</li>
+<li>Date - Formatted as DD/MM/YYYY</li>
+<li>Request To - Location code</li>
+<li>To Location - Destination location name</li>
+<li>Store Name - Originating store</li>
+<li>Description - Request description</li>
+<li>Amount - Total amount with currency</li>
+<li>Currency - Currency code</li>
+<li>Status - Status badge</li>
+<li>Workflow Stage - Current approval stage with tooltip</li>
+<li>Actions - Dropdown menu</li>
+</ol>
+<p><strong>Pagination</strong>:</p>
+<ul>
+<li>First/Previous/Next/Last page buttons</li>
+<li>Go to page input field</li>
+<li>Items per page: 10</li>
+<li>Current page indicator</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Search Requisitions</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Type["Type Search Term"] --> Filter["Filter Results"]
+    Filter --> Display["Display Matched Requisitions"]
+
+</div>
+<p><strong>Apply Status Filter</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Select["Select Status"] --> Filter["Filter List"]
+    Filter --> Update["Update Display"]
+
+</div>
+<p><strong>Open Filter Builder</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Add Filters"] --> Open["Open Filter Dialog"]
+    Open --> Build["Build Filter Conditions"]
+    Build --> Apply["Click Apply"]
+    Apply --> Filter["Filter Requisitions"]
+    Filter --> Close["Close Dialog"]
+
+</div>
+<p><strong>Switch View Mode</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click View Toggle"] --> Switch["Switch to Table/Card"]
+    Switch --> Render["Re-render Display"]
+
+</div>
+<p><strong>Navigate to Detail</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click SR Number"] --> Navigate["Navigate to Detail Page"]
+
+</div>
+<p><strong>Export Requisitions</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Export"] --> Generate["Generate Export File"]
+    Generate --> Download["Download File"]
+
+</div>
+<p><strong>Create New Requisition</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click New Request"] --> Navigate["Navigate to Creation Form"]
+
+</div>
+<p><strong>Page Navigation</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Page Control"] --> Load["Load Page Data"]
+    Load --> Display["Display Page"]
+
+</div>
+<hr>
+<h3 id="2-store-requisition-detail-page">2. Store Requisition Detail Page</h3>
+<p><strong>Path</strong>: <code>/store-operations/store-requisitions/[id]</code><br><strong>Component</strong>: <code>StoreRequisitionDetailComponent</code><br><strong>Screenshot</strong>: <img src="store-requisition-detail-items.png" alt="Store Requisition Detail"></p>
+<h4>Page Structure</h4>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│ [&lt; Back]  Store Requisition: SR-2024-001          [Actions▼]│
+├─────────────────────────────────────────────────────────────┤
+│ ┌─── Header Information ───────────────────────────────┐    │
+│ │ Date: 2024-01-15        Expected: 2024-01-20        │    │
+│ │ Request To: M01         Description: Monthly...     │    │
+│ │ Department: F&amp;B Ops     Status: In Process          │    │
+│ └─────────────────────────────────────────────────────┘    │
+├─────────────────────────────────────────────────────────────┤
+│ [Items] [Stock Movements] [Journal Entries] [Approval]      │
+├─────────────────────────────────────────────────────────────┤
+│                                                               │
+│  Tab Content Area                                            │
+│  (Dynamic based on selected tab)                             │
+│                                                               │
+└─────────────────────────────────────────────────────────────┘
+</code></pre>
+<h4>Header Information</h4>
+<p><strong>Display Fields</strong>:</p>
+<ul>
+<li>Reference Number (SR-YYYY-NNN)</li>
+<li>Request Date</li>
+<li>Expected Delivery Date</li>
+<li>Movement Type</li>
+<li>Request To (Location code and name)</li>
+<li>Department</li>
+<li>Job Code</li>
+<li>Description</li>
+<li>Status Badge</li>
+<li>Workflow Stage (if applicable)</li>
+</ul>
+<p><strong>Header Actions Dropdown</strong>:</p>
+<ul>
+<li>Edit Requisition</li>
+<li>Print</li>
+<li>Void</li>
+<li>Copy</li>
+<li>Delete</li>
+<li>Export</li>
+</ul>
+<h4>Tab 1: Items Tab</h4>
+<p><strong>Screenshot</strong>: <img src="store-requisition-detail-items.png" alt="Items Tab"></p>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Expandable item rows</li>
+<li>Item-level approval status</li>
+<li>Quantity tracking (Required vs Approved vs Issued)</li>
+<li>Cost per unit and total calculations</li>
+<li>Tax and discount information</li>
+<li>Inventory information popup</li>
+</ul>
+<p><strong>Table Columns</strong>:</p>
+<ol>
+<li>Expand/Collapse icon</li>
+<li>Description</li>
+<li>Unit</li>
+<li>Qty Required</li>
+<li>Qty Approved</li>
+<li>Qty Issued</li>
+<li>Cost/Unit</li>
+<li>Subtotal</li>
+<li>Tax %</li>
+<li>Discount %</li>
+<li>Total</li>
+<li>Approval Status Badge</li>
+<li>Actions</li>
+</ol>
+<p><strong>Expanded Row Shows</strong>:</p>
+<ul>
+<li>Item Information (Location, Category, Sub-category, Item Group, Barcode)</li>
+<li>Inventory Information (On Hand, On Order, Last Price, Last Vendor)</li>
+<li>Request Date</li>
+</ul>
+<p><strong>Action Flows</strong>:</p>
+<p><strong>View Item Details</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Expand Icon"] --> Show["Show Item Details"]
+    Show --> Display["Display Item Info & Inventory"]
+
+</div>
+<p><strong>View Item Info Popup</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Hover["Hover on Item Name"] --> Show["Show Info Popup"]
+    Show --> Display["Display Location, Category, etc"]
+
+</div>
+<p><strong>View Inventory Info</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Hover["Hover on Inventory Icon"] --> Show["Show Inventory Popup"]
+    Show --> Display["Display On Hand, On Order, etc"]
+
+</div>
+<p><strong>Approve Item</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Approve"] --> Validate["Validate Permissions"]
+    Validate --> Update["Update Item Status"]
+    Update --> Refresh["Refresh Display"]
+
+</div>
+<p><strong>Reject Item</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Reject"] --> Prompt["Prompt for Reason"]
+    Prompt --> Update["Update Item Status"]
+    Update --> Refresh["Refresh Display"]
+
+</div>
+<p><strong>Calculate Totals</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Change["Quantity/Price Change"] --> Calc["Calculate Subtotal"]
+    Calc --> Tax["Apply Tax"]
+    Tax --> Discount["Apply Discount"]
+    Discount --> Total["Calculate Total"]
+
+</div>
+<h4>Tab 2: Stock Movements Tab</h4>
+<p><strong>Screenshot</strong>: <img src="store-requisition-detail-stock-movements.png" alt="Stock Movements Tab"></p>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Stock movement history for requisition</li>
+<li>Source and destination tracking</li>
+<li>Quantity movements</li>
+<li>Transaction dates</li>
+<li>Movement status</li>
+</ul>
+<p><strong>Table Columns</strong>:</p>
+<ol>
+<li>Date</li>
+<li>Movement Type</li>
+<li>From Location</li>
+<li>To Location</li>
+<li>Item Description</li>
+<li>Quantity</li>
+<li>Unit</li>
+<li>Status</li>
+<li>Created By</li>
+</ol>
+<p><strong>Action Flows</strong>:</p>
+<p><strong>View Movement Details</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Movement Row"] --> Show["Show Movement Details"]
+
+</div>
+<p><strong>Filter Movements</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Select["Select Item Filter"] --> Filter["Filter Movements"]
+    Filter --> Display["Display Filtered Results"]
+
+</div>
+<h4>Tab 3: Journal Entries Tab</h4>
+<p><strong>Screenshot</strong>: <img src="store-requisition-detail-journal.png" alt="Journal Entries Tab"></p>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Auto-generated journal entries</li>
+<li>Debit and credit accounts</li>
+<li>Account codes and descriptions</li>
+<li>Amount tracking</li>
+<li>Entry date and reference</li>
+</ul>
+<p><strong>Table Columns</strong>:</p>
+<ol>
+<li>Entry Date</li>
+<li>Account Code</li>
+<li>Account Description</li>
+<li>Debit Amount</li>
+<li>Credit Amount</li>
+<li>Reference</li>
+<li>Created By</li>
+</ol>
+<p><strong>Action Flows</strong>:</p>
+<p><strong>View Journal Entry</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Entry Row"] --> Show["Show Entry Details"]
+
+</div>
+<p><strong>Export Journal Entries</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Export"] --> Generate["Generate Export"]
+    Generate --> Download["Download File"]
+
+</div>
+<h4>Tab 4: Approval Workflow</h4>
+<p><strong>Screenshot</strong>: <img src="store-requisition-detail-approval-workflow.png" alt="Approval Workflow"></p>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Visual workflow progress indicator</li>
+<li>Approval stage cards</li>
+<li>Approver information</li>
+<li>Approval comments</li>
+<li>Timestamp tracking</li>
+<li>Stage-based actions</li>
+</ul>
+<p><strong>Approval Stages</strong>:</p>
+<ol>
+<li><strong>Submission</strong> - System auto-approval</li>
+<li><strong>HOD Approval</strong> - Head of Department review</li>
+<li><strong>Store Manager Approval</strong> - Final approval for issue</li>
+<li><strong>Complete</strong> - All approvals done</li>
+</ol>
+<p><strong>Stage Card Shows</strong>:</p>
+<ul>
+<li>Stage level name</li>
+<li>Approver name and role</li>
+<li>Approval status (Pending/Approved/Rejected/Current)</li>
+<li>Comments</li>
+<li>Approval timestamp</li>
+<li>Action buttons (if current stage)</li>
+</ul>
+<p><strong>Status Indicators</strong>:</p>
+<ul>
+<li>✓ Approved (Green)</li>
+<li>→ Current (Blue)</li>
+<li>○ Pending (Gray)</li>
+<li>✗ Rejected (Red)</li>
+</ul>
+<p><strong>Action Flows</strong>:</p>
+<p><strong>Approve Stage</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Approve"] --> Comment["Add Comment (Optional)"]
+    Comment --> Validate["Validate Permissions"]
+    Validate --> Update["Update Approval Status"]
+    Update --> Notify["Send Notifications"]
+    Notify --> Next["Move to Next Stage"]
+    Next --> Refresh["Refresh Workflow Display"]
+
+</div>
+<p><strong>Reject Stage</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Reject"] --> Comment["Add Rejection Comment"]
+    Comment --> Validate["Validate Permissions"]
+    Validate --> Update["Update Approval Status"]
+    Update --> Notify["Send Notifications"]
+    Notify --> Lock["Lock Requisition"]
+    Lock --> Refresh["Refresh Workflow Display"]
+
+</div>
+<p><strong>Request Changes</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Request Changes"] --> Comment["Add Change Request"]
+    Comment --> Send["Send to Requester"]
+    Send --> Status["Update to Review Status"]
+
+</div>
+<p><strong>View Approval Log</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click View Log"] --> Open["Open Approval Log Dialog"]
+    Open --> Display["Display Full Approval History"]
+
+</div>
+<hr>
+<h2 id="modals-and-dialogues">Modals and Dialogues</h2>
+<h3 id="1-filter-builder-dialog">1. Filter Builder Dialog</h3>
+<p><strong>Trigger</strong>: Click &quot;Add Filters&quot; button<br><strong>Screenshot</strong>: <img src="store-requisitions-filters.png" alt="Filter Builder"></p>
+<p><strong>Components</strong>:</p>
+<ul>
+<li>Filter condition rows</li>
+<li>Field selector dropdown</li>
+<li>Operator selector dropdown</li>
+<li>Value input field</li>
+<li>Add/Remove filter buttons</li>
+<li>Apply button</li>
+</ul>
+<p><strong>Fields Available</strong>:</p>
+<ul>
+<li>Date</li>
+<li>Requisition (Ref No)</li>
+<li>Request To</li>
+<li>To Location</li>
+<li>Store Name</li>
+<li>Description</li>
+<li>Status</li>
+<li>Workflow Stage</li>
+<li>Process Status</li>
+</ul>
+<p><strong>Operators</strong>:</p>
+<ul>
+<li>Equals</li>
+<li>Contains</li>
+<li>Greater than</li>
+<li>Less than</li>
+</ul>
+<p><strong>Action Flows</strong>:</p>
+<p><strong>Build Filter</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Add Filter"] --> Select["Select Field"]
+    Select --> Operator["Select Operator"]
+    Operator --> Value["Enter Value"]
+    Value --> Apply["Click Apply"]
+    Apply --> Filter["Apply Filters"]
+    Filter --> Close["Close Dialog"]
+
+</div>
+<p><strong>Remove Filter</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Remove (X)"] --> Delete["Delete Filter Condition"]
+    Delete --> Update["Update Filter Display"]
+
+</div>
+<h3 id="2-approval-log-dialog">2. Approval Log Dialog</h3>
+<p><strong>Trigger</strong>: Click &quot;View Log&quot; in approval workflow<br><strong>Component</strong>: <code>ApprovalLogDialog</code></p>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Complete approval history</li>
+<li>Approver details</li>
+<li>Action timestamps</li>
+<li>Comments</li>
+<li>Status changes</li>
+</ul>
+<p><strong>Display Fields</strong>:</p>
+<ul>
+<li>Stage Level</li>
+<li>Approver Name</li>
+<li>Approver Role</li>
+<li>Action (Approved/Rejected/Requested Changes)</li>
+<li>Comments</li>
+<li>Timestamp</li>
+</ul>
+<p><strong>Action Flows</strong>:</p>
+<p><strong>View Approval Log</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Open["Open Dialog"] --> Load["Load Approval History"]
+    Load --> Display["Display Chronological Log"]
+
+</div>
+<p><strong>Close Dialog</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Close/Outside"] --> Close["Close Dialog"]
+
+</div>
+<h3 id="3-item-details-popover">3. Item Details Popover</h3>
+<p><strong>Trigger</strong>: Hover on item name or info icon</p>
+<p><strong>Shows</strong>:</p>
+<ul>
+<li>Item Name</li>
+<li>Category and Sub-category</li>
+<li>Item Group</li>
+<li>Location and Location Code</li>
+<li>Barcode</li>
+<li>Location Type</li>
+</ul>
+<h3 id="4-inventory-info-popover">4. Inventory Info Popover</h3>
+<p><strong>Trigger</strong>: Hover on inventory icon in expanded item row</p>
+<p><strong>Shows</strong>:</p>
+<ul>
+<li>On Hand Quantity</li>
+<li>On Order Quantity</li>
+<li>Last Purchase Price</li>
+<li>Last Vendor</li>
+</ul>
+<hr>
+<h2 id="dropdown-fields">Dropdown Fields</h2>
+<h3 id="1-status-filter-dropdown">1. Status Filter Dropdown</h3>
+<p><strong>Field</strong>: Status Filter<br><strong>Type</strong>: Single Select<br><strong>Component</strong>: <code>Select</code></p>
+<p><strong>Options</strong>:</p>
+<ul>
+<li>All Status (default)</li>
+<li>Draft</li>
+<li>In Process</li>
+<li>Complete</li>
+<li>Reject</li>
+<li>Void</li>
+</ul>
+<p><strong>Action Flow</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Open["Open Dropdown"] --> Select["Select Status"]
+    Select --> Apply["Apply Filter"]
+    Apply --> Update["Update List"]
+
+</div>
+<h3 id="2-filter-field-dropdown">2. Filter Field Dropdown</h3>
+<p><strong>Field</strong>: Filter Builder - Field Selection<br><strong>Type</strong>: Single Select</p>
+<p><strong>Options</strong>:</p>
+<ul>
+<li>Date</li>
+<li>Requisition (Ref No)</li>
+<li>Request To</li>
+<li>To Location</li>
+<li>Store Name</li>
+<li>Description</li>
+<li>Status</li>
+<li>Workflow Stage</li>
+<li>Process Status</li>
+</ul>
+<h3 id="3-filter-operator-dropdown">3. Filter Operator Dropdown</h3>
+<p><strong>Field</strong>: Filter Builder - Operator Selection<br><strong>Type</strong>: Single Select</p>
+<p><strong>Options</strong>:</p>
+<ul>
+<li>Equals</li>
+<li>Contains</li>
+<li>Greater than</li>
+<li>Less than</li>
+</ul>
+<h3 id="4-actions-dropdown-list-page">4. Actions Dropdown (List Page)</h3>
+<p><strong>Trigger</strong>: Click actions menu (⋮)<br><strong>Type</strong>: Multi-option menu</p>
+<p><strong>Options</strong>:</p>
+<ul>
+<li>View - Navigate to detail page</li>
+<li>Edit - Open edit form</li>
+<li>Export - Download requisition</li>
+<li>Delete - Delete requisition (with confirmation)</li>
+</ul>
+<p><strong>Action Flow</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Menu Icon"] --> Open["Open Dropdown"]
+    Open --> Select["Select Action"]
+    Select --> Execute["Execute Action"]
+
+</div>
+<h3 id="5-header-actions-dropdown-detail-page">5. Header Actions Dropdown (Detail Page)</h3>
+<p><strong>Trigger</strong>: Click &quot;Actions&quot; button in header<br><strong>Type</strong>: Multi-option menu</p>
+<p><strong>Options</strong>:</p>
+<ul>
+<li>Edit Requisition</li>
+<li>Print</li>
+<li>Void</li>
+<li>Copy</li>
+<li>Delete</li>
+<li>Export</li>
+</ul>
+<hr>
+<h2 id="actions-and-buttons">Actions and Buttons</h2>
+<h3 id="list-page-actions">List Page Actions</h3>
+<p><strong>Primary Actions</strong>:</p>
+<ol>
+<li><strong>Export</strong> - Export filtered requisitions to file</li>
+<li><strong>New Request</strong> - Create new store requisition</li>
+</ol>
+<p><strong>Search Actions</strong>:</p>
+<ol>
+<li><strong>Search Input</strong> - Global search across requisitions</li>
+<li><strong>Status Filter</strong> - Filter by requisition status</li>
+<li><strong>Saved Filters</strong> - Load saved filter presets</li>
+<li><strong>Add Filters</strong> - Open advanced filter builder</li>
+</ol>
+<p><strong>View Controls</strong>:</p>
+<ol>
+<li><strong>Table View Toggle</strong> - Switch to table layout</li>
+<li><strong>Card View Toggle</strong> - Switch to card layout</li>
+</ol>
+<p><strong>Pagination Controls</strong>:</p>
+<ol>
+<li><strong>First Page</strong> - Jump to first page</li>
+<li><strong>Previous Page</strong> - Go to previous page</li>
+<li><strong>Next Page</strong> - Go to next page</li>
+<li><strong>Last Page</strong> - Jump to last page</li>
+<li><strong>Go to Page</strong> - Navigate to specific page number</li>
+</ol>
+<p><strong>Row Actions</strong>:</p>
+<ol>
+<li><strong>View</strong> - Open detail page</li>
+<li><strong>Edit</strong> - Edit requisition</li>
+<li><strong>Export</strong> - Download single requisition</li>
+<li><strong>Delete</strong> - Delete requisition</li>
+</ol>
+<h3 id="detail-page-actions">Detail Page Actions</h3>
+<p><strong>Header Actions</strong>:</p>
+<ol>
+<li><strong>Back</strong> - Return to list page</li>
+<li><strong>Actions Dropdown</strong> - Access secondary actions</li>
+</ol>
+<p><strong>Items Tab Actions</strong>:</p>
+<ol>
+<li><strong>Expand/Collapse</strong> - Toggle item details</li>
+<li><strong>View Item Info</strong> - Show item information popup</li>
+<li><strong>View Inventory</strong> - Show inventory information popup</li>
+<li><strong>Approve Item</strong> - Mark item as approved</li>
+<li><strong>Reject Item</strong> - Mark item as rejected</li>
+</ol>
+<p><strong>Approval Workflow Actions</strong>:</p>
+<ol>
+<li><strong>Approve</strong> - Approve current stage</li>
+<li><strong>Reject</strong> - Reject requisition</li>
+<li><strong>Request Changes</strong> - Send back for modifications</li>
+<li><strong>View Log</strong> - Open approval history dialog</li>
+</ol>
+<p><strong>Tab Actions</strong>:</p>
+<ol>
+<li><strong>Switch Tab</strong> - Navigate between tabs</li>
+<li><strong>Export Tab Data</strong> - Download tab-specific data</li>
+</ol>
+<hr>
+<h2 id="form-components">Form Components</h2>
+<h3 id="filter-builder-form">Filter Builder Form</h3>
+<p><strong>Components</strong>:</p>
+<ul>
+<li>Select (Field)</li>
+<li>Select (Operator)</li>
+<li>Input (Value)</li>
+<li>Button (Add Filter)</li>
+<li>Button (Remove Filter)</li>
+<li>Button (Apply Filters)</li>
+</ul>
+<p><strong>Validation</strong>:</p>
+<ul>
+<li>Field is required</li>
+<li>Operator is required</li>
+<li>Value is required</li>
+</ul>
+<h3 id="approval-comment-form">Approval Comment Form</h3>
+<p><strong>Fields</strong>:</p>
+<ul>
+<li>Comment Textarea (optional for approval, required for rejection)</li>
+<li>Action Selection (Approve/Reject/Request Changes)</li>
+</ul>
+<p><strong>Validation</strong>:</p>
+<ul>
+<li>Comment required if rejecting</li>
+<li>User must have appropriate role permissions</li>
+</ul>
+<hr>
+<h2 id="data-display-components">Data Display Components</h2>
+<h3 id="status-badge">Status Badge</h3>
+<p><strong>Component</strong>: <code>StatusBadge</code><br><strong>Props</strong>: <code>status: string</code></p>
+<p><strong>Status Variants</strong>:</p>
+<ul>
+<li><strong>Draft</strong> - Gray badge</li>
+<li><strong>In Process</strong> - Blue badge</li>
+<li><strong>Complete</strong> - Green badge</li>
+<li><strong>Reject</strong> - Red badge</li>
+<li><strong>Void</strong> - Gray strikethrough badge</li>
+</ul>
+<h3 id="workflow-stage-badge">Workflow Stage Badge</h3>
+<p><strong>Component</strong>: Custom badge with tooltip<br><strong>Features</strong>:</p>
+<ul>
+<li>Colored dot indicator</li>
+<li>Stage name text</li>
+<li>Hover tooltip with description</li>
+</ul>
+<p><strong>Stage Styles</strong>:</p>
+<ul>
+<li><strong>Submission</strong> - Blue</li>
+<li><strong>HOD Approval</strong> - Purple</li>
+<li><strong>Store Manager Approval</strong> - Amber</li>
+<li><strong>Complete</strong> - Green</li>
+<li><strong>Rejected</strong> - Red</li>
+</ul>
+<h3 id="pagination-component">Pagination Component</h3>
+<p><strong>Component</strong>: <code>Pagination</code><br><strong>Features</strong>:</p>
+<ul>
+<li>Page indicator</li>
+<li>Navigation buttons</li>
+<li>Go to page input</li>
+<li>Responsive design (hides first/last on mobile)</li>
+</ul>
+<h3 id="card-view-component">Card View Component</h3>
+<p><strong>Component</strong>: Requisition card<br><strong>Shows</strong>:</p>
+<ul>
+<li>Reference number</li>
+<li>Status badge</li>
+<li>Workflow stage</li>
+<li>Description</li>
+<li>Request To and Location</li>
+<li>Store name</li>
+<li>Date and amount</li>
+<li>Action menu</li>
+</ul>
+<hr>
+<p><strong>Last Updated</strong>: 2025-10-02<br><strong>Module</strong>: Store Operations &gt; Store Requisitions<br><strong>Status</strong>: ✅ Production</p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#store-requisitions-submodule" class="level-1">Store Requisitions Submodule</a>
+<a href="#table-of-contents" class="level-2">Table of Contents</a>
+<a href="#pages" class="level-2">Pages</a>
+<a href="#1-store-requisition-list-page" class="level-3">1. Store Requisition List Page</a>
+<a href="#2-store-requisition-detail-page" class="level-3">2. Store Requisition Detail Page</a>
+<a href="#modals-and-dialogues" class="level-2">Modals and Dialogues</a>
+<a href="#1-filter-builder-dialog" class="level-3">1. Filter Builder Dialog</a>
+<a href="#2-approval-log-dialog" class="level-3">2. Approval Log Dialog</a>
+<a href="#3-item-details-popover" class="level-3">3. Item Details Popover</a>
+<a href="#4-inventory-info-popover" class="level-3">4. Inventory Info Popover</a>
+<a href="#dropdown-fields" class="level-2">Dropdown Fields</a>
+<a href="#1-status-filter-dropdown" class="level-3">1. Status Filter Dropdown</a>
+<a href="#2-filter-field-dropdown" class="level-3">2. Filter Field Dropdown</a>
+<a href="#3-filter-operator-dropdown" class="level-3">3. Filter Operator Dropdown</a>
+<a href="#4-actions-dropdown-list-page" class="level-3">4. Actions Dropdown (List Page)</a>
+<a href="#5-header-actions-dropdown-detail-page" class="level-3">5. Header Actions Dropdown (Detail Page)</a>
+<a href="#actions-and-buttons" class="level-2">Actions and Buttons</a>
+<a href="#list-page-actions" class="level-3">List Page Actions</a>
+<a href="#detail-page-actions" class="level-3">Detail Page Actions</a>
+<a href="#form-components" class="level-2">Form Components</a>
+<a href="#filter-builder-form" class="level-3">Filter Builder Form</a>
+<a href="#approval-comment-form" class="level-3">Approval Comment Form</a>
+<a href="#data-display-components" class="level-2">Data Display Components</a>
+<a href="#status-badge" class="level-3">Status Badge</a>
+<a href="#workflow-stage-badge" class="level-3">Workflow Stage Badge</a>
+<a href="#pagination-component" class="level-3">Pagination Component</a>
+<a href="#card-view-component" class="level-3">Card View Component</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

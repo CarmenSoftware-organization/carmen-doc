@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS Integration Module Documentation - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: var(--bg-gradient);
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr 300px;
+            gap: 2rem;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 1.5rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .back-to-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: var(--primary-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        .back-to-home:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        /* Content Area */
+        .doc-content {
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 260px 1fr 280px;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 1.5rem;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 2.5rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            .doc-nav {
+                display: none;
+            }
+            .doc-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </div>
+            <div class="doc-header-actions">
+                <a href="../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../SYSTEM-DOCUMENTATION-INDEX.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Documentation Index</span>
+                    </a>
+                    <a href="../DOCUMENTATION-CATALOG.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Catalog</span>
+                    </a>
+                    <a href="../DOCUMENTATION-SUMMARY-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Summary</span>
+                    </a>
+                    <a href="../MODULE-VERIFICATION-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Module Verification</span>
+                    </a>
+                    <a href="../SYSTEM-GAPS-AND-ROADMAP.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Gaps & Roadmap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../architecture/SYSTEM-ARCHITECTURE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-users"></i>
+                    <span>Stakeholders</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../stakeholders/BUSINESS-VALUE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pr/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Requests</span>
+                    </a>
+                    <a href="../po/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Orders</span>
+                    </a>
+                    <a href="../grn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Goods Received Note</span>
+                    </a>
+                    <a href="../cn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Credit Notes</span>
+                    </a>
+                    <a href="../prt/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>PR Templates</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-boxes"></i>
+                    <span>Inventory Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../inv/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Overview</span>
+                    </a>
+                    <a href="../inv/inventory-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Specification</span>
+                    </a>
+                    <a href="../inv/inventory-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Sitemap</span>
+                    </a>
+                    <a href="../pc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Physical Count</span>
+                    </a>
+                    <a href="../sc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Spot Check</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-handshake"></i>
+                    <span>Vendor Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../vm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Overview</span>
+                    </a>
+                    <a href="../vm/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Module</span>
+                    </a>
+                    <a href="../vm/MANAGE-VENDORS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Manage Vendors</span>
+                    </a>
+                    <a href="../vm/TEMPLATES.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Templates</span>
+                    </a>
+                    <a href="../vm/CAMPAIGNS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Campaigns</span>
+                    </a>
+                    <a href="../vm/PRICELISTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Pricelists</span>
+                    </a>
+                    <a href="../vm/VENDOR-PORTAL.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Portal</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cube"></i>
+                    <span>Product Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Overview</span>
+                    </a>
+                    <a href="../pm/product-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Specification</span>
+                    </a>
+                    <a href="../pm/product-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-store"></i>
+                    <span>Store Operations</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../store-ops/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Overview</span>
+                    </a>
+                    <a href="../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Module</span>
+                    </a>
+                    <a href="../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Requisitions</span>
+                    </a>
+                    <a href="../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Stock Replenishment</span>
+                    </a>
+                    <a href="../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Wastage Reporting</span>
+                    </a>
+                    <a href="../store-ops/GLOSSARY.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Glossary</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Operational Planning</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../operational-planning/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Overview</span>
+                    </a>
+                    <a href="../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Module</span>
+                    </a>
+                    <a href="../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Menu Engineering</span>
+                    </a>
+                    <a href="../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Recipe Management</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cash-register"></i>
+                    <span>POS Integration</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pos-integration/README.html" class="nav-item active">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Overview</span>
+                    </a>
+                    <a href="../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Module</span>
+                    </a>
+                    <a href="../pos-integration/MAPPING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Mapping Subsystem</span>
+                    </a>
+                    <a href="../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Transaction Management</span>
+                    </a>
+                    <a href="../pos-integration/REPORTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports & Analytics</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../dashboard/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Overview</span>
+                    </a>
+                    <a href="../dashboard/sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>System Requirements</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../carmen-erp-system-requirements-documentation.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Requirements</span>
+                    </a>
+                    <a href="../comprehensive-schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="pos-integration-module-documentation">POS Integration Module Documentation</h1>
+<h2 id="overview">Overview</h2>
+<p>The POS Integration module provides comprehensive tools for integrating point-of-sale systems with the Carmen ERP inventory management system. It enables seamless synchronization of sales transactions, automated inventory deductions, recipe mapping, and detailed consumption analysis.</p>
+<p><strong>Primary Functions</strong>:</p>
+<ul>
+<li>Real-time POS transaction synchronization</li>
+<li>Recipe and item mapping between POS and ERP systems</li>
+<li>Unit conversion management</li>
+<li>Location mapping and multi-outlet support</li>
+<li>Fractional sales management (pizza slices, cake portions)</li>
+<li>Gross profit and consumption analysis</li>
+<li>Automated inventory adjustments from sales data</li>
+</ul>
+<h2 id="screenshots">Screenshots</h2>
+<p><img src="./screenshots/pos-integration-dashboard.png" alt="POS Integration Dashboard"><br><em>POS Integration Dashboard - System status overview with alerts and quick access to all functions</em></p>
+<p><img src="./screenshots/pos-recipe-mapping.png" alt="Recipe Mapping"><br><em>Recipe Mapping - Map POS items to system recipes with unit conversion tracking</em></p>
+<p><img src="./screenshots/pos-fractional-variants-mapping.png" alt="Fractional Variants Mapping"><br><em>Fractional Variants Management - Configure pizza slices, cake portions, and multi-yield recipes</em></p>
+<p><img src="./screenshots/pos-transactions.png" alt="Transactions"><br><em>Transaction Management - Browse, filter, and manage POS sales transactions</em></p>
+<p><img src="./screenshots/pos-gross-profit-report.png" alt="Gross Profit Report"><br><em>Gross Profit Analysis - Sales vs cost analysis with trend visualization</em></p>
+<p><img src="./screenshots/pos-consumption-report.png" alt="Consumption Report"><br><em>Consumption Report - Actual vs theoretical usage analysis</em></p>
+<h2 id="module-information">Module Information</h2>
+<ul>
+<li><strong>Main Path</strong>: <code>/system-administration/system-integrations/pos</code></li>
+<li><strong>Icon</strong>: Database/Cable</li>
+<li><strong>Primary Purpose</strong>: POS system integration, sales data synchronization, and consumption analysis</li>
+<li><strong>Status</strong>: Production-ready</li>
+<li><strong>Parent Module</strong>: System Administration → System Integrations</li>
+</ul>
+<h2 id="quick-navigation">Quick Navigation</h2>
+<ul>
+<li><a href="#module-structure">Module Structure</a></li>
+<li><a href="#key-features">Key Features</a></li>
+<li><a href="#technical-implementation">Technical Implementation</a></li>
+<li><a href="#navigation-paths">Navigation Paths</a></li>
+</ul>
+<h2 id="module-structure">Module Structure</h2>
+<p>The POS Integration module consists of 5 main sections:</p>
+<h3 id="1-dashboard">1. Dashboard</h3>
+<p><strong>Path</strong>: <code>/system-administration/system-integrations/pos</code></p>
+<p><strong>Purpose</strong>: Central hub for POS integration monitoring and quick access</p>
+<p><img src="./screenshots/pos-integration-dashboard.png" alt="POS Integration Dashboard"></p>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>System connection status (Connected/Disconnected)</li>
+<li>Last sync timestamp</li>
+<li>Alert cards for:<ul>
+<li>Unmapped items requiring recipe mapping</li>
+<li>Failed transactions requiring review</li>
+<li>Pending stock-out approvals</li>
+<li>Unmapped fractional variants</li>
+</ul>
+</li>
+<li>Quick access cards for:<ul>
+<li>Setup (Configuration &amp; System Settings)</li>
+<li>Mapping (Recipes, Units, Locations, Fractional Variants)</li>
+<li>Operations (Transactions, Failed Transactions, Stock-out Review)</li>
+<li>Reporting (Gross Profit Analysis, Consumption Report)</li>
+</ul>
+</li>
+<li>Recent activity feed with transaction history</li>
+</ul>
+<h3 id="2-mapping">2. Mapping</h3>
+<p><strong>Path</strong>: <code>/system-administration/system-integrations/pos/mapping</code></p>
+<p><strong>Purpose</strong>: Map POS data to ERP system entities</p>
+<p><img src="./screenshots/pos-recipe-mapping.png" alt="Recipe Mapping"><br><em>Recipe Mapping - Primary interface for mapping POS items to system recipes</em></p>
+<p><img src="./screenshots/pos-unit-mapping.png" alt="Unit Mapping"><br><em>Unit Mapping - Configure unit conversions between POS and ERP</em></p>
+<p><img src="./screenshots/pos-location-mapping.png" alt="Location Mapping"><br><em>Location Mapping - Map POS outlets to system locations</em></p>
+<p><img src="./screenshots/pos-fractional-variants-mapping.png" alt="Fractional Variants"><br><em>Fractional Variants - Manage pizza slices, cake portions, and multi-yield recipes</em></p>
+<p><strong>Submodules</strong>:</p>
+<h4>2.1 Recipe Mapping</h4>
+<p><strong>Path</strong>: <code>/system-administration/system-integrations/pos/mapping/recipes</code></p>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Map POS items to system recipes</li>
+<li>Track mapping status (Mapped, Unmapped, Error)</li>
+<li>Unit conversion configuration</li>
+<li>Category-based organization</li>
+<li>Bulk mapping operations</li>
+<li>Search and advanced filtering</li>
+<li>Status badges for quick identification</li>
+</ul>
+<p><strong>Data Displayed</strong>:</p>
+<ul>
+<li>POS Item Code</li>
+<li>POS Description</li>
+<li>Recipe Code (with link to recipe detail)</li>
+<li>Unit conversion (POS Unit → Recipe Unit)</li>
+<li>Conversion rate</li>
+<li>Category</li>
+<li>Status (Mapped/Unmapped/Error)</li>
+<li>Actions menu</li>
+</ul>
+<h4>2.2 Fractional Variants Mapping</h4>
+<p><strong>Path</strong>: <code>/system-administration/system-integrations/pos/mapping/recipes/fractional-variants</code></p>
+<p><strong>Purpose</strong>: Manage partial recipe sales (pizza slices, cake portions)</p>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Configure fractional sales for base recipes</li>
+<li>Define portion sizes (slice, quarter, half, whole)</li>
+<li>Automatic yield percentage calculation</li>
+<li>Individual pricing per variant</li>
+<li>Cost calculation per portion</li>
+<li>Inventory deduction automation</li>
+<li>Visual recipe hierarchy</li>
+</ul>
+<p><strong>Example Use Cases</strong>:</p>
+<ul>
+<li>Pizza: Sold by slice (1/8) or whole</li>
+<li>Cake: Sold by slice (1/16), quarter (1/4), half (1/2), or whole</li>
+<li>Large batches: Multiple portion sizes from single recipe</li>
+</ul>
+<p><strong>Data Displayed</strong>:</p>
+<ul>
+<li>POS Code and Description</li>
+<li>Variant Type (Slice, Quarter, Half, Whole)</li>
+<li>Portion Size</li>
+<li>Yield Percentage (% of base recipe)</li>
+<li>Selling Price and Cost</li>
+<li>Mapping Status</li>
+<li>Edit Mapping action</li>
+</ul>
+<h4>2.3 Unit Mapping</h4>
+<p><strong>Path</strong>: <code>/system-administration/system-integrations/pos/mapping/units</code></p>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Map POS units to system units</li>
+<li>Configure conversion factors</li>
+<li>Support for sales units and recipe units</li>
+<li>Active/Inactive status management</li>
+<li>Bulk operations</li>
+</ul>
+<p><strong>Example Mappings</strong>:</p>
+<ul>
+<li>PCS (Piece) → EA (Each): 1:1</li>
+<li>GLASS → EA (Each): 1:1</li>
+<li>SLICE → EA (Each): 0.125:1 (for fractional items)</li>
+<li>OZ (Ounce) → KG (Kilogram): 0.0283:1</li>
+</ul>
+<h4>2.4 Location Mapping</h4>
+<p><strong>Path</strong>: <code>/system-administration/system-integrations/pos/mapping/locations</code></p>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Map POS locations to system locations</li>
+<li>Support multiple POS systems (Comanche, HotelTime, Soraso)</li>
+<li>Track mapping status</li>
+<li>Sync timestamp tracking</li>
+<li>Location-specific settings</li>
+</ul>
+<p><strong>Data Displayed</strong>:</p>
+<ul>
+<li>POS Location Code</li>
+<li>POS Location Name</li>
+<li>ERP Location (mapped)</li>
+<li>POS System</li>
+<li>Status (Active/Unmapped/Error)</li>
+<li>Last Sync Date/Time</li>
+<li>Actions menu</li>
+</ul>
+<h3 id="3-transactions">3. Transactions</h3>
+<p><strong>Path</strong>: <code>/system-administration/system-integrations/pos/transactions</code></p>
+<p><strong>Purpose</strong>: Browse, filter, and manage POS sales transactions</p>
+<p><img src="./screenshots/pos-transactions.png" alt="Transactions"></p>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Transaction list with pagination</li>
+<li>Date range filtering</li>
+<li>Location filtering</li>
+<li>Status filtering (Completed, Processing, Failed, Voided)</li>
+<li>Transaction type filtering</li>
+<li>Expandable item details</li>
+<li>Bulk selection and export</li>
+<li>Action menu per transaction (View, Void, Reprocess, Export)</li>
+</ul>
+<p><strong>Transaction Workflow</strong>:</p>
+<ol>
+<li>POS system sends sales data</li>
+<li>Carmen receives and validates transaction</li>
+<li>Recipe mapping applied</li>
+<li>Inventory automatically deducted</li>
+<li>Cost tracking updated</li>
+<li>Transaction marked as Completed</li>
+</ol>
+<p><strong>Status Types</strong>:</p>
+<ul>
+<li><strong>Completed</strong>: Successfully processed and inventory updated</li>
+<li><strong>Processing</strong>: Currently being processed</li>
+<li><strong>Failed</strong>: Error occurred, requires review</li>
+<li><strong>Voided</strong>: Transaction cancelled</li>
+</ul>
+<p><strong>Data Displayed per Transaction</strong>:</p>
+<ul>
+<li>Date and Time</li>
+<li>Location (Name and Code)</li>
+<li>Item Details (with expand for full list)</li>
+<li>Total Amount</li>
+<li>Status Badge</li>
+<li>Actions Menu</li>
+</ul>
+<h3 id="4-reports">4. Reports</h3>
+<p><strong>Path</strong>: <code>/system-administration/system-integrations/pos/reports</code></p>
+<p><strong>Purpose</strong>: Analyze sales performance and consumption patterns</p>
+<h4>4.1 Gross Profit Analysis</h4>
+<p><strong>Path</strong>: <code>/system-administration/system-integrations/pos/reports/gross-profit</code></p>
+<p><img src="./screenshots/pos-gross-profit-report.png" alt="Gross Profit Report"></p>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Sales revenue tracking</li>
+<li>Cost of sales calculation</li>
+<li>Gross profit computation</li>
+<li>Margin percentage analysis</li>
+<li>Trend visualization (6-month)</li>
+<li>Multi-outlet comparison</li>
+<li>Export to Excel/PDF</li>
+<li>Date range filtering</li>
+<li>View by: Outlet, Category, or Item</li>
+</ul>
+<p><strong>Key Metrics</strong>:</p>
+<ul>
+<li><strong>Sales Revenue</strong>: Total sales for period</li>
+<li><strong>Cost of Sales</strong>: Total ingredient/recipe costs</li>
+<li><strong>Gross Profit</strong>: Revenue minus cost</li>
+<li><strong>Margin %</strong>: (Gross Profit / Revenue) × 100</li>
+<li><strong>vs Target</strong>: Comparison to target margins</li>
+</ul>
+<p><strong>Analysis Views</strong>:</p>
+<ul>
+<li>By Outlet: Performance per location</li>
+<li>By Category: Performance per menu category</li>
+<li>By Item: Individual recipe profitability</li>
+</ul>
+<h4>4.2 Consumption Report</h4>
+<p><strong>Path</strong>: <code>/system-administration/system-integrations/pos/reports/consumption</code></p>
+<p><img src="./screenshots/pos-consumption-report.png" alt="Consumption Report"></p>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Theoretical usage calculation (based on recipe costs × sales quantity)</li>
+<li>Actual usage tracking (based on inventory deductions)</li>
+<li>Variance analysis (Actual - Theoretical)</li>
+<li>Daily consumption trends</li>
+<li>Location-based filtering</li>
+<li>Category-based analysis</li>
+<li>Item-level detail view</li>
+<li>Variance alerts and thresholds</li>
+</ul>
+<p><strong>Key Metrics</strong>:</p>
+<ul>
+<li><strong>Theoretical Usage</strong>: Expected consumption based on recipes</li>
+<li><strong>Actual Usage</strong>: Real inventory deductions</li>
+<li><strong>Variance Amount</strong>: Difference (Actual - Theoretical)</li>
+<li><strong>Variance %</strong>: (Variance / Theoretical) × 100</li>
+<li><strong>Target Variance</strong>: Acceptable variance threshold (typically 3%)</li>
+</ul>
+<p><strong>Use Cases</strong>:</p>
+<ul>
+<li>Identify waste or theft</li>
+<li>Monitor portion control</li>
+<li>Validate recipe accuracy</li>
+<li>Track preparation efficiency</li>
+<li>Detect inventory shrinkage</li>
+</ul>
+<h3 id="5-settings">5. Settings</h3>
+<p><strong>Path</strong>: <code>/system-administration/system-integrations/pos/settings</code></p>
+<p><strong>Purpose</strong>: Configure POS system integration parameters</p>
+<h4>5.1 POS Configuration</h4>
+<p><strong>Path</strong>: <code>/system-administration/system-integrations/pos/settings/config</code></p>
+<p><img src="./screenshots/pos-settings-config.png" alt="POS Configuration"></p>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>POS system selection (Comanche, HotelTime, Soraso, etc.)</li>
+<li>API endpoint configuration</li>
+<li>Authentication settings (API Key, Username/Password, OAuth)</li>
+<li>Connection testing</li>
+<li>Field mapping configuration</li>
+<li>Sync frequency settings</li>
+<li>Data retention policies</li>
+</ul>
+<p><strong>Configuration Sections</strong>:</p>
+<ul>
+<li><strong>Basic Settings</strong>: POS system type, name, description</li>
+<li><strong>Connection Details</strong>: API URL, authentication method</li>
+<li><strong>Sync Settings</strong>: Frequency, batch size, retry policy</li>
+<li><strong>Field Mapping</strong>: Map POS fields to Carmen fields</li>
+<li><strong>Advanced Options</strong>: Timeout, logging, error handling</li>
+</ul>
+<h4>5.2 System Settings</h4>
+<p><strong>Path</strong>: <code>/system-administration/system-integrations/pos/settings/system</code></p>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Workflow preferences</li>
+<li>Notification settings</li>
+<li>Default behaviors</li>
+<li>Approval requirements</li>
+<li>Stock-out handling</li>
+<li>Failed transaction policies</li>
+</ul>
+<h2 id="key-features">Key Features</h2>
+<h3 id="real-time-synchronization">Real-Time Synchronization</h3>
+<ul>
+<li>✅ Continuous POS data sync</li>
+<li>✅ Automatic inventory adjustments</li>
+<li>✅ Real-time status monitoring</li>
+<li>✅ Error detection and alerting</li>
+</ul>
+<h3 id="comprehensive-mapping">Comprehensive Mapping</h3>
+<ul>
+<li>✅ Recipe-to-POS item mapping with unit conversion</li>
+<li>✅ Fractional sales management (pizza slices, cake portions)</li>
+<li>✅ Multi-location support</li>
+<li>✅ Flexible unit conversion system</li>
+<li>✅ Status tracking (Mapped/Unmapped/Error)</li>
+</ul>
+<h3 id="transaction-management">Transaction Management</h3>
+<ul>
+<li>✅ Transaction history with full audit trail</li>
+<li>✅ Advanced filtering and search</li>
+<li>✅ Bulk operations and export</li>
+<li>✅ Failed transaction recovery</li>
+<li>✅ Stock-out approval workflow</li>
+</ul>
+<h3 id="advanced-reporting">Advanced Reporting</h3>
+<ul>
+<li>✅ Gross profit analysis with trend visualization</li>
+<li>✅ Consumption reporting (Actual vs Theoretical)</li>
+<li>✅ Variance analysis and alerts</li>
+<li>✅ Multi-dimensional views (by outlet, category, item)</li>
+<li>✅ Export to Excel/PDF</li>
+</ul>
+<h3 id="flexible-configuration">Flexible Configuration</h3>
+<ul>
+<li>✅ Support for multiple POS systems</li>
+<li>✅ Customizable field mapping</li>
+<li>✅ Configurable sync frequency</li>
+<li>✅ Authentication flexibility (API Key, OAuth, Basic Auth)</li>
+<li>✅ Connection testing and validation</li>
+</ul>
+<h2 id="technical-implementation">Technical Implementation</h2>
+<h3 id="tech-stack">Tech Stack</h3>
+<ul>
+<li><strong>Frontend</strong>: Next.js 14 (App Router), React, TypeScript</li>
+<li><strong>UI Components</strong>: Shadcn/ui, Radix UI</li>
+<li><strong>Styling</strong>: Tailwind CSS</li>
+<li><strong>Charts</strong>: Recharts (Bar, Line, Area charts)</li>
+<li><strong>Tables</strong>: TanStack Table (React Table v8)</li>
+<li><strong>Forms</strong>: React Hook Form + Zod validation</li>
+<li><strong>Date Handling</strong>: date-fns, React Day Picker</li>
+</ul>
+<h3 id="key-components">Key Components</h3>
+<ul>
+<li><code>POSIntegrationPage</code> - Main dashboard with status cards</li>
+<li><code>RecipeMappingPage</code> - Recipe mapping interface</li>
+<li><code>FractionalVariantsMappingPage</code> - Fractional sales management</li>
+<li><code>UnitMappingPage</code> - Unit conversion configuration</li>
+<li><code>LocationMappingPage</code> - Location mapping interface</li>
+<li><code>TransactionsPage</code> - Transaction list and management</li>
+<li><code>GrossProfitDashboard</code> - Gross profit analysis report</li>
+<li><code>ConsumptionReportPage</code> - Consumption analysis report</li>
+<li><code>POSConfigPage</code> - POS configuration settings</li>
+</ul>
+<h3 id="file-locations">File Locations</h3>
+<pre><code>app/(main)/system-administration/system-integrations/pos/
+├── page.tsx                           # Main dashboard
+├── layout.tsx                         # POS layout wrapper
+├── components/
+│   ├── floating-settings-button.tsx
+│   ├── settings-help-section.tsx
+│   └── settings-nav.tsx
+├── mapping/
+│   ├── layout.tsx
+│   ├── components/                    # Shared mapping components
+│   │   ├── data-table.tsx
+│   │   ├── filter-bar.tsx
+│   │   ├── mapping-header.tsx
+│   │   ├── mapping-nav.tsx
+│   │   ├── row-actions.tsx
+│   │   └── status-badge.tsx
+│   ├── recipes/
+│   │   ├── page.tsx                   # Recipe mapping
+│   │   ├── data.ts
+│   │   ├── types.ts
+│   │   ├── fractional-mapping-helper.ts
+│   │   └── fractional-variants/
+│   │       └── page.tsx               # Fractional variants
+│   ├── units/
+│   │   ├── page.tsx                   # Unit mapping
+│   │   ├── data.ts
+│   │   └── types.ts
+│   └── locations/
+│       ├── page.tsx                   # Location mapping
+│       ├── data.ts
+│       └── types.ts
+├── transactions/
+│   └── page.tsx                       # Transaction management
+├── reports/
+│   ├── page.tsx                       # Reports hub
+│   ├── gross-profit/
+│   │   └── page.tsx                   # Gross profit analysis
+│   └── consumption/
+│       └── page.tsx                   # Consumption report
+└── settings/
+    ├── layout.tsx
+    ├── page.tsx                       # Settings hub
+    ├── config/
+    │   └── page.tsx                   # POS configuration
+    └── system/
+        └── page.tsx                   # System settings
+</code></pre>
+<h2 id="navigation-paths">Navigation Paths</h2>
+<h3 id="main-paths">Main Paths</h3>
+<ul>
+<li><strong>Dashboard</strong>: <code>/system-administration/system-integrations/pos</code></li>
+<li><strong>Mapping Hub</strong>: <code>/system-administration/system-integrations/pos/mapping/recipes</code></li>
+</ul>
+<h3 id="mapping-paths">Mapping Paths</h3>
+<ul>
+<li><strong>Recipe Mapping</strong>: <code>/system-administration/system-integrations/pos/mapping/recipes</code></li>
+<li><strong>Fractional Variants</strong>: <code>/system-administration/system-integrations/pos/mapping/recipes/fractional-variants</code></li>
+<li><strong>Unit Mapping</strong>: <code>/system-administration/system-integrations/pos/mapping/units</code></li>
+<li><strong>Location Mapping</strong>: <code>/system-administration/system-integrations/pos/mapping/locations</code></li>
+</ul>
+<h3 id="operations-paths">Operations Paths</h3>
+<ul>
+<li><strong>Transactions</strong>: <code>/system-administration/system-integrations/pos/transactions</code></li>
+<li><strong>Reports Hub</strong>: <code>/system-administration/system-integrations/pos/reports</code></li>
+<li><strong>Gross Profit</strong>: <code>/system-administration/system-integrations/pos/reports/gross-profit</code></li>
+<li><strong>Consumption</strong>: <code>/system-administration/system-integrations/pos/reports/consumption</code></li>
+</ul>
+<h3 id="settings-paths">Settings Paths</h3>
+<ul>
+<li><strong>Settings Hub</strong>: <code>/system-administration/system-integrations/pos/settings</code></li>
+<li><strong>POS Configuration</strong>: <code>/system-administration/system-integrations/pos/settings/config</code></li>
+<li><strong>System Settings</strong>: <code>/system-administration/system-integrations/pos/settings/system</code></li>
+</ul>
+<h2 id="business-workflows">Business Workflows</h2>
+<h3 id="initial-setup-workflow">Initial Setup Workflow</h3>
+<ol>
+<li>Configure POS system connection (Settings → Config)</li>
+<li>Test connection</li>
+<li>Map locations (POS outlets to ERP locations)</li>
+<li>Map units (POS units to ERP units)</li>
+<li>Map recipes (POS items to ERP recipes)</li>
+<li>Configure fractional variants (if applicable)</li>
+<li>Set up notifications and approvals (System Settings)</li>
+<li>Enable automatic sync</li>
+</ol>
+<h3 id="daily-operations-workflow">Daily Operations Workflow</h3>
+<ol>
+<li>Monitor dashboard for alerts</li>
+<li>Review unmapped items (if any)</li>
+<li>Process failed transactions</li>
+<li>Approve stock-outs (if required)</li>
+<li>Review recent activity</li>
+</ol>
+<h3 id="analysis-workflow">Analysis Workflow</h3>
+<ol>
+<li>Run Gross Profit Analysis (weekly/monthly)</li>
+<li>Review Consumption Report (daily/weekly)</li>
+<li>Investigate high variances</li>
+<li>Adjust recipes or processes as needed</li>
+<li>Export reports for management review</li>
+</ol>
+<h2 id="integration-points">Integration Points</h2>
+<h3 id="data-sources">Data Sources</h3>
+<ul>
+<li><strong>POS Systems</strong>: Comanche, HotelTime, Soraso, and others</li>
+<li><strong>Recipe Management</strong>: Linked to Operational Planning recipes</li>
+<li><strong>Inventory Management</strong>: Automatic stock deductions</li>
+<li><strong>Product Management</strong>: Ingredient and recipe data</li>
+</ul>
+<h3 id="data-outputs">Data Outputs</h3>
+<ul>
+<li><strong>Inventory Adjustments</strong>: Automated stock deductions</li>
+<li><strong>Cost Tracking</strong>: Consumption and variance data</li>
+<li><strong>Financial Reports</strong>: Gross profit and margin analysis</li>
+<li><strong>Management Dashboards</strong>: Performance metrics</li>
+</ul>
+<h2 id="future-enhancements">Future Enhancements</h2>
+<h3 id="short-term">Short Term</h3>
+<ol>
+<li>Real-time dashboard updates with WebSocket</li>
+<li>Advanced variance alert rules</li>
+<li>Recipe cost optimization suggestions</li>
+<li>Mobile responsive views</li>
+<li>Enhanced export formats</li>
+</ol>
+<h3 id="medium-term">Medium Term</h3>
+<ol>
+<li>AI-powered anomaly detection</li>
+<li>Predictive consumption forecasting</li>
+<li>Multi-currency support</li>
+<li>Advanced reconciliation tools</li>
+<li>Batch transaction processing</li>
+</ol>
+<h3 id="long-term">Long Term</h3>
+<ol>
+<li>Machine learning for fraud detection</li>
+<li>Automated recipe correction suggestions</li>
+<li>Cross-location comparison analytics</li>
+<li>Integration with third-party delivery platforms</li>
+<li>Customer behavior analytics from POS data</li>
+</ol>
+<h2 id="related-documentation">Related Documentation</h2>
+<ul>
+<li><a href="../system-administration/">System Administration Module</a></li>
+<li><a href="../operational-planning/">Operational Planning Module</a></li>
+<li><a href="../inventory/">Inventory Management Module</a></li>
+<li><a href="../pm/">Product Management Module</a></li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="common-issues">Common Issues</h3>
+<p><strong>Connection Failed</strong></p>
+<ul>
+<li>Verify API endpoint URL</li>
+<li>Check authentication credentials</li>
+<li>Test network connectivity</li>
+<li>Review firewall rules</li>
+</ul>
+<p><strong>Unmapped Items</strong></p>
+<ul>
+<li>Navigate to Mapping → Recipes</li>
+<li>Search for unmapped items (Status: Unmapped)</li>
+<li>Map to appropriate recipes</li>
+<li>Save and test</li>
+</ul>
+<p><strong>High Variance in Consumption Report</strong></p>
+<ul>
+<li>Review recipe accuracy</li>
+<li>Check portion sizes</li>
+<li>Investigate potential waste</li>
+<li>Monitor staff training</li>
+</ul>
+<p><strong>Failed Transactions</strong></p>
+<ul>
+<li>Check transaction details</li>
+<li>Verify recipe mapping</li>
+<li>Review inventory availability</li>
+<li>Reprocess or void as appropriate</li>
+</ul>
+<hr>
+<p><strong>Last Updated</strong>: October 10, 2025<br><strong>Module Version</strong>: 1.0<br><strong>Documentation Status</strong>: Complete</p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#pos-integration-module-documentation" class="level-1">POS Integration Module Documentation</a>
+<a href="#overview" class="level-2">Overview</a>
+<a href="#screenshots" class="level-2">Screenshots</a>
+<a href="#module-information" class="level-2">Module Information</a>
+<a href="#quick-navigation" class="level-2">Quick Navigation</a>
+<a href="#module-structure" class="level-2">Module Structure</a>
+<a href="#1-dashboard" class="level-3">1. Dashboard</a>
+<a href="#2-mapping" class="level-3">2. Mapping</a>
+<a href="#3-transactions" class="level-3">3. Transactions</a>
+<a href="#4-reports" class="level-3">4. Reports</a>
+<a href="#5-settings" class="level-3">5. Settings</a>
+<a href="#key-features" class="level-2">Key Features</a>
+<a href="#real-time-synchronization" class="level-3">Real-Time Synchronization</a>
+<a href="#comprehensive-mapping" class="level-3">Comprehensive Mapping</a>
+<a href="#transaction-management" class="level-3">Transaction Management</a>
+<a href="#advanced-reporting" class="level-3">Advanced Reporting</a>
+<a href="#flexible-configuration" class="level-3">Flexible Configuration</a>
+<a href="#technical-implementation" class="level-2">Technical Implementation</a>
+<a href="#tech-stack" class="level-3">Tech Stack</a>
+<a href="#key-components" class="level-3">Key Components</a>
+<a href="#file-locations" class="level-3">File Locations</a>
+<a href="#navigation-paths" class="level-2">Navigation Paths</a>
+<a href="#main-paths" class="level-3">Main Paths</a>
+<a href="#mapping-paths" class="level-3">Mapping Paths</a>
+<a href="#operations-paths" class="level-3">Operations Paths</a>
+<a href="#settings-paths" class="level-3">Settings Paths</a>
+<a href="#business-workflows" class="level-2">Business Workflows</a>
+<a href="#initial-setup-workflow" class="level-3">Initial Setup Workflow</a>
+<a href="#daily-operations-workflow" class="level-3">Daily Operations Workflow</a>
+<a href="#analysis-workflow" class="level-3">Analysis Workflow</a>
+<a href="#integration-points" class="level-2">Integration Points</a>
+<a href="#data-sources" class="level-3">Data Sources</a>
+<a href="#data-outputs" class="level-3">Data Outputs</a>
+<a href="#future-enhancements" class="level-2">Future Enhancements</a>
+<a href="#short-term" class="level-3">Short Term</a>
+<a href="#medium-term" class="level-3">Medium Term</a>
+<a href="#long-term" class="level-3">Long Term</a>
+<a href="#related-documentation" class="level-2">Related Documentation</a>
+<a href="#troubleshooting" class="level-2">Troubleshooting</a>
+<a href="#common-issues" class="level-3">Common Issues</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

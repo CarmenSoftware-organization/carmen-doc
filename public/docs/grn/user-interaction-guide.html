@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goods Received Note Module - User Interaction Guide - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: var(--bg-gradient);
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr 300px;
+            gap: 2rem;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 1.5rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .back-to-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: var(--primary-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        .back-to-home:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        /* Content Area */
+        .doc-content {
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 260px 1fr 280px;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 1.5rem;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 2.5rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            .doc-nav {
+                display: none;
+            }
+            .doc-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </div>
+            <div class="doc-header-actions">
+                <a href="../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../SYSTEM-DOCUMENTATION-INDEX.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Documentation Index</span>
+                    </a>
+                    <a href="../DOCUMENTATION-CATALOG.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Catalog</span>
+                    </a>
+                    <a href="../DOCUMENTATION-SUMMARY-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Summary</span>
+                    </a>
+                    <a href="../MODULE-VERIFICATION-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Module Verification</span>
+                    </a>
+                    <a href="../SYSTEM-GAPS-AND-ROADMAP.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Gaps & Roadmap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../architecture/SYSTEM-ARCHITECTURE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-users"></i>
+                    <span>Stakeholders</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../stakeholders/BUSINESS-VALUE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pr/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Requests</span>
+                    </a>
+                    <a href="../po/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Orders</span>
+                    </a>
+                    <a href="../grn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Goods Received Note</span>
+                    </a>
+                    <a href="../cn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Credit Notes</span>
+                    </a>
+                    <a href="../prt/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>PR Templates</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-boxes"></i>
+                    <span>Inventory Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../inv/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Overview</span>
+                    </a>
+                    <a href="../inv/inventory-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Specification</span>
+                    </a>
+                    <a href="../inv/inventory-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Sitemap</span>
+                    </a>
+                    <a href="../pc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Physical Count</span>
+                    </a>
+                    <a href="../sc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Spot Check</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-handshake"></i>
+                    <span>Vendor Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../vm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Overview</span>
+                    </a>
+                    <a href="../vm/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Module</span>
+                    </a>
+                    <a href="../vm/MANAGE-VENDORS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Manage Vendors</span>
+                    </a>
+                    <a href="../vm/TEMPLATES.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Templates</span>
+                    </a>
+                    <a href="../vm/CAMPAIGNS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Campaigns</span>
+                    </a>
+                    <a href="../vm/PRICELISTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Pricelists</span>
+                    </a>
+                    <a href="../vm/VENDOR-PORTAL.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Portal</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cube"></i>
+                    <span>Product Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Overview</span>
+                    </a>
+                    <a href="../pm/product-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Specification</span>
+                    </a>
+                    <a href="../pm/product-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-store"></i>
+                    <span>Store Operations</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../store-ops/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Overview</span>
+                    </a>
+                    <a href="../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Module</span>
+                    </a>
+                    <a href="../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Requisitions</span>
+                    </a>
+                    <a href="../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Stock Replenishment</span>
+                    </a>
+                    <a href="../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Wastage Reporting</span>
+                    </a>
+                    <a href="../store-ops/GLOSSARY.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Glossary</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Operational Planning</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../operational-planning/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Overview</span>
+                    </a>
+                    <a href="../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Module</span>
+                    </a>
+                    <a href="../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Menu Engineering</span>
+                    </a>
+                    <a href="../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Recipe Management</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cash-register"></i>
+                    <span>POS Integration</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pos-integration/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Overview</span>
+                    </a>
+                    <a href="../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Module</span>
+                    </a>
+                    <a href="../pos-integration/MAPPING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Mapping Subsystem</span>
+                    </a>
+                    <a href="../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Transaction Management</span>
+                    </a>
+                    <a href="../pos-integration/REPORTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports & Analytics</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../dashboard/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Overview</span>
+                    </a>
+                    <a href="../dashboard/sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>System Requirements</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../carmen-erp-system-requirements-documentation.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Requirements</span>
+                    </a>
+                    <a href="../comprehensive-schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="goods-received-note-module-user-interaction-guide">Goods Received Note Module - User Interaction Guide</h1>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#navigation--entry-points">Navigation &amp; Entry Points</a></li>
+<li><a href="#primary-user-workflows">Primary User Workflows</a></li>
+<li><a href="#dialog-interactions">Dialog Interactions</a></li>
+<li><a href="#form-interactions">Form Interactions</a></li>
+<li><a href="#data-management">Data Management</a></li>
+<li><a href="#advanced-features">Advanced Features</a></li>
+</ol>
+<h2 id="navigation-amp-entry-points">Navigation &amp; Entry Points</h2>
+<h3 id="main-navigation">Main Navigation</h3>
+<ul>
+<li><strong>Primary Access:</strong> Procurement → Goods Received Note (sidebar menu)</li>
+<li><strong>Breadcrumb:</strong> Dashboard → Procurement → Goods Received Note</li>
+<li><strong>URL Pattern:</strong> <code>/procurement/goods-received-note</code></li>
+</ul>
+<h3 id="direct-links">Direct Links</h3>
+<ul>
+<li><strong>Specific GRN:</strong> <code>/procurement/goods-received-note/[GRN-ID]</code></li>
+<li><strong>Create from PO:</strong> <code>/procurement/goods-received-note/new/vendor-selection</code></li>
+<li><strong>Create Manual:</strong> <code>/procurement/goods-received-note/new-[UUID]?mode=confirm</code></li>
+<li><strong>Edit Mode:</strong> <code>/procurement/goods-received-note/[GRN-ID]?mode=edit</code></li>
+</ul>
+<h2 id="primary-user-workflows">Primary User Workflows</h2>
+<h3 id="1-create-grn-from-purchase-order">1. Create GRN from Purchase Order</h3>
+<p><strong>Step-by-Step Process:</strong></p>
+<ol>
+<li><strong>Navigate to GRN List</strong><ul>
+<li>Click &quot;Procurement&quot; in sidebar</li>
+<li>Select &quot;Goods Received Note&quot;</li>
+</ul>
+</li>
+</ol>
+<p><img src="./screenshots/grn-list-page.png" alt="GRN List Page"></p>
+<ol start="2">
+<li><strong>Initiate PO-based Creation</strong><ul>
+<li>Click &quot;New GRN&quot; dropdown button</li>
+<li>Select &quot;Create from Purchase Order&quot;</li>
+</ul>
+</li>
+</ol>
+<p><img src="./screenshots/grn-new-dropdown-menu.png" alt="New GRN Dropdown Menu"></p>
+<ol start="3">
+<li><strong>Select Vendor</strong><ul>
+<li>Use search to find vendor by name or registration number</li>
+<li>Click &quot;Select&quot; button for desired vendor</li>
+<li>System stores vendor selection and navigates to PO selection</li>
+</ul>
+</li>
+</ol>
+<p><img src="./screenshots/grn-vendor-selection-page.png" alt="Vendor Selection Page"></p>
+<ol start="4">
+<li><strong>Choose Purchase Orders</strong><ul>
+<li>Review POs from selected vendor</li>
+<li>Select single or multiple POs for consolidation</li>
+<li>Preview total amounts and item counts</li>
+<li>Click &quot;Create GRN&quot; to proceed</li>
+</ul>
+</li>
+</ol>
+<p><img src="./screenshots/grn-po-selection-page.png" alt="PO Selection Page"></p>
+<ol start="5">
+<li><strong>Select Items and Quantities</strong><ul>
+<li>Choose specific items to receive from selected POs</li>
+<li>Enter receiving quantities for each item</li>
+<li>Select appropriate locations (e.g., Receiving Bay)</li>
+<li>Review real-time amount calculations</li>
+<li>Click &quot;Next: Confirm GRN&quot; to proceed</li>
+</ul>
+</li>
+</ol>
+<p><img src="./screenshots/grn-item-location-selection-page.png" alt="Item Location Selection Page"></p>
+<ol start="6">
+<li><strong>Review Auto-populated Data</strong><ul>
+<li>Verify vendor information is correct</li>
+<li>Check auto-populated items from selected POs</li>
+<li>Review calculated totals and currency information</li>
+<li>Modify quantities if partial receipt</li>
+</ul>
+</li>
+</ol>
+<p><img src="./screenshots/grn-detail-confirm-mode.png" alt="GRN Detail Confirm Mode"></p>
+<ol start="7">
+<li><p><strong>Complete Header Information</strong></p>
+<ul>
+<li>Set GRN date (defaults to today)</li>
+<li>Enter invoice number and date</li>
+<li>Add tax invoice details if applicable</li>
+<li>Select receiver from dropdown</li>
+<li>Choose appropriate cash book</li>
+<li>Add description and remarks</li>
+</ul>
+</li>
+<li><p><strong>Configure Special Flags</strong></p>
+<ul>
+<li>Check &quot;Consignment&quot; if applicable</li>
+<li>Check &quot;Cash&quot; for cash transactions</li>
+</ul>
+</li>
+<li><p><strong>Confirm and Save</strong></p>
+<ul>
+<li>Review all details in confirm mode</li>
+<li>Use &quot;Edit Further&quot; if changes needed</li>
+<li>Click &quot;Confirm &amp; Save&quot; to finalize GRN</li>
+<li>System generates real GRN number and saves</li>
+</ul>
+</li>
+</ol>
+<p><strong>Screenshot References:</strong></p>
+<ul>
+<li>GRN List with New GRN dropdown</li>
+<li>Vendor selection interface</li>
+<li>PO selection with totals preview</li>
+<li>GRN detail in confirm mode</li>
+</ul>
+<h3 id="2-create-grn-manually">2. Create GRN Manually</h3>
+<p><strong>Step-by-Step Process:</strong></p>
+<ol>
+<li><p><strong>Access Manual Creation</strong></p>
+<ul>
+<li>From GRN List page</li>
+<li>Click &quot;New GRN&quot; → &quot;Create Manually&quot;</li>
+</ul>
+</li>
+<li><p><strong>Auto-navigation to Confirm Mode</strong></p>
+<ul>
+<li>System creates temporary GRN with placeholder data</li>
+<li>Navigates directly to GRN detail in confirm mode</li>
+<li>All fields empty for manual entry</li>
+</ul>
+</li>
+<li><p><strong>Enter Header Information</strong></p>
+<ul>
+<li>Set GRN date</li>
+<li>Select vendor from dropdown</li>
+<li>Enter invoice details manually</li>
+<li>Choose receiver and cash book</li>
+<li>Add description</li>
+</ul>
+</li>
+<li><p><strong>Add Items Manually</strong></p>
+<ul>
+<li>Navigate to Items tab</li>
+<li>Click &quot;Add Item&quot; button</li>
+<li>Search and select products</li>
+<li>Enter quantities and pricing</li>
+<li>Configure discounts and taxes</li>
+</ul>
+</li>
+<li><p><strong>Add Extra Costs (Optional)</strong></p>
+<ul>
+<li>Navigate to Extra Costs tab</li>
+<li>Add freight, insurance, handling charges</li>
+<li>Choose allocation method (even, weighted, manual)</li>
+</ul>
+</li>
+<li><p><strong>Review Financial Summary</strong></p>
+<ul>
+<li>Check calculated totals</li>
+<li>Verify currency amounts</li>
+<li>Confirm tax calculations</li>
+</ul>
+</li>
+<li><p><strong>Finalize GRN</strong></p>
+<ul>
+<li>Return to confirm mode view</li>
+<li>Review all entered data</li>
+<li>Click &quot;Confirm &amp; Save&quot; to create GRN</li>
+</ul>
+</li>
+</ol>
+<h3 id="3-edit-existing-grn">3. Edit Existing GRN</h3>
+<p><strong>Edit Workflow:</strong></p>
+<ol>
+<li><p><strong>Access GRN for Editing</strong></p>
+<ul>
+<li>Open specific GRN from list</li>
+<li>Click &quot;Edit&quot; button in form footer</li>
+<li>System switches to edit mode</li>
+</ul>
+</li>
+<li><p><strong>Modify GRN Data</strong></p>
+<ul>
+<li>Update header information as needed</li>
+<li>Modify item quantities and pricing</li>
+<li>Add or remove items</li>
+<li>Adjust extra costs</li>
+</ul>
+</li>
+<li><p><strong>Review Changes</strong></p>
+<ul>
+<li>Monitor &quot;unsaved changes&quot; indicator</li>
+<li>Preview impact on financial totals</li>
+<li>Validate all modifications</li>
+</ul>
+</li>
+<li><p><strong>Save or Cancel</strong></p>
+<ul>
+<li>Click &quot;Save&quot; to commit changes</li>
+<li>Or &quot;Cancel&quot; to discard modifications</li>
+<li>System returns to view mode after save</li>
+</ul>
+</li>
+</ol>
+<h3 id="4-process-item-receipts">4. Process Item Receipts</h3>
+<p><strong>Item Management Workflow:</strong></p>
+<ol>
+<li><p><strong>Access Items Tab</strong></p>
+<ul>
+<li>Open GRN detail page</li>
+<li>Click on &quot;Items&quot; tab</li>
+</ul>
+</li>
+<li><p><strong>Review Item Status</strong></p>
+<ul>
+<li>Check ordered vs received quantities</li>
+<li>Monitor remaining quantities</li>
+<li>Identify pending items</li>
+</ul>
+</li>
+<li><p><strong>Update Received Quantities</strong></p>
+<ul>
+<li>Click edit icon for item</li>
+<li>Modify received quantity</li>
+<li>System auto-calculates remaining</li>
+<li>Update item status accordingly</li>
+</ul>
+</li>
+<li><p><strong>Handle Partial Receipts</strong></p>
+<ul>
+<li>Use &quot;Split Line&quot; function for partial delivery</li>
+<li>Create separate line items for tracking</li>
+<li>Track multiple delivery dates</li>
+</ul>
+</li>
+<li><p><strong>Bulk Operations</strong></p>
+<ul>
+<li>Select multiple items using checkboxes</li>
+<li>Choose bulk action from dropdown</li>
+<li>Apply changes to selected items</li>
+</ul>
+</li>
+<li><p><strong>Finalize Items</strong></p>
+<ul>
+<li>Mark items as &quot;Fully Received&quot;</li>
+<li>Close line items when complete</li>
+<li>Update GRN status when all items complete</li>
+</ul>
+</li>
+<li><p><strong>Review Stock Movements</strong></p>
+<ul>
+<li>Click on &quot;Stock Movements&quot; tab</li>
+<li>Monitor inventory impacts by location</li>
+<li>Review unit costs and total costs</li>
+<li>Verify stock level updates</li>
+</ul>
+</li>
+</ol>
+<p><img src="./screenshots/grn-stock-movements-tab.png" alt="Stock Movements Tab"></p>
+<h2 id="dialog-interactions">Dialog Interactions</h2>
+<h3 id="1-new-grn-creation-dialog">1. New GRN Creation Dialog</h3>
+<p><strong>Interface Elements:</strong></p>
+<ul>
+<li><strong>Process Type Selection</strong>: Cards for PO-based vs Manual creation</li>
+<li><strong>Visual Indicators</strong>: Icons and descriptions for each option</li>
+<li><strong>Action Buttons</strong>: Clear selection and navigation</li>
+</ul>
+<p><strong>User Actions:</strong></p>
+<ul>
+<li><strong>Select Process Type</strong>: Click on preferred creation method</li>
+<li><strong>Automatic Navigation</strong>: System routes to appropriate next step</li>
+<li><strong>No Confirmation</strong>: Selection immediately proceeds to workflow</li>
+</ul>
+<h3 id="2-vendor-selection-dialog">2. Vendor Selection Dialog</h3>
+<p><strong>Interface Elements:</strong></p>
+<ul>
+<li><strong>Search Bar</strong>: Filter vendors by name or registration</li>
+<li><strong>Vendor Table</strong>: Business registration number, company name, action button</li>
+<li><strong>Loading States</strong>: Progress indicators during data fetch</li>
+</ul>
+<p><strong>User Actions:</strong></p>
+<ul>
+<li><strong>Search</strong>: Type vendor name or registration number</li>
+<li><strong>Filter</strong>: Real-time filtering as user types</li>
+<li><strong>Select</strong>: Click &quot;Select&quot; button for desired vendor</li>
+<li><strong>Validation</strong>: Only active vendors selectable</li>
+</ul>
+<h3 id="3-item-addedit-dialogs">3. Item Add/Edit Dialogs</h3>
+<p><strong>Add Item Dialog:</strong></p>
+<ul>
+<li><strong>Product Search</strong>: Searchable product catalog</li>
+<li><strong>Quantity Fields</strong>: Ordered and received quantities</li>
+<li><strong>Pricing Configuration</strong>: Unit price, discounts, taxes</li>
+<li><strong>Validation</strong>: Required fields and business rules</li>
+</ul>
+<p><strong>Edit Item Dialog:</strong></p>
+<ul>
+<li><strong>Pre-populated Fields</strong>: Current item values</li>
+<li><strong>Change Tracking</strong>: Visual indicators for modifications</li>
+<li><strong>Impact Preview</strong>: Updated totals before saving</li>
+<li><strong>Validation</strong>: Quantity and pricing constraints</li>
+</ul>
+<p><strong>User Actions:</strong></p>
+<ul>
+<li><strong>Product Selection</strong>: Search and choose from catalog</li>
+<li><strong>Quantity Entry</strong>: Enter ordered and received amounts</li>
+<li><strong>Pricing Setup</strong>: Configure unit price and adjustments</li>
+<li><strong>Save/Cancel</strong>: Commit changes or discard modifications</li>
+</ul>
+<h3 id="4-bulk-actions-confirmation">4. Bulk Actions Confirmation</h3>
+<p><strong>Dialog Triggers:</strong></p>
+<ul>
+<li><strong>Item Selection</strong>: Multiple items selected in Items tab</li>
+<li><strong>Bulk Action</strong>: Action chosen from bulk actions menu</li>
+</ul>
+<p><strong>Interface Elements:</strong></p>
+<ul>
+<li><strong>Action Summary</strong>: Description of operation to be performed</li>
+<li><strong>Item Count</strong>: Number of items affected</li>
+<li><strong>Confirmation Buttons</strong>: Proceed or Cancel options</li>
+<li><strong>Warning Messages</strong>: For destructive operations</li>
+</ul>
+<p><strong>User Actions:</strong></p>
+<ul>
+<li><strong>Review Selection</strong>: Verify items and action</li>
+<li><strong>Confirm Operation</strong>: Proceed with bulk action</li>
+<li><strong>Cancel</strong>: Abort operation and return to item list</li>
+</ul>
+<h2 id="form-interactions">Form Interactions</h2>
+<h3 id="1-header-information-form">1. Header Information Form</h3>
+<p><strong>Field Types and Validation:</strong></p>
+<p><strong>Date Fields:</strong></p>
+<ul>
+<li><strong>GRN Date</strong>: HTML5 date picker, defaults to today</li>
+<li><strong>Invoice Date</strong>: Must be ≤ GRN date</li>
+<li><strong>Tax Invoice Date</strong>: Optional, validation if provided</li>
+</ul>
+<p><strong>Selection Fields:</strong></p>
+<ul>
+<li><strong>Vendor</strong>: Dropdown with search capability</li>
+<li><strong>Receiver</strong>: Staff member selection</li>
+<li><strong>Currency</strong>: Multi-currency support with exchange rates</li>
+<li><strong>Cash Book</strong>: Account selection for financial posting</li>
+</ul>
+<p><strong>Text Fields:</strong></p>
+<ul>
+<li><strong>Invoice Numbers</strong>: Alphanumeric input with validation</li>
+<li><strong>Description</strong>: Multi-line text area for details</li>
+<li><strong>Remarks</strong>: Additional comments and notes</li>
+</ul>
+<p><strong>Validation Rules:</strong></p>
+<ul>
+<li><strong>Required Fields</strong>: Date, vendor, receiver marked with indicators</li>
+<li><strong>Date Logic</strong>: Invoice date ≤ GRN date ≤ current date</li>
+<li><strong>Currency Consistency</strong>: Must match PO currency if from PO</li>
+<li><strong>Character Limits</strong>: Text fields have maximum length validation</li>
+</ul>
+<h3 id="2-items-tab-interactions">2. Items Tab Interactions</h3>
+<p><strong>Item Selection:</strong></p>
+<ul>
+<li><strong>Individual Selection</strong>: Checkbox per item row</li>
+<li><strong>Bulk Selection</strong>: Master checkbox for all items</li>
+<li><strong>Range Selection</strong>: Shift+click for contiguous ranges</li>
+<li><strong>Visual Feedback</strong>: Selected items highlighted</li>
+</ul>
+<p><strong>Quantity Management:</strong></p>
+<ul>
+<li><strong>Ordered Quantity</strong>: Read-only (from PO or manual entry)</li>
+<li><strong>Received Quantity</strong>: Editable field with validation</li>
+<li><strong>Remaining Quantity</strong>: Auto-calculated (Ordered - Received)</li>
+<li><strong>Unit Display</strong>: Order unit and base unit with conversion</li>
+</ul>
+<p><strong>Pricing Configuration:</strong></p>
+<ul>
+<li><strong>Unit Price</strong>: Editable with currency formatting</li>
+<li><strong>Discount Rate</strong>: Percentage input with validation</li>
+<li><strong>Tax Rate</strong>: Configurable tax percentage</li>
+<li><strong>Total Calculation</strong>: Auto-calculated display</li>
+</ul>
+<p><strong>Item Actions:</strong></p>
+<ul>
+<li><strong>Add New</strong>: Button opens item creation dialog</li>
+<li><strong>Edit</strong>: Pencil icon for item modification</li>
+<li><strong>Delete</strong>: Trash icon with confirmation</li>
+<li><strong>Split</strong>: Divide quantities for partial receipts</li>
+</ul>
+<h3 id="3-extra-costs-tab-interactions">3. Extra Costs Tab Interactions</h3>
+<p><strong>Cost Entry:</strong></p>
+<ul>
+<li><strong>Description</strong>: Text field for cost description</li>
+<li><strong>Amount</strong>: Currency input with validation</li>
+<li><strong>Currency</strong>: Dropdown selection</li>
+<li><strong>Allocation Type</strong>: Radio buttons for distribution method</li>
+</ul>
+<p><strong>Allocation Methods:</strong></p>
+<ul>
+<li><strong>Even</strong>: Equal distribution across all items</li>
+<li><strong>Weighted</strong>: Distribution based on item values</li>
+<li><strong>Manual</strong>: Custom allocation per item</li>
+</ul>
+<p><strong>Real-time Updates:</strong></p>
+<ul>
+<li><strong>Total Impact</strong>: Immediate calculation of cost effect</li>
+<li><strong>Item Allocation</strong>: Show distribution across items</li>
+<li><strong>Financial Summary</strong>: Auto-update of GRN totals</li>
+</ul>
+<h2 id="data-management">Data Management</h2>
+<h3 id="1-search-and-filtering">1. Search and Filtering</h3>
+<p><strong>Quick Filters:</strong></p>
+<ul>
+<li><strong>Status-based Filtering</strong>: Draft, Received, Verified, Posted</li>
+<li><strong>Date Range Selection</strong>: From/To date pickers</li>
+<li><strong>Vendor Filtering</strong>: Multi-select vendor dropdown</li>
+<li><strong>Amount Range</strong>: Min/Max amount filters</li>
+</ul>
+<p><strong>Advanced Search:</strong></p>
+<ul>
+<li><strong>GRN Reference</strong>: Exact or partial match</li>
+<li><strong>Invoice Number</strong>: Cross-reference search</li>
+<li><strong>Item Description</strong>: Search within GRN items</li>
+<li><strong>Multi-criteria</strong>: Combine multiple search terms</li>
+</ul>
+<p><strong>Search Features:</strong></p>
+<ul>
+<li><strong>Auto-complete</strong>: Suggestions based on existing data</li>
+<li><strong>Search History</strong>: Recently used search terms</li>
+<li><strong>Saved Searches</strong>: Store frequently used filters</li>
+<li><strong>Clear Filters</strong>: Reset all search criteria</li>
+</ul>
+<h3 id="2-bulk-operations">2. Bulk Operations</h3>
+<p><strong>Selection Methods:</strong></p>
+<ul>
+<li><strong>Individual Selection</strong>: Click checkboxes for specific GRNs</li>
+<li><strong>Page Selection</strong>: Select all GRNs on current page</li>
+<li><strong>Filter-based Selection</strong>: Select all matching filter criteria</li>
+<li><strong>Manual Range</strong>: Shift+click for range selection</li>
+</ul>
+<p><strong>Bulk Actions:</strong></p>
+<ul>
+<li><strong>Status Updates</strong>: Change status for multiple GRNs</li>
+<li><strong>Export Operations</strong>: Generate reports for selected GRNs</li>
+<li><strong>Print Batches</strong>: Print multiple GRN documents</li>
+<li><strong>Delete Operations</strong>: Remove multiple GRNs (with confirmation)</li>
+</ul>
+<p><strong>Progress Tracking:</strong></p>
+<ul>
+<li><strong>Operation Progress</strong>: Progress bars for bulk operations</li>
+<li><strong>Success/Failure Count</strong>: Results summary with details</li>
+<li><strong>Error Reporting</strong>: Detailed error information for failures</li>
+<li><strong>Rollback</strong>: Undo operations if supported</li>
+</ul>
+<h3 id="3-data-export-and-import">3. Data Export and Import</h3>
+<p><strong>Export Options:</strong></p>
+<ul>
+<li><strong>PDF Reports</strong>: Formatted GRN documents</li>
+<li><strong>Excel Spreadsheets</strong>: Detailed data for analysis</li>
+<li><strong>CSV Files</strong>: Data export for other systems</li>
+<li><strong>Financial Reports</strong>: Accounting-focused exports</li>
+</ul>
+<p><strong>Export Configuration:</strong></p>
+<ul>
+<li><strong>Date Range</strong>: Specify export period</li>
+<li><strong>Field Selection</strong>: Choose columns to include</li>
+<li><strong>Format Options</strong>: Layout and styling preferences</li>
+<li><strong>Delivery Method</strong>: Download or email delivery</li>
+</ul>
+<p><strong>Import Capabilities:</strong></p>
+<ul>
+<li><strong>Bulk GRN Creation</strong>: CSV import for multiple GRNs</li>
+<li><strong>Item Data</strong>: Import item information from spreadsheets</li>
+<li><strong>Vendor Updates</strong>: Bulk vendor information updates</li>
+<li><strong>Validation</strong>: Data validation before import</li>
+</ul>
+<h2 id="advanced-features">Advanced Features</h2>
+<h3 id="1-multi-currency-handling">1. Multi-Currency Handling</h3>
+<p><strong>Currency Operations:</strong></p>
+<ul>
+<li><strong>Real-time Exchange Rates</strong>: Automatic rate retrieval</li>
+<li><strong>Historical Rates</strong>: Date-specific exchange rates</li>
+<li><strong>Manual Rate Override</strong>: Custom exchange rate entry</li>
+<li><strong>Currency Conversion</strong>: Auto-conversion to base currency</li>
+</ul>
+<p><strong>Multi-Currency Display:</strong></p>
+<ul>
+<li><strong>Primary Currency</strong>: GRN transaction currency</li>
+<li><strong>Base Currency</strong>: Company reporting currency</li>
+<li><strong>Dual Display</strong>: Side-by-side currency amounts</li>
+<li><strong>Conversion Calculations</strong>: Transparent rate application</li>
+</ul>
+<h3 id="2-workflow-integration">2. Workflow Integration</h3>
+<p><strong>Purchase Order Integration:</strong></p>
+<ul>
+<li><strong>Seamless PO to GRN</strong>: Direct creation from POs</li>
+<li><strong>Three-way Matching</strong>: PO-GRN-Invoice matching</li>
+<li><strong>Status Synchronization</strong>: Update PO status on GRN creation</li>
+<li><strong>Quantity Tracking</strong>: Monitor ordered vs received</li>
+</ul>
+<p><strong>Inventory Integration:</strong></p>
+<ul>
+<li><strong>Stock Updates</strong>: Automatic inventory adjustments</li>
+<li><strong>Location Tracking</strong>: Multi-location stock management</li>
+<li><strong>Cost Updates</strong>: Weighted average cost calculations</li>
+<li><strong>Availability Check</strong>: Stock level validation</li>
+</ul>
+<p><strong>Financial Integration:</strong></p>
+<ul>
+<li><strong>Journal Entries</strong>: Automatic accounting entries</li>
+<li><strong>Cost Center Allocation</strong>: Departmental cost assignment</li>
+<li><strong>Budget Integration</strong>: Budget vs actual tracking</li>
+<li><strong>Payment Processing</strong>: Integration with accounts payable</li>
+</ul>
+<h3 id="3-approval-workflows">3. Approval Workflows</h3>
+<p><strong>Approval Routing:</strong></p>
+<ul>
+<li><strong>Amount-based Approval</strong>: Different limits for different roles</li>
+<li><strong>Department Approval</strong>: Route based on requesting department</li>
+<li><strong>Vendor Approval</strong>: Special handling for new vendors</li>
+<li><strong>Exception Handling</strong>: Escalation for unusual transactions</li>
+</ul>
+<p><strong>Notification System:</strong></p>
+<ul>
+<li><strong>Email Notifications</strong>: Automatic notifications to approvers</li>
+<li><strong>In-app Notifications</strong>: Dashboard notification center</li>
+<li><strong>Mobile Notifications</strong>: Push notifications for mobile users</li>
+<li><strong>Reminder System</strong>: Automated follow-up reminders</li>
+</ul>
+<h3 id="4-integration-features">4. Integration Features</h3>
+<p><strong>Vendor Portal Integration:</strong></p>
+<ul>
+<li><strong>Vendor Access</strong>: Portal for vendors to view GRNs</li>
+<li><strong>Status Updates</strong>: Real-time status communication</li>
+<li><strong>Document Sharing</strong>: Secure document exchange</li>
+<li><strong>Invoice Matching</strong>: Automated invoice-GRN matching</li>
+</ul>
+<p><strong>Quality Management:</strong></p>
+<ul>
+<li><strong>Quality Checks</strong>: Integration with quality control</li>
+<li><strong>Inspection Results</strong>: Link QC results to GRNs</li>
+<li><strong>Compliance Tracking</strong>: Regulatory compliance monitoring</li>
+<li><strong>Certificate Management</strong>: Track vendor certifications</li>
+</ul>
+<p><strong>Reporting Integration:</strong></p>
+<ul>
+<li><strong>Financial Reporting</strong>: Integration with financial reports</li>
+<li><strong>Operational Reports</strong>: GRN performance metrics</li>
+<li><strong>Compliance Reports</strong>: Regulatory reporting support</li>
+<li><strong>Analytics</strong>: Business intelligence integration</li>
+</ul>
+<hr>
+<p><em>Generated on: Latest</em><br><em>User Interaction Guide Version: 1.0</em></p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#goods-received-note-module-user-interaction-guide" class="level-1">Goods Received Note Module - User Interaction Guide</a>
+<a href="#table-of-contents" class="level-2">Table of Contents</a>
+<a href="#navigation-amp-entry-points" class="level-2">Navigation &amp; Entry Points</a>
+<a href="#main-navigation" class="level-3">Main Navigation</a>
+<a href="#direct-links" class="level-3">Direct Links</a>
+<a href="#primary-user-workflows" class="level-2">Primary User Workflows</a>
+<a href="#1-create-grn-from-purchase-order" class="level-3">1. Create GRN from Purchase Order</a>
+<a href="#2-create-grn-manually" class="level-3">2. Create GRN Manually</a>
+<a href="#3-edit-existing-grn" class="level-3">3. Edit Existing GRN</a>
+<a href="#4-process-item-receipts" class="level-3">4. Process Item Receipts</a>
+<a href="#dialog-interactions" class="level-2">Dialog Interactions</a>
+<a href="#1-new-grn-creation-dialog" class="level-3">1. New GRN Creation Dialog</a>
+<a href="#2-vendor-selection-dialog" class="level-3">2. Vendor Selection Dialog</a>
+<a href="#3-item-addedit-dialogs" class="level-3">3. Item Add/Edit Dialogs</a>
+<a href="#4-bulk-actions-confirmation" class="level-3">4. Bulk Actions Confirmation</a>
+<a href="#form-interactions" class="level-2">Form Interactions</a>
+<a href="#1-header-information-form" class="level-3">1. Header Information Form</a>
+<a href="#2-items-tab-interactions" class="level-3">2. Items Tab Interactions</a>
+<a href="#3-extra-costs-tab-interactions" class="level-3">3. Extra Costs Tab Interactions</a>
+<a href="#data-management" class="level-2">Data Management</a>
+<a href="#1-search-and-filtering" class="level-3">1. Search and Filtering</a>
+<a href="#2-bulk-operations" class="level-3">2. Bulk Operations</a>
+<a href="#3-data-export-and-import" class="level-3">3. Data Export and Import</a>
+<a href="#advanced-features" class="level-2">Advanced Features</a>
+<a href="#1-multi-currency-handling" class="level-3">1. Multi-Currency Handling</a>
+<a href="#2-workflow-integration" class="level-3">2. Workflow Integration</a>
+<a href="#3-approval-workflows" class="level-3">3. Approval Workflows</a>
+<a href="#4-integration-features" class="level-3">4. Integration Features</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

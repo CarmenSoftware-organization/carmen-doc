@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase Request Template - Components Detailed Documentation - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: var(--bg-gradient);
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr 300px;
+            gap: 2rem;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 1.5rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .back-to-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: var(--primary-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        .back-to-home:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        /* Content Area */
+        .doc-content {
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 260px 1fr 280px;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 1.5rem;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 2.5rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            .doc-nav {
+                display: none;
+            }
+            .doc-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </div>
+            <div class="doc-header-actions">
+                <a href="../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../SYSTEM-DOCUMENTATION-INDEX.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Documentation Index</span>
+                    </a>
+                    <a href="../DOCUMENTATION-CATALOG.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Catalog</span>
+                    </a>
+                    <a href="../DOCUMENTATION-SUMMARY-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Summary</span>
+                    </a>
+                    <a href="../MODULE-VERIFICATION-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Module Verification</span>
+                    </a>
+                    <a href="../SYSTEM-GAPS-AND-ROADMAP.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Gaps & Roadmap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../architecture/SYSTEM-ARCHITECTURE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-users"></i>
+                    <span>Stakeholders</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../stakeholders/BUSINESS-VALUE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pr/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Requests</span>
+                    </a>
+                    <a href="../po/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Orders</span>
+                    </a>
+                    <a href="../grn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Goods Received Note</span>
+                    </a>
+                    <a href="../cn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Credit Notes</span>
+                    </a>
+                    <a href="../prt/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>PR Templates</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-boxes"></i>
+                    <span>Inventory Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../inv/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Overview</span>
+                    </a>
+                    <a href="../inv/inventory-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Specification</span>
+                    </a>
+                    <a href="../inv/inventory-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Sitemap</span>
+                    </a>
+                    <a href="../pc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Physical Count</span>
+                    </a>
+                    <a href="../sc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Spot Check</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-handshake"></i>
+                    <span>Vendor Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../vm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Overview</span>
+                    </a>
+                    <a href="../vm/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Module</span>
+                    </a>
+                    <a href="../vm/MANAGE-VENDORS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Manage Vendors</span>
+                    </a>
+                    <a href="../vm/TEMPLATES.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Templates</span>
+                    </a>
+                    <a href="../vm/CAMPAIGNS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Campaigns</span>
+                    </a>
+                    <a href="../vm/PRICELISTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Pricelists</span>
+                    </a>
+                    <a href="../vm/VENDOR-PORTAL.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Portal</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cube"></i>
+                    <span>Product Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Overview</span>
+                    </a>
+                    <a href="../pm/product-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Specification</span>
+                    </a>
+                    <a href="../pm/product-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-store"></i>
+                    <span>Store Operations</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../store-ops/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Overview</span>
+                    </a>
+                    <a href="../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Module</span>
+                    </a>
+                    <a href="../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Requisitions</span>
+                    </a>
+                    <a href="../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Stock Replenishment</span>
+                    </a>
+                    <a href="../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Wastage Reporting</span>
+                    </a>
+                    <a href="../store-ops/GLOSSARY.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Glossary</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Operational Planning</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../operational-planning/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Overview</span>
+                    </a>
+                    <a href="../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Module</span>
+                    </a>
+                    <a href="../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Menu Engineering</span>
+                    </a>
+                    <a href="../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Recipe Management</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cash-register"></i>
+                    <span>POS Integration</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pos-integration/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Overview</span>
+                    </a>
+                    <a href="../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Module</span>
+                    </a>
+                    <a href="../pos-integration/MAPPING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Mapping Subsystem</span>
+                    </a>
+                    <a href="../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Transaction Management</span>
+                    </a>
+                    <a href="../pos-integration/REPORTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports & Analytics</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../dashboard/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Overview</span>
+                    </a>
+                    <a href="../dashboard/sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>System Requirements</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../carmen-erp-system-requirements-documentation.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Requirements</span>
+                    </a>
+                    <a href="../comprehensive-schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="purchase-request-template-components-detailed-documentation">Purchase Request Template - Components Detailed Documentation</h1>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#component-overview">Component Overview</a></li>
+<li><a href="#page-components">Page Components</a></li>
+<li><a href="#form-components">Form Components</a></li>
+<li><a href="#dialog-components">Dialog Components</a></li>
+<li><a href="#table-components">Table Components</a></li>
+<li><a href="#shared-template-components">Shared Template Components</a></li>
+<li><a href="#component-interaction-patterns">Component Interaction Patterns</a></li>
+</ol>
+<h2 id="component-overview">Component Overview</h2>
+<p>The Purchase Request Template module follows a modular component architecture with clear separation between presentation, business logic, and data management. Components are organized into logical groups based on their functionality and reusability.</p>
+<h3 id="component-categories">Component Categories</h3>
+<ul>
+<li><strong>Page Components</strong>: Main route components that handle routing and top-level state</li>
+<li><strong>Form Components</strong>: Input handling and validation components</li>
+<li><strong>Dialog Components</strong>: Modal interfaces for focused interactions</li>
+<li><strong>Table Components</strong>: Data display and manipulation components</li>
+<li><strong>Shared Components</strong>: Reusable components across multiple contexts</li>
+</ul>
+<h2 id="page-components">Page Components</h2>
+<h3 id="1-purchaserequesttemplatespage">1. PurchaseRequestTemplatesPage</h3>
+<p><strong>File</strong>: <code>app/(main)/procurement/purchase-request-templates/page.tsx</code></p>
+<p><strong>Purpose</strong>: Main landing page for template management with dual-view interface and bulk operations.</p>
+<p><strong>Key Features</strong>:</p>
+<ul>
+<li>View mode switching (table/card)</li>
+<li>Search and filtering</li>
+<li>Bulk operations</li>
+<li>Template CRUD operations</li>
+<li>Pagination</li>
+</ul>
+<p><strong>Props Interface</strong>:</p>
+<pre><code class="language-typescript">// No external props - main page component
+</code></pre>
+<p><strong>State Management</strong>:</p>
+<pre><code class="language-typescript">const [viewMode, setViewMode] = useState&lt;&#39;table&#39; | &#39;card&#39;&gt;(&#39;table&#39;)
+const [selectedItems, setSelectedItems] = useState&lt;string[]&gt;([])
+const [currentPage, setCurrentPage] = useState(1)
+const [searchTerm, setSearchTerm] = useState(&quot;&quot;)
+const [selectedType, setSelectedType] = useState(&quot;All Types&quot;)
+const [selectedStatus, setSelectedStatus] = useState(&quot;All Statuses&quot;)
+const [activeFilters, setActiveFilters] = useState&lt;FilterType&lt;PurchaseRequest&gt;[]&gt;([])
+const [templates, setTemplates] = useState&lt;PurchaseRequest[]&gt;(templateData)
+const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+const [templateToDelete, setTemplateToDelete] = useState&lt;string | null&gt;(null)
+</code></pre>
+<p><strong>Core Functions</strong>:</p>
+<pre><code class="language-typescript">// Navigation
+const handleView = (id: string) =&gt; void
+const handleEdit = (id: string) =&gt; void
+const handleCreateNew = () =&gt; void
+
+// Item Selection
+const handleSelectItem = (id: string) =&gt; void
+const handleSelectAll = (checked: boolean) =&gt; void
+
+// CRUD Operations
+const handleDelete = (id: string) =&gt; void
+const confirmDelete = () =&gt; void
+
+// Filtering
+const handleSearch = (term: string) =&gt; void
+const handleTypeChange = (type: string) =&gt; void
+const handleStatusChange = (status: string) =&gt; void
+const handleApplyFilters = (filters: FilterType&lt;PurchaseRequest&gt;[]) =&gt; void
+</code></pre>
+<p><strong>Template Integration</strong>:</p>
+<pre><code class="language-typescript">&lt;PRListTemplate
+  title=&quot;Purchase Request Templates&quot;
+  data={templates}
+  selectedItems={selectedItems}
+  // ... other props
+  customActions={customActions}
+  viewToggle={viewToggle}
+  tableView={renderTableView()}
+  cardView={renderCardView()}
+/&gt;
+</code></pre>
+<p><strong>Custom Actions</strong>:</p>
+<ul>
+<li>Delete Selected</li>
+<li>Clone Selected</li>
+<li>Set as Default</li>
+</ul>
+<h3 id="2-purchaserequesttemplatedetailpage">2. PurchaseRequestTemplateDetailPage</h3>
+<p><strong>File</strong>: <code>app/(main)/procurement/purchase-request-templates/[id]/page.tsx</code></p>
+<p><strong>Purpose</strong>: Template detail view and editing interface with tab-based organization.</p>
+<p><strong>Props Interface</strong>:</p>
+<pre><code class="language-typescript">interface Props {
+  params: { id: string }
+}
+</code></pre>
+<p><strong>State Management</strong>:</p>
+<pre><code class="language-typescript">const [formData, setFormData] = useState&lt;PurchaseRequest&gt;(getTemplateById(params.id))
+</code></pre>
+<p><strong>Mode Handling</strong>:</p>
+<pre><code class="language-typescript">const mode = (searchParams?.get(&quot;mode&quot;) as &quot;view&quot; | &quot;edit&quot; | &quot;add&quot;) || &quot;view&quot;
+
+const handleModeChange = (newMode: &quot;view&quot; | &quot;edit&quot;) =&gt; {
+  router.push(`/procurement/purchase-request-templates/${params.id}?mode=${newMode}`)
+}
+</code></pre>
+<p><strong>Tab Configuration</strong>:</p>
+<pre><code class="language-typescript">const tabs = [
+  {
+    value: &quot;items&quot;,
+    label: &quot;Items&quot;,
+    content: &lt;ItemsTab items={mockTemplateItems} mode={mode} /&gt;
+  },
+  {
+    value: &quot;budgets&quot;,
+    label: &quot;Budgets&quot;,
+    content: &lt;BudgetsTabPlaceholder /&gt;
+  },
+  {
+    value: &quot;activity&quot;,
+    label: &quot;Activity&quot;,
+    content: &lt;ActivityTabPlaceholder /&gt;
+  }
+]
+</code></pre>
+<p><strong>Action Buttons</strong>:</p>
+<pre><code class="language-typescript">const actions = (
+  &lt;div className=&quot;flex items-center gap-2&quot;&gt;
+    &lt;Button variant=&quot;outline&quot; size=&quot;sm&quot;&gt;
+      &lt;FileCheck className=&quot;h-4 w-4 mr-2&quot; /&gt;
+      Set as Default
+    &lt;/Button&gt;
+    &lt;Button variant=&quot;outline&quot; size=&quot;sm&quot;&gt;
+      &lt;Copy className=&quot;h-4 w-4 mr-2&quot; /&gt;
+      Clone Template
+    &lt;/Button&gt;
+  &lt;/div&gt;
+)
+</code></pre>
+<h2 id="form-components">Form Components</h2>
+<h3 id="3-itemformdialog">3. ItemFormDialog</h3>
+<p><strong>File</strong>: <code>app/(main)/procurement/purchase-request-templates/components/item-form-dialog.tsx</code></p>
+<p><strong>Purpose</strong>: Comprehensive form dialog for adding and editing template items with real-time calculations.</p>
+<p><strong>Props Interface</strong>:</p>
+<pre><code class="language-typescript">interface ItemFormDialogProps {
+  open: boolean
+  onOpenChange: (open: boolean) =&gt; void
+  onSubmit: (data: Partial&lt;TemplateItem&gt;) =&gt; void
+  initialData?: TemplateItem
+  mode: &quot;add&quot; | &quot;edit&quot;
+}
+</code></pre>
+<p><strong>Form Schema</strong>:</p>
+<pre><code class="language-typescript">const formSchema = z.object({
+  itemCode: z.string().min(1, &quot;Item code is required&quot;),
+  description: z.string().min(1, &quot;Description is required&quot;),
+  uom: z.string().min(1, &quot;UOM is required&quot;),
+  quantity: z.number().min(0, &quot;Quantity must be positive&quot;),
+  unitPrice: z.number().min(0, &quot;Unit price must be positive&quot;),
+  budgetCode: z.string().min(1, &quot;Budget code is required&quot;),
+  accountCode: z.string().min(1, &quot;Account code is required&quot;),
+  department: z.string().min(1, &quot;Department is required&quot;),
+  taxCode: z.string().min(1, &quot;Tax code is required&quot;),
+  currency: z.nativeEnum(CurrencyCode),
+  currencyRate: z.number().min(0.01, &quot;Exchange rate must be positive&quot;),
+  taxIncluded: z.boolean().default(false),
+  discountRate: z.number().min(0, &quot;Discount rate must be non-negative&quot;),
+  taxRate: z.number().min(0, &quot;Tax rate must be non-negative&quot;),
+  adjustments: z.object({
+    discount: z.boolean().default(false),
+    tax: z.boolean().default(false),
+  })
+})
+</code></pre>
+<p><strong>Form Sections</strong>:</p>
+<h4>Basic Information Section</h4>
+<pre><code class="language-typescript">// Item Code and Description
+&lt;FormField name=&quot;itemCode&quot; /&gt;
+&lt;FormField name=&quot;description&quot; /&gt;
+</code></pre>
+<h4>Quantity and UOM Section</h4>
+<pre><code class="language-typescript">// Unit of Measure and Quantity
+&lt;FormField name=&quot;uom&quot; render={({ field }) =&gt; (
+  &lt;Select onValueChange={field.onChange}&gt;
+    &lt;SelectItem value=&quot;KG&quot;&gt;KG&lt;/SelectItem&gt;
+    &lt;SelectItem value=&quot;EA&quot;&gt;EA&lt;/SelectItem&gt;
+    &lt;SelectItem value=&quot;BTL&quot;&gt;BTL&lt;/SelectItem&gt;
+    &lt;SelectItem value=&quot;CTN&quot;&gt;CTN&lt;/SelectItem&gt;
+  &lt;/Select&gt;
+)} /&gt;
+&lt;FormField name=&quot;quantity&quot; type=&quot;number&quot; /&gt;
+</code></pre>
+<h4>Pricing Section</h4>
+<pre><code class="language-typescript">// Currency, Exchange Rate, Unit Price, Tax Settings
+&lt;FormField name=&quot;currency&quot; /&gt;
+&lt;FormField name=&quot;currencyRate&quot; /&gt;
+&lt;FormField name=&quot;unitPrice&quot; /&gt;
+&lt;FormField name=&quot;taxIncluded&quot; type=&quot;checkbox&quot; /&gt;
+</code></pre>
+<h4>Adjustments Section</h4>
+<pre><code class="language-typescript">// Discount and Tax Adjustments
+&lt;FormField name=&quot;adjustments.discount&quot; type=&quot;checkbox&quot; /&gt;
+&lt;FormField name=&quot;discountRate&quot; type=&quot;number&quot; /&gt;
+&lt;FormField name=&quot;adjustments.tax&quot; type=&quot;checkbox&quot; /&gt;
+&lt;FormField name=&quot;taxRate&quot; type=&quot;number&quot; /&gt;
+</code></pre>
+<h4>Additional Information Section</h4>
+<pre><code class="language-typescript">// Budget Code, Account Code, Department, Tax Code
+&lt;FormField name=&quot;budgetCode&quot; /&gt;
+&lt;FormField name=&quot;accountCode&quot; /&gt;
+&lt;FormField name=&quot;department&quot; render={({ field }) =&gt; (
+  &lt;Select onValueChange={field.onChange}&gt;
+    &lt;SelectItem value=&quot;Kitchen&quot;&gt;Kitchen&lt;/SelectItem&gt;
+    &lt;SelectItem value=&quot;Housekeeping&quot;&gt;Housekeeping&lt;/SelectItem&gt;
+    &lt;SelectItem value=&quot;Maintenance&quot;&gt;Maintenance&lt;/SelectItem&gt;
+  &lt;/Select&gt;
+)} /&gt;
+&lt;FormField name=&quot;taxCode&quot; /&gt;
+</code></pre>
+<p><strong>Real-time Calculations</strong>:</p>
+<pre><code class="language-typescript">const [calculatedAmounts, setCalculatedAmounts] = useState({
+  baseAmount: 0,
+  discountAmount: 0,
+  netAmount: 0,
+  taxAmount: 0,
+  totalAmount: 0,
+})
+
+useEffect(() =&gt; {
+  const quantity = form.watch(&#39;quantity&#39;) || 0
+  const unitPrice = form.watch(&#39;unitPrice&#39;) || 0
+  const discountRate = form.watch(&#39;discountRate&#39;) || 0
+  const taxRate = form.watch(&#39;taxRate&#39;) || 0
+
+  const baseAmount = quantity * unitPrice
+  const discountAmount = baseAmount * (discountRate / 100)
+  const netAmount = baseAmount - discountAmount
+  const taxAmount = netAmount * (taxRate / 100)
+  const totalAmount = netAmount + taxAmount
+
+  setCalculatedAmounts({
+    baseAmount,
+    discountAmount,
+    netAmount,
+    taxAmount,
+    totalAmount,
+  })
+}, [form.watch(&#39;quantity&#39;), form.watch(&#39;unitPrice&#39;), form.watch(&#39;discountRate&#39;), form.watch(&#39;taxRate&#39;)])
+</code></pre>
+<p><strong>Calculated Amounts Display</strong>:</p>
+<pre><code class="language-typescript">&lt;div className=&quot;grid grid-cols-4 gap-4 bg-muted p-4 rounded-lg&quot;&gt;
+  &lt;div&gt;
+    &lt;p className=&quot;text-sm font-medium&quot;&gt;Base Amount&lt;/p&gt;
+    &lt;p className=&quot;text-lg&quot;&gt;{calculatedAmounts.baseAmount.toFixed(2)}&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;p className=&quot;text-sm font-medium&quot;&gt;Discount&lt;/p&gt;
+    &lt;p className=&quot;text-lg&quot;&gt;{calculatedAmounts.discountAmount.toFixed(2)}&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;p className=&quot;text-sm font-medium&quot;&gt;Tax&lt;/p&gt;
+    &lt;p className=&quot;text-lg&quot;&gt;{calculatedAmounts.taxAmount.toFixed(2)}&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;p className=&quot;text-sm font-medium&quot;&gt;Total&lt;/p&gt;
+    &lt;p className=&quot;text-lg font-bold&quot;&gt;{calculatedAmounts.totalAmount.toFixed(2)}&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<h2 id="dialog-components">Dialog Components</h2>
+<h3 id="4-delete-confirmation-dialog">4. Delete Confirmation Dialog</h3>
+<p><strong>Location</strong>: Within parent components</p>
+<p><strong>Purpose</strong>: Confirms deletion operations for templates and items.</p>
+<p><strong>Implementation Pattern</strong>:</p>
+<pre><code class="language-typescript">&lt;AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}&gt;
+  &lt;AlertDialogContent&gt;
+    &lt;AlertDialogHeader&gt;
+      &lt;AlertDialogTitle&gt;Are you sure?&lt;/AlertDialogTitle&gt;
+      &lt;AlertDialogDescription&gt;
+        This action cannot be undone. This will permanently delete the
+        template and remove it from our servers.
+      &lt;/AlertDialogDescription&gt;
+    &lt;/AlertDialogHeader&gt;
+    &lt;AlertDialogFooter&gt;
+      &lt;AlertDialogCancel&gt;Cancel&lt;/AlertDialogCancel&gt;
+      &lt;AlertDialogAction onClick={confirmDelete}&gt;Delete&lt;/AlertDialogAction&gt;
+    &lt;/AlertDialogFooter&gt;
+  &lt;/AlertDialogContent&gt;
+&lt;/AlertDialog&gt;
+</code></pre>
+<p><strong>State Management</strong>:</p>
+<pre><code class="language-typescript">const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+const [templateToDelete, setTemplateToDelete] = useState&lt;string | null&gt;(null)
+
+const handleDelete = (id: string) =&gt; {
+  setTemplateToDelete(id)
+  setDeleteDialogOpen(true)
+}
+
+const confirmDelete = () =&gt; {
+  if (templateToDelete) {
+    // Perform deletion
+    setTemplates(templates.filter(template =&gt; template.id !== templateToDelete))
+    setTemplateToDelete(null)
+    setDeleteDialogOpen(false)
+  }
+}
+</code></pre>
+<h2 id="table-components">Table Components</h2>
+<h3 id="5-templateitemstable">5. TemplateItemsTable</h3>
+<p><strong>File</strong>: <code>app/(main)/procurement/purchase-request-templates/components/template-items-table.tsx</code></p>
+<p><strong>Purpose</strong>: Displays template items in a comprehensive table format with actions.</p>
+<p><strong>Props Interface</strong>:</p>
+<pre><code class="language-typescript">interface TemplateItemsTableProps {
+  items: TemplateItem[]
+  mode: &quot;view&quot; | &quot;edit&quot; | &quot;add&quot;
+  onAddItem?: () =&gt; void
+  onEditItem?: (item: TemplateItem) =&gt; void
+  onDeleteItem?: (itemId: string) =&gt; void
+}
+</code></pre>
+<p><strong>Table Structure</strong>:</p>
+<pre><code class="language-typescript">&lt;Table&gt;
+  &lt;TableHeader&gt;
+    &lt;TableRow className=&quot;bg-muted/50&quot;&gt;
+      &lt;TableHead&gt;Item Code&lt;/TableHead&gt;
+      &lt;TableHead&gt;Description&lt;/TableHead&gt;
+      &lt;TableHead&gt;UOM&lt;/TableHead&gt;
+      &lt;TableHead className=&quot;text-right&quot;&gt;Quantity&lt;/TableHead&gt;
+      &lt;TableHead className=&quot;text-right&quot;&gt;Unit Price&lt;/TableHead&gt;
+      &lt;TableHead className=&quot;text-right&quot;&gt;Total Amount&lt;/TableHead&gt;
+      &lt;TableHead&gt;Budget Code&lt;/TableHead&gt;
+      &lt;TableHead&gt;Account Code&lt;/TableHead&gt;
+      &lt;TableHead&gt;Department&lt;/TableHead&gt;
+      {mode !== &quot;view&quot; &amp;&amp; &lt;TableHead className=&quot;w-[100px]&quot;&gt;Actions&lt;/TableHead&gt;}
+    &lt;/TableRow&gt;
+  &lt;/TableHeader&gt;
+  &lt;TableBody&gt;
+    {items.map((item) =&gt; (
+      &lt;TableRow key={item.id} className=&quot;hover:bg-muted/50&quot;&gt;
+        {/* Table cells */}
+      &lt;/TableRow&gt;
+    ))}
+  &lt;/TableBody&gt;
+&lt;/Table&gt;
+</code></pre>
+<p><strong>Action Buttons</strong> (Edit/Add modes only):</p>
+<pre><code class="language-typescript">{mode !== &quot;view&quot; &amp;&amp; (
+  &lt;TableCell&gt;
+    &lt;div className=&quot;flex justify-end space-x-1&quot;&gt;
+      &lt;Button variant=&quot;ghost&quot; size=&quot;icon&quot; onClick={() =&gt; onEditItem?.(item)}&gt;
+        &lt;FileText className=&quot;h-4 w-4&quot; /&gt;
+      &lt;/Button&gt;
+      &lt;Button variant=&quot;ghost&quot; size=&quot;icon&quot; onClick={() =&gt; onEditItem?.(item)}&gt;
+        &lt;Edit className=&quot;h-4 w-4&quot; /&gt;
+      &lt;/Button&gt;
+      &lt;DropdownMenu&gt;
+        &lt;DropdownMenuTrigger asChild&gt;
+          &lt;Button variant=&quot;ghost&quot; size=&quot;icon&quot;&gt;
+            &lt;MoreVertical className=&quot;h-4 w-4&quot; /&gt;
+          &lt;/Button&gt;
+        &lt;/DropdownMenuTrigger&gt;
+        &lt;DropdownMenuContent align=&quot;end&quot;&gt;
+          &lt;DropdownMenuItem onClick={() =&gt; onEditItem?.(item)}&gt;
+            View Details
+          &lt;/DropdownMenuItem&gt;
+          &lt;DropdownMenuItem onClick={() =&gt; onEditItem?.(item)}&gt;
+            Edit
+          &lt;/DropdownMenuItem&gt;
+          &lt;DropdownMenuItem
+            onClick={() =&gt; onDeleteItem?.(item.id)}
+            className=&quot;text-red-600&quot;
+          &gt;
+            Delete
+          &lt;/DropdownMenuItem&gt;
+        &lt;/DropdownMenuContent&gt;
+      &lt;/DropdownMenu&gt;
+    &lt;/div&gt;
+  &lt;/TableCell&gt;
+)}
+</code></pre>
+<p><strong>Add Item Button</strong> (Edit/Add modes):</p>
+<pre><code class="language-typescript">{mode !== &quot;view&quot; &amp;&amp; (
+  &lt;div className=&quot;flex justify-end&quot;&gt;
+    &lt;Button onClick={onAddItem} size=&quot;sm&quot; className=&quot;h-8&quot;&gt;
+      &lt;PlusCircle className=&quot;h-4 w-4 mr-2&quot; /&gt;
+      Add Item
+    &lt;/Button&gt;
+  &lt;/div&gt;
+)}
+</code></pre>
+<h3 id="6-itemstab">6. ItemsTab</h3>
+<p><strong>File</strong>: <code>app/(main)/procurement/purchase-request-templates/components/ItemsTab.tsx</code></p>
+<p><strong>Purpose</strong>: Container component that manages the items table and form dialog interactions.</p>
+<p><strong>Props Interface</strong>:</p>
+<pre><code class="language-typescript">interface ItemsTabProps {
+  items: TemplateItem[]
+  mode: &quot;view&quot; | &quot;edit&quot; | &quot;add&quot;
+}
+</code></pre>
+<p><strong>State Management</strong>:</p>
+<pre><code class="language-typescript">const [items, setItems] = useState&lt;TemplateItem[]&gt;(initialItems)
+const [formOpen, setFormOpen] = useState(false)
+const [selectedItem, setSelectedItem] = useState&lt;TemplateItem | null&gt;(null)
+const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+const [itemToDelete, setItemToDelete] = useState&lt;string | null&gt;(null)
+</code></pre>
+<p><strong>Event Handlers</strong>:</p>
+<pre><code class="language-typescript">const handleAddItem = () =&gt; {
+  setSelectedItem(null)
+  setFormOpen(true)
+}
+
+const handleEditItem = (item: TemplateItem) =&gt; {
+  setSelectedItem(item)
+  setFormOpen(true)
+}
+
+const handleDeleteItem = (itemId: string) =&gt; {
+  setItemToDelete(itemId)
+  setDeleteDialogOpen(true)
+}
+
+const handleFormSubmit = (data: Partial&lt;TemplateItem&gt;) =&gt; {
+  if (selectedItem) {
+    // Edit existing item
+    setItems(items.map(item =&gt;
+      item.id === selectedItem.id ? { ...item, ...data } : item
+    ))
+  } else {
+    // Add new item
+    setItems([...items, data as TemplateItem])
+  }
+}
+</code></pre>
+<p><strong>Component Layout</strong>:</p>
+<pre><code class="language-typescript">&lt;Card&gt;
+  &lt;CardContent className=&quot;p-6&quot;&gt;
+    &lt;ScrollArea className=&quot;h-[calc(100vh-300px)]&quot;&gt;
+      &lt;TemplateItemsTable
+        items={items}
+        mode={mode}
+        onAddItem={handleAddItem}
+        onEditItem={handleEditItem}
+        onDeleteItem={handleDeleteItem}
+      /&gt;
+    &lt;/ScrollArea&gt;
+
+    &lt;ItemFormDialog
+      open={formOpen}
+      onOpenChange={setFormOpen}
+      onSubmit={handleFormSubmit}
+      initialData={selectedItem || undefined}
+      mode={selectedItem ? &quot;edit&quot; : &quot;add&quot;}
+    /&gt;
+
+    &lt;AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}&gt;
+      {/* Delete confirmation dialog */}
+    &lt;/AlertDialog&gt;
+  &lt;/CardContent&gt;
+&lt;/Card&gt;
+</code></pre>
+<h2 id="shared-template-components">Shared Template Components</h2>
+<h3 id="7-prlisttemplate">7. PRListTemplate</h3>
+<p><strong>File</strong>: <code>components/templates/PRListTemplate.tsx</code></p>
+<p><strong>Purpose</strong>: Reusable list component shared across Purchase Request related modules.</p>
+<p><strong>Key Features</strong>:</p>
+<ul>
+<li>Dual view modes (table/card)</li>
+<li>Advanced filtering</li>
+<li>Pagination</li>
+<li>Bulk operations</li>
+<li>Customizable actions</li>
+</ul>
+<p><strong>Props Interface</strong>:</p>
+<pre><code class="language-typescript">interface PRListTemplateProps {
+  title: string
+  data: PurchaseRequest[]
+  selectedItems: string[]
+  currentPage: number
+  itemsPerPage: number
+  onPageChange: (page: number) =&gt; void
+  onSearch: (term: string) =&gt; void
+  onTypeChange: (type: string) =&gt; void
+  onStatusChange: (status: string) =&gt; void
+  onSelectItem: (id: string) =&gt; void
+  onSelectAll: (checked: boolean) =&gt; void
+  onView: (id: string) =&gt; void
+  onEdit: (id: string) =&gt; void
+  onDelete: (id: string) =&gt; void
+  onCreateNew: () =&gt; void
+  typeOptions: FilterOption[]
+  statusOptions: FilterOption[]
+  fieldConfigs: FieldConfig[]
+  advancedFilter?: React.ReactNode
+  customActions?: React.ReactNode
+  viewToggle?: React.ReactNode
+  viewMode: &#39;table&#39; | &#39;card&#39;
+  tableView?: React.ReactNode
+  cardView?: React.ReactNode
+}
+</code></pre>
+<h3 id="8-prdetailtemplate">8. PRDetailTemplate</h3>
+<p><strong>File</strong>: <code>components/templates/PRDetailTemplate.tsx</code></p>
+<p><strong>Purpose</strong>: Reusable detail component shared across Purchase Request related modules.</p>
+<p><strong>Key Features</strong>:</p>
+<ul>
+<li>Mode switching (view/edit)</li>
+<li>Tab interface</li>
+<li>Form handling</li>
+<li>Custom actions</li>
+</ul>
+<p><strong>Props Interface</strong>:</p>
+<pre><code class="language-typescript">interface PRDetailTemplateProps {
+  mode: &quot;view&quot; | &quot;edit&quot; | &quot;add&quot;
+  title: React.ReactNode
+  formData: PurchaseRequest
+  onModeChange: (mode: &quot;view&quot; | &quot;edit&quot;) =&gt; void
+  onSubmit: (e: React.FormEvent) =&gt; void
+  onInputChange: (e: React.ChangeEvent&lt;HTMLInputElement&gt;) =&gt; void
+  onFormDataChange: (data: Partial&lt;PurchaseRequest&gt;) =&gt; void
+  tabs: Array&lt;{
+    value: string
+    label: string
+    content: React.ReactNode
+  }&gt;
+  actions?: React.ReactNode
+}
+</code></pre>
+<h2 id="component-interaction-patterns">Component Interaction Patterns</h2>
+<h3 id="state-flow-patterns">State Flow Patterns</h3>
+<h4>1. Parent-Child Communication</h4>
+<pre><code class="language-typescript">// Parent Component (ItemsTab)
+const [items, setItems] = useState&lt;TemplateItem[]&gt;([])
+
+// Child Component (TemplateItemsTable)
+&lt;TemplateItemsTable
+  items={items}
+  onEditItem={handleEditItem}
+  onDeleteItem={handleDeleteItem}
+/&gt;
+
+// Event bubbling back to parent
+const handleEditItem = (item: TemplateItem) =&gt; {
+  setSelectedItem(item)
+  setFormOpen(true)
+}
+</code></pre>
+<h4>2. Dialog State Management</h4>
+<pre><code class="language-typescript">// Dialog open/close state
+const [formOpen, setFormOpen] = useState(false)
+const [selectedItem, setSelectedItem] = useState&lt;TemplateItem | null&gt;(null)
+
+// Dialog handlers
+const handleAddItem = () =&gt; {
+  setSelectedItem(null)  // Clear selection for add mode
+  setFormOpen(true)
+}
+
+const handleEditItem = (item: TemplateItem) =&gt; {
+  setSelectedItem(item)  // Set item for edit mode
+  setFormOpen(true)
+}
+
+const handleFormSubmit = (data: Partial&lt;TemplateItem&gt;) =&gt; {
+  // Update items list
+  setFormOpen(false)     // Close dialog
+}
+</code></pre>
+<h4>3. Mode-Based Rendering</h4>
+<pre><code class="language-typescript">// Conditional rendering based on mode
+{mode !== &quot;view&quot; &amp;&amp; (
+  &lt;Button onClick={onAddItem}&gt;
+    &lt;PlusCircle className=&quot;h-4 w-4 mr-2&quot; /&gt;
+    Add Item
+  &lt;/Button&gt;
+)}
+
+// Actions column visibility
+{mode !== &quot;view&quot; &amp;&amp; &lt;TableHead&gt;Actions&lt;/TableHead&gt;}
+</code></pre>
+<h3 id="data-flow-architecture">Data Flow Architecture</h3>
+<h4>Template List → Detail Flow</h4>
+<pre><code class="language-typescript">// List page navigation
+const handleView = (id: string) =&gt; {
+  router.push(`/procurement/purchase-request-templates/${id}?mode=view`)
+}
+
+const handleEdit = (id: string) =&gt; {
+  router.push(`/procurement/purchase-request-templates/${id}?mode=edit`)
+}
+
+// Detail page mode detection
+const mode = (searchParams?.get(&quot;mode&quot;) as &quot;view&quot; | &quot;edit&quot; | &quot;add&quot;) || &quot;view&quot;
+</code></pre>
+<h4>Form Data Management</h4>
+<pre><code class="language-typescript">// Form initialization
+const form = useForm&lt;z.infer&lt;typeof formSchema&gt;&gt;({
+  resolver: zodResolver(formSchema),
+  defaultValues: initialData || defaultFormValues
+})
+
+// Real-time calculations
+useEffect(() =&gt; {
+  // Watch form values and calculate totals
+  const quantity = form.watch(&#39;quantity&#39;)
+  const unitPrice = form.watch(&#39;unitPrice&#39;)
+  // ... calculation logic
+}, [form.watch(&#39;quantity&#39;), form.watch(&#39;unitPrice&#39;)])
+
+// Form submission
+const handleSubmit = (values: z.infer&lt;typeof formSchema&gt;) =&gt; {
+  onSubmit({
+    ...values,
+    totalAmount: calculatedAmounts.totalAmount
+  })
+}
+</code></pre>
+<h3 id="error-handling-patterns">Error Handling Patterns</h3>
+<h4>Form Validation</h4>
+<pre><code class="language-typescript">// Zod schema validation
+const formSchema = z.object({
+  itemCode: z.string().min(1, &quot;Item code is required&quot;),
+  quantity: z.number().min(0, &quot;Quantity must be positive&quot;),
+  // ... other validations
+})
+
+// Display validation errors
+&lt;FormMessage /&gt; // Automatically displays field errors
+</code></pre>
+<h4>Operation Error Handling</h4>
+<pre><code class="language-typescript">const handleOperation = async () =&gt; {
+  try {
+    // Perform operation
+    await operationFunction()
+
+    toast({
+      title: &quot;Success&quot;,
+      description: &quot;Operation completed successfully&quot;
+    })
+  } catch (error) {
+    console.error(&quot;Operation failed:&quot;, error)
+
+    toast({
+      title: &quot;Error&quot;,
+      description: &quot;Operation failed. Please try again.&quot;,
+      variant: &quot;destructive&quot;
+    })
+  }
+}
+</code></pre>
+<hr>
+<p><em>Documentation generated on: 2025-09-23</em><br><em>Component Documentation Version: 1.0</em><br><em>Carmen ERP - Purchase Request Template Module</em></p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#purchase-request-template-components-detailed-documentation" class="level-1">Purchase Request Template - Components Detailed Documentation</a>
+<a href="#table-of-contents" class="level-2">Table of Contents</a>
+<a href="#component-overview" class="level-2">Component Overview</a>
+<a href="#component-categories" class="level-3">Component Categories</a>
+<a href="#page-components" class="level-2">Page Components</a>
+<a href="#1-purchaserequesttemplatespage" class="level-3">1. PurchaseRequestTemplatesPage</a>
+<a href="#2-purchaserequesttemplatedetailpage" class="level-3">2. PurchaseRequestTemplateDetailPage</a>
+<a href="#form-components" class="level-2">Form Components</a>
+<a href="#3-itemformdialog" class="level-3">3. ItemFormDialog</a>
+<a href="#dialog-components" class="level-2">Dialog Components</a>
+<a href="#4-delete-confirmation-dialog" class="level-3">4. Delete Confirmation Dialog</a>
+<a href="#table-components" class="level-2">Table Components</a>
+<a href="#5-templateitemstable" class="level-3">5. TemplateItemsTable</a>
+<a href="#6-itemstab" class="level-3">6. ItemsTab</a>
+<a href="#shared-template-components" class="level-2">Shared Template Components</a>
+<a href="#7-prlisttemplate" class="level-3">7. PRListTemplate</a>
+<a href="#8-prdetailtemplate" class="level-3">8. PRDetailTemplate</a>
+<a href="#component-interaction-patterns" class="level-2">Component Interaction Patterns</a>
+<a href="#state-flow-patterns" class="level-3">State Flow Patterns</a>
+<a href="#data-flow-architecture" class="level-3">Data Flow Architecture</a>
+<a href="#error-handling-patterns" class="level-3">Error Handling Patterns</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

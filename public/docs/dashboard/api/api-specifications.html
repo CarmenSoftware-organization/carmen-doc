@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard API Specifications - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: var(--bg-gradient);
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr 300px;
+            gap: 2rem;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 1.5rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .back-to-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: var(--primary-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        .back-to-home:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        /* Content Area */
+        .doc-content {
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 260px 1fr 280px;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 1.5rem;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 2.5rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            .doc-nav {
+                display: none;
+            }
+            .doc-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </div>
+            <div class="doc-header-actions">
+                <a href="../../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../SYSTEM-DOCUMENTATION-INDEX.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Documentation Index</span>
+                    </a>
+                    <a href="../../DOCUMENTATION-CATALOG.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Catalog</span>
+                    </a>
+                    <a href="../../DOCUMENTATION-SUMMARY-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Summary</span>
+                    </a>
+                    <a href="../../MODULE-VERIFICATION-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Module Verification</span>
+                    </a>
+                    <a href="../../SYSTEM-GAPS-AND-ROADMAP.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Gaps & Roadmap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../architecture/SYSTEM-ARCHITECTURE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-users"></i>
+                    <span>Stakeholders</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../stakeholders/BUSINESS-VALUE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../pr/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Requests</span>
+                    </a>
+                    <a href="../../po/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Orders</span>
+                    </a>
+                    <a href="../../grn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Goods Received Note</span>
+                    </a>
+                    <a href="../../cn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Credit Notes</span>
+                    </a>
+                    <a href="../../prt/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>PR Templates</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-boxes"></i>
+                    <span>Inventory Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../inv/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Overview</span>
+                    </a>
+                    <a href="../../inv/inventory-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Specification</span>
+                    </a>
+                    <a href="../../inv/inventory-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Sitemap</span>
+                    </a>
+                    <a href="../../pc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Physical Count</span>
+                    </a>
+                    <a href="../../sc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Spot Check</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-handshake"></i>
+                    <span>Vendor Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../vm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Overview</span>
+                    </a>
+                    <a href="../../vm/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Module</span>
+                    </a>
+                    <a href="../../vm/MANAGE-VENDORS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Manage Vendors</span>
+                    </a>
+                    <a href="../../vm/TEMPLATES.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Templates</span>
+                    </a>
+                    <a href="../../vm/CAMPAIGNS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Campaigns</span>
+                    </a>
+                    <a href="../../vm/PRICELISTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Pricelists</span>
+                    </a>
+                    <a href="../../vm/VENDOR-PORTAL.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Portal</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cube"></i>
+                    <span>Product Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../pm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Overview</span>
+                    </a>
+                    <a href="../../pm/product-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Specification</span>
+                    </a>
+                    <a href="../../pm/product-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-store"></i>
+                    <span>Store Operations</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../store-ops/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Overview</span>
+                    </a>
+                    <a href="../../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Module</span>
+                    </a>
+                    <a href="../../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Requisitions</span>
+                    </a>
+                    <a href="../../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Stock Replenishment</span>
+                    </a>
+                    <a href="../../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Wastage Reporting</span>
+                    </a>
+                    <a href="../../store-ops/GLOSSARY.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Glossary</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Operational Planning</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../operational-planning/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Overview</span>
+                    </a>
+                    <a href="../../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Module</span>
+                    </a>
+                    <a href="../../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Menu Engineering</span>
+                    </a>
+                    <a href="../../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Recipe Management</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cash-register"></i>
+                    <span>POS Integration</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../pos-integration/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Overview</span>
+                    </a>
+                    <a href="../../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Module</span>
+                    </a>
+                    <a href="../../pos-integration/MAPPING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Mapping Subsystem</span>
+                    </a>
+                    <a href="../../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Transaction Management</span>
+                    </a>
+                    <a href="../../pos-integration/REPORTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports & Analytics</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../dashboard/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Overview</span>
+                    </a>
+                    <a href="../../dashboard/sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>System Requirements</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../carmen-erp-system-requirements-documentation.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Requirements</span>
+                    </a>
+                    <a href="../../comprehensive-schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="dashboard-api-specifications">Dashboard API Specifications</h1>
+<h2 id="overview">Overview</h2>
+<p>This document defines the API endpoints, data models, and integration specifications for the Dashboard module. Currently using mock data; this specification serves as the blueprint for backend implementation.</p>
+<h2 id="base-configuration">Base Configuration</h2>
+<h3 id="api-base-url">API Base URL</h3>
+<pre><code>Production: https://api.carmen-erp.com/v1
+Development: http://localhost:3000/api
+</code></pre>
+<h3 id="authentication">Authentication</h3>
+<p>All endpoints require authentication via JWT token in Authorization header:</p>
+<pre><code>Authorization: Bearer &lt;jwt_token&gt;
+</code></pre>
+<h3 id="rate-limiting">Rate Limiting</h3>
+<ul>
+<li><strong>Default</strong>: 100 requests per minute per user</li>
+<li><strong>Premium</strong>: 500 requests per minute per user</li>
+</ul>
+<h2 id="endpoints">Endpoints</h2>
+<h3 id="1-get-dashboard-metrics">1. Get Dashboard Metrics</h3>
+<p><strong>Endpoint</strong>: <code>GET /api/dashboard/metrics</code></p>
+<p><strong>Description</strong>: Retrieve aggregated metrics for dashboard cards</p>
+<p><strong>Authorization</strong>: Required - All authenticated users</p>
+<p><strong>Query Parameters</strong>:</p>
+<pre><code class="language-typescript">{
+  department?: string        // Filter by department ID (optional)
+  dateRange?: &#39;month&#39; | &#39;quarter&#39; | &#39;year&#39;  // Default: &#39;month&#39;
+  currency?: string          // Currency code (default: &#39;USD&#39;)
+}
+</code></pre>
+<p><strong>Request Example</strong>:</p>
+<pre><code class="language-bash">GET /api/dashboard/metrics?department=kitchen&amp;dateRange=month&amp;currency=USD
+Authorization: Bearer eyJhbGc...
+</code></pre>
+<p><strong>Response Schema</strong>:</p>
+<pre><code class="language-typescript">{
+  success: boolean
+  data: {
+    totalOrders: {
+      value: number
+      change: number        // Percentage change
+      trend: &#39;up&#39; | &#39;down&#39;
+      period: string        // e.g., &quot;June 2024&quot;
+    }
+    activeSuppliers: {
+      value: number
+      change: number
+      trend: &#39;up&#39; | &#39;down&#39;
+      verified: number
+    }
+    inventoryValue: {
+      value: number
+      change: number
+      trend: &#39;up&#39; | &#39;down&#39;
+      currency: string
+    }
+    monthlySpend: {
+      value: number
+      change: number
+      trend: &#39;up&#39; | &#39;down&#39;
+      currency: string
+      budget: number        // Budget allocation
+      utilization: number   // Percentage used
+    }
+    criticalStockItems: {
+      count: number
+      items: Array&lt;{
+        id: string
+        name: string
+        currentQuantity: number
+        minimumQuantity: number
+        severity: &#39;critical&#39; | &#39;warning&#39;
+      }&gt;
+    }
+    pendingApprovals: {
+      count: number
+      overdue: number
+      urgent: number
+    }
+    completedDeliveries: {
+      count: number
+      period: &#39;week&#39; | &#39;month&#39;
+      onTime: number
+      delayed: number
+    }
+  }
+  meta: {
+    lastUpdated: string     // ISO 8601 timestamp
+    cacheExpiry: number     // Seconds until cache expires
+  }
+}
+</code></pre>
+<p><strong>Response Example</strong>:</p>
+<pre><code class="language-json">{
+  &quot;success&quot;: true,
+  &quot;data&quot;: {
+    &quot;totalOrders&quot;: {
+      &quot;value&quot;: 1234,
+      &quot;change&quot;: 12.5,
+      &quot;trend&quot;: &quot;up&quot;,
+      &quot;period&quot;: &quot;June 2024&quot;
+    },
+    &quot;activeSuppliers&quot;: {
+      &quot;value&quot;: 89,
+      &quot;change&quot;: 3.2,
+      &quot;trend&quot;: &quot;up&quot;,
+      &quot;verified&quot;: 85
+    },
+    &quot;inventoryValue&quot;: {
+      &quot;value&quot;: 45231,
+      &quot;change&quot;: -2.4,
+      &quot;trend&quot;: &quot;down&quot;,
+      &quot;currency&quot;: &quot;USD&quot;
+    },
+    &quot;monthlySpend&quot;: {
+      &quot;value&quot;: 89432,
+      &quot;change&quot;: 8.7,
+      &quot;trend&quot;: &quot;up&quot;,
+      &quot;currency&quot;: &quot;USD&quot;,
+      &quot;budget&quot;: 100000,
+      &quot;utilization&quot;: 89.4
+    },
+    &quot;criticalStockItems&quot;: {
+      &quot;count&quot;: 12,
+      &quot;items&quot;: [
+        {
+          &quot;id&quot;: &quot;INV-001&quot;,
+          &quot;name&quot;: &quot;Organic Milk&quot;,
+          &quot;currentQuantity&quot;: 5,
+          &quot;minimumQuantity&quot;: 20,
+          &quot;severity&quot;: &quot;critical&quot;
+        }
+      ]
+    },
+    &quot;pendingApprovals&quot;: {
+      &quot;count&quot;: 8,
+      &quot;overdue&quot;: 2,
+      &quot;urgent&quot;: 3
+    },
+    &quot;completedDeliveries&quot;: {
+      &quot;count&quot;: 156,
+      &quot;period&quot;: &quot;week&quot;,
+      &quot;onTime&quot;: 142,
+      &quot;delayed&quot;: 14
+    }
+  },
+  &quot;meta&quot;: {
+    &quot;lastUpdated&quot;: &quot;2024-06-15T10:30:00Z&quot;,
+    &quot;cacheExpiry&quot;: 300
+  }
+}
+</code></pre>
+<p><strong>Error Responses</strong>:</p>
+<pre><code class="language-typescript">// 401 Unauthorized
+{
+  &quot;success&quot;: false,
+  &quot;error&quot;: {
+    &quot;code&quot;: &quot;UNAUTHORIZED&quot;,
+    &quot;message&quot;: &quot;Authentication required&quot;
+  }
+}
+
+// 403 Forbidden
+{
+  &quot;success&quot;: false,
+  &quot;error&quot;: {
+    &quot;code&quot;: &quot;FORBIDDEN&quot;,
+    &quot;message&quot;: &quot;Insufficient permissions to view department metrics&quot;
+  }
+}
+
+// 500 Internal Server Error
+{
+  &quot;success&quot;: false,
+  &quot;error&quot;: {
+    &quot;code&quot;: &quot;INTERNAL_ERROR&quot;,
+    &quot;message&quot;: &quot;Failed to calculate metrics&quot;,
+    &quot;details&quot;: &quot;Database connection timeout&quot;
+  }
+}
+</code></pre>
+<h3 id="2-get-chart-data">2. Get Chart Data</h3>
+<p><strong>Endpoint</strong>: <code>GET /api/dashboard/charts</code></p>
+<p><strong>Description</strong>: Retrieve time-series data for dashboard charts</p>
+<p><strong>Authorization</strong>: Required - All authenticated users</p>
+<p><strong>Query Parameters</strong>:</p>
+<pre><code class="language-typescript">{
+  chartType: &#39;orders&#39; | &#39;spend&#39; | &#39;suppliers&#39;  // Required
+  period: &#39;month&#39; | &#39;quarter&#39; | &#39;year&#39;          // Default: &#39;month&#39;
+  months?: number                                // Number of months (default: 6)
+  department?: string                            // Filter by department
+}
+</code></pre>
+<p><strong>Request Example</strong>:</p>
+<pre><code class="language-bash">GET /api/dashboard/charts?chartType=orders&amp;period=month&amp;months=6
+Authorization: Bearer eyJhbGc...
+</code></pre>
+<p><strong>Response Schema</strong>:</p>
+<pre><code class="language-typescript">{
+  success: boolean
+  data: {
+    chartType: string
+    period: string
+    dataPoints: Array&lt;{
+      period: string          // e.g., &quot;Jan&quot;, &quot;Feb&quot;
+      value: number           // Primary metric
+      secondaryValue?: number // For dual-metric charts
+      label: string
+    }&gt;
+    aggregation: {
+      total: number
+      average: number
+      min: number
+      max: number
+      trend: &#39;increasing&#39; | &#39;decreasing&#39; | &#39;stable&#39;
+    }
+  }
+  meta: {
+    startDate: string
+    endDate: string
+    lastUpdated: string
+  }
+}
+</code></pre>
+<p><strong>Response Example</strong>:</p>
+<pre><code class="language-json">{
+  &quot;success&quot;: true,
+  &quot;data&quot;: {
+    &quot;chartType&quot;: &quot;orders&quot;,
+    &quot;period&quot;: &quot;month&quot;,
+    &quot;dataPoints&quot;: [
+      { &quot;period&quot;: &quot;Jan&quot;, &quot;value&quot;: 186, &quot;label&quot;: &quot;January 2024&quot; },
+      { &quot;period&quot;: &quot;Feb&quot;, &quot;value&quot;: 305, &quot;label&quot;: &quot;February 2024&quot; },
+      { &quot;period&quot;: &quot;Mar&quot;, &quot;value&quot;: 237, &quot;label&quot;: &quot;March 2024&quot; },
+      { &quot;period&quot;: &quot;Apr&quot;, &quot;value&quot;: 273, &quot;label&quot;: &quot;April 2024&quot; },
+      { &quot;period&quot;: &quot;May&quot;, &quot;value&quot;: 209, &quot;label&quot;: &quot;May 2024&quot; },
+      { &quot;period&quot;: &quot;Jun&quot;, &quot;value&quot;: 214, &quot;label&quot;: &quot;June 2024&quot; }
+    ],
+    &quot;aggregation&quot;: {
+      &quot;total&quot;: 1424,
+      &quot;average&quot;: 237,
+      &quot;min&quot;: 186,
+      &quot;max&quot;: 305,
+      &quot;trend&quot;: &quot;stable&quot;
+    }
+  },
+  &quot;meta&quot;: {
+    &quot;startDate&quot;: &quot;2024-01-01&quot;,
+    &quot;endDate&quot;: &quot;2024-06-30&quot;,
+    &quot;lastUpdated&quot;: &quot;2024-06-15T10:30:00Z&quot;
+  }
+}
+</code></pre>
+<h3 id="3-get-recent-activities">3. Get Recent Activities</h3>
+<p><strong>Endpoint</strong>: <code>GET /api/dashboard/activities</code></p>
+<p><strong>Description</strong>: Retrieve recent system activities for the activity feed</p>
+<p><strong>Authorization</strong>: Required - All authenticated users</p>
+<p><strong>Query Parameters</strong>:</p>
+<pre><code class="language-typescript">{
+  limit?: number           // Number of activities (default: 10, max: 50)
+  offset?: number          // Pagination offset (default: 0)
+  type?: string            // Filter by activity type
+  status?: string          // Filter by status
+  priority?: string        // Filter by priority
+  dateFrom?: string        // ISO 8601 date
+  dateTo?: string          // ISO 8601 date
+}
+</code></pre>
+<p><strong>Request Example</strong>:</p>
+<pre><code class="language-bash">GET /api/dashboard/activities?limit=10&amp;offset=0&amp;priority=high
+Authorization: Bearer eyJhbGc...
+</code></pre>
+<p><strong>Response Schema</strong>:</p>
+<pre><code class="language-typescript">{
+  success: boolean
+  data: {
+    activities: Array&lt;{
+      id: string
+      type: string              // &#39;Purchase Request&#39; | &#39;Purchase Order&#39; | etc.
+      documentNumber: string    // e.g., &#39;PR-2024-001&#39;
+      status: string
+      target: string            // Associated entity
+      priority: &#39;critical&#39; | &#39;high&#39; | &#39;medium&#39; | &#39;low&#39;
+      reviewer: {
+        id: string
+        name: string
+        avatar?: string
+      }
+      metadata: {
+        amount?: number
+        currency?: string
+        items?: number
+        location?: string
+      }
+      createdAt: string         // ISO 8601
+      updatedAt: string
+      actions: Array&lt;{
+        type: &#39;view&#39; | &#39;edit&#39; | &#39;delete&#39;
+        url: string
+        enabled: boolean
+      }&gt;
+    }&gt;
+    pagination: {
+      total: number
+      limit: number
+      offset: number
+      hasMore: boolean
+    }
+  }
+  meta: {
+    lastUpdated: string
+  }
+}
+</code></pre>
+<p><strong>Response Example</strong>:</p>
+<pre><code class="language-json">{
+  &quot;success&quot;: true,
+  &quot;data&quot;: {
+    &quot;activities&quot;: [
+      {
+        &quot;id&quot;: &quot;1&quot;,
+        &quot;type&quot;: &quot;Purchase Request&quot;,
+        &quot;documentNumber&quot;: &quot;PR-2024-001&quot;,
+        &quot;status&quot;: &quot;Approved&quot;,
+        &quot;target&quot;: &quot;Kitchen Supplies&quot;,
+        &quot;priority&quot;: &quot;high&quot;,
+        &quot;reviewer&quot;: {
+          &quot;id&quot;: &quot;user-123&quot;,
+          &quot;name&quot;: &quot;Sarah Johnson&quot;,
+          &quot;avatar&quot;: &quot;https://...&quot;
+        },
+        &quot;metadata&quot;: {
+          &quot;amount&quot;: 1500,
+          &quot;currency&quot;: &quot;USD&quot;,
+          &quot;items&quot;: 15
+        },
+        &quot;createdAt&quot;: &quot;2024-01-20T08:00:00Z&quot;,
+        &quot;updatedAt&quot;: &quot;2024-01-20T10:30:00Z&quot;,
+        &quot;actions&quot;: [
+          { &quot;type&quot;: &quot;view&quot;, &quot;url&quot;: &quot;/procurement/purchase-requests/PR-2024-001&quot;, &quot;enabled&quot;: true },
+          { &quot;type&quot;: &quot;edit&quot;, &quot;url&quot;: &quot;/procurement/purchase-requests/PR-2024-001/edit&quot;, &quot;enabled&quot;: true },
+          { &quot;type&quot;: &quot;delete&quot;, &quot;url&quot;: &quot;/api/purchase-requests/PR-2024-001&quot;, &quot;enabled&quot;: false }
+        ]
+      }
+    ],
+    &quot;pagination&quot;: {
+      &quot;total&quot;: 156,
+      &quot;limit&quot;: 10,
+      &quot;offset&quot;: 0,
+      &quot;hasMore&quot;: true
+    }
+  },
+  &quot;meta&quot;: {
+    &quot;lastUpdated&quot;: &quot;2024-06-15T10:30:00Z&quot;
+  }
+}
+</code></pre>
+<h3 id="4-get-user-permissions">4. Get User Permissions</h3>
+<p><strong>Endpoint</strong>: <code>GET /api/dashboard/permissions</code></p>
+<p><strong>Description</strong>: Retrieve user&#39;s dashboard permissions and visibility rules</p>
+<p><strong>Authorization</strong>: Required</p>
+<p><strong>Response Schema</strong>:</p>
+<pre><code class="language-typescript">{
+  success: boolean
+  data: {
+    userId: string
+    role: string
+    department: string
+    permissions: {
+      viewMetrics: boolean
+      viewCharts: boolean
+      viewActivities: boolean
+      editActivities: boolean
+      deleteActivities: boolean
+      exportData: boolean
+    }
+    dataScope: {
+      departments: string[]
+      locations: string[]
+      suppliers: string[]
+    }
+    restrictions: {
+      maxDataRange: number      // Days
+      allowedCharts: string[]
+      allowedMetrics: string[]
+    }
+  }
+}
+</code></pre>
+<h3 id="5-export-dashboard-data">5. Export Dashboard Data</h3>
+<p><strong>Endpoint</strong>: <code>POST /api/dashboard/export</code></p>
+<p><strong>Description</strong>: Export dashboard data to PDF or Excel</p>
+<p><strong>Authorization</strong>: Required - Users with export permission</p>
+<p><strong>Request Body</strong>:</p>
+<pre><code class="language-typescript">{
+  format: &#39;pdf&#39; | &#39;excel&#39;
+  include: {
+    metrics: boolean
+    charts: boolean
+    activities: boolean
+  }
+  dateRange: {
+    from: string    // ISO 8601
+    to: string
+  }
+  filters?: {
+    department?: string
+    priority?: string
+  }
+}
+</code></pre>
+<p><strong>Response</strong>:</p>
+<pre><code class="language-typescript">{
+  success: boolean
+  data: {
+    downloadUrl: string
+    expiresAt: string
+    fileSize: number
+    filename: string
+  }
+}
+</code></pre>
+<h2 id="websocket-events">WebSocket Events</h2>
+<h3 id="real-time-updates">Real-time Updates</h3>
+<p><strong>Connection URL</strong>: <code>wss://api.carmen-erp.com/ws/dashboard</code></p>
+<p><strong>Authentication</strong>: Send JWT token in connection query string</p>
+<pre><code>wss://api.carmen-erp.com/ws/dashboard?token=&lt;jwt_token&gt;
+</code></pre>
+<h3 id="event-types">Event Types</h3>
+<h4>1. Metrics Update</h4>
+<pre><code class="language-typescript">{
+  event: &#39;metrics:update&#39;,
+  data: {
+    metric: &#39;totalOrders&#39; | &#39;activeSuppliers&#39; | &#39;inventoryValue&#39; | &#39;monthlySpend&#39;,
+    value: number,
+    change: number,
+    timestamp: string
+  }
+}
+</code></pre>
+<h4>2. New Activity</h4>
+<pre><code class="language-typescript">{
+  event: &#39;activity:new&#39;,
+  data: {
+    activity: ActivityObject,  // Same as GET /activities response
+    timestamp: string
+  }
+}
+</code></pre>
+<h4>3. Critical Alert</h4>
+<pre><code class="language-typescript">{
+  event: &#39;alert:critical&#39;,
+  data: {
+    type: &#39;stock_critical&#39; | &#39;approval_overdue&#39; | &#39;budget_exceeded&#39;,
+    severity: &#39;critical&#39; | &#39;high&#39;,
+    message: string,
+    actionUrl: string,
+    timestamp: string
+  }
+}
+</code></pre>
+<h4>4. Status Change</h4>
+<pre><code class="language-typescript">{
+  event: &#39;status:change&#39;,
+  data: {
+    activityId: string,
+    previousStatus: string,
+    newStatus: string,
+    timestamp: string
+  }
+}
+</code></pre>
+<h2 id="data-models">Data Models</h2>
+<h3 id="metric-model">Metric Model</h3>
+<pre><code class="language-typescript">interface Metric {
+  value: number
+  change: number
+  trend: &#39;up&#39; | &#39;down&#39;
+  period?: string
+  currency?: string
+}
+</code></pre>
+<h3 id="activity-model">Activity Model</h3>
+<pre><code class="language-typescript">interface Activity {
+  id: string
+  type: ActivityType
+  documentNumber: string
+  status: ActivityStatus
+  target: string
+  priority: Priority
+  reviewer: User
+  metadata: Record&lt;string, any&gt;
+  createdAt: Date
+  updatedAt: Date
+  actions: Action[]
+}
+
+type ActivityType =
+  | &#39;Purchase Request&#39;
+  | &#39;Purchase Order&#39;
+  | &#39;Goods Receipt&#39;
+  | &#39;Stock Adjustment&#39;
+  | &#39;Vendor Invoice&#39;
+  | &#39;Quality Check&#39;
+
+type ActivityStatus =
+  | &#39;Approved&#39;
+  | &#39;Processing&#39;
+  | &#39;Pending&#39;
+  | &#39;Under Review&#39;
+  | &#39;Complete&#39;
+  | &#39;Failed&#39;
+  | &#39;Rejected&#39;
+
+type Priority = &#39;critical&#39; | &#39;high&#39; | &#39;medium&#39; | &#39;low&#39;
+</code></pre>
+<h3 id="chart-data-model">Chart Data Model</h3>
+<pre><code class="language-typescript">interface ChartDataPoint {
+  period: string
+  value: number
+  secondaryValue?: number
+  label: string
+}
+
+interface ChartData {
+  chartType: string
+  period: string
+  dataPoints: ChartDataPoint[]
+  aggregation: {
+    total: number
+    average: number
+    min: number
+    max: number
+    trend: &#39;increasing&#39; | &#39;decreasing&#39; | &#39;stable&#39;
+  }
+}
+</code></pre>
+<h2 id="caching-strategy">Caching Strategy</h2>
+<h3 id="cache-configuration">Cache Configuration</h3>
+<pre><code class="language-typescript">cacheConfig = {
+  metrics: {
+    ttl: 300,        // 5 minutes
+    key: &#39;dashboard:metrics:{userId}:{department}&#39;,
+    invalidateOn: [&#39;order:created&#39;, &#39;order:approved&#39;, &#39;inventory:updated&#39;]
+  },
+  chartData: {
+    ttl: 900,        // 15 minutes
+    key: &#39;dashboard:charts:{chartType}:{period}:{department}&#39;,
+    invalidateOn: [&#39;order:created&#39;, &#39;spend:updated&#39;]
+  },
+  activities: {
+    ttl: 60,         // 1 minute
+    key: &#39;dashboard:activities:{userId}:{offset}&#39;,
+    invalidateOn: [&#39;activity:created&#39;, &#39;activity:updated&#39;]
+  }
+}
+</code></pre>
+<h3 id="cache-invalidation">Cache Invalidation</h3>
+<pre><code class="language-typescript">// Invalidate on specific events
+events.on(&#39;order:created&#39;, () =&gt; {
+  cache.invalidate(&#39;dashboard:metrics:*&#39;)
+  cache.invalidate(&#39;dashboard:charts:orders:*&#39;)
+  cache.invalidate(&#39;dashboard:activities:*&#39;)
+})
+
+events.on(&#39;inventory:updated&#39;, () =&gt; {
+  cache.invalidate(&#39;dashboard:metrics:*:inventoryValue&#39;)
+})
+</code></pre>
+<h2 id="error-handling">Error Handling</h2>
+<h3 id="error-codes">Error Codes</h3>
+<pre><code class="language-typescript">enum DashboardErrorCode {
+  UNAUTHORIZED = &#39;UNAUTHORIZED&#39;,
+  FORBIDDEN = &#39;FORBIDDEN&#39;,
+  INVALID_PARAMETER = &#39;INVALID_PARAMETER&#39;,
+  METRIC_CALCULATION_FAILED = &#39;METRIC_CALCULATION_FAILED&#39;,
+  CHART_DATA_UNAVAILABLE = &#39;CHART_DATA_UNAVAILABLE&#39;,
+  ACTIVITY_FETCH_FAILED = &#39;ACTIVITY_FETCH_FAILED&#39;,
+  EXPORT_FAILED = &#39;EXPORT_FAILED&#39;,
+  INTERNAL_ERROR = &#39;INTERNAL_ERROR&#39;
+}
+</code></pre>
+<h3 id="error-response-format">Error Response Format</h3>
+<pre><code class="language-typescript">{
+  success: false,
+  error: {
+    code: DashboardErrorCode,
+    message: string,
+    details?: string,
+    timestamp: string,
+    requestId: string
+  }
+}
+</code></pre>
+<h2 id="rate-limiting">Rate Limiting</h2>
+<h3 id="limits-by-endpoint">Limits by Endpoint</h3>
+<pre><code class="language-typescript">rateLimits = {
+  &#39;/api/dashboard/metrics&#39;: {
+    perMinute: 60,
+    perHour: 1000
+  },
+  &#39;/api/dashboard/charts&#39;: {
+    perMinute: 30,
+    perHour: 500
+  },
+  &#39;/api/dashboard/activities&#39;: {
+    perMinute: 100,
+    perHour: 2000
+  },
+  &#39;/api/dashboard/export&#39;: {
+    perMinute: 5,
+    perHour: 50
+  }
+}
+</code></pre>
+<h3 id="rate-limit-headers">Rate Limit Headers</h3>
+<pre><code>X-RateLimit-Limit: 60
+X-RateLimit-Remaining: 45
+X-RateLimit-Reset: 1634567890
+</code></pre>
+<h2 id="security-considerations">Security Considerations</h2>
+<h3 id="data-filtering">Data Filtering</h3>
+<p>All API responses must filter data based on:</p>
+<ol>
+<li>User role and permissions</li>
+<li>Department access</li>
+<li>Location access</li>
+<li>Data sensitivity level</li>
+</ol>
+<h3 id="audit-logging">Audit Logging</h3>
+<p>All API calls logged with:</p>
+<pre><code class="language-typescript">{
+  userId: string,
+  endpoint: string,
+  method: string,
+  parameters: object,
+  responseCode: number,
+  timestamp: string,
+  ipAddress: string,
+  userAgent: string
+}
+</code></pre>
+<h3 id="input-validation">Input Validation</h3>
+<ul>
+<li>Sanitize all query parameters</li>
+<li>Validate date ranges</li>
+<li>Limit pagination offsets</li>
+<li>Validate enum values</li>
+<li>Prevent SQL injection</li>
+<li>Rate limit enforcement</li>
+</ul>
+<h2 id="performance-optimization">Performance Optimization</h2>
+<h3 id="database-queries">Database Queries</h3>
+<ul>
+<li>Use materialized views for metrics</li>
+<li>Index frequently queried columns</li>
+<li>Implement query result caching</li>
+<li>Use connection pooling</li>
+<li>Optimize join operations</li>
+</ul>
+<h3 id="response-optimization">Response Optimization</h3>
+<ul>
+<li>Gzip compression enabled</li>
+<li>Minimize payload size</li>
+<li>Use ETags for conditional requests</li>
+<li>Implement HTTP/2 server push</li>
+<li>CDN for static chart images</li>
+</ul>
+<h2 id="testing-endpoints">Testing Endpoints</h2>
+<h3 id="mock-data-endpoints-development-only">Mock Data Endpoints (Development Only)</h3>
+<pre><code>GET /api/dashboard/mock/metrics
+GET /api/dashboard/mock/charts
+GET /api/dashboard/mock/activities
+</code></pre>
+<h3 id="health-check">Health Check</h3>
+<pre><code>GET /api/dashboard/health
+Response: { status: &#39;healthy&#39;, timestamp: string }
+</code></pre>
+<h2 id="future-api-enhancements">Future API Enhancements</h2>
+<ol>
+<li><strong>GraphQL Support</strong>: Single endpoint with flexible queries</li>
+<li><strong>Batch Operations</strong>: Multiple metric requests in single call</li>
+<li><strong>Streaming Data</strong>: Server-Sent Events for real-time updates</li>
+<li><strong>Advanced Filtering</strong>: Complex query language support</li>
+<li><strong>AI Insights</strong>: ML-powered anomaly detection endpoint</li>
+<li><strong>Custom Metrics</strong>: User-defined metric calculations</li>
+<li><strong>Scheduled Reports</strong>: Automated report generation API</li>
+</ol>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#dashboard-api-specifications" class="level-1">Dashboard API Specifications</a>
+<a href="#overview" class="level-2">Overview</a>
+<a href="#base-configuration" class="level-2">Base Configuration</a>
+<a href="#api-base-url" class="level-3">API Base URL</a>
+<a href="#authentication" class="level-3">Authentication</a>
+<a href="#rate-limiting" class="level-3">Rate Limiting</a>
+<a href="#endpoints" class="level-2">Endpoints</a>
+<a href="#1-get-dashboard-metrics" class="level-3">1. Get Dashboard Metrics</a>
+<a href="#2-get-chart-data" class="level-3">2. Get Chart Data</a>
+<a href="#3-get-recent-activities" class="level-3">3. Get Recent Activities</a>
+<a href="#4-get-user-permissions" class="level-3">4. Get User Permissions</a>
+<a href="#5-export-dashboard-data" class="level-3">5. Export Dashboard Data</a>
+<a href="#websocket-events" class="level-2">WebSocket Events</a>
+<a href="#real-time-updates" class="level-3">Real-time Updates</a>
+<a href="#event-types" class="level-3">Event Types</a>
+<a href="#data-models" class="level-2">Data Models</a>
+<a href="#metric-model" class="level-3">Metric Model</a>
+<a href="#activity-model" class="level-3">Activity Model</a>
+<a href="#chart-data-model" class="level-3">Chart Data Model</a>
+<a href="#caching-strategy" class="level-2">Caching Strategy</a>
+<a href="#cache-configuration" class="level-3">Cache Configuration</a>
+<a href="#cache-invalidation" class="level-3">Cache Invalidation</a>
+<a href="#error-handling" class="level-2">Error Handling</a>
+<a href="#error-codes" class="level-3">Error Codes</a>
+<a href="#error-response-format" class="level-3">Error Response Format</a>
+<a href="#rate-limiting" class="level-2">Rate Limiting</a>
+<a href="#limits-by-endpoint" class="level-3">Limits by Endpoint</a>
+<a href="#rate-limit-headers" class="level-3">Rate Limit Headers</a>
+<a href="#security-considerations" class="level-2">Security Considerations</a>
+<a href="#data-filtering" class="level-3">Data Filtering</a>
+<a href="#audit-logging" class="level-3">Audit Logging</a>
+<a href="#input-validation" class="level-3">Input Validation</a>
+<a href="#performance-optimization" class="level-2">Performance Optimization</a>
+<a href="#database-queries" class="level-3">Database Queries</a>
+<a href="#response-optimization" class="level-3">Response Optimization</a>
+<a href="#testing-endpoints" class="level-2">Testing Endpoints</a>
+<a href="#mock-data-endpoints-development-only" class="level-3">Mock Data Endpoints (Development Only)</a>
+<a href="#health-check" class="level-3">Health Check</a>
+<a href="#future-api-enhancements" class="level-2">Future API Enhancements</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

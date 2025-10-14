@@ -30,7 +30,7 @@ convert-docs.js
 list-docs-with-images.js
 
 # Generated/compiled assets
-public/
+# public/
 dist/
 build/
 

@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit Note Module - Complete Technical Specification - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: var(--bg-gradient);
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr 300px;
+            gap: 2rem;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 1.5rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .back-to-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: var(--primary-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        .back-to-home:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        /* Content Area */
+        .doc-content {
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 260px 1fr 280px;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 1.5rem;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 2.5rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            .doc-nav {
+                display: none;
+            }
+            .doc-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </div>
+            <div class="doc-header-actions">
+                <a href="../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../SYSTEM-DOCUMENTATION-INDEX.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Documentation Index</span>
+                    </a>
+                    <a href="../DOCUMENTATION-CATALOG.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Catalog</span>
+                    </a>
+                    <a href="../DOCUMENTATION-SUMMARY-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Summary</span>
+                    </a>
+                    <a href="../MODULE-VERIFICATION-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Module Verification</span>
+                    </a>
+                    <a href="../SYSTEM-GAPS-AND-ROADMAP.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Gaps & Roadmap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../architecture/SYSTEM-ARCHITECTURE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-users"></i>
+                    <span>Stakeholders</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../stakeholders/BUSINESS-VALUE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pr/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Requests</span>
+                    </a>
+                    <a href="../po/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Orders</span>
+                    </a>
+                    <a href="../grn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Goods Received Note</span>
+                    </a>
+                    <a href="../cn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Credit Notes</span>
+                    </a>
+                    <a href="../prt/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>PR Templates</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-boxes"></i>
+                    <span>Inventory Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../inv/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Overview</span>
+                    </a>
+                    <a href="../inv/inventory-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Specification</span>
+                    </a>
+                    <a href="../inv/inventory-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Sitemap</span>
+                    </a>
+                    <a href="../pc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Physical Count</span>
+                    </a>
+                    <a href="../sc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Spot Check</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-handshake"></i>
+                    <span>Vendor Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../vm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Overview</span>
+                    </a>
+                    <a href="../vm/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Module</span>
+                    </a>
+                    <a href="../vm/MANAGE-VENDORS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Manage Vendors</span>
+                    </a>
+                    <a href="../vm/TEMPLATES.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Templates</span>
+                    </a>
+                    <a href="../vm/CAMPAIGNS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Campaigns</span>
+                    </a>
+                    <a href="../vm/PRICELISTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Pricelists</span>
+                    </a>
+                    <a href="../vm/VENDOR-PORTAL.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Portal</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cube"></i>
+                    <span>Product Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Overview</span>
+                    </a>
+                    <a href="../pm/product-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Specification</span>
+                    </a>
+                    <a href="../pm/product-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-store"></i>
+                    <span>Store Operations</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../store-ops/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Overview</span>
+                    </a>
+                    <a href="../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Module</span>
+                    </a>
+                    <a href="../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Requisitions</span>
+                    </a>
+                    <a href="../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Stock Replenishment</span>
+                    </a>
+                    <a href="../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Wastage Reporting</span>
+                    </a>
+                    <a href="../store-ops/GLOSSARY.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Glossary</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Operational Planning</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../operational-planning/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Overview</span>
+                    </a>
+                    <a href="../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Module</span>
+                    </a>
+                    <a href="../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Menu Engineering</span>
+                    </a>
+                    <a href="../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Recipe Management</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cash-register"></i>
+                    <span>POS Integration</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pos-integration/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Overview</span>
+                    </a>
+                    <a href="../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Module</span>
+                    </a>
+                    <a href="../pos-integration/MAPPING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Mapping Subsystem</span>
+                    </a>
+                    <a href="../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Transaction Management</span>
+                    </a>
+                    <a href="../pos-integration/REPORTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports & Analytics</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../dashboard/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Overview</span>
+                    </a>
+                    <a href="../dashboard/sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>System Requirements</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../carmen-erp-system-requirements-documentation.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Requirements</span>
+                    </a>
+                    <a href="../comprehensive-schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="credit-note-module-complete-technical-specification">Credit Note Module - Complete Technical Specification</h1>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#module-overview">Module Overview</a></li>
+<li><a href="#complete-site-map">Complete Site Map</a></li>
+<li><a href="#page-documentation">Page Documentation</a></li>
+<li><a href="#component-architecture">Component Architecture</a></li>
+<li><a href="#data-flow">Data Flow</a></li>
+<li><a href="#user-interactions">User Interactions</a></li>
+<li><a href="#technical-architecture">Technical Architecture</a></li>
+<li><a href="#api-integration">API Integration</a></li>
+<li><a href="#database-schema">Database Schema</a></li>
+<li><a href="#status-workflow">Status Workflow</a></li>
+</ol>
+<h2 id="module-overview">Module Overview</h2>
+<p>The Credit Note (CN) module is a comprehensive component of the Carmen Hospitality ERP system that manages vendor credit notes for returned goods, pricing adjustments, and discounts. It provides complete lifecycle management from creation through posting, with robust inventory and financial integration.</p>
+<h3 id="key-features">Key Features</h3>
+<h4>Core Credit Note Management</h4>
+<ul>
+<li><strong>Multi-type Credit Notes</strong>: Quantity return and amount discount credit notes</li>
+<li><strong>GRN Integration</strong>: Create credit notes from Goods Received Notes</li>
+<li><strong>Vendor Management</strong>: Complete vendor selection and credit note tracking</li>
+<li><strong>Item-level Processing</strong>: Detailed line-item management with lot tracking</li>
+</ul>
+<h4>Advanced Functionality</h4>
+<ul>
+<li><strong>Lot Application</strong>: Advanced lot number tracking and application</li>
+<li><strong>Stock Movement Integration</strong>: Automatic inventory adjustments upon credit note processing</li>
+<li><strong>Financial Integration</strong>: Journal entries and tax calculations</li>
+<li><strong>Multi-currency Support</strong>: Handle credit notes in different currencies with exchange rates</li>
+</ul>
+<h4>User Experience</h4>
+<ul>
+<li><strong>Dual View Interface</strong>: Table and card views for credit note listing</li>
+<li><strong>Multi-step Workflow</strong>: Vendor selection → GRN selection → Item selection → Credit note creation</li>
+<li><strong>Comprehensive Detail Interface</strong>: Tabbed interface with inventory, journal entries, and tax details</li>
+<li><strong>Bulk Operations</strong>: Multi-select credit notes for batch processing</li>
+</ul>
+<h2 id="complete-site-map">Complete Site Map</h2>
+<div class="mermaid">
+graph TD
+    A[Credit Note Landing Page] --> B[CN List View - Table]
+    A --> C[CN List View - Card]
+
+    B --> D[New Credit Note Creation]
+    C --> D
+
+    D --> E[Vendor Selection Page]
+    E --> F[GRN Selection for Vendor]
+    F --> G[Item & Lot Selection Page]
+    G --> H[Credit Note Detail Page]
+
+    H --> I[CN Header Information]
+    H --> J[Item Details Tab]
+    H --> K[Inventory Tab]
+    H --> L[Journal Entries Tab]
+    H --> M[Tax Entries Tab]
+    H --> N[Stock Movement Tab]
+
+    J --> O[Item Edit Dialog]
+    J --> P[Lot Application Dialog]
+    J --> Q[Add Item Dialog]
+
+    K --> R[Inventory Impact View]
+    L --> S[Journal Entry Management]
+    M --> T[Tax Calculation View]
+    N --> U[Stock Movement Summary]
+
+    H --> V[Action Buttons]
+    V --> W[Edit Mode]
+    V --> X[Delete Confirmation]
+    V --> Y[Print Options]
+    V --> Z[Send Options]
+    V --> AA[Commit/Post Action]
+
+    H --> BB[Comments & Attachments Sidebar]
+    H --> CC[Activity Log Sidebar]
+
+    B --> DD[Advanced Filter Dialog]
+    B --> EE[Bulk Actions Menu]
+    EE --> FF[Bulk Approve]
+    EE --> GG[Bulk Reject]
+    EE --> HH[Bulk Delete]
+
+    C --> DD
+    C --> EE
+
+</div>
+<h2 id="page-documentation">Page Documentation</h2>
+<h3 id="1-credit-note-landing-page-procurementcredit-notepagetsx">1. Credit Note Landing Page (<code>/procurement/credit-note/page.tsx</code>)</h3>
+<p><strong>Purpose</strong>: Main entry point for Credit Note module with list management and creation options</p>
+<p><strong>Key Features</strong>:</p>
+<ul>
+<li><strong>View Toggle</strong>: Switch between table and card layouts for optimal viewing</li>
+<li><strong>New Credit Note Button</strong>: Single-click creation with workflow initiation</li>
+<li><strong>Advanced Filtering</strong>: Status, vendor, date range, and amount filters</li>
+<li><strong>Search Functionality</strong>: Global search across credit note fields, vendor names, and descriptions</li>
+</ul>
+<p><img src="./screenshots/cn-list-page.png" alt="Credit Note List Page - Card View"></p>
+<p><img src="./screenshots/cn-list-page-table-view.png" alt="Credit Note List Page - Table View"></p>
+<ul>
+<li><strong>Bulk Operations</strong>: Multi-select actions for approve, reject, and delete operations</li>
+<li><strong>Export Options</strong>: PDF, Excel, CSV exports with customizable parameters</li>
+</ul>
+<p><strong>State Management</strong>:</p>
+<pre><code class="language-typescript">const [creditNotes, setCreditNotes] = useState&lt;CreditNote[]&gt;(mockCreditNotes)
+const [filterStatus, setFilterStatus] = useState(&#39;All&#39;)
+const [currentPage, setCurrentPage] = useState(1)
+const [searchTerm, setSearchTerm] = useState(&#39;&#39;)
+const [selectedNotes, setSelectedNotes] = useState&lt;number[]&gt;([])
+const [viewMode, setViewMode] = useState&lt;&#39;table&#39; | &#39;card&#39;&gt;(&#39;card&#39;)
+const [sortConfig, setSortConfig] = useState&lt;{key: keyof CreditNote | null, direction: &#39;asc&#39; | &#39;desc&#39;}&gt;()
+</code></pre>
+<p><strong>Creation Workflow</strong>:</p>
+<ul>
+<li>Click &quot;New Credit Note&quot; button initiates vendor selection workflow</li>
+<li>System navigates to <code>/procurement/credit-note/new</code> (vendor selection page)</li>
+<li>Multi-step process guides user through credit note creation</li>
+</ul>
+<h3 id="2-vendor-selection-page-newpagetsx-vendor-selectiontsx">2. Vendor Selection Page (<code>/new/page.tsx</code> + <code>vendor-selection.tsx</code>)</h3>
+<p><strong>Purpose</strong>: Select vendor for credit note creation with GRN filtering</p>
+<p><strong>Key Features</strong>:</p>
+<ul>
+<li><strong>Vendor Search</strong>: Filter by company name, business registration, or tax ID</li>
+<li><strong>Vendor Listing</strong>: Table view with comprehensive vendor information</li>
+<li><strong>Selection Validation</strong>: Only active vendors with valid GRNs selectable</li>
+<li><strong>Credit Note Type Selection</strong>: Choose between quantity return or amount discount</li>
+</ul>
+<p><strong>Workflow Integration</strong>:</p>
+<pre><code class="language-typescript">type CreditNoteType = &#39;item-based&#39; | &#39;amount-only&#39; | null
+type SelectedItem = GoodsReceiveNoteItem &amp; {
+  creditQuantity: number
+  creditPrice: number
+  lotNumber: string
+  creditLotNumber: string
+}
+</code></pre>
+<h3 id="3-grn-selection-for-vendor">3. GRN Selection for Vendor</h3>
+<p><strong>Purpose</strong>: Select specific Goods Received Notes for credit note processing</p>
+<p><strong>Key Features</strong>:</p>
+<ul>
+<li><strong>Filtered GRN Display</strong>: Shows only GRNs from selected vendor</li>
+<li><strong>GRN Status Validation</strong>: Only posted/received GRNs available for credit</li>
+<li><strong>Multi-selection Support</strong>: Choose multiple GRNs for consolidated credit note</li>
+<li><strong>GRN Details Preview</strong>: Show items, quantities, and amounts for each GRN</li>
+</ul>
+<h3 id="4-item-amp-lot-selection-page">4. Item &amp; Lot Selection Page</h3>
+<p><strong>Purpose</strong>: Select specific items and lot numbers for credit note processing</p>
+<p><strong>Key Features</strong>:</p>
+<ul>
+<li><strong>Item Filtering</strong>: Filter by product name, description, or lot number</li>
+<li><strong>Lot Number Management</strong>: Select specific lots for return or credit</li>
+<li><strong>Quantity Input</strong>: Enter credit quantities with validation against available quantities</li>
+<li><strong>Price Adjustment</strong>: Modify unit prices for amount-based credit notes</li>
+<li><strong>Real-time Calculations</strong>: Auto-calculate credit amounts and totals</li>
+</ul>
+<h3 id="5-credit-note-detail-page-idpagetsx-credit-note-detailtsx">5. Credit Note Detail Page (<code>/[id]/page.tsx</code> + <code>credit-note-detail.tsx</code>)</h3>
+<p><strong>Purpose</strong>: Comprehensive credit note management interface supporting multiple operational modes</p>
+<h4>Operational Modes</h4>
+<ul>
+<li><strong>View Mode</strong>: Read-only display of existing credit note</li>
+<li><strong>Edit Mode</strong>: Modify credit note data before posting</li>
+<li><strong>Draft Mode</strong>: Create and manage draft credit notes</li>
+</ul>
+<p><strong>Key Features</strong>:</p>
+<ul>
+<li><strong>Header Information</strong>: Credit note number, dates, vendor details, references</li>
+</ul>
+<p><img src="./screenshots/cn-detail-page-items-tab.png" alt="Credit Note Detail Page - Items Tab"></p>
+<p><img src="./screenshots/cn-detail-page-stock-movement-tab.png" alt="Credit Note Detail Page - Stock Movement Tab"></p>
+<ul>
+<li><strong>Tabbed Interface</strong>: Items, Inventory, Journal Entries, Tax Entries, Stock Movement</li>
+<li><strong>Mode-Aware UI</strong>: Dynamic form states based on current mode</li>
+<li><strong>Financial Summary</strong>: Real-time calculation with tax and currency conversion</li>
+<li><strong>Action Buttons</strong>: Context-specific action menus (Edit, Delete, Commit, Print, Send)</li>
+</ul>
+<p><strong>State Management</strong>:</p>
+<pre><code class="language-typescript">const [creditNoteData, setCreditNoteData] = useState&lt;CreditNote&gt;(initialData)
+const [currentMode, setCurrentMode] = useState&lt;&#39;view&#39; | &#39;edit&#39; | &#39;draft&#39;&gt;(&#39;view&#39;)
+const [selectedItems, setSelectedItems] = useState&lt;string[]&gt;([])
+const [showSidePanel, setShowSidePanel] = useState(false)
+</code></pre>
+<h2 id="component-architecture">Component Architecture</h2>
+<h3 id="core-components">Core Components</h3>
+<h4>1. CreditNoteManagement (Main Container)</h4>
+<p><strong>File</strong>: <code>components/credit-note-management.tsx</code></p>
+<p><strong>Purpose</strong>: Primary component managing all credit note list operations and navigation</p>
+<p><strong>Key Responsibilities</strong>:</p>
+<ul>
+<li>List view management (table/card modes)</li>
+<li>Search and filtering functionality</li>
+<li>Pagination and sorting</li>
+<li>Bulk operations coordination</li>
+<li>Navigation to detail views</li>
+</ul>
+<h4>2. CreditNoteDetail (Detail Container)</h4>
+<p><strong>File</strong>: <code>components/credit-note-detail.tsx</code> + <code>credit-note.tsx</code></p>
+<p><strong>Purpose</strong>: Comprehensive credit note detail interface</p>
+<p><strong>Key Responsibilities</strong>:</p>
+<ul>
+<li>Mode management (view/edit/draft)</li>
+<li>Tab coordination and data flow</li>
+<li>Action handling (save, delete, commit, print, send)</li>
+<li>Financial calculations and currency conversion</li>
+</ul>
+<h4>3. Tab Components</h4>
+<p><strong>ItemDetailsTab</strong> (<code>item-details-edit.tsx</code>)</p>
+<ul>
+<li>Item line management and editing</li>
+<li>Quantity and pricing modifications</li>
+<li>Lot number applications</li>
+<li>Bulk selection and actions</li>
+</ul>
+<p><strong>InventoryTab</strong> (<code>inventory.tsx</code>)</p>
+<ul>
+<li>Inventory impact visualization</li>
+<li>Stock level updates</li>
+<li>Location-based inventory tracking</li>
+</ul>
+<p><strong>JournalEntriesTab</strong> (<code>journal-entries.tsx</code>)</p>
+<ul>
+<li>Accounting journal entry management</li>
+<li>Debit/credit account assignments</li>
+<li>Financial posting coordination</li>
+</ul>
+<p><strong>TaxEntriesTab</strong> (<code>tax-entries.tsx</code>)</p>
+<ul>
+<li>Tax calculation and management</li>
+<li>Tax rate applications</li>
+<li>Tax reporting integration</li>
+</ul>
+<p><strong>StockMovementTab</strong> (<code>StockMovementTab.tsx</code> + <code>stock-movement.tsx</code>)</p>
+<ul>
+<li>Inventory movement tracking</li>
+<li>Stock location management</li>
+<li>Movement history and audit trail</li>
+</ul>
+<h4>4. Workflow Components</h4>
+<p><strong>VendorSelection</strong> (<code>vendor-selection.tsx</code>)</p>
+<ul>
+<li>Vendor search and selection</li>
+<li>GRN filtering by vendor</li>
+<li>Credit note type selection</li>
+</ul>
+<p><strong>GRNSelection</strong> (<code>grn-selection.tsx</code>)</p>
+<ul>
+<li>GRN listing and selection</li>
+<li>Item preview and validation</li>
+<li>Multi-GRN consolidation</li>
+</ul>
+<p><strong>ItemAndLotSelection</strong> (<code>item-and-lot-selection.tsx</code>)</p>
+<ul>
+<li>Item selection from GRNs</li>
+<li>Lot number management</li>
+<li>Quantity and pricing input</li>
+</ul>
+<p><strong>LotSelection</strong> (<code>lot-selection.tsx</code>)</p>
+<ul>
+<li>Advanced lot number selection</li>
+<li>Lot application management</li>
+<li>FIFO/LIFO lot processing</li>
+</ul>
+<h4>5. Specialized Components</h4>
+<p><strong>CnLotApplication</strong> (<code>cn-lot-application.tsx</code>)</p>
+<ul>
+<li>Advanced lot application interface</li>
+<li>Lot tracking and traceability</li>
+<li>Batch processing coordination</li>
+</ul>
+<p><strong>AdvancedFilter</strong> (<code>advanced-filter.tsx</code>)</p>
+<ul>
+<li>Complex filtering interface</li>
+<li>Date range and amount filters</li>
+<li>Multi-criteria search</li>
+</ul>
+<h2 id="data-flow">Data Flow</h2>
+<h3 id="credit-note-creation-flow">Credit Note Creation Flow</h3>
+<div class="mermaid">
+flowchart TD
+    A[User Clicks New Credit Note] --> B[Vendor Selection Page]
+    B --> C[Select Vendor]
+    C --> D[Load GRNs for Vendor]
+    D --> E[GRN Selection Interface]
+    E --> F[Select GRNs]
+    F --> G[Load Items from Selected GRNs]
+    G --> H[Item & Lot Selection Page]
+    H --> I[Select Items and Lots]
+    I --> J[Set Credit Quantities/Prices]
+    J --> K[Generate Credit Note]
+    K --> L[Credit Note Detail Page]
+    L --> M[Review and Edit]
+    M --> N[Commit/Post Credit Note]
+    N --> O[Update Inventory]
+    O --> P[Generate Journal Entries]
+    P --> Q[Credit Note Complete]
+
+</div>
+<h3 id="data-state-management">Data State Management</h3>
+<div class="mermaid">
+flowchart LR
+    A[Mock Data Store] --> B[Credit Note List]
+    B --> C[Vendor Selection]
+    C --> D[GRN Selection]
+    D --> E[Item Selection]
+    E --> F[Credit Note Detail]
+
+    F --> G[Items Tab]
+    F --> H[Inventory Tab]
+    F --> I[Journal Entries Tab]
+    F --> J[Tax Entries Tab]
+    F --> K[Stock Movement Tab]
+
+    G --> L[Item Management]
+    L --> M[Lot Applications]
+
+    F --> N[Financial Calculations]
+    N --> O[Currency Conversion]
+    N --> P[Tax Calculations]
+
+</div>
+<h2 id="user-interactions">User Interactions</h2>
+<h3 id="1-credit-note-list-management">1. Credit Note List Management</h3>
+<p><strong>Search and Filter Operations</strong>:</p>
+<ul>
+<li><strong>Global Search</strong>: Search across reference numbers, descriptions, vendor names</li>
+<li><strong>Status Filtering</strong>: Filter by Draft, Posted, Void status</li>
+<li><strong>Advanced Filters</strong>: Date range, vendor, amount range filters</li>
+<li><strong>Sorting</strong>: Multi-column sorting with direction indicators</li>
+</ul>
+<p><strong>View Mode Toggle</strong>:</p>
+<ul>
+<li><strong>Table View</strong>: Detailed tabular display with sorting and selection</li>
+<li><strong>Card View</strong>: Visual card-based layout with key information highlights</li>
+<li><strong>Responsive Design</strong>: Adaptive layout based on screen size</li>
+</ul>
+<h3 id="2-credit-note-creation-workflow">2. Credit Note Creation Workflow</h3>
+<p><strong>Type Selection Dialog</strong>:<br>The credit note creation process begins with a type selection dialog that allows users to choose between Item-based and Amount-only credit notes.</p>
+<p><img src="./screenshots/cn-new-type-selection-dialog.png" alt="Credit Note Type Selection Dialog"></p>
+<p><strong>Bulk Operations</strong>:</p>
+<ul>
+<li><strong>Selection</strong>: Individual and bulk selection with master checkbox</li>
+<li><strong>Actions</strong>: Approve, reject, delete operations on selected credit notes</li>
+<li><strong>Confirmation</strong>: User confirmation for destructive operations</li>
+</ul>
+<h3 id="2-creation-workflows">2. Creation Workflows</h3>
+<p><strong>Vendor-Based Creation</strong>:</p>
+<ol>
+<li>Click &quot;New Credit Note&quot; button</li>
+<li>Search and select vendor from comprehensive list</li>
+<li>Choose applicable GRNs from vendor</li>
+<li>Select specific items and lot numbers</li>
+<li>Set credit quantities and pricing adjustments</li>
+<li>Review auto-populated credit note data</li>
+<li>Commit and post credit note</li>
+</ol>
+<h3 id="3-detail-page-interactions">3. Detail Page Interactions</h3>
+<p><strong>Tab Navigation</strong>:</p>
+<ul>
+<li><strong>Items Tab</strong>: Comprehensive item management with editing capabilities</li>
+<li><strong>Inventory Tab</strong>: Inventory impact visualization and stock level tracking</li>
+<li><strong>Journal Entries Tab</strong>: Accounting entries with debit/credit management</li>
+<li><strong>Tax Entries Tab</strong>: Tax calculations and reporting integration</li>
+<li><strong>Stock Movement Tab</strong>: Inventory movement tracking and audit trail</li>
+</ul>
+<p><strong>Action Management</strong>:</p>
+<ul>
+<li><strong>Edit Mode</strong>: Switch to editable mode for modifications</li>
+<li><strong>Delete</strong>: Soft delete with confirmation and audit trail</li>
+<li><strong>Commit</strong>: Post credit note to accounting system</li>
+<li><strong>Print</strong>: Generate formatted credit note documents</li>
+<li><strong>Send</strong>: Email credit note to vendor with attachments</li>
+</ul>
+<h3 id="4-advanced-features">4. Advanced Features</h3>
+<p><strong>Lot Management</strong>:</p>
+<ul>
+<li><strong>Lot Selection</strong>: Choose specific lot numbers for return processing</li>
+<li><strong>Lot Application</strong>: Apply credit notes to specific lot batches</li>
+<li><strong>FIFO/LIFO Processing</strong>: Automated lot processing based on business rules</li>
+</ul>
+<p><strong>Financial Integration</strong>:</p>
+<ul>
+<li><strong>Multi-currency Support</strong>: Handle different currencies with exchange rates</li>
+<li><strong>Tax Calculations</strong>: Automated tax calculations based on jurisdiction</li>
+<li><strong>Journal Entries</strong>: Automated accounting entries with customizable accounts</li>
+</ul>
+<h2 id="technical-architecture">Technical Architecture</h2>
+<h3 id="framework-and-libraries">Framework and Libraries</h3>
+<ul>
+<li><strong>Next.js 14</strong>: App Router with server-side rendering</li>
+<li><strong>TypeScript</strong>: Strict mode with comprehensive type safety</li>
+<li><strong>Tailwind CSS + Shadcn/ui</strong>: Consistent design system</li>
+<li><strong>React Hook Form</strong>: Form management with validation</li>
+<li><strong>Zod</strong>: Runtime type validation</li>
+</ul>
+<h3 id="state-management">State Management</h3>
+<ul>
+<li><strong>React useState</strong>: Local component state management</li>
+<li><strong>URL Parameters</strong>: Navigation and mode state</li>
+<li><strong>Props Drilling</strong>: Component communication for complex workflows</li>
+<li><strong>Local Storage</strong>: Temporary workflow data persistence</li>
+</ul>
+<h3 id="component-patterns">Component Patterns</h3>
+<ul>
+<li><strong>Functional Components</strong>: All components use function declarations</li>
+<li><strong>TypeScript Interfaces</strong>: Strict typing for all props and state</li>
+<li><strong>Compound Components</strong>: Complex components broken into manageable parts</li>
+<li><strong>Custom Hooks</strong>: Reusable logic extraction</li>
+</ul>
+<h3 id="data-types">Data Types</h3>
+<h4>Core Interfaces</h4>
+<pre><code class="language-typescript">interface CreditNote {
+  id: number
+  refNumber: string
+  description: string
+  vendorId: number
+  vendorName: string
+  createdDate: Date
+  docNumber: string
+  docDate: Date
+  netAmount: number
+  taxAmount: number
+  totalAmount: number
+  currency: string
+  status: string
+  notes: string
+  createdBy: string
+  updatedDate: Date
+  updatedBy: string
+  items: CreditNoteItem[]
+  attachments: CreditNoteAttachment[]
+}
+
+interface CreditNoteItem {
+  id: number
+  description: string
+  quantity: number
+  unitPrice: number
+  discountPercentage: number
+  taxPercentage: number
+}
+
+interface EditedItem {
+  id: string
+  productName: string
+  productDescription: string
+  location: string
+  lotNo: string
+  orderUnit: string
+  inventoryUnit: string
+  rcvQty: number
+  cnQty: number
+  unitPrice: number
+  cnAmt: number
+  costVariance: number
+  discountAmount: number
+  totalReceivedQty: number
+  grnNumber: string
+  grnDate: Date
+  taxRate: number
+  tax: number
+  total: number
+  appliedLots?: Array&lt;{
+    lotNumber: string
+    receiveDate: Date
+    grnNumber: string
+    invoiceNumber: string
+  }&gt;
+}
+</code></pre>
+<h4>Type Definitions</h4>
+<pre><code class="language-typescript">type CreditNoteType = &quot;QUANTITY_RETURN&quot; | &quot;AMOUNT_DISCOUNT&quot;
+type CreditNoteStatus = &quot;DRAFT&quot; | &quot;POSTED&quot; | &quot;VOID&quot;
+type CreditNoteReason =
+  | &quot;PRICING_ERROR&quot;
+  | &quot;DAMAGED_GOODS&quot;
+  | &quot;RETURN&quot;
+  | &quot;DISCOUNT_AGREEMENT&quot;
+  | &quot;OTHER&quot;
+</code></pre>
+<h2 id="api-integration">API Integration</h2>
+<h3 id="restful-endpoints">RESTful Endpoints</h3>
+<pre><code class="language-typescript">// Credit Note Management
+GET    /api/credit-notes              // List credit notes with filtering
+POST   /api/credit-notes              // Create new credit note
+GET    /api/credit-notes/:id          // Get specific credit note
+PUT    /api/credit-notes/:id          // Update credit note
+DELETE /api/credit-notes/:id          // Delete credit note
+
+// Workflow Endpoints
+GET    /api/credit-notes/vendors      // Get vendors for selection
+GET    /api/credit-notes/grns/:vendorId // Get GRNs for vendor
+POST   /api/credit-notes/generate     // Generate credit note from GRN items
+
+// Processing Endpoints
+POST   /api/credit-notes/:id/commit   // Commit/post credit note
+POST   /api/credit-notes/:id/void     // Void credit note
+GET    /api/credit-notes/:id/lots     // Get lot information
+POST   /api/credit-notes/:id/lots/apply // Apply lots to credit note
+
+// Financial Integration
+GET    /api/credit-notes/:id/journal-entries // Get journal entries
+POST   /api/credit-notes/:id/journal-entries // Create journal entries
+GET    /api/credit-notes/:id/tax-entries     // Get tax calculations
+POST   /api/credit-notes/:id/stock-movements // Process stock movements
+</code></pre>
+<h3 id="data-models">Data Models</h3>
+<h4>Request/Response Patterns</h4>
+<pre><code class="language-typescript">// Credit Note Creation Request
+interface CreateCreditNoteRequest {
+  vendorId: number
+  grnIds: number[]
+  type: CreditNoteType
+  reason: CreditNoteReason
+  description: string
+  items: {
+    grnItemId: number
+    creditQuantity: number
+    creditPrice?: number
+    lotNumbers?: string[]
+  }[]
+}
+
+// Credit Note Response
+interface CreditNoteResponse {
+  creditNote: CreditNote
+  items: EditedItem[]
+  journalEntries: JournalEntry[]
+  taxEntries: TaxEntry[]
+  stockMovements: StockMovement[]
+}
+</code></pre>
+<h2 id="database-schema">Database Schema</h2>
+<h3 id="main-tables">Main Tables</h3>
+<h4>credit_notes</h4>
+<pre><code class="language-sql">CREATE TABLE credit_notes (
+  id SERIAL PRIMARY KEY,
+  ref_number VARCHAR(50) UNIQUE NOT NULL,
+  description TEXT,
+  vendor_id INTEGER REFERENCES vendors(id),
+  type VARCHAR(20) NOT NULL, -- QUANTITY_RETURN, AMOUNT_DISCOUNT
+  status VARCHAR(20) DEFAULT &#39;DRAFT&#39;, -- DRAFT, POSTED, VOID
+  reason VARCHAR(50), -- PRICING_ERROR, DAMAGED_GOODS, etc.
+  doc_number VARCHAR(50),
+  doc_date DATE,
+  net_amount DECIMAL(15,2) DEFAULT 0,
+  tax_amount DECIMAL(15,2) DEFAULT 0,
+  total_amount DECIMAL(15,2) DEFAULT 0,
+  currency VARCHAR(3) DEFAULT &#39;USD&#39;,
+  exchange_rate DECIMAL(10,4) DEFAULT 1,
+  notes TEXT,
+  created_by INTEGER REFERENCES users(id),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_by INTEGER REFERENCES users(id),
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  posted_at TIMESTAMP,
+  posted_by INTEGER REFERENCES users(id)
+);
+</code></pre>
+<h4>credit_note_items</h4>
+<pre><code class="language-sql">CREATE TABLE credit_note_items (
+  id SERIAL PRIMARY KEY,
+  credit_note_id INTEGER REFERENCES credit_notes(id),
+  grn_item_id INTEGER REFERENCES grn_items(id),
+  product_id INTEGER REFERENCES products(id),
+  description TEXT,
+  location_id INTEGER REFERENCES locations(id),
+  lot_number VARCHAR(50),
+  credit_quantity DECIMAL(15,4),
+  unit_price DECIMAL(15,4),
+  discount_percentage DECIMAL(5,2) DEFAULT 0,
+  discount_amount DECIMAL(15,2) DEFAULT 0,
+  tax_rate DECIMAL(5,2) DEFAULT 0,
+  tax_amount DECIMAL(15,2) DEFAULT 0,
+  total_amount DECIMAL(15,2),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+</code></pre>
+<h4>credit_note_lot_applications</h4>
+<pre><code class="language-sql">CREATE TABLE credit_note_lot_applications (
+  id SERIAL PRIMARY KEY,
+  credit_note_item_id INTEGER REFERENCES credit_note_items(id),
+  lot_number VARCHAR(50),
+  grn_number VARCHAR(50),
+  grn_date DATE,
+  invoice_number VARCHAR(50),
+  applied_quantity DECIMAL(15,4),
+  unit_cost DECIMAL(15,4),
+  total_cost DECIMAL(15,2),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+</code></pre>
+<h4>credit_note_journal_entries</h4>
+<pre><code class="language-sql">CREATE TABLE credit_note_journal_entries (
+  id SERIAL PRIMARY KEY,
+  credit_note_id INTEGER REFERENCES credit_notes(id),
+  account_id INTEGER REFERENCES chart_of_accounts(id),
+  description TEXT,
+  debit_amount DECIMAL(15,2) DEFAULT 0,
+  credit_amount DECIMAL(15,2) DEFAULT 0,
+  currency VARCHAR(3) DEFAULT &#39;USD&#39;,
+  exchange_rate DECIMAL(10,4) DEFAULT 1,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+</code></pre>
+<h4>credit_note_stock_movements</h4>
+<pre><code class="language-sql">CREATE TABLE credit_note_stock_movements (
+  id SERIAL PRIMARY KEY,
+  credit_note_id INTEGER REFERENCES credit_notes(id),
+  credit_note_item_id INTEGER REFERENCES credit_note_items(id),
+  product_id INTEGER REFERENCES products(id),
+  location_id INTEGER REFERENCES locations(id),
+  lot_number VARCHAR(50),
+  movement_type VARCHAR(20), -- RETURN, ADJUSTMENT
+  quantity DECIMAL(15,4),
+  unit_cost DECIMAL(15,4),
+  total_cost DECIMAL(15,2),
+  movement_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  created_by INTEGER REFERENCES users(id)
+);
+</code></pre>
+<h3 id="relationships">Relationships</h3>
+<ul>
+<li><strong>Credit Note → Items</strong>: One-to-Many (Credit note can have multiple items)</li>
+<li><strong>Credit Note → Journal Entries</strong>: One-to-Many (Multiple accounting entries)</li>
+<li><strong>Credit Note → Stock Movements</strong>: One-to-Many (Multiple inventory movements)</li>
+<li><strong>Credit Note Item → Lot Applications</strong>: One-to-Many (Item can apply to multiple lots)</li>
+<li><strong>Credit Note → Vendor</strong>: Many-to-One (Multiple credit notes per vendor)</li>
+<li><strong>Credit Note Item → GRN Item</strong>: Many-to-One (Can reference original GRN item)</li>
+</ul>
+<h3 id="indexes-and-constraints">Indexes and Constraints</h3>
+<pre><code class="language-sql">-- Performance indexes
+CREATE INDEX idx_cn_vendor_date ON credit_notes(vendor_id, created_at DESC);
+CREATE INDEX idx_cn_status_created ON credit_notes(status, created_at DESC);
+CREATE INDEX idx_cn_ref ON credit_notes(ref_number);
+CREATE INDEX idx_cn_doc_number ON credit_notes(doc_number) WHERE doc_number IS NOT NULL;
+
+-- Foreign key indexes
+CREATE INDEX idx_cn_items_credit_note ON credit_note_items(credit_note_id);
+CREATE INDEX idx_cn_items_grn_item ON credit_note_items(grn_item_id);
+CREATE INDEX idx_cn_lot_apps_item ON credit_note_lot_applications(credit_note_item_id);
+
+-- Business constraints
+ALTER TABLE credit_notes ADD CONSTRAINT chk_cn_total_positive CHECK (total_amount &gt;= 0);
+ALTER TABLE credit_note_items ADD CONSTRAINT chk_cn_item_qty_positive CHECK (credit_quantity &gt; 0);
+</code></pre>
+<h2 id="status-workflow">Status Workflow</h2>
+<div class="mermaid">
+stateDiagram-v2
+    [*] --> Draft
+    Draft --> Posted
+    Draft --> Void
+    Posted --> [*]
+    Void --> [*]
+
+    note right of Draft : Can be edited\nPending approval
+    note right of Posted : Finalized\nInventory updated\nJournal entries created
+    note right of Void : Cancelled\nNo financial impact
+
+</div>
+<h3 id="status-descriptions">Status Descriptions</h3>
+<ul>
+<li><strong>Draft</strong>: Credit note created but not yet committed. Can be edited and modified.</li>
+<li><strong>Posted</strong>: Credit note committed and posted to accounting system. Inventory and financial impacts are applied.</li>
+<li><strong>Void</strong>: Credit note cancelled. No financial or inventory impact.</li>
+</ul>
+<h3 id="workflow-rules">Workflow Rules</h3>
+<ol>
+<li><strong>Draft → Posted</strong>: Requires validation of all items, calculations, and approvals</li>
+<li><strong>Draft → Void</strong>: Can be voided at any time before posting</li>
+<li><strong>Posted → Void</strong>: Not allowed - posted credit notes cannot be voided</li>
+<li><strong>Inventory Impact</strong>: Only occurs when transitioning to Posted status</li>
+<li><strong>Journal Entries</strong>: Generated automatically when credit note is posted</li>
+</ol>
+<hr>
+<p><em>Generated on: 2025-09-23</em><br><em>Credit Note Module Version: 1.0</em><br><em>Carmen ERP - Hospitality Supply Chain Management</em></p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#credit-note-module-complete-technical-specification" class="level-1">Credit Note Module - Complete Technical Specification</a>
+<a href="#table-of-contents" class="level-2">Table of Contents</a>
+<a href="#module-overview" class="level-2">Module Overview</a>
+<a href="#key-features" class="level-3">Key Features</a>
+<a href="#complete-site-map" class="level-2">Complete Site Map</a>
+<a href="#page-documentation" class="level-2">Page Documentation</a>
+<a href="#1-credit-note-landing-page-procurementcredit-notepagetsx" class="level-3">1. Credit Note Landing Page (/procurement/credit-note/page.tsx)</a>
+<a href="#2-vendor-selection-page-newpagetsx-vendor-selectiontsx" class="level-3">2. Vendor Selection Page (/new/page.tsx + vendor-selection.tsx)</a>
+<a href="#3-grn-selection-for-vendor" class="level-3">3. GRN Selection for Vendor</a>
+<a href="#4-item-amp-lot-selection-page" class="level-3">4. Item &amp; Lot Selection Page</a>
+<a href="#5-credit-note-detail-page-idpagetsx-credit-note-detailtsx" class="level-3">5. Credit Note Detail Page (/[id]/page.tsx + credit-note-detail.tsx)</a>
+<a href="#component-architecture" class="level-2">Component Architecture</a>
+<a href="#core-components" class="level-3">Core Components</a>
+<a href="#data-flow" class="level-2">Data Flow</a>
+<a href="#credit-note-creation-flow" class="level-3">Credit Note Creation Flow</a>
+<a href="#data-state-management" class="level-3">Data State Management</a>
+<a href="#user-interactions" class="level-2">User Interactions</a>
+<a href="#1-credit-note-list-management" class="level-3">1. Credit Note List Management</a>
+<a href="#2-credit-note-creation-workflow" class="level-3">2. Credit Note Creation Workflow</a>
+<a href="#2-creation-workflows" class="level-3">2. Creation Workflows</a>
+<a href="#3-detail-page-interactions" class="level-3">3. Detail Page Interactions</a>
+<a href="#4-advanced-features" class="level-3">4. Advanced Features</a>
+<a href="#technical-architecture" class="level-2">Technical Architecture</a>
+<a href="#framework-and-libraries" class="level-3">Framework and Libraries</a>
+<a href="#state-management" class="level-3">State Management</a>
+<a href="#component-patterns" class="level-3">Component Patterns</a>
+<a href="#data-types" class="level-3">Data Types</a>
+<a href="#api-integration" class="level-2">API Integration</a>
+<a href="#restful-endpoints" class="level-3">RESTful Endpoints</a>
+<a href="#data-models" class="level-3">Data Models</a>
+<a href="#database-schema" class="level-2">Database Schema</a>
+<a href="#main-tables" class="level-3">Main Tables</a>
+<a href="#relationships" class="level-3">Relationships</a>
+<a href="#indexes-and-constraints" class="level-3">Indexes and Constraints</a>
+<a href="#status-workflow" class="level-2">Status Workflow</a>
+<a href="#status-descriptions" class="level-3">Status Descriptions</a>
+<a href="#workflow-rules" class="level-3">Workflow Rules</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

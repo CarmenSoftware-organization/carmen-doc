@@ -1,0 +1,2894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management - Pages and Components Specification - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: var(--bg-gradient);
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr 300px;
+            gap: 2rem;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 1.5rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .back-to-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: var(--primary-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        .back-to-home:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        /* Content Area */
+        .doc-content {
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 260px 1fr 280px;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 1.5rem;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 2.5rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            .doc-nav {
+                display: none;
+            }
+            .doc-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </div>
+            <div class="doc-header-actions">
+                <a href="../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../SYSTEM-DOCUMENTATION-INDEX.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Documentation Index</span>
+                    </a>
+                    <a href="../DOCUMENTATION-CATALOG.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Catalog</span>
+                    </a>
+                    <a href="../DOCUMENTATION-SUMMARY-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Summary</span>
+                    </a>
+                    <a href="../MODULE-VERIFICATION-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Module Verification</span>
+                    </a>
+                    <a href="../SYSTEM-GAPS-AND-ROADMAP.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Gaps & Roadmap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../architecture/SYSTEM-ARCHITECTURE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-users"></i>
+                    <span>Stakeholders</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../stakeholders/BUSINESS-VALUE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pr/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Requests</span>
+                    </a>
+                    <a href="../po/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Orders</span>
+                    </a>
+                    <a href="../grn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Goods Received Note</span>
+                    </a>
+                    <a href="../cn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Credit Notes</span>
+                    </a>
+                    <a href="../prt/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>PR Templates</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-boxes"></i>
+                    <span>Inventory Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../inv/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Overview</span>
+                    </a>
+                    <a href="../inv/inventory-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Specification</span>
+                    </a>
+                    <a href="../inv/inventory-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Sitemap</span>
+                    </a>
+                    <a href="../pc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Physical Count</span>
+                    </a>
+                    <a href="../sc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Spot Check</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-handshake"></i>
+                    <span>Vendor Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../vm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Overview</span>
+                    </a>
+                    <a href="../vm/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Module</span>
+                    </a>
+                    <a href="../vm/MANAGE-VENDORS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Manage Vendors</span>
+                    </a>
+                    <a href="../vm/TEMPLATES.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Templates</span>
+                    </a>
+                    <a href="../vm/CAMPAIGNS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Campaigns</span>
+                    </a>
+                    <a href="../vm/PRICELISTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Pricelists</span>
+                    </a>
+                    <a href="../vm/VENDOR-PORTAL.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Portal</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cube"></i>
+                    <span>Product Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Overview</span>
+                    </a>
+                    <a href="../pm/product-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Specification</span>
+                    </a>
+                    <a href="../pm/product-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-store"></i>
+                    <span>Store Operations</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../store-ops/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Overview</span>
+                    </a>
+                    <a href="../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Module</span>
+                    </a>
+                    <a href="../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Requisitions</span>
+                    </a>
+                    <a href="../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Stock Replenishment</span>
+                    </a>
+                    <a href="../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Wastage Reporting</span>
+                    </a>
+                    <a href="../store-ops/GLOSSARY.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Glossary</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Operational Planning</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../operational-planning/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Overview</span>
+                    </a>
+                    <a href="../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Module</span>
+                    </a>
+                    <a href="../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Menu Engineering</span>
+                    </a>
+                    <a href="../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Recipe Management</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cash-register"></i>
+                    <span>POS Integration</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pos-integration/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Overview</span>
+                    </a>
+                    <a href="../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Module</span>
+                    </a>
+                    <a href="../pos-integration/MAPPING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Mapping Subsystem</span>
+                    </a>
+                    <a href="../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Transaction Management</span>
+                    </a>
+                    <a href="../pos-integration/REPORTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports & Analytics</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../dashboard/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Overview</span>
+                    </a>
+                    <a href="../dashboard/sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>System Requirements</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../carmen-erp-system-requirements-documentation.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Requirements</span>
+                    </a>
+                    <a href="../comprehensive-schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="inventory-management-pages-and-components-specification">Inventory Management - Pages and Components Specification</h1>
+<blockquote>
+<p><strong>Screenshots Status</strong>: This specification includes references to screenshots. <strong>40 screenshots</strong> are now available in the <code>screenshots/</code> folder:</p>
+<p><strong>Inventory Management Core (18 screenshots)</strong>:</p>
+<ul>
+<li>✅ inventory-management-dashboard.png</li>
+<li>✅ stock-overview-main.png</li>
+<li>✅ inventory-balance-report.png</li>
+<li>✅ stock-cards-list.png</li>
+<li>✅ stock-card-detail.png</li>
+<li>✅ slow-moving-report.png</li>
+<li>✅ inventory-aging-report.png</li>
+<li>✅ stock-in-list.png</li>
+<li>✅ inventory-adjustments-list.png</li>
+<li>✅ inventory-adjustment-detail.png</li>
+<li>✅ physical-count-setup.png</li>
+<li>✅ physical-count-dashboard.png</li>
+<li>✅ spot-check-main.png</li>
+<li>✅ spot-check-new.png</li>
+<li>✅ spot-check-active.png</li>
+<li>✅ spot-check-dashboard.png</li>
+<li>✅ fractional-inventory.png</li>
+<li>✅ period-end.png</li>
+</ul>
+<p><strong>Plus 22 additional screenshots</strong> for procurement, store operations, and workflow components</p>
+<p>Only 2 screenshots pending (dynamic routes requiring specific IDs): stock-in-detail.png, physical-count-active.png</p>
+</blockquote>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#pages-overview">Pages Overview</a></li>
+<li><a href="#modals-and-dialogs">Modals and Dialogs</a></li>
+<li><a href="#dropdown-fields-reference">Dropdown Fields Reference</a></li>
+<li><a href="#actions-and-buttons-reference">Actions and Buttons Reference</a></li>
+<li><a href="#form-components">Form Components</a></li>
+<li><a href="#data-display-components">Data Display Components</a></li>
+<li><a href="#glossary">Glossary</a></li>
+</ol>
+<hr>
+<h2 id="pages-overview">Pages Overview</h2>
+<h3 id="landing-page">Landing Page</h3>
+<p><strong>Path</strong>: <code>/inventory-management</code><br><strong>File</strong>: <code>app/(main)/inventory-management/page.tsx</code></p>
+<p><img src="screenshots/inventory-management-dashboard.png" alt="Landing Page"><br><em>Inventory Management Dashboard - Draggable widget system with real-time analytics</em></p>
+<p><strong>Status</strong>: ✅ Production</p>
+<p><strong>Purpose</strong>: Main entry point for Inventory Management module with customizable dashboard</p>
+<p><strong>Components</strong>:</p>
+<ul>
+<li>6 Draggable widgets using React Beautiful DnD</li>
+<li>Inventory Levels Bar Chart</li>
+<li>Inventory Value Trend Line Chart</li>
+<li>Inventory Turnover Pie Chart</li>
+<li>Low Stock Alerts Card</li>
+<li>Upcoming Stock Takes Card</li>
+<li>Recent Transfers Card</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Drag and reorder widgets</li>
+<li>Navigate to Stock Overview</li>
+<li>Navigate to Stock In</li>
+<li>Navigate to Inventory Adjustments</li>
+<li>Navigate to Physical Count</li>
+<li>Navigate to Spot Check</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Navigate to Stock Overview</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Stock Overview"] --> Navigate["Navigate to /stock-overview"]
+    Navigate --> Display["Display Stock Overview Page"]
+
+</div>
+<p><strong>Drag Widget</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Drag["Drag Widget"] --> Drop["Drop in New Position"]
+    Drop --> Save["Save Layout Preference"]
+
+</div>
+<hr>
+<h3 id="stock-overview-landing">Stock Overview Landing</h3>
+<p><strong>Path</strong>: <code>/inventory-management/stock-overview</code><br><strong>File</strong>: <code>app/(main)/inventory-management/stock-overview/page.tsx</code></p>
+<p><img src="screenshots/stock-overview-main.png" alt="Stock Overview"><br><em>Stock Overview - Multi-location inventory visibility with analytics</em></p>
+<p><strong>Status</strong>: ✅ Production</p>
+<p><strong>Components</strong>:</p>
+<ul>
+<li>Location selector dropdown</li>
+<li>4 Summary metric cards</li>
+<li>Tabbed interface (Overview, Performance, Transfers)</li>
+<li>Stock Distribution Bar Chart</li>
+<li>Value Distribution Pie Chart</li>
+<li>Quick actions navigation grid</li>
+<li>Location Performance Comparison Chart</li>
+<li>Transfer Suggestions List</li>
+</ul>
+<p><strong>Summary Cards</strong>:</p>
+<ul>
+<li>Total Items (with location count)</li>
+<li>Total Value (currency formatted)</li>
+<li>Low Stock (red alert)</li>
+<li>Expiring Soon (orange warning)</li>
+</ul>
+<p><strong>Tabs</strong>:</p>
+<ul>
+<li>Overview</li>
+<li>Performance</li>
+<li>Transfers</li>
+</ul>
+<p><strong>Quick Actions</strong>:</p>
+<ul>
+<li>Inventory Balance</li>
+<li>Stock Cards</li>
+<li>Slow Moving</li>
+<li>Inventory Aging</li>
+</ul>
+<p><strong>Filters</strong>:</p>
+<ul>
+<li>Location dropdown (All Locations + individual locations)</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Change location filter</li>
+<li>Navigate to sub-reports</li>
+<li>Create transfer from suggestion</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Change Location Filter</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Select["Select Location"] --> Filter["Filter All Data"]
+    Filter --> Refresh["Refresh Charts and Metrics"]
+
+</div>
+<p><strong>Navigate to Inventory Balance</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Inventory Balance"] --> Navigate["Navigate to /inventory-balance"]
+    Navigate --> Display["Display Balance Report"]
+
+</div>
+<p><strong>Create Transfer</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Create Transfer"] --> Modal["Open Transfer Creation Modal"]
+    Modal --> Create["Create Transfer Request"]
+
+</div>
+<hr>
+<h3 id="inventory-balance-report">Inventory Balance Report</h3>
+<p><strong>Path</strong>: <code>/inventory-management/stock-overview/inventory-balance</code><br><strong>File</strong>: <code>app/(main)/inventory-management/stock-overview/inventory-balance/page.tsx</code></p>
+<p><img src="screenshots/inventory-balance-report.png" alt="Inventory Balance"><br><em>Inventory Balance Report - Detailed balance with lot tracking</em></p>
+<p><strong>Status</strong>: ✅ Production</p>
+<p><strong>Components</strong>:</p>
+<ul>
+<li>Collapsible filter panel</li>
+<li>Hierarchical grouped table</li>
+<li>Movement history side panel</li>
+<li>Export buttons (Excel, PDF)</li>
+</ul>
+<p><strong>Filter Fields</strong>:</p>
+<ul>
+<li>As of Date (date picker)</li>
+<li>Location Range (from/to dropdowns)</li>
+<li>Category Range (from/to dropdowns)</li>
+<li>Product Range (from/to dropdowns)</li>
+<li>View Type (radio buttons: Category / Product / Lot)</li>
+<li>Show Lots (checkbox)</li>
+</ul>
+<p><strong>Table Columns</strong>:</p>
+<ul>
+<li>Code</li>
+<li>Description</li>
+<li>Unit</li>
+<li>Quantity</li>
+<li>Average Cost</li>
+<li>Total Value</li>
+<li>Min/Max Thresholds (product level)</li>
+<li>Expiry Date (lot level)</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Apply filters</li>
+<li>Toggle filter panel</li>
+<li>Change view type</li>
+<li>Toggle lot visibility</li>
+<li>Click product to view movement history</li>
+<li>Export to Excel</li>
+<li>Export to PDF</li>
+<li>Print report</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Apply Filters</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Select["Select Filter Criteria"] --> Apply["Click Apply"]
+    Apply --> Refresh["Reload Balance Data"]
+
+</div>
+<p><strong>Toggle View Type</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click View Type"] --> Rebuild["Rebuild Table Structure"]
+    Rebuild --> Display["Display New View"]
+
+</div>
+<p><strong>View Movement History</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Product Row"] --> Open["Open Side Panel"]
+    Open --> Load["Load Movement History"]
+
+</div>
+<p><strong>Export to Excel</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Export Excel"] --> Generate["Generate Excel File"]
+    Generate --> Download["Download File"]
+
+</div>
+<hr>
+<h3 id="stock-cards-list">Stock Cards List</h3>
+<p><strong>Path</strong>: <code>/inventory-management/stock-overview/stock-cards</code><br><strong>File</strong>: <code>app/(main)/inventory-management/stock-overview/stock-cards/page.tsx</code></p>
+<p><img src="screenshots/stock-cards-list.png" alt="Stock Cards"><br><em>Stock Cards - Browse all product stock cards</em></p>
+<p><strong>Status</strong>: 🚧 Prototype</p>
+<p><strong>Components</strong>:</p>
+<ul>
+<li>Search bar</li>
+<li>Filter panel</li>
+<li>Cards grid (3 cols desktop, 2 tablet, 1 mobile)</li>
+</ul>
+<p><strong>Card Content</strong>:</p>
+<ul>
+<li>Product image/icon</li>
+<li>Product code</li>
+<li>Product name</li>
+<li>Current quantity + unit</li>
+<li>Status badge</li>
+<li>View Details button</li>
+</ul>
+<p><strong>Filters</strong>:</p>
+<ul>
+<li>Location dropdown</li>
+<li>Category dropdown</li>
+<li>Stock status (In Stock / Low Stock / Out of Stock)</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Search products</li>
+<li>Filter by criteria</li>
+<li>Click card to view details</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Search Products</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Type["Type Search Query"] --> Search["Filter Cards"]
+    Search --> Display["Display Matching Cards"]
+
+</div>
+<p><strong>View Stock Card Detail</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Card"] --> Navigate["Navigate to Stock Card Detail"]
+    Navigate --> Display["Display Full Stock Card"]
+
+</div>
+<hr>
+<h3 id="stock-card-detail">Stock Card Detail</h3>
+<p><strong>Path</strong>: <code>/inventory-management/stock-overview/stock-card</code><br><strong>File</strong>: <code>app/(main)/inventory-management/stock-overview/stock-card/page.tsx</code></p>
+<p><img src="screenshots/stock-card-detail.png" alt="Stock Card Detail"><br><em>Stock Card Detail - Complete item history with lots</em></p>
+<p><strong>Status</strong>: ✅ Production</p>
+<p><strong>Tabs</strong>:</p>
+<ul>
+<li>General Information</li>
+<li>Lot Information</li>
+<li>Movement History</li>
+<li>Valuation</li>
+</ul>
+<p><strong>General Information</strong>:</p>
+<ul>
+<li>Product Code</li>
+<li>Product Name</li>
+<li>Category</li>
+<li>Unit of Measure</li>
+<li>Current Stock Level</li>
+<li>Reorder Level</li>
+<li>Maximum Level</li>
+<li>Lead Time (days)</li>
+<li>Last Purchase Date</li>
+<li>Last Purchase Price</li>
+<li>Average Cost</li>
+</ul>
+<p><strong>Lot Information Table Columns</strong>:</p>
+<ul>
+<li>Lot Number</li>
+<li>Receipt Date</li>
+<li>Expiry Date</li>
+<li>Quantity</li>
+<li>Unit Cost</li>
+<li>Total Value</li>
+<li>Status (Good/Damaged/Expired)</li>
+</ul>
+<p><strong>Movement History Table Columns</strong>:</p>
+<ul>
+<li>Date/Time</li>
+<li>Transaction Type</li>
+<li>Reference Number</li>
+<li>Lot Number</li>
+<li>Quantity In</li>
+<li>Quantity Out</li>
+<li>Balance</li>
+<li>Unit Cost</li>
+<li>Value</li>
+<li>Location</li>
+<li>User</li>
+<li>Notes</li>
+</ul>
+<p><strong>Valuation Panel</strong>:</p>
+<ul>
+<li>Valuation Method (FIFO/LIFO/Average)</li>
+<li>Current Total Value</li>
+<li>Average Unit Cost</li>
+<li>Last Purchase Cost</li>
+<li>Cost Variance</li>
+</ul>
+<p><strong>Quick Filters</strong>:</p>
+<ul>
+<li>All Transactions</li>
+<li>Receipts Only</li>
+<li>Issues Only</li>
+<li>Adjustments Only</li>
+<li>Transfers Only</li>
+<li>Date Range</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Filter movements by type</li>
+<li>Filter by date range</li>
+<li>Export to Excel</li>
+<li>Print stock card</li>
+<li>Create adjustment</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Filter Movements</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Filter Button"] --> Apply["Apply Filter"]
+    Apply --> Reload["Reload Movement History"]
+
+</div>
+<p><strong>Export Stock Card</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Export"] --> Generate["Generate Excel File"]
+    Generate --> Download["Download Stock Card"]
+
+</div>
+<p><strong>Create Adjustment</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Create Adjustment"] --> Navigate["Navigate to New Adjustment"]
+    Navigate --> Prefill["Prefill Product Data"]
+
+</div>
+<hr>
+<h3 id="slow-moving-report">Slow Moving Report</h3>
+<p><strong>Path</strong>: <code>/inventory-management/stock-overview/slow-moving</code><br><strong>File</strong>: <code>app/(main)/inventory-management/stock-overview/slow-moving/page.tsx</code></p>
+<p><img src="screenshots/slow-moving-report.png" alt="Slow Moving"><br><em>Slow Moving Items - Identify low turnover inventory</em></p>
+<p><strong>Status</strong>: ❌ Not Implemented</p>
+<p><strong>Filters</strong>:</p>
+<ul>
+<li>Time period (30/60/90/180 days)</li>
+<li>Category filter</li>
+<li>Location filter</li>
+<li>Minimum value filter</li>
+</ul>
+<p><strong>Table Columns</strong>:</p>
+<ul>
+<li>Product Code</li>
+<li>Product Name</li>
+<li>Category</li>
+<li>Location</li>
+<li>Current Quantity</li>
+<li>Last Movement Date</li>
+<li>Days Since Movement</li>
+<li>Current Value</li>
+<li>Turnover Rate</li>
+<li>Recommended Action</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Mark for clearance</li>
+<li>Create transfer</li>
+<li>Adjust reorder level</li>
+<li>Export report</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Mark for Clearance</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Select["Select Items"] --> Click["Click Mark for Clearance"]
+    Click --> Update["Update Item Status"]
+
+</div>
+<hr>
+<h3 id="inventory-aging-report">Inventory Aging Report</h3>
+<p><strong>Path</strong>: <code>/inventory-management/stock-overview/inventory-aging</code><br><strong>File</strong>: <code>app/(main)/inventory-management/stock-overview/inventory-aging/page.tsx</code></p>
+<p><img src="screenshots/inventory-aging-report.png" alt="Inventory Aging"><br><em>Inventory Aging - Track inventory age and expiry</em></p>
+<p><strong>Status</strong>: ❌ Not Implemented</p>
+<p><strong>Summary Cards</strong>:</p>
+<ul>
+<li>Total Expiring in 7 days (red)</li>
+<li>Total Expiring in 30 days (orange)</li>
+<li>Average Age (days)</li>
+<li>Total Aged Stock Value</li>
+</ul>
+<p><strong>Table Columns</strong>:</p>
+<ul>
+<li>Product Code/Name</li>
+<li>Location</li>
+<li>Total Quantity</li>
+<li>0-30 days qty</li>
+<li>31-60 days qty</li>
+<li>61-90 days qty</li>
+<li>90+ days qty</li>
+<li>Expiring Soon (&lt;7 days)</li>
+<li>Total Value</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Filter by location</li>
+<li>Filter by aging bucket</li>
+<li>Export report</li>
+<li>Create disposal request</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Create Disposal Request</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Select["Select Expired Items"] --> Click["Click Create Disposal"]
+    Click --> Navigate["Navigate to Disposal Form"]
+
+</div>
+<hr>
+<h3 id="stock-in-list">Stock In List</h3>
+<p><strong>Path</strong>: <code>/inventory-management/stock-in</code><br><strong>File</strong>: <code>app/(main)/inventory-management/stock-in/page.tsx</code></p>
+<p><img src="screenshots/stock-in-list.png" alt="Stock In List"><br><em>Stock In - Goods receipt listing</em></p>
+<p><strong>Status</strong>: ✅ Production</p>
+<p><strong>Table Columns</strong>:</p>
+<ul>
+<li>Receipt Number</li>
+<li>Receipt Date</li>
+<li>Source (PO/Transfer/Production)</li>
+<li>Source Reference</li>
+<li>Location</li>
+<li>Total Items</li>
+<li>Total Quantity</li>
+<li>Total Value</li>
+<li>Status</li>
+<li>Actions</li>
+</ul>
+<p><strong>Filters</strong>:</p>
+<ul>
+<li>Date range picker</li>
+<li>Status (All/Pending/Completed)</li>
+<li>Location filter</li>
+<li>Search by reference</li>
+</ul>
+<p><strong>Sorting</strong>:</p>
+<ul>
+<li>Sort by Date</li>
+<li>Sort by Receipt Number</li>
+<li>Sort by Status</li>
+<li>Sort by Location</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Create new receipt</li>
+<li>View receipt detail</li>
+<li>Edit draft receipt</li>
+<li>Post receipt</li>
+<li>Print receipt</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Create New Receipt</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click New Receipt"] --> Navigate["Navigate to Receipt Form"]
+    Navigate --> Display["Display Entry Form"]
+
+</div>
+<p><strong>Post Receipt</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Post"] --> Validate["Validate Receipt Data"]
+    Validate --> Post["Post to Inventory"]
+    Post --> Generate["Generate Journal Entry"]
+
+</div>
+<hr>
+<h3 id="stock-in-detail">Stock In Detail</h3>
+<p><strong>Path</strong>: <code>/inventory-management/stock-in/[id]</code><br><strong>File</strong>: <code>app/(main)/inventory-management/stock-in/components/stock-in-detail.tsx</code></p>
+<p><img src="screenshots/stock-in-list.png" alt="Stock In Detail"><br><em>Stock In Detail - Receipt entry and posting</em></p>
+<p><strong>Status</strong>: ⚠️ Partial Implementation</p>
+<p><strong>Header Information</strong>:</p>
+<ul>
+<li>Receipt Number (auto-generated)</li>
+<li>Receipt Date</li>
+<li>Location dropdown</li>
+<li>Source type (PO/Transfer/Production/Other)</li>
+<li>Source reference</li>
+<li>Supplier (if from PO)</li>
+<li>Notes textarea</li>
+</ul>
+<p><strong>Items Table Columns</strong>:</p>
+<ul>
+<li>Item Code/Name</li>
+<li>Description</li>
+<li>Ordered Qty (from source)</li>
+<li>Received Qty (editable)</li>
+<li>Unit</li>
+<li>Unit Cost</li>
+<li>Total Cost</li>
+<li>Lot Number (if batch tracked)</li>
+<li>Expiry Date (if applicable)</li>
+<li>Actions (Remove)</li>
+</ul>
+<p><strong>Tabs</strong>:</p>
+<ul>
+<li>Items</li>
+<li>Journal Entry Preview</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Add item</li>
+<li>Remove item</li>
+<li>Edit quantities</li>
+<li>Enter lot details</li>
+<li>Save draft</li>
+<li>Post receipt</li>
+<li>Cancel</li>
+<li>Print</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Add Item</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Add Item"] --> Modal["Open Item Lookup Modal"]
+    Modal --> Select["Select Item"]
+    Select --> Add["Add to Items Table"]
+
+</div>
+<p><strong>Post Receipt</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Post"] --> Validate["Validate All Items"]
+    Validate --> Update["Update Inventory"]
+    Update --> Journal["Generate Journal Entry"]
+
+</div>
+<hr>
+<h3 id="inventory-adjustments-list">Inventory Adjustments List</h3>
+<p><strong>Path</strong>: <code>/inventory-management/inventory-adjustments</code><br><strong>File</strong>: <code>app/(main)/inventory-management/inventory-adjustments/page.tsx</code></p>
+<p><img src="screenshots/inventory-adjustments-list.png" alt="Adjustments List"><br><em>Inventory Adjustments - Track all adjustments with workflow</em></p>
+<p><strong>Status</strong>: ✅ Production</p>
+<p><strong>Table Columns</strong>:</p>
+<ul>
+<li>Adjustment ID</li>
+<li>Date</li>
+<li>Type (In/Out badge)</li>
+<li>Status</li>
+<li>Location</li>
+<li>Department</li>
+<li>Reason</li>
+<li>Items count</li>
+<li>Total value</li>
+<li>Actions</li>
+</ul>
+<p><strong>Filters</strong>:</p>
+<ul>
+<li>Date range picker</li>
+<li>Status (Draft/Posted)</li>
+<li>Adjustment type (Positive/Negative/Transfer)</li>
+<li>Location filter</li>
+<li>Department filter</li>
+</ul>
+<p><strong>Sorting</strong>:</p>
+<ul>
+<li>Sort by Date</li>
+<li>Sort by ID</li>
+<li>Sort by Status</li>
+<li>Sort by Type</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Create new adjustment</li>
+<li>View adjustment detail</li>
+<li>Edit draft adjustment</li>
+<li>Post adjustment</li>
+<li>Delete draft</li>
+<li>Export list</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Create New Adjustment</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click New Adjustment"] --> Navigate["Navigate to Adjustment Form"]
+    Navigate --> Display["Display Entry Form"]
+
+</div>
+<p><strong>Post Adjustment</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Post"] --> Validate["Validate Adjustment"]
+    Validate --> Update["Update Inventory"]
+    Update --> Journal["Generate Journal Entry"]
+
+</div>
+<hr>
+<h3 id="inventory-adjustment-detail">Inventory Adjustment Detail</h3>
+<p><strong>Path</strong>: <code>/inventory-management/inventory-adjustments/[id]</code><br><strong>File</strong>: <code>app/(main)/inventory-management/inventory-adjustments/[id]/page.tsx</code></p>
+<p><img src="screenshots/inventory-adjustment-detail.png" alt="Adjustment Detail"><br><em>Adjustment Detail - Multi-tab interface with journal entries</em></p>
+<p><strong>Status</strong>: ✅ Production</p>
+<p><strong>Header</strong>:</p>
+<ul>
+<li>Adjustment ID</li>
+<li>Status badge</li>
+<li>Action buttons (Edit/Post/Delete)</li>
+</ul>
+<p><strong>Information Panel</strong>:</p>
+<ul>
+<li>Date picker</li>
+<li>Adjustment type dropdown</li>
+<li>Location dropdown</li>
+<li>Department dropdown</li>
+<li>Reason dropdown</li>
+<li>Description textarea</li>
+<li>Reference field</li>
+</ul>
+<p><strong>Adjustment Types</strong>:</p>
+<ul>
+<li>Positive Adjustment (Stock In)</li>
+<li>Negative Adjustment (Stock Out)</li>
+<li>Transfer</li>
+<li>Write-off</li>
+<li>Found Stock</li>
+<li>Damage</li>
+<li>Theft</li>
+<li>Expiry</li>
+</ul>
+<p><strong>Stock Movement Table Columns</strong>:</p>
+<ul>
+<li>Product Code/Name</li>
+<li>SKU</li>
+<li>Location</li>
+<li>Lot Numbers (expandable)</li>
+<li>Quantity</li>
+<li>UOM</li>
+<li>Unit Cost</li>
+<li>Total Cost</li>
+<li>Actions (Remove)</li>
+</ul>
+<p><strong>Summary Panel</strong>:</p>
+<ul>
+<li>Total In Quantity</li>
+<li>Total Out Quantity</li>
+<li>Total Cost</li>
+</ul>
+<p><strong>Tabs</strong>:</p>
+<ul>
+<li>Stock Movement</li>
+<li>Journal Entries</li>
+</ul>
+<p><strong>Journal Entry Tab</strong>:</p>
+<ul>
+<li>Journal Header (Status, Number, Dates, Created/Posted by)</li>
+<li>Journal Lines Table (Account, Debit, Credit, Department)</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Add items</li>
+<li>Remove items</li>
+<li>Edit quantities</li>
+<li>Enter lot details</li>
+<li>Save draft</li>
+<li>Post adjustment</li>
+<li>Delete draft</li>
+<li>Print voucher</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Add Item to Adjustment</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Add Item"] --> Modal["Open Item Selection Modal"]
+    Modal --> Add["Add to Movement Table"]
+
+</div>
+<p><strong>Post Adjustment</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Post"] --> Validate["Validate Data"]
+    Validate --> Update["Update Stock Levels"]
+    Update --> Generate["Generate Journal Entry"]
+
+</div>
+<hr>
+<h3 id="physical-count-wizard">Physical Count Wizard</h3>
+<p><strong>Path</strong>: <code>/inventory-management/physical-count</code><br><strong>File</strong>: <code>app/(main)/inventory-management/physical-count/page.tsx</code></p>
+<p><img src="screenshots/physical-count-setup.png" alt="Physical Count Wizard"><br><em>Physical Count - Multi-step setup wizard</em></p>
+<p><strong>Status</strong>: ✅ Production</p>
+<p><strong>Step 1: Setup</strong>:</p>
+<ul>
+<li>Counter Name (auto-filled)</li>
+<li>Department dropdown</li>
+<li>Date &amp; Time picker</li>
+<li>Count Type (Full/Partial)</li>
+<li>Notes textarea</li>
+</ul>
+<p><strong>Step 2: Location Selection</strong>:</p>
+<ul>
+<li>Checkbox tree of locations</li>
+<li>Location hierarchy (Building → Floor → Room)</li>
+<li>Select all/none buttons</li>
+<li>Search locations</li>
+<li>Item count per location</li>
+</ul>
+<p><strong>Step 3: Item Review</strong>:</p>
+<ul>
+<li>Items table (auto-populated)</li>
+<li>Columns: Code, Name, Category, Location, Expected Qty, Unit</li>
+<li>Exclude items checkbox</li>
+<li>Filter by category</li>
+<li>Sort options</li>
+</ul>
+<p><strong>Step 4: Final Review</strong>:</p>
+<ul>
+<li>Summary of selections</li>
+<li>Counter, Department, Date</li>
+<li>Locations count</li>
+<li>Items count</li>
+<li>Estimated duration</li>
+<li>Edit buttons for each step</li>
+</ul>
+<p><strong>Step Indicator</strong>:</p>
+<ul>
+<li>Shows current step (1-4)</li>
+<li>Step titles and descriptions</li>
+<li>Progress visualization</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Next step</li>
+<li>Previous step</li>
+<li>Save draft</li>
+<li>Start count</li>
+<li>Cancel</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Navigate Steps</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Next"] --> Validate["Validate Current Step"]
+    Validate --> Advance["Advance to Next Step"]
+
+</div>
+<p><strong>Start Count</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Start Count"] --> Validate["Validate All Steps"]
+    Validate --> Create["Create Count Record"]
+    Create --> Navigate["Navigate to Active Count"]
+
+</div>
+<hr>
+<h3 id="physical-count-active">Physical Count Active</h3>
+<p><strong>Path</strong>: <code>/inventory-management/physical-count/active/[id]</code><br><strong>File</strong>: <code>app/(main)/inventory-management/physical-count/active/[id]/page.tsx</code></p>
+<p><img src="screenshots/spot-check-active.png" alt="Active Count"><br><em>Active Count - Item counting interface</em></p>
+<p><strong>Status</strong>: ⚠️ Partial Implementation</p>
+<p><strong>Components</strong>:</p>
+<ul>
+<li>Count reference header</li>
+<li>Progress indicator (X/Y items)</li>
+<li>Location filter</li>
+<li>Search items</li>
+</ul>
+<p><strong>Item Entry Table Columns</strong>:</p>
+<ul>
+<li>Item Code/Name</li>
+<li>Expected Quantity</li>
+<li>Actual Count (input)</li>
+<li>Variance (auto-calculated)</li>
+<li>Variance %</li>
+<li>Status (good/variance)</li>
+<li>Notes</li>
+<li>Counted checkbox</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Enter actual count</li>
+<li>Mark as counted</li>
+<li>Flag discrepancy</li>
+<li>Add notes</li>
+<li>Save progress</li>
+<li>Submit count</li>
+<li>Cancel count</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Enter Count</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Type["Enter Actual Count"] --> Calculate["Calculate Variance"]
+    Calculate --> Update["Update Progress"]
+
+</div>
+<p><strong>Submit Count</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Submit"] --> Validate["Check All Items Counted"]
+    Validate --> Submit["Submit Count"]
+    Submit --> Review["Navigate to Variance Review"]
+
+</div>
+<hr>
+<h3 id="physical-count-dashboard">Physical Count Dashboard</h3>
+<p><strong>Path</strong>: <code>/inventory-management/physical-count/dashboard</code><br><strong>File</strong>: <code>app/(main)/inventory-management/physical-count/dashboard/page.tsx</code></p>
+<p><img src="screenshots/physical-count-dashboard.png" alt="Count Dashboard"><br><em>Count Dashboard - Management and tracking interface</em></p>
+<p><strong>Status</strong>: ⚠️ Partial Implementation</p>
+<p><strong>Summary Cards</strong>:</p>
+<ul>
+<li>Active Counts</li>
+<li>Completed Today</li>
+<li>Pending Review</li>
+<li>Average Variance %</li>
+</ul>
+<p><strong>Counts Table Columns</strong>:</p>
+<ul>
+<li>Count ID</li>
+<li>Date</li>
+<li>Location(s)</li>
+<li>Items Count</li>
+<li>Completed Items</li>
+<li>Progress %</li>
+<li>Status</li>
+<li>Variance %</li>
+<li>Actions</li>
+</ul>
+<p><strong>Charts</strong>:</p>
+<ul>
+<li>Count completion trend (line)</li>
+<li>Variance by location (bar)</li>
+<li>Variance by category (pie)</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Resume count</li>
+<li>Review count</li>
+<li>Export results</li>
+<li>Create new count</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Resume Count</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Resume"] --> Navigate["Navigate to Active Count"]
+    Navigate --> Load["Load Progress"]
+
+</div>
+<hr>
+<h3 id="spot-check-main">Spot Check Main</h3>
+<p><strong>Path</strong>: <code>/inventory-management/spot-check</code><br><strong>File</strong>: <code>app/(main)/inventory-management/spot-check/page.tsx</code></p>
+<p><img src="screenshots/spot-check-main.png" alt="Spot Check Main"><br><em>Spot Check - Quick verification with list/grid view</em></p>
+<p><strong>Status</strong>: ✅ Production</p>
+<p><strong>View Toggle</strong>:</p>
+<ul>
+<li>List view</li>
+<li>Grid view</li>
+</ul>
+<p><strong>Filter Bar</strong>:</p>
+<ul>
+<li>Search box</li>
+<li>Status dropdown (All/Pending/In Progress/Completed)</li>
+<li>Department dropdown</li>
+<li>Location filter (toggle panel)</li>
+</ul>
+<p><strong>List View Displays</strong>:</p>
+<ul>
+<li>Store Name</li>
+<li>Department badge</li>
+<li>Counter name</li>
+<li>Date</li>
+<li>Status badge</li>
+<li>Item count</li>
+<li>Last count date</li>
+<li>Variance %</li>
+<li>Progress</li>
+<li>Notes preview</li>
+<li>Actions (Start/Delete)</li>
+</ul>
+<p><strong>Grid View Card</strong>:</p>
+<ul>
+<li>Count ID</li>
+<li>Counter</li>
+<li>Department</li>
+<li>Store</li>
+<li>Date</li>
+<li>Items count</li>
+<li>Actions (Start/Delete)</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>New spot check</li>
+<li>Start count</li>
+<li>Delete count</li>
+<li>Toggle view</li>
+<li>Apply filters</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>New Spot Check</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click New Spot Check"] --> Navigate["Navigate to Setup Form"]
+    Navigate --> Display["Display Setup Page"]
+
+</div>
+<p><strong>Start Spot Check</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Start"] --> Navigate["Navigate to Active Check"]
+    Navigate --> Load["Load Items"]
+
+</div>
+<hr>
+<h3 id="new-spot-check">New Spot Check</h3>
+<p><strong>Path</strong>: <code>/inventory-management/spot-check/new</code><br><strong>File</strong>: <code>app/(main)/inventory-management/spot-check/new/page.tsx</code></p>
+<p><img src="screenshots/spot-check-new.png" alt="New Spot Check"><br><em>New Spot Check - Quick setup wizard</em></p>
+<p><strong>Status</strong>: ✅ Production</p>
+<p><strong>Step 1: Setup</strong>:</p>
+<ul>
+<li>Department dropdown</li>
+<li>Store/Location dropdown</li>
+<li>Date/Time picker</li>
+<li>Notes</li>
+</ul>
+<p><strong>Step 2: Item Selection</strong>:</p>
+<ul>
+<li>Random item picker (auto-select N items)</li>
+<li>Manual search and add</li>
+<li>Selected items list</li>
+<li>Remove items</li>
+</ul>
+<p><strong>Selected Items Table</strong>:</p>
+<ul>
+<li>Item Code</li>
+<li>Item Name</li>
+<li>Expected Qty</li>
+<li>Unit</li>
+<li>Remove button</li>
+</ul>
+<p><strong>Step 3: Review</strong>:</p>
+<ul>
+<li>Summary of setup</li>
+<li>List of selected items</li>
+<li>Total items count</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Next/Previous</li>
+<li>Select random items</li>
+<li>Manual add</li>
+<li>Remove item</li>
+<li>Save draft</li>
+<li>Start check</li>
+<li>Cancel</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Random Item Selection</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Random Select"] --> Generate["Generate Random List"]
+    Generate --> Add["Add to Selected Items"]
+
+</div>
+<p><strong>Start Spot Check</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Start"] --> Validate["Validate Selection"]
+    Validate --> Create["Create Spot Check"]
+    Create --> Navigate["Navigate to Active Check"]
+
+</div>
+<hr>
+<h3 id="active-spot-check">Active Spot Check</h3>
+<p><strong>Path</strong>: <code>/inventory-management/spot-check/active/[id]</code><br><strong>File</strong>: <code>app/(main)/inventory-management/spot-check/active/[id]/page.tsx</code></p>
+<p><img src="screenshots/spot-check-active.png" alt="Active Spot Check"><br><em>Active Spot Check - Item counting</em></p>
+<p><strong>Status</strong>: ✅ Production</p>
+<p><strong>Components</strong>:</p>
+<ul>
+<li>Reference header</li>
+<li>Progress indicator</li>
+<li>Item entry form</li>
+</ul>
+<p><strong>Item Form Fields</strong>:</p>
+<ul>
+<li>Item name/code</li>
+<li>Expected quantity</li>
+<li>Actual count (input)</li>
+<li>Variance (calculated)</li>
+<li>Status dropdown (Good/Damaged/Missing/Expired)</li>
+<li>Notes</li>
+<li>Submit item checkbox</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Submit item count</li>
+<li>Flag issue</li>
+<li>Add photo (future)</li>
+<li>Complete check</li>
+<li>Cancel</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Submit Item Count</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Enter["Enter Count"] --> Validate["Validate Entry"]
+    Validate --> Save["Save Item Count"]
+
+</div>
+<p><strong>Complete Check</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Complete"] --> Check["Check All Items Submitted"]
+    Check --> Finalize["Finalize Spot Check"]
+
+</div>
+<hr>
+<h3 id="spot-check-dashboard">Spot Check Dashboard</h3>
+<p><strong>Path</strong>: <code>/inventory-management/spot-check/dashboard</code><br><strong>File</strong>: <code>app/(main)/inventory-management/spot-check/dashboard/page.tsx</code></p>
+<p><img src="screenshots/spot-check-dashboard.png" alt="Spot Check Dashboard"><br><em>Spot Check Dashboard - Analytics and tracking</em></p>
+<p><strong>Status</strong>: ✅ Production</p>
+<p><strong>Summary Cards</strong>:</p>
+<ul>
+<li>Total Checks This Week</li>
+<li>Average Accuracy %</li>
+<li>Items Flagged</li>
+<li>Pending Actions</li>
+</ul>
+<p><strong>Charts</strong>:</p>
+<ul>
+<li>Accuracy trend (line)</li>
+<li>Variance by location (bar)</li>
+<li>Issue types distribution (pie)</li>
+</ul>
+<p><strong>Recent Checks Table</strong>:</p>
+<ul>
+<li>Date</li>
+<li>Location</li>
+<li>Items</li>
+<li>Accuracy %</li>
+<li>Issues found</li>
+<li>Status</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>View check detail</li>
+<li>Export analytics</li>
+<li>Filter date range</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>View Check Detail</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Check Row"] --> Navigate["Navigate to Check Detail"]
+    Navigate --> Display["Display Check Results"]
+
+</div>
+<hr>
+<h3 id="fractional-inventory">Fractional Inventory</h3>
+<p><strong>Path</strong>: <code>/inventory-management/fractional-inventory</code><br><strong>File</strong>: <code>app/(main)/inventory-management/fractional-inventory/page.tsx</code></p>
+<p><img src="screenshots/fractional-inventory.png" alt="Fractional Inventory"><br><em>Fractional Inventory - Portion tracking and conversion</em></p>
+<p><strong>Status</strong>: ✅ Production</p>
+<p><strong>Tabs</strong>:</p>
+<ul>
+<li>Inventory Dashboard</li>
+<li>Conversion Tracking</li>
+</ul>
+<p><strong>Inventory Dashboard Tab</strong>:</p>
+<p><strong>Summary Cards</strong>:</p>
+<ul>
+<li>Total Fractional Items</li>
+<li>Active Portions</li>
+<li>Pending Conversions</li>
+<li>Waste Generated Today</li>
+</ul>
+<p><strong>Stock Table Columns</strong>:</p>
+<ul>
+<li>Item Code/Name</li>
+<li>Current State (WHOLE/PARTIAL/PREPARED)</li>
+<li>Whole Units Available</li>
+<li>Partial Quantity Available</li>
+<li>Total Portions Available</li>
+<li>Reserved Portions</li>
+<li>Quality Grade (EXCELLENT/GOOD/FAIR/POOR)</li>
+<li>Expires At (countdown)</li>
+<li>Actions (Split/Combine/Details)</li>
+</ul>
+<p><strong>Filters</strong>:</p>
+<ul>
+<li>Location</li>
+<li>State (Whole/Partial/Prepared)</li>
+<li>Quality Grade</li>
+<li>Expiring Soon (&lt;4 hours)</li>
+</ul>
+<p><strong>Conversion Tracking Tab</strong>:</p>
+<p><strong>Recent Conversions Table</strong>:</p>
+<ul>
+<li>Date/Time</li>
+<li>Item Name</li>
+<li>Operation Type (Split/Combine)</li>
+<li>From State → To State</li>
+<li>Quantity Converted</li>
+<li>Resulting Units/Portions</li>
+<li>Waste Generated</li>
+<li>Performed By</li>
+<li>Reason</li>
+<li>Notes</li>
+</ul>
+<p><strong>Charts</strong>:</p>
+<ul>
+<li>Conversions over time (line)</li>
+<li>Waste by item (bar)</li>
+<li>Operation type distribution (pie)</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Split item</li>
+<li>Combine portions</li>
+<li>View stock details</li>
+<li>Filter conversions</li>
+<li>Export report</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Split Operation</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Split"] --> Modal["Open Split Modal"]
+    Modal --> Confirm["Confirm Operation"]
+    Confirm --> Update["Update Stock State"]
+
+</div>
+<p><strong>Combine Operation</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Combine"] --> Modal["Open Combine Modal"]
+    Modal --> Confirm["Confirm Operation"]
+    Confirm --> Update["Update Stock State"]
+
+</div>
+<hr>
+<h3 id="period-end">Period End</h3>
+<p><strong>Path</strong>: <code>/inventory-management/period-end</code><br><strong>File</strong>: <code>app/(main)/inventory-management/period-end/page.tsx</code></p>
+<p><img src="screenshots/period-end.png" alt="Period End"><br><em>Period End - Month-end closing procedures</em></p>
+<p><strong>Status</strong>: ✅ Production</p>
+<p><strong>Header</strong>:</p>
+<ul>
+<li>Title</li>
+<li>Date picker (period selection)</li>
+<li>Start New Period button</li>
+</ul>
+<p><strong>Period Records Table Columns</strong>:</p>
+<ul>
+<li>Period ID</li>
+<li>Period (e.g., &quot;January 2024&quot;)</li>
+<li>Start Date</li>
+<li>End Date</li>
+<li>Status (Open/In Progress/Closed)</li>
+<li>Completed By</li>
+<li>Completed At</li>
+<li>Notes</li>
+</ul>
+<p><strong>Status Badges</strong>:</p>
+<ul>
+<li>Open (Blue)</li>
+<li>In Progress (Yellow)</li>
+<li>Closed (Green)</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Start new period</li>
+<li>Click row to view detail</li>
+<li>Close period</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Start New Period</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Start New Period"] --> Modal["Open Period Setup"]
+    Modal --> Create["Create Period Record"]
+
+</div>
+<p><strong>View Period Detail</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Period Row"] --> Navigate["Navigate to Period Detail"]
+    Navigate --> Display["Display Checklist and Reports"]
+
+</div>
+<hr>
+<h3 id="period-end-detail">Period End Detail</h3>
+<p><strong>Path</strong>: <code>/inventory-management/period-end/[id]</code><br><strong>File</strong>: <code>app/(main)/inventory-management/period-end/[id]/page.tsx</code></p>
+<p><img src="./screenshots/period-end.png" alt="Period End Detail"><br><em>Period End Detail - Closing checklist and reports</em></p>
+<p><strong>Status</strong>: ⚠️ Partial Implementation</p>
+<p><strong>Header</strong>:</p>
+<ul>
+<li>Period ID</li>
+<li>Status badge</li>
+<li>Close Period button</li>
+</ul>
+<p><strong>Summary Panel</strong>:</p>
+<ul>
+<li>Period range</li>
+<li>Opening stock value</li>
+<li>Closing stock value</li>
+<li>Variance</li>
+<li>Physical count status</li>
+<li>Adjustment count</li>
+<li>Status</li>
+</ul>
+<p><strong>Checklist</strong>:</p>
+<ul>
+<li><input disabled="" type="checkbox"> All stock receipts posted</li>
+<li><input disabled="" type="checkbox"> All stock issues posted</li>
+<li><input disabled="" type="checkbox"> Physical count completed</li>
+<li><input disabled="" type="checkbox"> Variances reconciled</li>
+<li><input disabled="" type="checkbox"> Adjustments posted</li>
+<li><input disabled="" type="checkbox"> Reports generated</li>
+<li><input disabled="" type="checkbox"> Finance reviewed</li>
+</ul>
+<p><strong>Reports Section</strong>:</p>
+<ul>
+<li>Inventory valuation report</li>
+<li>Movement summary</li>
+<li>Variance analysis</li>
+<li>Period-end snapshot</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Run checklist item</li>
+<li>Generate report</li>
+<li>Close period</li>
+<li>Cancel closing</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Close Period</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Close Period"] --> Validate["Validate Checklist"]
+    Validate --> Lock["Lock Transactions"]
+    Lock --> Archive["Archive Reports"]
+
+</div>
+<hr>
+<h3 id="physical-count-management">Physical Count Management</h3>
+<p><strong>Path</strong>: <code>/inventory-management/physical-count-management</code><br><strong>File</strong>: <code>app/(main)/inventory-management/physical-count-management/page.tsx</code></p>
+<p><img src="screenshots/physical-count-dashboard.png" alt="Count Management"><br><em>Physical Count Management - Scheduling and oversight</em></p>
+<p><strong>Status</strong>: ✅ Production</p>
+<p><strong>Header</strong>:</p>
+<ul>
+<li>Title</li>
+<li>New Count button</li>
+</ul>
+<p><strong>Filter Bar</strong>:</p>
+<ul>
+<li>Status filter</li>
+<li>Location filter</li>
+<li>Date range</li>
+</ul>
+<p><strong>Counts List (Cards)</strong>:</p>
+<ul>
+<li>Store Name</li>
+<li>Department</li>
+<li>Counter assigned</li>
+<li>Scheduled Date</li>
+<li>Status (Scheduled/In Progress/Completed)</li>
+<li>Item count</li>
+<li>Completed count (progress)</li>
+<li>Variance %</li>
+<li>Actions (Start/Edit/Delete)</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Create new count</li>
+<li>Start count</li>
+<li>Edit scheduled count</li>
+<li>Delete count</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Create New Count</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click New Count"] --> Modal["Open Count Detail Form"]
+    Modal --> Save["Save Count Schedule"]
+
+</div>
+<p><strong>Start Count</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Start"] --> Navigate["Navigate to Active Count"]
+    Navigate --> Begin["Begin Counting Process"]
+
+</div>
+<hr>
+<h2 id="modals-and-dialogs">Modals and Dialogs</h2>
+<h3 id="1-item-selection-modal">1. Item Selection Modal</h3>
+<p><strong>Trigger</strong>: Click &quot;Add Item&quot; in Stock In, Adjustments<br><strong>Component</strong>: <code>item-lookup-modal.tsx</code></p>
+<p><strong>Filter Fields</strong>:</p>
+<ul>
+<li>Search by name/code</li>
+<li>Category filter (dropdown)</li>
+<li>In stock only (checkbox)</li>
+</ul>
+<p><strong>Display</strong>:</p>
+<ul>
+<li>Items table with checkboxes</li>
+<li>Columns: Code, Name, Category, Current Stock, Unit</li>
+<li>Selected items preview</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Search items</li>
+<li>Filter by category</li>
+<li>Select/deselect items</li>
+<li>Add selected items</li>
+<li>Cancel</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Search Items</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Type["Type Search Query"] --> Search["Filter Items"]
+    Search --> Display["Display Matching Items"]
+
+</div>
+<p><strong>Add Selected Items</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Select["Select Items"] --> Click["Click Add"]
+    Click --> Add["Add to Parent Form"]
+
+</div>
+<hr>
+<h3 id="2-lot-entry-modal">2. Lot Entry Modal</h3>
+<p><strong>Trigger</strong>: Enter lot details for batch-tracked items<br><strong>Component</strong>: <code>lot-entry-modal.tsx</code></p>
+<p><strong>Fields</strong>:</p>
+<ul>
+<li>Lot Number (text input)</li>
+<li>Expiry Date (date picker)</li>
+<li>Quantity (number input)</li>
+<li>Notes (textarea)</li>
+</ul>
+<p><strong>Multiple Lots</strong>:</p>
+<ul>
+<li>Add another lot button</li>
+<li>List of entered lots</li>
+<li>Remove lot button</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Add lot</li>
+<li>Remove lot</li>
+<li>Save lots</li>
+<li>Cancel</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Add Lot</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Enter["Enter Lot Details"] --> Click["Click Add Lot"]
+    Click --> Validate["Validate Lot Data"]
+
+</div>
+<p><strong>Save Lots</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Save"] --> Validate["Validate All Lots"]
+    Validate --> Assign["Assign to Item"]
+
+</div>
+<hr>
+<h3 id="3-conversion-operations-modal">3. Conversion Operations Modal</h3>
+<p><strong>Trigger</strong>: Click Split or Combine in Fractional Inventory<br><strong>Component</strong>: <code>conversion-operations-modal.tsx</code></p>
+<p><strong>Split Operation Fields</strong>:</p>
+<ul>
+<li>Stock ID (read-only)</li>
+<li>Item Name (read-only)</li>
+<li>Available Whole Units (read-only)</li>
+<li>Split Quantity (input)</li>
+<li>Target Portion Size (dropdown)</li>
+<li>Resulting Portions (calculated)</li>
+<li>Conversion Cost (calculated)</li>
+<li>Reason (dropdown)</li>
+<li>Notes</li>
+</ul>
+<p><strong>Combine Operation Fields</strong>:</p>
+<ul>
+<li>Stock ID (read-only)</li>
+<li>Item Name (read-only)</li>
+<li>Available Portions (read-only)</li>
+<li>Combine Quantity (input)</li>
+<li>Target: Whole Unit</li>
+<li>Waste % (calculated)</li>
+<li>Reason (dropdown)</li>
+<li>Notes</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Confirm conversion</li>
+<li>Cancel</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Split Item</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Enter["Enter Split Quantity"] --> Calculate["Calculate Portions"]
+    Calculate --> Confirm["Confirm Operation"]
+
+</div>
+<p><strong>Combine Portions</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Enter["Enter Combine Quantity"] --> Calculate["Calculate Waste"]
+    Calculate --> Confirm["Confirm Operation"]
+
+</div>
+<hr>
+<h3 id="4-transfer-creation-modal">4. Transfer Creation Modal</h3>
+<p><strong>Trigger</strong>: Create transfer from suggestions<br><strong>Component</strong>: <code>transfer-creation-modal.tsx</code></p>
+<p><strong>Fields</strong>:</p>
+<ul>
+<li>From Location (dropdown)</li>
+<li>To Location (dropdown)</li>
+<li>Item (pre-filled)</li>
+<li>Quantity (input)</li>
+<li>Transfer Date (date picker)</li>
+<li>Priority (dropdown)</li>
+<li>Reason (dropdown)</li>
+<li>Notes</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Create transfer</li>
+<li>Cancel</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Create Transfer</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Enter["Fill Transfer Details"] --> Validate["Validate Data"]
+    Validate --> Create["Create Transfer Request"]
+
+</div>
+<hr>
+<h3 id="5-delete-confirmation-dialog">5. Delete Confirmation Dialog</h3>
+<p><strong>Trigger</strong>: Delete adjustment, count, or other record<br><strong>Component</strong>: <code>delete-confirmation-dialog.tsx</code></p>
+<p><strong>Displays</strong>:</p>
+<ul>
+<li>Warning message</li>
+<li>Record details</li>
+<li>Dependency check (if applicable)</li>
+<li>Cannot undo warning</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Confirm Delete</li>
+<li>Cancel</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Confirm Delete</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Confirm"] --> Check["Check Dependencies"]
+    Check --> Delete["Delete Record"]
+
+</div>
+<hr>
+<h3 id="6-count-detail-form-modal">6. Count Detail Form Modal</h3>
+<p><strong>Trigger</strong>: View/edit count in Count Management<br><strong>Component</strong>: <code>count-detail-form.tsx</code></p>
+<p><strong>Fields</strong>:</p>
+<ul>
+<li>Location (dropdown)</li>
+<li>Counter assignment (dropdown)</li>
+<li>Scheduled date/time</li>
+<li>Count type (Full/Partial/Spot)</li>
+<li>Items selection (if partial)</li>
+<li>Notes</li>
+<li>Recurrence (One-time/Weekly/Monthly)</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Save</li>
+<li>Schedule</li>
+<li>Cancel</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>Save Count</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Enter["Fill Details"] --> Validate["Validate Fields"]
+    Validate --> Save["Save Count Record"]
+
+</div>
+<hr>
+<h3 id="7-movement-history-panel">7. Movement History Panel</h3>
+<p><strong>Trigger</strong>: Click product in Inventory Balance<br><strong>Component</strong>: <code>movement-history-panel.tsx</code></p>
+<p><strong>Display</strong>:</p>
+<ul>
+<li>Side panel (right)</li>
+<li>Product name header</li>
+<li>Movement history table</li>
+</ul>
+<p><strong>Table Columns</strong>:</p>
+<ul>
+<li>Date</li>
+<li>Transaction Type</li>
+<li>Reference</li>
+<li>Quantity In</li>
+<li>Quantity Out</li>
+<li>Balance</li>
+<li>Notes</li>
+</ul>
+<p><strong>Actions</strong>:</p>
+<ul>
+<li>Close panel</li>
+<li>Filter by type</li>
+<li>Export history</li>
+</ul>
+<h4>Action Flows</h4>
+<p><strong>View History</strong>:</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Product"] --> Load["Load Movement Data"]
+    Load --> Display["Display in Panel"]
+
+</div>
+<hr>
+<h2 id="dropdown-fields-reference">Dropdown Fields Reference</h2>
+<h3 id="status-dropdown">Status Dropdown</h3>
+<p><strong>Values</strong>:</p>
+<ul>
+<li>Draft</li>
+<li>Pending</li>
+<li>In Progress</li>
+<li>Completed</li>
+<li>Posted</li>
+<li>Cancelled</li>
+<li>Voided</li>
+</ul>
+<p><strong>Used in</strong>: Adjustments, Receipts, Counts</p>
+<h3 id="adjustment-type-dropdown">Adjustment Type Dropdown</h3>
+<p><strong>Values</strong>:</p>
+<ul>
+<li>Positive Adjustment (Stock In)</li>
+<li>Negative Adjustment (Stock Out)</li>
+<li>Transfer</li>
+<li>Write-off</li>
+<li>Found Stock</li>
+<li>Damage</li>
+<li>Theft</li>
+<li>Expiry</li>
+<li>Quality Control</li>
+<li>System Correction</li>
+<li>Other</li>
+</ul>
+<p><strong>Used in</strong>: Inventory Adjustments</p>
+<h3 id="location-dropdown">Location Dropdown</h3>
+<p><strong>Hierarchy</strong>:</p>
+<ul>
+<li>Main Kitchen<ul>
+<li>Dry Store</li>
+<li>Cold Room</li>
+<li>Freezer</li>
+</ul>
+</li>
+<li>Restaurant<ul>
+<li>Bar Stock</li>
+<li>Service Station</li>
+</ul>
+</li>
+<li>Central Warehouse<ul>
+<li>Receiving</li>
+<li>Storage</li>
+</ul>
+</li>
+</ul>
+<p><strong>Used in</strong>: All inventory transactions</p>
+<h3 id="department-dropdown">Department Dropdown</h3>
+<p><strong>Values</strong>:</p>
+<ul>
+<li>F&amp;B (Food &amp; Beverage)</li>
+<li>Housekeeping</li>
+<li>Maintenance</li>
+<li>Front Office</li>
+<li>Kitchen</li>
+<li>Engineering</li>
+</ul>
+<p><strong>Used in</strong>: Adjustments, Counts, Reports</p>
+<h3 id="count-type-dropdown">Count Type Dropdown</h3>
+<p><strong>Values</strong>:</p>
+<ul>
+<li>Full Count</li>
+<li>Partial Count</li>
+<li>Spot Check</li>
+<li>Cycle Count</li>
+</ul>
+<p><strong>Used in</strong>: Physical Count, Count Management</p>
+<h3 id="source-type-dropdown">Source Type Dropdown</h3>
+<p><strong>Values</strong>:</p>
+<ul>
+<li>Purchase Order</li>
+<li>Transfer In</li>
+<li>Production</li>
+<li>Found Stock</li>
+<li>Other</li>
+</ul>
+<p><strong>Used in</strong>: Stock In</p>
+<h3 id="adjustment-reason-dropdown">Adjustment Reason Dropdown</h3>
+<p><strong>Values</strong>:</p>
+<ul>
+<li>Physical count variance</li>
+<li>Damage</li>
+<li>Theft</li>
+<li>Expiry</li>
+<li>Found stock</li>
+<li>Transfer</li>
+<li>Production</li>
+<li>Quality control</li>
+<li>System correction</li>
+<li>Other (with notes)</li>
+</ul>
+<p><strong>Used in</strong>: Inventory Adjustments</p>
+<h3 id="valuation-method-dropdown">Valuation Method Dropdown</h3>
+<p><strong>Values</strong>:</p>
+<ul>
+<li>FIFO (First In First Out)</li>
+<li>LIFO (Last In First Out)</li>
+<li>Weighted Average Cost</li>
+</ul>
+<p><strong>Used in</strong>: Stock Card, Reports</p>
+<h3 id="portion-size-dropdown-fractional">Portion Size Dropdown (Fractional)</h3>
+<p><strong>Values</strong>: (Dynamic based on item)</p>
+<ul>
+<li>Slice (8 per whole)</li>
+<li>Half (2 per whole)</li>
+<li>Quarter (4 per whole)</li>
+<li>Custom</li>
+</ul>
+<p><strong>Used in</strong>: Fractional Inventory</p>
+<h3 id="quality-grade-dropdown-fractional">Quality Grade Dropdown (Fractional)</h3>
+<p><strong>Values</strong>:</p>
+<ul>
+<li>EXCELLENT</li>
+<li>GOOD</li>
+<li>FAIR</li>
+<li>POOR</li>
+</ul>
+<p><strong>Used in</strong>: Fractional Inventory</p>
+<h3 id="stock-state-dropdown-fractional">Stock State Dropdown (Fractional)</h3>
+<p><strong>Values</strong>:</p>
+<ul>
+<li>WHOLE</li>
+<li>PARTIAL</li>
+<li>PREPARED</li>
+</ul>
+<p><strong>Used in</strong>: Fractional Inventory</p>
+<h3 id="view-type-radio-buttons">View Type Radio Buttons</h3>
+<p><strong>Values</strong>:</p>
+<ul>
+<li>Category View</li>
+<li>Product View</li>
+<li>Lot View</li>
+</ul>
+<p><strong>Used in</strong>: Inventory Balance Report</p>
+<h3 id="date-range-picker">Date Range Picker</h3>
+<p><strong>Presets</strong>:</p>
+<ul>
+<li>Today</li>
+<li>Last 7 Days</li>
+<li>Last 30 Days</li>
+<li>Last Quarter</li>
+<li>Last Year</li>
+<li>Custom Range</li>
+</ul>
+<p><strong>Used in</strong>: Filters, Reports</p>
+<hr>
+<h2 id="actions-and-buttons-reference">Actions and Buttons Reference</h2>
+<h3 id="global-actions-appearing-across-multiple-pages">Global Actions (appearing across multiple pages):</h3>
+<ul>
+<li><strong>Search</strong> - Real-time search with debounce</li>
+<li><strong>Filter</strong> - Open filter dialog/panel</li>
+<li><strong>Export</strong> - Export to Excel/PDF</li>
+<li><strong>Add New</strong> - Create new record</li>
+<li><strong>Refresh</strong> - Reload data</li>
+<li><strong>Print</strong> - Print current view</li>
+</ul>
+<h3 id="list-view-actions">List View Actions:</h3>
+<ul>
+<li><strong>View Details</strong> - Navigate to detail page</li>
+<li><strong>Edit</strong> - Navigate to edit page</li>
+<li><strong>Delete</strong> - Delete with confirmation</li>
+<li><strong>Post</strong> - Finalize transaction</li>
+<li><strong>Void</strong> - Cancel posted transaction</li>
+<li><strong>Export Single</strong> - Export record</li>
+<li><strong>Duplicate</strong> - Clone record</li>
+</ul>
+<h3 id="detail-view-actions">Detail View Actions:</h3>
+<ul>
+<li><strong>Back</strong> - Return to list</li>
+<li><strong>Edit</strong> - Navigate to edit page</li>
+<li><strong>Save</strong> - Save changes</li>
+<li><strong>Cancel</strong> - Discard changes</li>
+<li><strong>Delete</strong> - Delete record</li>
+<li><strong>Post</strong> - Finalize transaction</li>
+<li><strong>Print</strong> - Print view</li>
+<li><strong>Download PDF</strong> - Export to PDF</li>
+</ul>
+<h3 id="form-actions">Form Actions:</h3>
+<ul>
+<li><strong>Save</strong> - Save and return to list</li>
+<li><strong>Save and New</strong> - Save and create another</li>
+<li><strong>Save Draft</strong> - Save without posting</li>
+<li><strong>Post</strong> - Finalize transaction</li>
+<li><strong>Cancel</strong> - Return without saving</li>
+<li><strong>Reset</strong> - Clear form fields</li>
+</ul>
+<h3 id="table-actions">Table Actions:</h3>
+<ul>
+<li><strong>Sort</strong> - Sort by column</li>
+<li><strong>Filter</strong> - Filter column</li>
+<li><strong>Expand</strong> - Expand grouped row</li>
+<li><strong>Collapse</strong> - Collapse grouped row</li>
+<li><strong>Select</strong> - Select row checkbox</li>
+<li><strong>Select All</strong> - Select all rows</li>
+</ul>
+<h3 id="inventory-specific-actions">Inventory-Specific Actions:</h3>
+<ul>
+<li><strong>Add Item</strong> - Add item to document</li>
+<li><strong>Remove Item</strong> - Remove item from document</li>
+<li><strong>Enter Lot</strong> - Enter lot/batch details</li>
+<li><strong>View Movement</strong> - View item movement history</li>
+<li><strong>Create Adjustment</strong> - Quick adjustment</li>
+<li><strong>Split Item</strong> - Split whole to portions</li>
+<li><strong>Combine Portions</strong> - Combine to whole</li>
+<li><strong>Start Count</strong> - Begin counting</li>
+<li><strong>Submit Count</strong> - Complete count</li>
+<li><strong>Create Transfer</strong> - Create transfer request</li>
+</ul>
+<hr>
+<h2 id="form-components">Form Components</h2>
+<h3 id="input-fields">Input Fields</h3>
+<ul>
+<li>Text input (standard)</li>
+<li>Number input (with min/max)</li>
+<li>Currency input (formatted)</li>
+<li>Percentage input (0-100%)</li>
+<li>Textarea (multi-line)</li>
+<li>Search input (with icon)</li>
+</ul>
+<h3 id="selection-components">Selection Components</h3>
+<ul>
+<li>Dropdown select (single)</li>
+<li>Multi-select dropdown</li>
+<li>Radio button group</li>
+<li>Checkbox group</li>
+<li>Toggle switch</li>
+<li>Date picker (calendar)</li>
+<li>Date range picker</li>
+<li>Time picker</li>
+</ul>
+<h3 id="file-components">File Components</h3>
+<ul>
+<li>File upload (single file)</li>
+<li>File upload (multiple files)</li>
+<li>Image upload with preview</li>
+<li>Document upload with type</li>
+</ul>
+<h3 id="specialized-components">Specialized Components</h3>
+<ul>
+<li>Location selector (hierarchical tree)</li>
+<li>Item lookup (searchable modal)</li>
+<li>Lot entry (batch tracking)</li>
+<li>Quantity input (with unit)</li>
+<li>Currency input (with symbol)</li>
+<li>Autocomplete (with suggestions)</li>
+</ul>
+<h3 id="validation-components">Validation Components</h3>
+<ul>
+<li>Required field indicator (*)</li>
+<li>Inline error message</li>
+<li>Field-level validation</li>
+<li>Form-level validation summary</li>
+<li>Async validation (e.g., duplicate check)</li>
+</ul>
+<hr>
+<h2 id="data-display-components">Data Display Components</h2>
+<h3 id="tables">Tables</h3>
+<ul>
+<li><strong>Sortable columns</strong> - Click header to sort</li>
+<li><strong>Pagination</strong> - Page size options (10/25/50/100)</li>
+<li><strong>Row selection</strong> - Checkbox select</li>
+<li><strong>Inline actions</strong> - Action buttons per row</li>
+<li><strong>Expandable rows</strong> - Show additional details</li>
+<li><strong>Column visibility</strong> - Show/hide columns</li>
+<li><strong>Column reordering</strong> - Drag to reorder</li>
+<li><strong>Export functionality</strong> - Export visible data</li>
+<li><strong>Grouped table</strong> - Hierarchical grouping</li>
+<li><strong>Summary rows</strong> - Totals and subtotals</li>
+</ul>
+<h3 id="cards">Cards</h3>
+<ul>
+<li>Metric card (with icon and value)</li>
+<li>Summary card (with multiple metrics)</li>
+<li>Statistics card (with trend)</li>
+<li>Action card (with quick actions)</li>
+<li>Progress card (with completion %)</li>
+<li>Alert card (with warning/error)</li>
+</ul>
+<h3 id="lists">Lists</h3>
+<ul>
+<li>Simple list (item name + icon)</li>
+<li>Detailed list (multiple fields)</li>
+<li>Grouped list (by category)</li>
+<li>Hierarchical list (tree structure)</li>
+<li>Timeline list (chronological)</li>
+</ul>
+<h3 id="statisticsmetrics">Statistics/Metrics</h3>
+<ul>
+<li>KPI cards (large value + label)</li>
+<li>Summary widgets (multiple metrics)</li>
+<li>Progress indicators (bar/circle)</li>
+<li>Status badges (colored labels)</li>
+<li>Charts (bar/line/pie from Recharts)</li>
+<li>Trend indicators (up/down arrows)</li>
+<li>Gauge charts (percentage display)</li>
+</ul>
+<h3 id="timelinehistory">Timeline/History</h3>
+<ul>
+<li>Activity feed (recent actions)</li>
+<li>Audit trail (who/what/when)</li>
+<li>Change log (before/after)</li>
+<li>Movement history (transactions)</li>
+</ul>
+<h3 id="inventory-specific-components">Inventory-Specific Components</h3>
+<ul>
+<li>Stock level indicator (with colors)</li>
+<li>Expiry countdown (days remaining)</li>
+<li>Variance display (expected vs actual)</li>
+<li>Lot information table</li>
+<li>Quality grade badge</li>
+<li>State indicator (fractional)</li>
+<li>Draggable widgets (dashboard)</li>
+</ul>
+<hr>
+<h2 id="glossary">Glossary</h2>
+<h3 id="a">A</h3>
+<p><strong>Adjustment</strong>: An inventory transaction that corrects stock levels due to damage, theft, expiry, or counting discrepancies without a corresponding physical receipt or issue.</p>
+<p><strong>Aging</strong>: The process of tracking how long inventory items have been in stock to identify slow-moving items and potential obsolescence.</p>
+<p><strong>As Of Date</strong>: The specific date for which a report reflects inventory status, useful for historical reporting and period comparisons.</p>
+<p><strong>Average Cost</strong>: The weighted average unit cost of inventory, calculated as total value divided by total quantity.</p>
+<h3 id="b">B</h3>
+<p><strong>Balance Report</strong>: A comprehensive report showing current inventory quantities and values across locations, categories, and products.</p>
+<p><strong>Batch Tracking</strong>: The practice of tracking inventory by production batch or lot number, essential for quality control, expiry management, and recall capabilities.</p>
+<p><strong>Base Unit</strong>: The primary unit of measure for an item (e.g., Each, Case, Kilogram, Liter).</p>
+<h3 id="c">C</h3>
+<p><strong>Category</strong>: A classification grouping for inventory items (e.g., Food, Beverages, Cleaning Supplies, Linen).</p>
+<p><strong>Conversion</strong>: In fractional inventory, the process of splitting whole units into portions or combining portions back into whole units.</p>
+<p><strong>Count</strong>: See Physical Count or Spot Check.</p>
+<p><strong>Count Variance</strong>: The difference between expected (system) quantity and actual (counted) quantity, expressed as a number or percentage.</p>
+<p><strong>Cycle Count</strong>: A scheduled counting procedure where different portions of inventory are counted at different times throughout the year.</p>
+<h3 id="d">D</h3>
+<p><strong>Department</strong>: An organizational unit responsible for inventory usage and management (e.g., F&amp;B, Housekeeping, Maintenance).</p>
+<p><strong>Draft</strong>: A saved but not finalized transaction that does not affect inventory levels or create journal entries, allowing for later editing.</p>
+<h3 id="e">E</h3>
+<p><strong>Expiry Date</strong>: The date after which an item should not be used or sold, critical for perishable goods and food safety.</p>
+<p><strong>Expiring Soon</strong>: Items approaching their expiry date, typically flagged when within 7 days of expiry.</p>
+<h3 id="f">F</h3>
+<p><strong>FIFO (First In, First Out)</strong>: An inventory valuation method where the oldest stock is assumed to be sold or used first.</p>
+<p><strong>Fractional Inventory</strong>: An inventory management system for items that can be divided into portions (e.g., pizzas into slices) with state tracking, quality monitoring, and conversion capabilities.</p>
+<p><strong>Fill Rate</strong>: The percentage of demand that can be satisfied from current stock levels without backorders.</p>
+<h3 id="g">G</h3>
+<p><strong>GRN (Goods Received Note)</strong>: A document recording the receipt of goods into inventory, typically linked to a purchase order.</p>
+<p><strong>Grade</strong> (Quality): A classification of item condition or freshness (EXCELLENT, GOOD, FAIR, POOR), used primarily in fractional inventory management.</p>
+<h3 id="i">I</h3>
+<p><strong>Inventory Adjustment</strong>: See Adjustment.</p>
+<p><strong>Inventory Balance</strong>: The current quantity and value of stock on hand at a specific point in time.</p>
+<p><strong>Inventory Turnover</strong>: A ratio showing how many times inventory is sold, used, and replaced over a given period.</p>
+<p><strong>Issue</strong>: The release of inventory from storage for use, production, or sale.</p>
+<h3 id="j">J</h3>
+<p><strong>Journal Entry</strong>: An accounting entry recording the financial impact of inventory transactions through debits and credits to general ledger accounts.</p>
+<h3 id="l">L</h3>
+<p><strong>Location</strong>: A physical storage area where inventory is kept (e.g., Main Kitchen, Cold Room, Dry Store, Central Warehouse).</p>
+<p><strong>Lot Number</strong>: A unique identifier for a batch of items, used in batch tracking for quality control and traceability.</p>
+<p><strong>Low Stock</strong>: Items with quantities at or below their defined reorder point, requiring replenishment.</p>
+<h3 id="m">M</h3>
+<p><strong>Movement</strong>: Any transaction that changes inventory quantity, including receipts, issues, transfers, and adjustments.</p>
+<p><strong>Movement History</strong>: A chronological log of all transactions affecting an item&#39;s stock level and location.</p>
+<h3 id="p">P</h3>
+<p><strong>Period End</strong>: The month-end or period-end process of closing inventory transactions, reconciling physical counts, and generating financial reports.</p>
+<p><strong>Physical Count</strong>: A comprehensive counting process where all items in selected locations are physically counted and compared to system records.</p>
+<p><strong>Portion</strong>: A fractional unit of a whole item (e.g., one slice of pizza where the whole pizza contains 8 slices).</p>
+<p><strong>Posting</strong>: The act of finalizing a transaction, which updates inventory levels, creates journal entries, and locks the transaction from further editing.</p>
+<p><strong>Purchase Order (PO)</strong>: A document sent to a supplier to purchase goods, which generates expected stock receipts when goods are delivered.</p>
+<h3 id="q">Q</h3>
+<p><strong>Quality Grade</strong>: See Grade.</p>
+<h3 id="r">R</h3>
+<p><strong>Receipt</strong>: The process of receiving goods into inventory, typically from a purchase order, transfer, or production.</p>
+<p><strong>Reorder Point</strong>: The inventory level that triggers a replenishment order to avoid stockouts.</p>
+<p><strong>Reserved</strong>: Inventory that is allocated for a specific purpose but not yet issued (e.g., reserved for a production order or customer order).</p>
+<h3 id="s">S</h3>
+<p><strong>SKU (Stock Keeping Unit)</strong>: A unique identifier for each distinct product in inventory, used for tracking and identification.</p>
+<p><strong>Slow Moving</strong>: Items with low turnover rates, identified by long periods without movement or low transaction frequency.</p>
+<p><strong>Spot Check</strong>: A quick, random count of selected items to verify inventory accuracy without performing a full physical count.</p>
+<p><strong>State</strong> (Fractional): The current form of fractional inventory items (WHOLE = intact unit, PARTIAL = partially used, PREPARED = ready for service).</p>
+<p><strong>Stock Card</strong>: A detailed record showing all movements, current balance, and historical transactions for a specific item.</p>
+<p><strong>Stock In</strong>: See Receipt.</p>
+<p><strong>Stock Efficiency</strong>: A metric measuring how well inventory levels match demand patterns and minimize waste.</p>
+<h3 id="t">T</h3>
+<p><strong>Transfer</strong>: Movement of inventory between locations within the organization.</p>
+<p><strong>Turnover Rate</strong>: See Inventory Turnover.</p>
+<h3 id="u">U</h3>
+<p><strong>Unit Cost</strong>: The cost per single unit of an item, used for valuation calculations.</p>
+<p><strong>Unit of Measure (UOM)</strong>: The unit in which inventory quantities are tracked (e.g., Each, Box, Liter, Kilogram, Dozen).</p>
+<h3 id="v">V</h3>
+<p><strong>Valuation</strong>: The process of calculating the total value of inventory using methods such as FIFO, LIFO, or weighted average cost.</p>
+<p><strong>Variance</strong>: The difference between expected and actual quantities or values, typically expressed in both absolute numbers and percentages.</p>
+<h3 id="w">W</h3>
+<p><strong>Waste</strong>: Inventory lost due to spoilage, damage, or portion conversion inefficiencies, tracked particularly in fractional inventory.</p>
+<p><strong>Warehouse</strong>: See Location.</p>
+<p><strong>Whole Unit</strong>: The complete, undivided form of a fractional item (e.g., a whole pizza before being cut into slices).</p>
+<hr>
+<h2 id="abbreviations">Abbreviations</h2>
+<table>
+<thead>
+<tr>
+<th>Abbreviation</th>
+<th>Full Term</th>
+<th>Context</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Adj</td>
+<td>Adjustment</td>
+<td>Inventory adjustment transaction</td>
+</tr>
+<tr>
+<td>COGS</td>
+<td>Cost of Goods Sold</td>
+<td>Expense account for issued inventory</td>
+</tr>
+<tr>
+<td>Exp</td>
+<td>Expiry / Expired</td>
+<td>Expiration date or expired items</td>
+</tr>
+<tr>
+<td>FIFO</td>
+<td>First In, First Out</td>
+<td>Inventory valuation method</td>
+</tr>
+<tr>
+<td>F&amp;B</td>
+<td>Food &amp; Beverage</td>
+<td>Department type</td>
+</tr>
+<tr>
+<td>GRN</td>
+<td>Goods Received Note</td>
+<td>Stock receipt document</td>
+</tr>
+<tr>
+<td>ID</td>
+<td>Identifier</td>
+<td>Unique reference number</td>
+</tr>
+<tr>
+<td>JE</td>
+<td>Journal Entry</td>
+<td>Accounting entry</td>
+</tr>
+<tr>
+<td>LIFO</td>
+<td>Last In, First Out</td>
+<td>Inventory valuation method</td>
+</tr>
+<tr>
+<td>Loc</td>
+<td>Location</td>
+<td>Storage location</td>
+</tr>
+<tr>
+<td>PA</td>
+<td>Positive Adjustment</td>
+<td>Stock in adjustment</td>
+</tr>
+<tr>
+<td>PC</td>
+<td>Physical Count</td>
+<td>Full inventory count</td>
+</tr>
+<tr>
+<td>PE</td>
+<td>Period End</td>
+<td>Month-end closing</td>
+</tr>
+<tr>
+<td>PO</td>
+<td>Purchase Order</td>
+<td>Purchase document</td>
+</tr>
+<tr>
+<td>Qty</td>
+<td>Quantity</td>
+<td>Amount/count</td>
+</tr>
+<tr>
+<td>SC</td>
+<td>Spot Check</td>
+<td>Random item count</td>
+</tr>
+<tr>
+<td>SKU</td>
+<td>Stock Keeping Unit</td>
+<td>Product identifier</td>
+</tr>
+<tr>
+<td>UOM</td>
+<td>Unit of Measure</td>
+<td>Quantity unit</td>
+</tr>
+<tr>
+<td>WAC</td>
+<td>Weighted Average Cost</td>
+<td>Valuation method</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="feature-gap-analysis">Feature Gap Analysis</h2>
+<h3 id="fully-implemented-features-24-features-41">Fully Implemented Features ✅ (24 features - 41%)</h3>
+<ol>
+<li><strong>Dashboard</strong> - Draggable widget system</li>
+<li><strong>Stock Overview</strong> - Multi-location visibility</li>
+<li><strong>Summary Metrics</strong> - Real-time calculations</li>
+<li><strong>Stock Distribution Charts</strong> - Bar and pie charts</li>
+<li><strong>Performance Comparison</strong> - Location analytics</li>
+<li><strong>Transfer Suggestions</strong> - Optimization recommendations</li>
+<li><strong>Inventory Balance Report</strong> - Hierarchical grouping</li>
+<li><strong>Stock Card Detail</strong> - Complete history</li>
+<li><strong>Movement History</strong> - Transaction log</li>
+<li><strong>Valuation Display</strong> - FIFO/Average methods</li>
+<li><strong>Stock In List</strong> - Receipt management</li>
+<li><strong>Inventory Adjustments List</strong> - Complete listing</li>
+<li><strong>Adjustment Detail</strong> - Multi-tab interface</li>
+<li><strong>Journal Entry Display</strong> - Auto-generated entries</li>
+<li><strong>Physical Count Wizard</strong> - 4-step process</li>
+<li><strong>Location Selection</strong> - Hierarchical tree</li>
+<li><strong>Active Count Tracking</strong> - Progress monitoring</li>
+<li><strong>Spot Check Main</strong> - List/grid views</li>
+<li><strong>New Spot Check</strong> - Quick setup</li>
+<li><strong>Active Spot Check</strong> - Item counting</li>
+<li><strong>Spot Check Dashboard</strong> - Analytics</li>
+<li><strong>Fractional Inventory Dashboard</strong> - Portion tracking</li>
+<li><strong>Conversion Operations</strong> - Split/combine</li>
+<li><strong>Period End List</strong> - Period records</li>
+</ol>
+<h3 id="partially-implemented-features-16-features-28">Partially Implemented Features ⚠️ (16 features - 28%)</h3>
+<ol>
+<li><strong>Stock In Posting</strong> - UI exists, backend incomplete</li>
+<li><strong>Source Selection</strong> - Cannot link to PO/Transfer</li>
+<li><strong>Lot Entry</strong> - Modal placeholder, no integration</li>
+<li><strong>Inventory Balance Export</strong> - Button exists, not functional</li>
+<li><strong>Movement History Integration</strong> - Hardcoded data</li>
+<li><strong>Physical Count Posting</strong> - No automatic adjustment</li>
+<li><strong>Barcode Support</strong> - Placeholder only</li>
+<li><strong>Photo Upload (Spot Check)</strong> - UI placeholder</li>
+<li><strong>Period End Checklist</strong> - Static, no automation</li>
+<li><strong>Period Locking</strong> - Status change not enforced</li>
+<li><strong>Count Scheduling</strong> - List view only</li>
+<li><strong>Progress Dashboard</strong> - Minimal real-time data</li>
+<li><strong>Auto-conversion Rules</strong> - Field exists, no logic</li>
+<li><strong>Waste Reporting</strong> - Tracked but no reports</li>
+<li><strong>Error Handling</strong> - Basic, not comprehensive</li>
+<li><strong>Accessibility</strong> - Partial WCAG compliance</li>
+</ol>
+<h3 id="not-implemented-features-18-features-31">Not Implemented Features ❌ (18 features - 31%)</h3>
+<ol>
+<li><strong>Slow Moving Report</strong> - Route exists, no implementation</li>
+<li><strong>Inventory Aging Report</strong> - Route exists, no implementation</li>
+<li><strong>Stock Card List Page</strong> - Minimal implementation</li>
+<li><strong>New Adjustment Form</strong> - Button exists, no form</li>
+<li><strong>Adjustment Posting</strong> - View-only mode</li>
+<li><strong>Multi-source Receipt</strong> - No PO/Transfer integration</li>
+<li><strong>Inventory Valuation Report</strong> - Not implemented</li>
+<li><strong>Movement Summary Report</strong> - Not implemented</li>
+<li><strong>Variance Analysis Report</strong> - Not implemented</li>
+<li><strong>Barcode Scanning</strong> - Complete feature missing</li>
+<li><strong>Mobile App</strong> - Web responsive only</li>
+<li><strong>Data Persistence</strong> - All mock data</li>
+<li><strong>API Layer</strong> - No backend</li>
+<li><strong>GL Integration</strong> - Journal entries not posted</li>
+<li><strong>Audit Trail</strong> - No comprehensive logging</li>
+<li><strong>Automated Testing</strong> - No test coverage</li>
+<li><strong>Server Validation</strong> - Client-side only</li>
+<li><strong>Performance Optimization</strong> - Not optimized for scale</li>
+</ol>
+<h3 id="development-priority-matrix">Development Priority Matrix</h3>
+<p><strong>Priority 1 (MVP - 46-63 days):</strong></p>
+<ul>
+<li>Data Persistence Layer (15-20 days)</li>
+<li>Stock In Posting (3-4 days)</li>
+<li>Adjustment Creation (4-5 days)</li>
+<li>Adjustment Posting (3-4 days)</li>
+<li>Physical Count Posting (3-4 days)</li>
+<li>Period End Locking (2-3 days)</li>
+<li>Finance Integration (7-10 days)</li>
+<li>Permissions Enforcement (4-5 days)</li>
+</ul>
+<p><strong>Priority 2 (Production - 28-43 days):</strong></p>
+<ul>
+<li>PO Integration (5-7 days)</li>
+<li>Lot/Batch Entry (3-4 days)</li>
+<li>Inventory Valuation Report (4-5 days)</li>
+<li>Audit Trail (5-7 days)</li>
+<li>Error Handling (3-5 days)</li>
+<li>Data Validation (3-4 days)</li>
+<li>Count Scheduling (3-4 days)</li>
+<li>Movement History Integration (2-3 days)</li>
+</ul>
+<p><strong>Priority 3 (Enhancement - 20-36 days):</strong></p>
+<ul>
+<li>Slow Moving Report (3-5 days)</li>
+<li>Inventory Aging Report (3-5 days)</li>
+<li>Stock Card List (2-3 days)</li>
+<li>Waste Reporting (2-3 days)</li>
+<li>Export Functionality (1-2 days)</li>
+<li>Photo Upload (2-3 days)</li>
+<li>Auto-conversion Rules (4-5 days)</li>
+<li>Performance Optimization (3-5 days)</li>
+</ul>
+<p><strong>Priority 4 (Future - 40-59 days):</strong></p>
+<ul>
+<li>Barcode Scanning (5-7 days)</li>
+<li>Mobile App (20-30 days)</li>
+<li>Automated Testing (10-15 days)</li>
+<li>Accessibility Improvements (5-7 days)</li>
+</ul>
+<hr>
+<p><strong>Last Updated</strong>: October 2, 2025<br><strong>Status</strong>: Complete<br><strong>Module</strong>: Inventory Management<br><strong>Version</strong>: 1.0</p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#inventory-management-pages-and-components-specification" class="level-1">Inventory Management - Pages and Components Specification</a>
+<a href="#table-of-contents" class="level-2">Table of Contents</a>
+<a href="#pages-overview" class="level-2">Pages Overview</a>
+<a href="#landing-page" class="level-3">Landing Page</a>
+<a href="#stock-overview-landing" class="level-3">Stock Overview Landing</a>
+<a href="#inventory-balance-report" class="level-3">Inventory Balance Report</a>
+<a href="#stock-cards-list" class="level-3">Stock Cards List</a>
+<a href="#stock-card-detail" class="level-3">Stock Card Detail</a>
+<a href="#slow-moving-report" class="level-3">Slow Moving Report</a>
+<a href="#inventory-aging-report" class="level-3">Inventory Aging Report</a>
+<a href="#stock-in-list" class="level-3">Stock In List</a>
+<a href="#stock-in-detail" class="level-3">Stock In Detail</a>
+<a href="#inventory-adjustments-list" class="level-3">Inventory Adjustments List</a>
+<a href="#inventory-adjustment-detail" class="level-3">Inventory Adjustment Detail</a>
+<a href="#physical-count-wizard" class="level-3">Physical Count Wizard</a>
+<a href="#physical-count-active" class="level-3">Physical Count Active</a>
+<a href="#physical-count-dashboard" class="level-3">Physical Count Dashboard</a>
+<a href="#spot-check-main" class="level-3">Spot Check Main</a>
+<a href="#new-spot-check" class="level-3">New Spot Check</a>
+<a href="#active-spot-check" class="level-3">Active Spot Check</a>
+<a href="#spot-check-dashboard" class="level-3">Spot Check Dashboard</a>
+<a href="#fractional-inventory" class="level-3">Fractional Inventory</a>
+<a href="#period-end" class="level-3">Period End</a>
+<a href="#period-end-detail" class="level-3">Period End Detail</a>
+<a href="#physical-count-management" class="level-3">Physical Count Management</a>
+<a href="#modals-and-dialogs" class="level-2">Modals and Dialogs</a>
+<a href="#1-item-selection-modal" class="level-3">1. Item Selection Modal</a>
+<a href="#2-lot-entry-modal" class="level-3">2. Lot Entry Modal</a>
+<a href="#3-conversion-operations-modal" class="level-3">3. Conversion Operations Modal</a>
+<a href="#4-transfer-creation-modal" class="level-3">4. Transfer Creation Modal</a>
+<a href="#5-delete-confirmation-dialog" class="level-3">5. Delete Confirmation Dialog</a>
+<a href="#6-count-detail-form-modal" class="level-3">6. Count Detail Form Modal</a>
+<a href="#7-movement-history-panel" class="level-3">7. Movement History Panel</a>
+<a href="#dropdown-fields-reference" class="level-2">Dropdown Fields Reference</a>
+<a href="#status-dropdown" class="level-3">Status Dropdown</a>
+<a href="#adjustment-type-dropdown" class="level-3">Adjustment Type Dropdown</a>
+<a href="#location-dropdown" class="level-3">Location Dropdown</a>
+<a href="#department-dropdown" class="level-3">Department Dropdown</a>
+<a href="#count-type-dropdown" class="level-3">Count Type Dropdown</a>
+<a href="#source-type-dropdown" class="level-3">Source Type Dropdown</a>
+<a href="#adjustment-reason-dropdown" class="level-3">Adjustment Reason Dropdown</a>
+<a href="#valuation-method-dropdown" class="level-3">Valuation Method Dropdown</a>
+<a href="#portion-size-dropdown-fractional" class="level-3">Portion Size Dropdown (Fractional)</a>
+<a href="#quality-grade-dropdown-fractional" class="level-3">Quality Grade Dropdown (Fractional)</a>
+<a href="#stock-state-dropdown-fractional" class="level-3">Stock State Dropdown (Fractional)</a>
+<a href="#view-type-radio-buttons" class="level-3">View Type Radio Buttons</a>
+<a href="#date-range-picker" class="level-3">Date Range Picker</a>
+<a href="#actions-and-buttons-reference" class="level-2">Actions and Buttons Reference</a>
+<a href="#global-actions-appearing-across-multiple-pages" class="level-3">Global Actions (appearing across multiple pages):</a>
+<a href="#list-view-actions" class="level-3">List View Actions:</a>
+<a href="#detail-view-actions" class="level-3">Detail View Actions:</a>
+<a href="#form-actions" class="level-3">Form Actions:</a>
+<a href="#table-actions" class="level-3">Table Actions:</a>
+<a href="#inventory-specific-actions" class="level-3">Inventory-Specific Actions:</a>
+<a href="#form-components" class="level-2">Form Components</a>
+<a href="#input-fields" class="level-3">Input Fields</a>
+<a href="#selection-components" class="level-3">Selection Components</a>
+<a href="#file-components" class="level-3">File Components</a>
+<a href="#specialized-components" class="level-3">Specialized Components</a>
+<a href="#validation-components" class="level-3">Validation Components</a>
+<a href="#data-display-components" class="level-2">Data Display Components</a>
+<a href="#tables" class="level-3">Tables</a>
+<a href="#cards" class="level-3">Cards</a>
+<a href="#lists" class="level-3">Lists</a>
+<a href="#statisticsmetrics" class="level-3">Statistics/Metrics</a>
+<a href="#timelinehistory" class="level-3">Timeline/History</a>
+<a href="#inventory-specific-components" class="level-3">Inventory-Specific Components</a>
+<a href="#glossary" class="level-2">Glossary</a>
+<a href="#a" class="level-3">A</a>
+<a href="#b" class="level-3">B</a>
+<a href="#c" class="level-3">C</a>
+<a href="#d" class="level-3">D</a>
+<a href="#e" class="level-3">E</a>
+<a href="#f" class="level-3">F</a>
+<a href="#g" class="level-3">G</a>
+<a href="#i" class="level-3">I</a>
+<a href="#j" class="level-3">J</a>
+<a href="#l" class="level-3">L</a>
+<a href="#m" class="level-3">M</a>
+<a href="#p" class="level-3">P</a>
+<a href="#q" class="level-3">Q</a>
+<a href="#r" class="level-3">R</a>
+<a href="#s" class="level-3">S</a>
+<a href="#t" class="level-3">T</a>
+<a href="#u" class="level-3">U</a>
+<a href="#v" class="level-3">V</a>
+<a href="#w" class="level-3">W</a>
+<a href="#abbreviations" class="level-2">Abbreviations</a>
+<a href="#feature-gap-analysis" class="level-2">Feature Gap Analysis</a>
+<a href="#fully-implemented-features-24-features-41" class="level-3">Fully Implemented Features ✅ (24 features - 41%)</a>
+<a href="#partially-implemented-features-16-features-28" class="level-3">Partially Implemented Features ⚠️ (16 features - 28%)</a>
+<a href="#not-implemented-features-18-features-31" class="level-3">Not Implemented Features ❌ (18 features - 31%)</a>
+<a href="#development-priority-matrix" class="level-3">Development Priority Matrix</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

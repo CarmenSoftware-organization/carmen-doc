@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glossary of Terms and Abbreviations - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: var(--bg-gradient);
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr 300px;
+            gap: 2rem;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 1.5rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .back-to-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: var(--primary-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        .back-to-home:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        /* Content Area */
+        .doc-content {
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 260px 1fr 280px;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 1.5rem;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 2.5rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            .doc-nav {
+                display: none;
+            }
+            .doc-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </div>
+            <div class="doc-header-actions">
+                <a href="../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../SYSTEM-DOCUMENTATION-INDEX.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Documentation Index</span>
+                    </a>
+                    <a href="../DOCUMENTATION-CATALOG.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Catalog</span>
+                    </a>
+                    <a href="../DOCUMENTATION-SUMMARY-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Summary</span>
+                    </a>
+                    <a href="../MODULE-VERIFICATION-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Module Verification</span>
+                    </a>
+                    <a href="../SYSTEM-GAPS-AND-ROADMAP.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Gaps & Roadmap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../architecture/SYSTEM-ARCHITECTURE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-users"></i>
+                    <span>Stakeholders</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../stakeholders/BUSINESS-VALUE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pr/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Requests</span>
+                    </a>
+                    <a href="../po/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Orders</span>
+                    </a>
+                    <a href="../grn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Goods Received Note</span>
+                    </a>
+                    <a href="../cn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Credit Notes</span>
+                    </a>
+                    <a href="../prt/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>PR Templates</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-boxes"></i>
+                    <span>Inventory Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../inv/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Overview</span>
+                    </a>
+                    <a href="../inv/inventory-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Specification</span>
+                    </a>
+                    <a href="../inv/inventory-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Sitemap</span>
+                    </a>
+                    <a href="../pc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Physical Count</span>
+                    </a>
+                    <a href="../sc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Spot Check</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-handshake"></i>
+                    <span>Vendor Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../vm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Overview</span>
+                    </a>
+                    <a href="../vm/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Module</span>
+                    </a>
+                    <a href="../vm/MANAGE-VENDORS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Manage Vendors</span>
+                    </a>
+                    <a href="../vm/TEMPLATES.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Templates</span>
+                    </a>
+                    <a href="../vm/CAMPAIGNS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Campaigns</span>
+                    </a>
+                    <a href="../vm/PRICELISTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Pricelists</span>
+                    </a>
+                    <a href="../vm/VENDOR-PORTAL.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Portal</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cube"></i>
+                    <span>Product Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Overview</span>
+                    </a>
+                    <a href="../pm/product-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Specification</span>
+                    </a>
+                    <a href="../pm/product-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-store"></i>
+                    <span>Store Operations</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../store-ops/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Overview</span>
+                    </a>
+                    <a href="../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Module</span>
+                    </a>
+                    <a href="../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Requisitions</span>
+                    </a>
+                    <a href="../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Stock Replenishment</span>
+                    </a>
+                    <a href="../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Wastage Reporting</span>
+                    </a>
+                    <a href="../store-ops/GLOSSARY.html" class="nav-item active">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Glossary</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Operational Planning</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../operational-planning/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Overview</span>
+                    </a>
+                    <a href="../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Module</span>
+                    </a>
+                    <a href="../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Menu Engineering</span>
+                    </a>
+                    <a href="../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Recipe Management</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cash-register"></i>
+                    <span>POS Integration</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pos-integration/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Overview</span>
+                    </a>
+                    <a href="../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Module</span>
+                    </a>
+                    <a href="../pos-integration/MAPPING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Mapping Subsystem</span>
+                    </a>
+                    <a href="../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Transaction Management</span>
+                    </a>
+                    <a href="../pos-integration/REPORTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports & Analytics</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../dashboard/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Overview</span>
+                    </a>
+                    <a href="../dashboard/sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>System Requirements</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../carmen-erp-system-requirements-documentation.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Requirements</span>
+                    </a>
+                    <a href="../comprehensive-schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="glossary-of-terms-and-abbreviations">Glossary of Terms and Abbreviations</h1>
+<p><strong>Module</strong>: Store Operations<br><strong>Last Updated</strong>: 2025-10-02</p>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ul>
+<li><a href="#general-terms">General Terms</a></li>
+<li><a href="#store-requisitions">Store Requisitions</a></li>
+<li><a href="#stock-management">Stock Management</a></li>
+<li><a href="#wastage-management">Wastage Management</a></li>
+<li><a href="#workflow-and-approvals">Workflow and Approvals</a></li>
+<li><a href="#technical-terms">Technical Terms</a></li>
+<li><a href="#abbreviations">Abbreviations</a></li>
+</ul>
+<hr>
+<h2 id="general-terms">General Terms</h2>
+<h3 id="store-operations">Store Operations</h3>
+<p>The overall module managing day-to-day store activities including requisitions, stock replenishment, and wastage tracking.</p>
+<h3 id="location">Location</h3>
+<p>A physical storage area or operational unit where inventory is kept. Can be a warehouse, kitchen, store, or department.</p>
+<h3 id="location-code">Location Code</h3>
+<p>A unique identifier for a storage location (e.g., CK-001, MW-001, RS-001).</p>
+<h3 id="movement-type">Movement Type</h3>
+<p>The type of inventory transaction, typically &quot;Issue&quot; for store requisitions indicating materials being issued/transferred.</p>
+<h3 id="unit-of-measure-uom">Unit of Measure (UOM)</h3>
+<p>The standard unit used to count or measure an item (e.g., Box, Bag, Kg, Liter, Piece, Pack).</p>
+<hr>
+<h2 id="store-requisitions">Store Requisitions</h2>
+<h3 id="store-requisition-sr">Store Requisition (SR)</h3>
+<p>A formal request to transfer inventory items from one location (store/warehouse) to another operational unit or department.</p>
+<h3 id="sr-number">SR Number</h3>
+<p>Unique reference number for a store requisition following the format: SR-YYYY-NNN (e.g., SR-2024-001).</p>
+<h3 id="requisition-status">Requisition Status</h3>
+<p>Current state of a requisition in its lifecycle:</p>
+<ul>
+<li><strong>Draft</strong>: Being prepared, not yet submitted</li>
+<li><strong>In Process</strong>: Submitted and moving through approval workflow</li>
+<li><strong>Complete</strong>: Fully approved and processed</li>
+<li><strong>Reject</strong>: Declined by an approver</li>
+<li><strong>Void</strong>: Cancelled/nullified</li>
+</ul>
+<h3 id="request-to">Request To</h3>
+<p>The source location or store from which items are being requested (supplier of the items).</p>
+<h3 id="to-location">To Location</h3>
+<p>The destination location or unit that will receive the items (recipient of the items).</p>
+<h3 id="expected-delivery-date">Expected Delivery Date</h3>
+<p>Target date by which the requested items should be delivered to the requesting location.</p>
+<h3 id="workflow-stage">Workflow Stage</h3>
+<p>Current approval step in the requisition process (e.g., &quot;HOD Approval&quot;, &quot;Store Manager Approval&quot;).</p>
+<h3 id="qty-required">Qty Required</h3>
+<p>Quantity of an item requested in the requisition.</p>
+<h3 id="qty-approved">Qty Approved</h3>
+<p>Quantity of an item approved by reviewers (may differ from Qty Required).</p>
+<h3 id="qty-issued">Qty Issued</h3>
+<p>Actual quantity of an item issued/delivered (tracked in stock movements).</p>
+<h3 id="item-level-approval">Item-Level Approval</h3>
+<p>The ability to approve or reject individual line items within a requisition rather than the entire requisition.</p>
+<h3 id="approval-status-item">Approval Status (Item)</h3>
+<p>Status of individual items in a requisition:</p>
+<ul>
+<li><strong>Pending</strong>: Awaiting approval decision</li>
+<li><strong>Approved</strong>: Item approved for issue</li>
+<li><strong>Reject</strong>: Item declined</li>
+<li><strong>Review</strong>: Requires additional review</li>
+</ul>
+<hr>
+<h2 id="stock-management">Stock Management</h2>
+<h3 id="sku-stock-keeping-unit">SKU (Stock Keeping Unit)</h3>
+<p>A unique identifier for each distinct product/item in the inventory system.</p>
+<h3 id="on-hand">On Hand</h3>
+<p>Current quantity of an item physically available in a location&#39;s inventory.</p>
+<h3 id="on-order">On Order</h3>
+<p>Quantity of an item currently on purchase orders but not yet received.</p>
+<h3 id="min-level-minimum-level">Min Level (Minimum Level)</h3>
+<p>The lowest acceptable quantity of an item before reordering action is required. Triggers low stock alerts.</p>
+<h3 id="max-level-maximum-level">Max Level (Maximum Level)</h3>
+<p>The maximum quantity of an item that should be stocked to avoid overstocking and storage issues.</p>
+<h3 id="par-level">Par Level</h3>
+<p>The optimal/target stock level for an item that balances availability with storage costs and waste risk.</p>
+<h3 id="reorder-point">Reorder Point</h3>
+<p>The stock level at which a new order should be triggered to replenish inventory before reaching minimum level.</p>
+<h3 id="low-stock">Low Stock</h3>
+<p>Status indicator when current stock falls below the minimum level.</p>
+<h3 id="critical-stock">Critical Stock</h3>
+<p>Status when current stock falls below the reorder point, requiring immediate action.</p>
+<h3 id="stock-value">Stock Value</h3>
+<p>Total monetary value of inventory calculated as quantity × unit cost for all items.</p>
+<h3 id="stock-movement">Stock Movement</h3>
+<p>A record of inventory quantity changes between locations or due to transactions (issues, receipts, transfers, adjustments).</p>
+<h3 id="stock-trend">Stock Trend</h3>
+<p>Historical pattern of inventory levels over time, used for forecasting and planning.</p>
+<h3 id="usage-pattern">Usage Pattern</h3>
+<p>Classification of how frequently an item is consumed:</p>
+<ul>
+<li><strong>High</strong>: Frequently used items</li>
+<li><strong>Medium</strong>: Moderately used items</li>
+<li><strong>Low</strong>: Infrequently used items</li>
+</ul>
+<hr>
+<h2 id="wastage-management">Wastage Management</h2>
+<h3 id="wastage">Wastage</h3>
+<p>Inventory that has become unusable, unsellable, or has been lost and must be written off.</p>
+<h3 id="wastage-reason">Wastage Reason</h3>
+<p>Classification of why wastage occurred:</p>
+<ul>
+<li><strong>Expiration</strong>: Product past expiry/best-before date</li>
+<li><strong>Damage</strong>: Physical damage to product or packaging</li>
+<li><strong>Quality Issues</strong>: Failed quality inspection or contamination</li>
+<li><strong>Other</strong>: Miscellaneous reasons (spillage, customer returns, etc.)</li>
+</ul>
+<h3 id="write-off">Write-Off</h3>
+<p>The act of removing wasted inventory from stock records and recognizing the financial loss.</p>
+<h3 id="total-loss">Total Loss</h3>
+<p>The calculated monetary value of wasted inventory (Quantity × Unit Cost).</p>
+<h3 id="wastage-entry">Wastage Entry</h3>
+<p>A record documenting a wastage event including item, quantity, reason, and reporter.</p>
+<h3 id="pending-review-wastage">Pending Review (Wastage)</h3>
+<p>Wastage entries awaiting approval before being finalized.</p>
+<h3 id="photo-evidence">Photo Evidence</h3>
+<p>Photographic documentation of damaged or wasted items for audit and approval purposes.</p>
+<hr>
+<h2 id="workflow-and-approvals">Workflow and Approvals</h2>
+<h3 id="approval-workflow">Approval Workflow</h3>
+<p>A defined sequence of approval stages that a requisition must pass through before completion.</p>
+<h3 id="approval-stage">Approval Stage</h3>
+<p>A specific step in the approval workflow requiring action from a designated approver.</p>
+<h3 id="approver">Approver</h3>
+<p>An individual with authority to approve or reject a requisition at a specific workflow stage.</p>
+<h3 id="submission-stage">Submission Stage</h3>
+<p>The initial workflow stage when a requisition is first submitted to the approval process.</p>
+<h3 id="hod-head-of-department">HOD (Head of Department)</h3>
+<p>A manager responsible for approving department-level requisitions. First level of approval.</p>
+<h3 id="store-manager">Store Manager</h3>
+<p>Manager responsible for final approval before items are issued from stores. Second level of approval.</p>
+<h3 id="approval-status-workflow">Approval Status (Workflow)</h3>
+<p>State of a workflow stage:</p>
+<ul>
+<li><strong>Pending</strong>: Not yet reached or under review</li>
+<li><strong>Approved</strong>: Stage completed successfully</li>
+<li><strong>Rejected</strong>: Stage declined, workflow stopped</li>
+<li><strong>Current</strong>: Currently active stage awaiting action</li>
+</ul>
+<h3 id="approval-comment">Approval Comment</h3>
+<p>Notes added by an approver explaining their decision or providing instructions.</p>
+<h3 id="approval-log">Approval Log</h3>
+<p>Complete history of all approval actions, decisions, and comments for a requisition.</p>
+<h3 id="approval-timestamp">Approval Timestamp</h3>
+<p>Date and time when an approval decision was made.</p>
+<h3 id="multi-level-approval">Multi-Level Approval</h3>
+<p>An approval process requiring sequential approval from multiple authorities at different organizational levels.</p>
+<hr>
+<h2 id="technical-terms">Technical Terms</h2>
+<h3 id="journal-entry">Journal Entry</h3>
+<p>An accounting record documenting the financial impact of a transaction with debit and credit accounts.</p>
+<h3 id="debit-account">Debit Account</h3>
+<p>The account that increases (receives value) in a journal entry.</p>
+<h3 id="credit-account">Credit Account</h3>
+<p>The account that decreases (gives value) in a journal entry.</p>
+<h3 id="account-code">Account Code</h3>
+<p>A unique identifier for a general ledger account used in financial transactions.</p>
+<h3 id="reference-number">Reference Number</h3>
+<p>A unique identifier linking a journal entry back to its source transaction (e.g., SR number).</p>
+<h3 id="tax-rate">Tax Rate</h3>
+<p>Percentage of tax applied to an item&#39;s cost (e.g., 7% VAT).</p>
+<h3 id="discount-rate">Discount Rate</h3>
+<p>Percentage discount applied to an item&#39;s cost.</p>
+<h3 id="subtotal">Subtotal</h3>
+<p>Item total before tax and discount calculations.</p>
+<h3 id="total-amount">Total Amount</h3>
+<p>Final calculated amount including tax and discount (Subtotal + Tax - Discount).</p>
+<h3 id="activity-log">Activity Log</h3>
+<p>A chronological record of all actions and changes made to a record.</p>
+<h3 id="audit-trail">Audit Trail</h3>
+<p>Complete history of changes, approvals, and transactions for compliance and tracking purposes.</p>
+<hr>
+<h2 id="abbreviations">Abbreviations</h2>
+<h3 id="general">General</h3>
+<ul>
+<li><strong>SR</strong>: Store Requisition</li>
+<li><strong>SKU</strong>: Stock Keeping Unit</li>
+<li><strong>UOM</strong>: Unit of Measure</li>
+<li><strong>QTY</strong>: Quantity</li>
+<li><strong>HOD</strong>: Head of Department</li>
+</ul>
+<h3 id="locations">Locations</h3>
+<ul>
+<li><strong>CK</strong>: Central Kitchen</li>
+<li><strong>RS</strong>: Roastery Store</li>
+<li><strong>MW</strong>: Main Warehouse</li>
+<li><strong>WH</strong>: Warehouse</li>
+</ul>
+<h3 id="status">Status</h3>
+<ul>
+<li><strong>N/A</strong>: Not Available/Applicable</li>
+<li><strong>TBD</strong>: To Be Determined</li>
+</ul>
+<h3 id="financial">Financial</h3>
+<ul>
+<li><strong>VAT</strong>: Value Added Tax</li>
+<li><strong>GST</strong>: Goods and Services Tax</li>
+<li><strong>BHT</strong>: Thai Baht (currency)</li>
+<li><strong>USD</strong>: US Dollar (currency)</li>
+</ul>
+<h3 id="roles">Roles</h3>
+<ul>
+<li><strong>SM</strong>: Store Manager</li>
+<li><strong>DM</strong>: Department Manager</li>
+<li><strong>FM</strong>: Financial Manager</li>
+<li><strong>PS</strong>: Purchasing Staff</li>
+</ul>
+<h3 id="technical">Technical</h3>
+<ul>
+<li><strong>API</strong>: Application Programming Interface</li>
+<li><strong>UI</strong>: User Interface</li>
+<li><strong>UX</strong>: User Experience</li>
+<li><strong>CRUD</strong>: Create, Read, Update, Delete</li>
+<li><strong>CSV</strong>: Comma-Separated Values</li>
+<li><strong>PDF</strong>: Portable Document Format</li>
+<li><strong>XLS</strong>: Excel Spreadsheet</li>
+<li><strong>JSON</strong>: JavaScript Object Notation</li>
+</ul>
+<h3 id="workflow">Workflow</h3>
+<ul>
+<li><strong>WIP</strong>: Work In Progress</li>
+<li><strong>ETA</strong>: Estimated Time of Arrival</li>
+<li><strong>ETD</strong>: Estimated Time of Delivery</li>
+</ul>
+<h3 id="inventory">Inventory</h3>
+<ul>
+<li><strong>FIFO</strong>: First In, First Out</li>
+<li><strong>LIFO</strong>: Last In, First Out</li>
+<li><strong>EOQ</strong>: Economic Order Quantity</li>
+<li><strong>ROP</strong>: Reorder Point</li>
+<li><strong>ABC</strong>: Activity Based Classification (inventory categorization)</li>
+</ul>
+<hr>
+<h2 id="usage-examples">Usage Examples</h2>
+<h3 id="store-requisition-flow">Store Requisition Flow</h3>
+<pre><code>1. User creates Draft SR
+2. Fills in Request To (M01) and To Location (Central Kitchen)
+3. Adds items with Qty Required
+4. Submits → moves to &quot;In Process&quot; status
+5. Workflow Stage changes to &quot;HOD Approval&quot;
+6. HOD reviews and approves/adjusts Qty Approved
+7. Workflow Stage advances to &quot;Store Manager Approval&quot;
+8. SM approves → Workflow Stage becomes &quot;Complete&quot;
+9. Qty Issued is recorded in Stock Movements
+10. Journal Entries are auto-generated
+</code></pre>
+<h3 id="stock-replenishment-example">Stock Replenishment Example</h3>
+<pre><code>Item: Thai Milk Tea
+Current Stock: 25 boxes (On Hand)
+Min Level: 30 boxes
+Par Level: 80 boxes
+Reorder Point: 40 boxes
+Status: Low (below Min Level)
+Action: Create SR for 55 boxes to reach Par Level
+</code></pre>
+<h3 id="wastage-recording-example">Wastage Recording Example</h3>
+<pre><code>Item: Coffee Beans
+Qty: 2 bags
+Unit Cost: $28.50
+Total Loss: $57.00
+Reason: Quality Issues
+Status: Pending Review
+Next: HOD reviews photo evidence and approves write-off
+Result: Inventory adjusted, Journal Entry created
+</code></pre>
+<hr>
+<p><strong>Last Updated</strong>: 2025-10-02<br><strong>Module</strong>: Store Operations<br><strong>Total Terms</strong>: 100+</p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#glossary-of-terms-and-abbreviations" class="level-1">Glossary of Terms and Abbreviations</a>
+<a href="#table-of-contents" class="level-2">Table of Contents</a>
+<a href="#general-terms" class="level-2">General Terms</a>
+<a href="#store-operations" class="level-3">Store Operations</a>
+<a href="#location" class="level-3">Location</a>
+<a href="#location-code" class="level-3">Location Code</a>
+<a href="#movement-type" class="level-3">Movement Type</a>
+<a href="#unit-of-measure-uom" class="level-3">Unit of Measure (UOM)</a>
+<a href="#store-requisitions" class="level-2">Store Requisitions</a>
+<a href="#store-requisition-sr" class="level-3">Store Requisition (SR)</a>
+<a href="#sr-number" class="level-3">SR Number</a>
+<a href="#requisition-status" class="level-3">Requisition Status</a>
+<a href="#request-to" class="level-3">Request To</a>
+<a href="#to-location" class="level-3">To Location</a>
+<a href="#expected-delivery-date" class="level-3">Expected Delivery Date</a>
+<a href="#workflow-stage" class="level-3">Workflow Stage</a>
+<a href="#qty-required" class="level-3">Qty Required</a>
+<a href="#qty-approved" class="level-3">Qty Approved</a>
+<a href="#qty-issued" class="level-3">Qty Issued</a>
+<a href="#item-level-approval" class="level-3">Item-Level Approval</a>
+<a href="#approval-status-item" class="level-3">Approval Status (Item)</a>
+<a href="#stock-management" class="level-2">Stock Management</a>
+<a href="#sku-stock-keeping-unit" class="level-3">SKU (Stock Keeping Unit)</a>
+<a href="#on-hand" class="level-3">On Hand</a>
+<a href="#on-order" class="level-3">On Order</a>
+<a href="#min-level-minimum-level" class="level-3">Min Level (Minimum Level)</a>
+<a href="#max-level-maximum-level" class="level-3">Max Level (Maximum Level)</a>
+<a href="#par-level" class="level-3">Par Level</a>
+<a href="#reorder-point" class="level-3">Reorder Point</a>
+<a href="#low-stock" class="level-3">Low Stock</a>
+<a href="#critical-stock" class="level-3">Critical Stock</a>
+<a href="#stock-value" class="level-3">Stock Value</a>
+<a href="#stock-movement" class="level-3">Stock Movement</a>
+<a href="#stock-trend" class="level-3">Stock Trend</a>
+<a href="#usage-pattern" class="level-3">Usage Pattern</a>
+<a href="#wastage-management" class="level-2">Wastage Management</a>
+<a href="#wastage" class="level-3">Wastage</a>
+<a href="#wastage-reason" class="level-3">Wastage Reason</a>
+<a href="#write-off" class="level-3">Write-Off</a>
+<a href="#total-loss" class="level-3">Total Loss</a>
+<a href="#wastage-entry" class="level-3">Wastage Entry</a>
+<a href="#pending-review-wastage" class="level-3">Pending Review (Wastage)</a>
+<a href="#photo-evidence" class="level-3">Photo Evidence</a>
+<a href="#workflow-and-approvals" class="level-2">Workflow and Approvals</a>
+<a href="#approval-workflow" class="level-3">Approval Workflow</a>
+<a href="#approval-stage" class="level-3">Approval Stage</a>
+<a href="#approver" class="level-3">Approver</a>
+<a href="#submission-stage" class="level-3">Submission Stage</a>
+<a href="#hod-head-of-department" class="level-3">HOD (Head of Department)</a>
+<a href="#store-manager" class="level-3">Store Manager</a>
+<a href="#approval-status-workflow" class="level-3">Approval Status (Workflow)</a>
+<a href="#approval-comment" class="level-3">Approval Comment</a>
+<a href="#approval-log" class="level-3">Approval Log</a>
+<a href="#approval-timestamp" class="level-3">Approval Timestamp</a>
+<a href="#multi-level-approval" class="level-3">Multi-Level Approval</a>
+<a href="#technical-terms" class="level-2">Technical Terms</a>
+<a href="#journal-entry" class="level-3">Journal Entry</a>
+<a href="#debit-account" class="level-3">Debit Account</a>
+<a href="#credit-account" class="level-3">Credit Account</a>
+<a href="#account-code" class="level-3">Account Code</a>
+<a href="#reference-number" class="level-3">Reference Number</a>
+<a href="#tax-rate" class="level-3">Tax Rate</a>
+<a href="#discount-rate" class="level-3">Discount Rate</a>
+<a href="#subtotal" class="level-3">Subtotal</a>
+<a href="#total-amount" class="level-3">Total Amount</a>
+<a href="#activity-log" class="level-3">Activity Log</a>
+<a href="#audit-trail" class="level-3">Audit Trail</a>
+<a href="#abbreviations" class="level-2">Abbreviations</a>
+<a href="#general" class="level-3">General</a>
+<a href="#locations" class="level-3">Locations</a>
+<a href="#status" class="level-3">Status</a>
+<a href="#financial" class="level-3">Financial</a>
+<a href="#roles" class="level-3">Roles</a>
+<a href="#technical" class="level-3">Technical</a>
+<a href="#workflow" class="level-3">Workflow</a>
+<a href="#inventory" class="level-3">Inventory</a>
+<a href="#usage-examples" class="level-2">Usage Examples</a>
+<a href="#store-requisition-flow" class="level-3">Store Requisition Flow</a>
+<a href="#stock-replenishment-example" class="level-3">Stock Replenishment Example</a>
+<a href="#wastage-recording-example" class="level-3">Wastage Recording Example</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

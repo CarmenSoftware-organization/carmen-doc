@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase Order Module - API Specification - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: var(--bg-gradient);
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr 300px;
+            gap: 2rem;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 1.5rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .back-to-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: var(--primary-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        .back-to-home:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        /* Content Area */
+        .doc-content {
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 260px 1fr 280px;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 1.5rem;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 2.5rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            .doc-nav {
+                display: none;
+            }
+            .doc-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </div>
+            <div class="doc-header-actions">
+                <a href="../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../SYSTEM-DOCUMENTATION-INDEX.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Documentation Index</span>
+                    </a>
+                    <a href="../DOCUMENTATION-CATALOG.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Catalog</span>
+                    </a>
+                    <a href="../DOCUMENTATION-SUMMARY-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Summary</span>
+                    </a>
+                    <a href="../MODULE-VERIFICATION-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Module Verification</span>
+                    </a>
+                    <a href="../SYSTEM-GAPS-AND-ROADMAP.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Gaps & Roadmap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../architecture/SYSTEM-ARCHITECTURE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-users"></i>
+                    <span>Stakeholders</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../stakeholders/BUSINESS-VALUE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pr/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Requests</span>
+                    </a>
+                    <a href="../po/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Orders</span>
+                    </a>
+                    <a href="../grn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Goods Received Note</span>
+                    </a>
+                    <a href="../cn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Credit Notes</span>
+                    </a>
+                    <a href="../prt/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>PR Templates</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-boxes"></i>
+                    <span>Inventory Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../inv/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Overview</span>
+                    </a>
+                    <a href="../inv/inventory-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Specification</span>
+                    </a>
+                    <a href="../inv/inventory-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Sitemap</span>
+                    </a>
+                    <a href="../pc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Physical Count</span>
+                    </a>
+                    <a href="../sc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Spot Check</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-handshake"></i>
+                    <span>Vendor Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../vm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Overview</span>
+                    </a>
+                    <a href="../vm/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Module</span>
+                    </a>
+                    <a href="../vm/MANAGE-VENDORS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Manage Vendors</span>
+                    </a>
+                    <a href="../vm/TEMPLATES.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Templates</span>
+                    </a>
+                    <a href="../vm/CAMPAIGNS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Campaigns</span>
+                    </a>
+                    <a href="../vm/PRICELISTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Pricelists</span>
+                    </a>
+                    <a href="../vm/VENDOR-PORTAL.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Portal</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cube"></i>
+                    <span>Product Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Overview</span>
+                    </a>
+                    <a href="../pm/product-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Specification</span>
+                    </a>
+                    <a href="../pm/product-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-store"></i>
+                    <span>Store Operations</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../store-ops/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Overview</span>
+                    </a>
+                    <a href="../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Module</span>
+                    </a>
+                    <a href="../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Requisitions</span>
+                    </a>
+                    <a href="../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Stock Replenishment</span>
+                    </a>
+                    <a href="../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Wastage Reporting</span>
+                    </a>
+                    <a href="../store-ops/GLOSSARY.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Glossary</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Operational Planning</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../operational-planning/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Overview</span>
+                    </a>
+                    <a href="../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Module</span>
+                    </a>
+                    <a href="../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Menu Engineering</span>
+                    </a>
+                    <a href="../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Recipe Management</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cash-register"></i>
+                    <span>POS Integration</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pos-integration/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Overview</span>
+                    </a>
+                    <a href="../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Module</span>
+                    </a>
+                    <a href="../pos-integration/MAPPING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Mapping Subsystem</span>
+                    </a>
+                    <a href="../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Transaction Management</span>
+                    </a>
+                    <a href="../pos-integration/REPORTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports & Analytics</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../dashboard/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Overview</span>
+                    </a>
+                    <a href="../dashboard/sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>System Requirements</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../carmen-erp-system-requirements-documentation.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Requirements</span>
+                    </a>
+                    <a href="../comprehensive-schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="purchase-order-module-api-specification">Purchase Order Module - API Specification</h1>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#authentication">Authentication</a></li>
+<li><a href="#core-endpoints">Core Endpoints</a></li>
+<li><a href="#data-models">Data Models</a></li>
+<li><a href="#error-handling">Error Handling</a></li>
+<li><a href="#rate-limiting">Rate Limiting</a></li>
+<li><a href="#webhooks">Webhooks</a></li>
+</ol>
+<h2 id="overview">Overview</h2>
+<p>The Purchase Order API provides comprehensive functionality for managing purchase orders within the Carmen Hospitality ERP system. This RESTful API supports the complete purchase order lifecycle from creation to fulfillment.</p>
+<p><strong>Base URL:</strong> <code>https://api.carmen-erp.com/v1</code></p>
+<p><strong>API Version:</strong> v1.0</p>
+<p><strong>Content Type:</strong> <code>application/json</code></p>
+<h2 id="authentication">Authentication</h2>
+<p>All API requests require authentication using JWT tokens.</p>
+<p><strong>Header:</strong></p>
+<pre><code>Authorization: Bearer &lt;jwt_token&gt;
+</code></pre>
+<p><strong>Token Structure:</strong></p>
+<pre><code class="language-json">{
+  &quot;user_id&quot;: &quot;12345&quot;,
+  &quot;role&quot;: &quot;procurement_manager&quot;,
+  &quot;permissions&quot;: [&quot;po:read&quot;, &quot;po:write&quot;, &quot;po:delete&quot;],
+  &quot;business_unit&quot;: &quot;BU001&quot;,
+  &quot;exp&quot;: 1640995200
+}
+</code></pre>
+<h2 id="core-endpoints">Core Endpoints</h2>
+<h3 id="purchase-orders">Purchase Orders</h3>
+<h4>List Purchase Orders</h4>
+<pre><code class="language-http">GET /purchase-orders
+</code></pre>
+<p><strong>Query Parameters:</strong></p>
+<ul>
+<li><code>page</code> (integer): Page number (default: 1)</li>
+<li><code>limit</code> (integer): Items per page (default: 50, max: 100)</li>
+<li><code>status</code> (string): Filter by status</li>
+<li><code>vendor_id</code> (integer): Filter by vendor</li>
+<li><code>start_date</code> (string): Filter from date (YYYY-MM-DD)</li>
+<li><code>end_date</code> (string): Filter to date (YYYY-MM-DD)</li>
+<li><code>currency</code> (string): Filter by currency code</li>
+<li><code>search</code> (string): Search in PO number, vendor name, description</li>
+</ul>
+<p><strong>Response:</strong></p>
+<pre><code class="language-json">{
+  &quot;data&quot;: [
+    {
+      &quot;po_id&quot;: &quot;PO-2023-001&quot;,
+      &quot;number&quot;: &quot;PO-2023-001&quot;,
+      &quot;vendor_id&quot;: 123,
+      &quot;vendor_name&quot;: &quot;Office Supplies Inc.&quot;,
+      &quot;order_date&quot;: &quot;2023-06-15&quot;,
+      &quot;delivery_date&quot;: &quot;2023-06-30&quot;,
+      &quot;status&quot;: &quot;Sent&quot;,
+      &quot;currency_code&quot;: &quot;USD&quot;,
+      &quot;total_amount&quot;: 1250.00,
+      &quot;created_at&quot;: &quot;2023-06-15T10:30:00Z&quot;,
+      &quot;updated_at&quot;: &quot;2023-06-15T15:45:00Z&quot;
+    }
+  ],
+  &quot;pagination&quot;: {
+    &quot;current_page&quot;: 1,
+    &quot;per_page&quot;: 50,
+    &quot;total&quot;: 150,
+    &quot;total_pages&quot;: 3
+  }
+}
+</code></pre>
+<h4>Get Purchase Order</h4>
+<pre><code class="language-http">GET /purchase-orders/{po_id}
+</code></pre>
+<p><strong>Response:</strong></p>
+<pre><code class="language-json">{
+  &quot;po_id&quot;: &quot;PO-2023-001&quot;,
+  &quot;number&quot;: &quot;PO-2023-001&quot;,
+  &quot;vendor_id&quot;: 123,
+  &quot;vendor_name&quot;: &quot;Office Supplies Inc.&quot;,
+  &quot;vendor_email&quot;: &quot;orders@officesupplies.com&quot;,
+  &quot;order_date&quot;: &quot;2023-06-15&quot;,
+  &quot;delivery_date&quot;: &quot;2023-06-30&quot;,
+  &quot;status&quot;: &quot;Sent&quot;,
+  &quot;currency_code&quot;: &quot;USD&quot;,
+  &quot;base_currency_code&quot;: &quot;USD&quot;,
+  &quot;exchange_rate&quot;: 1.0000,
+  &quot;credit_terms&quot;: &quot;Net 30&quot;,
+  &quot;description&quot;: &quot;Monthly office supplies order&quot;,
+  &quot;remarks&quot;: &quot;Please deliver to reception&quot;,
+  &quot;items&quot;: [
+    {
+      &quot;id&quot;: &quot;item-001&quot;,
+      &quot;name&quot;: &quot;Copy Paper A4&quot;,
+      &quot;description&quot;: &quot;White copy paper, 80gsm, 500 sheets&quot;,
+      &quot;ordered_quantity&quot;: 10,
+      &quot;received_quantity&quot;: 0,
+      &quot;remaining_quantity&quot;: 10,
+      &quot;order_unit&quot;: &quot;reams&quot;,
+      &quot;unit_price&quot;: 5.50,
+      &quot;tax_rate&quot;: 7.00,
+      &quot;discount_rate&quot;: 0.00,
+      &quot;sub_total_price&quot;: 55.00,
+      &quot;tax_amount&quot;: 3.85,
+      &quot;total_amount&quot;: 58.85,
+      &quot;status&quot;: &quot;Open&quot;
+    }
+  ],
+  &quot;financial_summary&quot;: {
+    &quot;sub_total_price&quot;: 1150.00,
+    &quot;discount_amount&quot;: 50.00,
+    &quot;net_amount&quot;: 1100.00,
+    &quot;tax_amount&quot;: 77.00,
+    &quot;total_amount&quot;: 1177.00
+  },
+  &quot;activity_log&quot;: [
+    {
+      &quot;id&quot;: &quot;log-001&quot;,
+      &quot;action&quot;: &quot;Created&quot;,
+      &quot;user_id&quot;: &quot;user-123&quot;,
+      &quot;user_name&quot;: &quot;John Doe&quot;,
+      &quot;timestamp&quot;: &quot;2023-06-15T10:30:00Z&quot;,
+      &quot;description&quot;: &quot;Purchase order created&quot;
+    }
+  ]
+}
+</code></pre>
+<h4>Create Purchase Order</h4>
+<pre><code class="language-http">POST /purchase-orders
+</code></pre>
+<p><strong>Request Body:</strong></p>
+<pre><code class="language-json">{
+  &quot;vendor_id&quot;: 123,
+  &quot;order_date&quot;: &quot;2023-06-15&quot;,
+  &quot;delivery_date&quot;: &quot;2023-06-30&quot;,
+  &quot;currency_code&quot;: &quot;USD&quot;,
+  &quot;exchange_rate&quot;: 1.0000,
+  &quot;credit_terms&quot;: &quot;Net 30&quot;,
+  &quot;description&quot;: &quot;Monthly office supplies order&quot;,
+  &quot;remarks&quot;: &quot;Please deliver to reception&quot;,
+  &quot;items&quot;: [
+    {
+      &quot;name&quot;: &quot;Copy Paper A4&quot;,
+      &quot;description&quot;: &quot;White copy paper, 80gsm, 500 sheets&quot;,
+      &quot;ordered_quantity&quot;: 10,
+      &quot;order_unit&quot;: &quot;reams&quot;,
+      &quot;unit_price&quot;: 5.50,
+      &quot;tax_rate&quot;: 7.00,
+      &quot;discount_rate&quot;: 0.00
+    }
+  ],
+  &quot;source_pr_ids&quot;: [&quot;PR-2023-001&quot;, &quot;PR-2023-002&quot;]
+}
+</code></pre>
+<p><strong>Response:</strong></p>
+<pre><code class="language-json">{
+  &quot;po_id&quot;: &quot;PO-2023-001&quot;,
+  &quot;number&quot;: &quot;PO-2023-001&quot;,
+  &quot;status&quot;: &quot;Draft&quot;,
+  &quot;created_at&quot;: &quot;2023-06-15T10:30:00Z&quot;,
+  &quot;message&quot;: &quot;Purchase order created successfully&quot;
+}
+</code></pre>
+<h4>Update Purchase Order</h4>
+<pre><code class="language-http">PUT /purchase-orders/{po_id}
+</code></pre>
+<p><strong>Request Body:</strong> (Same as create, with optional fields)</p>
+<p><strong>Response:</strong></p>
+<pre><code class="language-json">{
+  &quot;po_id&quot;: &quot;PO-2023-001&quot;,
+  &quot;updated_at&quot;: &quot;2023-06-15T15:45:00Z&quot;,
+  &quot;message&quot;: &quot;Purchase order updated successfully&quot;
+}
+</code></pre>
+<h4>Delete Purchase Order</h4>
+<pre><code class="language-http">DELETE /purchase-orders/{po_id}
+</code></pre>
+<p><strong>Response:</strong></p>
+<pre><code class="language-json">{
+  &quot;message&quot;: &quot;Purchase order deleted successfully&quot;,
+  &quot;deleted_at&quot;: &quot;2023-06-15T16:00:00Z&quot;
+}
+</code></pre>
+<h4>Update Purchase Order Status</h4>
+<pre><code class="language-http">PATCH /purchase-orders/{po_id}/status
+</code></pre>
+<p><strong>Request Body:</strong></p>
+<pre><code class="language-json">{
+  &quot;status&quot;: &quot;Sent&quot;,
+  &quot;reason&quot;: &quot;Ready for vendor processing&quot;
+}
+</code></pre>
+<p><strong>Response:</strong></p>
+<pre><code class="language-json">{
+  &quot;po_id&quot;: &quot;PO-2023-001&quot;,
+  &quot;old_status&quot;: &quot;Draft&quot;,
+  &quot;new_status&quot;: &quot;Sent&quot;,
+  &quot;updated_at&quot;: &quot;2023-06-15T15:45:00Z&quot;,
+  &quot;message&quot;: &quot;Status updated successfully&quot;
+}
+</code></pre>
+<h3 id="purchase-order-items">Purchase Order Items</h3>
+<h4>Add Item to Purchase Order</h4>
+<pre><code class="language-http">POST /purchase-orders/{po_id}/items
+</code></pre>
+<p><strong>Request Body:</strong></p>
+<pre><code class="language-json">{
+  &quot;name&quot;: &quot;Ballpoint Pens&quot;,
+  &quot;description&quot;: &quot;Blue ink, pack of 10&quot;,
+  &quot;ordered_quantity&quot;: 5,
+  &quot;order_unit&quot;: &quot;packs&quot;,
+  &quot;unit_price&quot;: 12.50,
+  &quot;tax_rate&quot;: 7.00,
+  &quot;discount_rate&quot;: 10.00
+}
+</code></pre>
+<h4>Update Purchase Order Item</h4>
+<pre><code class="language-http">PUT /purchase-orders/{po_id}/items/{item_id}
+</code></pre>
+<h4>Delete Purchase Order Item</h4>
+<pre><code class="language-http">DELETE /purchase-orders/{po_id}/items/{item_id}
+</code></pre>
+<h3 id="document-operations">Document Operations</h3>
+<h4>Export Purchase Order</h4>
+<pre><code class="language-http">GET /purchase-orders/{po_id}/export
+</code></pre>
+<p><strong>Query Parameters:</strong></p>
+<ul>
+<li><code>format</code> (string): pdf|excel|csv</li>
+<li><code>sections</code> (array): header,items,financial,vendor,comments</li>
+</ul>
+<p><strong>Response:</strong></p>
+<pre><code class="language-json">{
+  &quot;download_url&quot;: &quot;https://files.carmen-erp.com/exports/po-2023-001.pdf&quot;,
+  &quot;expires_at&quot;: &quot;2023-06-15T18:00:00Z&quot;
+}
+</code></pre>
+<h4>Email Purchase Order</h4>
+<pre><code class="language-http">POST /purchase-orders/{po_id}/email
+</code></pre>
+<p><strong>Request Body:</strong></p>
+<pre><code class="language-json">{
+  &quot;to&quot;: &quot;vendor@supplier.com&quot;,
+  &quot;cc&quot;: [&quot;buyer@company.com&quot;],
+  &quot;subject&quot;: &quot;Purchase Order PO-2023-001&quot;,
+  &quot;message&quot;: &quot;Please find attached purchase order for processing.&quot;,
+  &quot;include_attachments&quot;: true
+}
+</code></pre>
+<h4>Get Related Documents</h4>
+<pre><code class="language-http">GET /purchase-orders/{po_id}/related-documents
+</code></pre>
+<p><strong>Response:</strong></p>
+<pre><code class="language-json">{
+  &quot;grns&quot;: [
+    {
+      &quot;grn_id&quot;: &quot;GRN-2023-001&quot;,
+      &quot;grn_number&quot;: &quot;GRN-2023-001&quot;,
+      &quot;received_date&quot;: &quot;2023-06-20&quot;,
+      &quot;status&quot;: &quot;Completed&quot;,
+      &quot;amount&quot;: 580.00
+    }
+  ],
+  &quot;invoices&quot;: [
+    {
+      &quot;invoice_id&quot;: &quot;INV-2023-001&quot;,
+      &quot;invoice_number&quot;: &quot;SUPP-001&quot;,
+      &quot;invoice_date&quot;: &quot;2023-06-25&quot;,
+      &quot;amount&quot;: 1177.00,
+      &quot;status&quot;: &quot;Paid&quot;
+    }
+  ],
+  &quot;credit_notes&quot;: []
+}
+</code></pre>
+<h3 id="bulk-operations">Bulk Operations</h3>
+<h4>Bulk Create Purchase Orders</h4>
+<pre><code class="language-http">POST /purchase-orders/bulk-create
+</code></pre>
+<p><strong>Request Body:</strong></p>
+<pre><code class="language-json">{
+  &quot;source&quot;: &quot;purchase_requests&quot;,
+  &quot;grouping&quot;: {
+    &quot;by_vendor&quot;: true,
+    &quot;by_currency&quot;: true
+  },
+  &quot;purchase_request_ids&quot;: [&quot;PR-2023-001&quot;, &quot;PR-2023-002&quot;, &quot;PR-2023-003&quot;]
+}
+</code></pre>
+<p><strong>Response:</strong></p>
+<pre><code class="language-json">{
+  &quot;created_pos&quot;: [
+    {
+      &quot;po_id&quot;: &quot;PO-2023-001&quot;,
+      &quot;vendor_name&quot;: &quot;Office Supplies Inc.&quot;,
+      &quot;currency&quot;: &quot;USD&quot;,
+      &quot;total_amount&quot;: 1177.00,
+      &quot;item_count&quot;: 5
+    }
+  ],
+  &quot;summary&quot;: {
+    &quot;total_pos_created&quot;: 2,
+    &quot;total_items_processed&quot;: 12,
+    &quot;processing_time&quot;: &quot;2.3 seconds&quot;
+  }
+}
+</code></pre>
+<h4>Bulk Export</h4>
+<pre><code class="language-http">POST /purchase-orders/bulk-export
+</code></pre>
+<p><strong>Request Body:</strong></p>
+<pre><code class="language-json">{
+  &quot;po_ids&quot;: [&quot;PO-2023-001&quot;, &quot;PO-2023-002&quot;],
+  &quot;format&quot;: &quot;pdf&quot;,
+  &quot;sections&quot;: [&quot;header&quot;, &quot;items&quot;, &quot;financial&quot;]
+}
+</code></pre>
+<h4>Bulk Status Update</h4>
+<pre><code class="language-http">PATCH /purchase-orders/bulk-status
+</code></pre>
+<p><strong>Request Body:</strong></p>
+<pre><code class="language-json">{
+  &quot;po_ids&quot;: [&quot;PO-2023-001&quot;, &quot;PO-2023-002&quot;],
+  &quot;status&quot;: &quot;Sent&quot;,
+  &quot;reason&quot;: &quot;Batch processing for vendor submission&quot;
+}
+</code></pre>
+<h2 id="data-models">Data Models</h2>
+<h3 id="purchase-order">Purchase Order</h3>
+<pre><code class="language-typescript">interface PurchaseOrder {
+  po_id: string
+  number: string
+  vendor_id: number
+  vendor_name: string
+  vendor_email?: string
+  order_date: string
+  delivery_date?: string
+  status: PurchaseOrderStatus
+  currency_code: string
+  base_currency_code: string
+  exchange_rate: number
+  credit_terms?: string
+  description?: string
+  remarks?: string
+  sub_total_price: number
+  discount_amount: number
+  net_amount: number
+  tax_amount: number
+  total_amount: number
+  items: PurchaseOrderItem[]
+  source_pr_ids?: string[]
+  created_by: number
+  created_at: string
+  updated_at: string
+  activity_log: ActivityLogEntry[]
+}
+</code></pre>
+<h3 id="purchase-order-item">Purchase Order Item</h3>
+<pre><code class="language-typescript">interface PurchaseOrderItem {
+  id: string
+  name: string
+  description?: string
+  ordered_quantity: number
+  received_quantity: number
+  remaining_quantity: number
+  order_unit: string
+  base_unit?: string
+  conversion_factor?: number
+  unit_price: number
+  tax_rate: number
+  discount_rate: number
+  sub_total_price: number
+  discount_amount: number
+  tax_amount: number
+  total_amount: number
+  status: ItemStatus
+  source_pr_id?: string
+  source_pr_item_id?: string
+}
+</code></pre>
+<h3 id="activity-log-entry">Activity Log Entry</h3>
+<pre><code class="language-typescript">interface ActivityLogEntry {
+  id: string
+  action: string
+  user_id: string
+  user_name: string
+  activity_type: ActivityType
+  description: string
+  timestamp: string
+  metadata?: object
+}
+</code></pre>
+<h3 id="enums">Enums</h3>
+<h4>Purchase Order Status</h4>
+<pre><code class="language-typescript">enum PurchaseOrderStatus {
+  Draft = &quot;Draft&quot;,
+  Sent = &quot;Sent&quot;,
+  PartiallyReceived = &quot;PartiallyReceived&quot;,
+  FullyReceived = &quot;FullyReceived&quot;,
+  Closed = &quot;Closed&quot;,
+  Cancelled = &quot;Cancelled&quot;,
+  Voided = &quot;Voided&quot;
+}
+</code></pre>
+<h4>Item Status</h4>
+<pre><code class="language-typescript">enum ItemStatus {
+  Open = &quot;Open&quot;,
+  PartiallyReceived = &quot;PartiallyReceived&quot;,
+  FullyReceived = &quot;FullyReceived&quot;,
+  Cancelled = &quot;Cancelled&quot;,
+  Closed = &quot;Closed&quot;
+}
+</code></pre>
+<h4>Activity Type</h4>
+<pre><code class="language-typescript">enum ActivityType {
+  Creation = &quot;Creation&quot;,
+  StatusChange = &quot;StatusChange&quot;,
+  ItemModification = &quot;ItemModification&quot;,
+  DocumentGeneration = &quot;DocumentGeneration&quot;,
+  Communication = &quot;Communication&quot;,
+  SystemEvent = &quot;SystemEvent&quot;
+}
+</code></pre>
+<h2 id="error-handling">Error Handling</h2>
+<h3 id="standard-error-response">Standard Error Response</h3>
+<pre><code class="language-json">{
+  &quot;error&quot;: {
+    &quot;code&quot;: &quot;VALIDATION_ERROR&quot;,
+    &quot;message&quot;: &quot;Invalid request data&quot;,
+    &quot;details&quot;: [
+      {
+        &quot;field&quot;: &quot;vendor_id&quot;,
+        &quot;message&quot;: &quot;Vendor ID is required&quot;
+      }
+    ],
+    &quot;request_id&quot;: &quot;req_123456789&quot;
+  }
+}
+</code></pre>
+<h3 id="error-codes">Error Codes</h3>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>VALIDATION_ERROR</td>
+<td>400</td>
+<td>Invalid request data</td>
+</tr>
+<tr>
+<td>UNAUTHORIZED</td>
+<td>401</td>
+<td>Invalid or missing authentication</td>
+</tr>
+<tr>
+<td>FORBIDDEN</td>
+<td>403</td>
+<td>Insufficient permissions</td>
+</tr>
+<tr>
+<td>NOT_FOUND</td>
+<td>404</td>
+<td>Resource not found</td>
+</tr>
+<tr>
+<td>CONFLICT</td>
+<td>409</td>
+<td>Resource conflict</td>
+</tr>
+<tr>
+<td>RATE_LIMITED</td>
+<td>429</td>
+<td>Too many requests</td>
+</tr>
+<tr>
+<td>INTERNAL_ERROR</td>
+<td>500</td>
+<td>Server error</td>
+</tr>
+</tbody></table>
+<h3 id="business-logic-errors">Business Logic Errors</h3>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>PO_ALREADY_SENT</td>
+<td>Cannot modify sent purchase order</td>
+</tr>
+<tr>
+<td>INVALID_STATUS_TRANSITION</td>
+<td>Invalid status change</td>
+</tr>
+<tr>
+<td>INSUFFICIENT_PERMISSIONS</td>
+<td>User lacks required permissions</td>
+</tr>
+<tr>
+<td>VENDOR_INACTIVE</td>
+<td>Selected vendor is inactive</td>
+</tr>
+<tr>
+<td>CURRENCY_NOT_SUPPORTED</td>
+<td>Currency not supported</td>
+</tr>
+<tr>
+<td>ITEM_ALREADY_RECEIVED</td>
+<td>Cannot modify received items</td>
+</tr>
+</tbody></table>
+<h2 id="rate-limiting">Rate Limiting</h2>
+<p><strong>Standard Limits:</strong></p>
+<ul>
+<li>1000 requests per hour per user</li>
+<li>100 requests per minute per user</li>
+<li>10 bulk operations per hour per user</li>
+</ul>
+<p><strong>Headers:</strong></p>
+<pre><code>X-RateLimit-Limit: 1000
+X-RateLimit-Remaining: 999
+X-RateLimit-Reset: 1640995200
+</code></pre>
+<h2 id="webhooks">Webhooks</h2>
+<h3 id="available-events">Available Events</h3>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>po.created</td>
+<td>Purchase order created</td>
+</tr>
+<tr>
+<td>po.updated</td>
+<td>Purchase order updated</td>
+</tr>
+<tr>
+<td>po.status_changed</td>
+<td>Status changed</td>
+</tr>
+<tr>
+<td>po.item_added</td>
+<td>Item added to PO</td>
+</tr>
+<tr>
+<td>po.item_updated</td>
+<td>Item updated</td>
+</tr>
+<tr>
+<td>po.sent</td>
+<td>PO sent to vendor</td>
+</tr>
+<tr>
+<td>po.received</td>
+<td>Items received</td>
+</tr>
+</tbody></table>
+<h3 id="webhook-payload">Webhook Payload</h3>
+<pre><code class="language-json">{
+  &quot;event&quot;: &quot;po.status_changed&quot;,
+  &quot;timestamp&quot;: &quot;2023-06-15T15:45:00Z&quot;,
+  &quot;data&quot;: {
+    &quot;po_id&quot;: &quot;PO-2023-001&quot;,
+    &quot;old_status&quot;: &quot;Draft&quot;,
+    &quot;new_status&quot;: &quot;Sent&quot;,
+    &quot;user_id&quot;: &quot;user-123&quot;
+  }
+}
+</code></pre>
+<hr>
+<p><em>API Documentation Version: 1.0</em><br><em>Last Updated: Latest</em></p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#purchase-order-module-api-specification" class="level-1">Purchase Order Module - API Specification</a>
+<a href="#table-of-contents" class="level-2">Table of Contents</a>
+<a href="#overview" class="level-2">Overview</a>
+<a href="#authentication" class="level-2">Authentication</a>
+<a href="#core-endpoints" class="level-2">Core Endpoints</a>
+<a href="#purchase-orders" class="level-3">Purchase Orders</a>
+<a href="#purchase-order-items" class="level-3">Purchase Order Items</a>
+<a href="#document-operations" class="level-3">Document Operations</a>
+<a href="#bulk-operations" class="level-3">Bulk Operations</a>
+<a href="#data-models" class="level-2">Data Models</a>
+<a href="#purchase-order" class="level-3">Purchase Order</a>
+<a href="#purchase-order-item" class="level-3">Purchase Order Item</a>
+<a href="#activity-log-entry" class="level-3">Activity Log Entry</a>
+<a href="#enums" class="level-3">Enums</a>
+<a href="#error-handling" class="level-2">Error Handling</a>
+<a href="#standard-error-response" class="level-3">Standard Error Response</a>
+<a href="#error-codes" class="level-3">Error Codes</a>
+<a href="#business-logic-errors" class="level-3">Business Logic Errors</a>
+<a href="#rate-limiting" class="level-2">Rate Limiting</a>
+<a href="#webhooks" class="level-2">Webhooks</a>
+<a href="#available-events" class="level-3">Available Events</a>
+<a href="#webhook-payload" class="level-3">Webhook Payload</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

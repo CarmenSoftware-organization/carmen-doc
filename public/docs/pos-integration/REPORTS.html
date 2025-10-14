@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS Reports - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: var(--bg-gradient);
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr 300px;
+            gap: 2rem;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 1.5rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .back-to-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: var(--primary-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        .back-to-home:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        /* Content Area */
+        .doc-content {
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 260px 1fr 280px;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 1.5rem;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 2.5rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            .doc-nav {
+                display: none;
+            }
+            .doc-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </div>
+            <div class="doc-header-actions">
+                <a href="../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../SYSTEM-DOCUMENTATION-INDEX.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Documentation Index</span>
+                    </a>
+                    <a href="../DOCUMENTATION-CATALOG.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Catalog</span>
+                    </a>
+                    <a href="../DOCUMENTATION-SUMMARY-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Summary</span>
+                    </a>
+                    <a href="../MODULE-VERIFICATION-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Module Verification</span>
+                    </a>
+                    <a href="../SYSTEM-GAPS-AND-ROADMAP.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Gaps & Roadmap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../architecture/SYSTEM-ARCHITECTURE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-users"></i>
+                    <span>Stakeholders</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../stakeholders/BUSINESS-VALUE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pr/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Requests</span>
+                    </a>
+                    <a href="../po/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Orders</span>
+                    </a>
+                    <a href="../grn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Goods Received Note</span>
+                    </a>
+                    <a href="../cn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Credit Notes</span>
+                    </a>
+                    <a href="../prt/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>PR Templates</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-boxes"></i>
+                    <span>Inventory Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../inv/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Overview</span>
+                    </a>
+                    <a href="../inv/inventory-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Specification</span>
+                    </a>
+                    <a href="../inv/inventory-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Sitemap</span>
+                    </a>
+                    <a href="../pc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Physical Count</span>
+                    </a>
+                    <a href="../sc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Spot Check</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-handshake"></i>
+                    <span>Vendor Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../vm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Overview</span>
+                    </a>
+                    <a href="../vm/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Module</span>
+                    </a>
+                    <a href="../vm/MANAGE-VENDORS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Manage Vendors</span>
+                    </a>
+                    <a href="../vm/TEMPLATES.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Templates</span>
+                    </a>
+                    <a href="../vm/CAMPAIGNS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Campaigns</span>
+                    </a>
+                    <a href="../vm/PRICELISTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Pricelists</span>
+                    </a>
+                    <a href="../vm/VENDOR-PORTAL.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Portal</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cube"></i>
+                    <span>Product Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Overview</span>
+                    </a>
+                    <a href="../pm/product-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Specification</span>
+                    </a>
+                    <a href="../pm/product-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-store"></i>
+                    <span>Store Operations</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../store-ops/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Overview</span>
+                    </a>
+                    <a href="../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Module</span>
+                    </a>
+                    <a href="../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Requisitions</span>
+                    </a>
+                    <a href="../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Stock Replenishment</span>
+                    </a>
+                    <a href="../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Wastage Reporting</span>
+                    </a>
+                    <a href="../store-ops/GLOSSARY.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Glossary</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Operational Planning</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../operational-planning/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Overview</span>
+                    </a>
+                    <a href="../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Module</span>
+                    </a>
+                    <a href="../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Menu Engineering</span>
+                    </a>
+                    <a href="../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Recipe Management</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cash-register"></i>
+                    <span>POS Integration</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pos-integration/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Overview</span>
+                    </a>
+                    <a href="../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Module</span>
+                    </a>
+                    <a href="../pos-integration/MAPPING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Mapping Subsystem</span>
+                    </a>
+                    <a href="../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Transaction Management</span>
+                    </a>
+                    <a href="../pos-integration/REPORTS.html" class="nav-item active">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports & Analytics</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../dashboard/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Overview</span>
+                    </a>
+                    <a href="../dashboard/sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>System Requirements</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../carmen-erp-system-requirements-documentation.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Requirements</span>
+                    </a>
+                    <a href="../comprehensive-schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="pos-reports">POS Reports</h1>
+<p><strong>Submodule</strong>: Reports<br><strong>Route</strong>: <code>/system-administration/system-integrations/pos/reports</code><br><strong>Status</strong>: ✅ Production<br><strong>Parent Module</strong>: <a href="./POS-INTEGRATION-MODULE.html">POS Integration</a></p>
+<h2 id="overview">Overview</h2>
+<p>The Reports module provides comprehensive sales performance and consumption analysis through two primary reports: Gross Profit Analysis and Consumption Report. These reports enable data-driven decision-making for pricing, cost control, and inventory management.</p>
+<h2 id="screenshots">Screenshots</h2>
+<p><img src="./screenshots/pos-gross-profit-report.png" alt="Gross Profit Report"><br><em>Gross Profit Analysis - Sales vs cost analysis with trend visualization and multi-dimensional views</em></p>
+<p><img src="./screenshots/pos-consumption-report.png" alt="Consumption Report"><br><em>Consumption Report - Actual vs theoretical usage analysis with variance tracking</em></p>
+<h2 id="report-types">Report Types</h2>
+<h3 id="1-gross-profit-analysis">1. Gross Profit Analysis</h3>
+<p><strong>Route</strong>: <code>/system-administration/system-integrations/pos/reports/gross-profit</code></p>
+<p><strong>Purpose</strong>: Analyze sales revenue against cost of sales to calculate gross profit and margin percentages across outlets, categories, and individual items.</p>
+<p><strong>Key Metrics Dashboard</strong>:</p>
+<ol>
+<li><p><strong>Sales Revenue</strong></p>
+<ul>
+<li>Total sales for selected period</li>
+<li>Trend indicator (% vs last period)</li>
+<li>Green/Red arrow indicating direction</li>
+<li>Example: $310,000 (+5.2% vs last period)</li>
+</ul>
+</li>
+<li><p><strong>Cost of Sales</strong></p>
+<ul>
+<li>Total cost of ingredients/recipes sold</li>
+<li>Comparison vs target cost</li>
+<li>Based on recipe costs × quantities sold</li>
+<li>Example: $107,000 (+2.1% vs target)</li>
+</ul>
+</li>
+<li><p><strong>Gross Profit</strong></p>
+<ul>
+<li>Sales Revenue minus Cost of Sales</li>
+<li>Comparison vs target profit</li>
+<li>Absolute dollar amount</li>
+<li>Example: $203,000 (+6.8% vs target)</li>
+</ul>
+</li>
+<li><p><strong>Margin %</strong></p>
+<ul>
+<li>(Gross Profit / Sales Revenue) × 100</li>
+<li>Comparison vs target margin</li>
+<li>Industry benchmark: 60-70% for food service</li>
+<li>Example: 65.5% (+1.2% vs target)</li>
+</ul>
+</li>
+</ol>
+<p><strong>Performance Trend Chart</strong>:</p>
+<ul>
+<li><strong>Type</strong>: Combination chart (Bar + Line)</li>
+<li><strong>X-Axis</strong>: Time periods (6 months default)</li>
+<li><strong>Y-Axis Left</strong>: Dollar amounts (Sales, Cost)</li>
+<li><strong>Y-Axis Right</strong>: Percentage (Margin %)</li>
+<li><strong>Bars</strong>: Sales (dark blue), Cost (light blue)</li>
+<li><strong>Line</strong>: Margin % (green)</li>
+<li><strong>Interaction</strong>: Hover shows exact values</li>
+</ul>
+<p><strong>Detailed Analysis Table</strong>:</p>
+<p><strong>Three View Types</strong>:</p>
+<ol>
+<li><strong>By Outlet</strong>: Performance per location</li>
+<li><strong>By Category</strong>: Performance per menu category</li>
+<li><strong>By Item</strong>: Individual recipe profitability</li>
+</ol>
+<p><strong>Columns</strong>:</p>
+<ul>
+<li>Name (Outlet/Category/Item)</li>
+<li>Sales (revenue)</li>
+<li>Cost (cost of sales)</li>
+<li>Gross Profit (calculated)</li>
+<li>Margin % (calculated)</li>
+<li>vs Target (comparison, green = above target, red = below)</li>
+</ul>
+<p><strong>Example By Outlet</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Outlet</th>
+<th>Sales</th>
+<th>Cost</th>
+<th>Gross Profit</th>
+<th>Margin %</th>
+<th>vs Target</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Main Restaurant</td>
+<td>$120,000</td>
+<td>$42,000</td>
+<td>$78,000</td>
+<td>65.0%</td>
+<td>+2.1%</td>
+</tr>
+<tr>
+<td>Coffee Shop</td>
+<td>$95,000</td>
+<td>$32,000</td>
+<td>$63,000</td>
+<td>66.3%</td>
+<td>+3.4%</td>
+</tr>
+<tr>
+<td>Bar &amp; Lounge</td>
+<td>$85,000</td>
+<td>$29,000</td>
+<td>$56,000</td>
+<td>65.9%</td>
+<td>+3.0%</td>
+</tr>
+<tr>
+<td>Poolside Café</td>
+<td>$10,000</td>
+<td>$4,000</td>
+<td>$6,000</td>
+<td>60.0%</td>
+<td>-2.9%</td>
+</tr>
+<tr>
+<td><strong>Total</strong></td>
+<td><strong>$310,000</strong></td>
+<td><strong>$107,000</strong></td>
+<td><strong>$203,000</strong></td>
+<td><strong>65.5%</strong></td>
+<td><strong>+1.2%</strong></td>
+</tr>
+</tbody></table>
+<p><strong>Filters &amp; Controls</strong>:</p>
+<ul>
+<li><strong>Date Range Selector</strong>: Today, Yesterday, MTD, YTD, Custom</li>
+<li><strong>View Type Selector</strong>: By Outlet, By Category, By Item</li>
+<li><strong>Export Button</strong>: PDF, Excel, CSV options</li>
+<li><strong>Share Button</strong>: Email report or generate shareable link</li>
+<li><strong>Refresh Button</strong>: Reload data</li>
+</ul>
+<p><strong>Business Insights</strong>:</p>
+<ul>
+<li>Identify high-margin vs low-margin items</li>
+<li>Compare outlet performance</li>
+<li>Track margin trends over time</li>
+<li>Spot underperforming categories</li>
+<li>Support pricing decisions</li>
+<li>Guide menu engineering</li>
+</ul>
+<p><strong>Formulas</strong>:</p>
+<pre><code>Gross Profit = Sales Revenue - Cost of Sales
+Margin % = (Gross Profit / Sales Revenue) × 100
+vs Target % = ((Actual - Target) / Target) × 100
+</code></pre>
+<h3 id="2-consumption-report">2. Consumption Report</h3>
+<p><strong>Route</strong>: <code>/system-administration/system-integrations/pos/reports/consumption</code></p>
+<p><strong>Purpose</strong>: Compare actual ingredient usage against theoretical usage based on recipes to identify waste, theft, portion control issues, and recipe inaccuracies.</p>
+<p><strong>Key Metrics Dashboard</strong>:</p>
+<ol>
+<li><p><strong>Theoretical Usage</strong></p>
+<ul>
+<li>Expected consumption based on:<ul>
+<li>Recipe costs × Quantities sold</li>
+<li>Standard portion sizes</li>
+<li>Recipe specifications</li>
+</ul>
+</li>
+<li>Label: &quot;Base&quot; (this is the benchmark)</li>
+<li>Example: $42,590</li>
+</ul>
+</li>
+<li><p><strong>Actual Usage</strong></p>
+<ul>
+<li>Real inventory deductions from system</li>
+<li>Based on stock movements</li>
+<li>Includes all inventory adjustments</li>
+<li>Percentage vs theoretical</li>
+<li>Example: $45,100 (+5.9%)</li>
+</ul>
+</li>
+<li><p><strong>Variance Amount</strong></p>
+<ul>
+<li>Absolute difference: Actual - Theoretical</li>
+<li>Label: &quot;Loss&quot; if positive, &quot;Gain&quot; if negative</li>
+<li>Represents unaccounted-for usage</li>
+<li>Example: $2,510 (Loss)</li>
+</ul>
+</li>
+<li><p><strong>Target Variance</strong></p>
+<ul>
+<li>Acceptable variance threshold (typically 3%)</li>
+<li>Shows if current variance exceeds target</li>
+<li>Progress bar visualization</li>
+<li>Example: 3.0% target, currently at 5.9% (+2.9% over)</li>
+</ul>
+</li>
+</ol>
+<p><strong>Daily Consumption Trend Chart</strong>:</p>
+<ul>
+<li><strong>Type</strong>: Dual-line chart</li>
+<li><strong>X-Axis</strong>: Days (last 10 days default)</li>
+<li><strong>Y-Axis</strong>: Dollar amount</li>
+<li><strong>Lines</strong>:<ul>
+<li>Theoretical (blue line)</li>
+<li>Actual (orange line)</li>
+</ul>
+</li>
+<li><strong>Interaction</strong>: Hover shows daily values</li>
+<li><strong>Pattern Analysis</strong>:<ul>
+<li>Parallel lines = consistent variance</li>
+<li>Diverging lines = increasing variance</li>
+<li>Converging lines = improving variance</li>
+</ul>
+</li>
+</ul>
+<p><strong>Analysis Tabs</strong>:</p>
+<p><strong>Tab 1: Overview</strong></p>
+<ul>
+<li>Daily trend visualization</li>
+<li>Summary metrics</li>
+<li>Key findings and alerts</li>
+</ul>
+<p><strong>Tab 2: By Category</strong></p>
+<ul>
+<li>Variance breakdown by menu category</li>
+<li>Table with columns:<ul>
+<li>Category Name</li>
+<li>Theoretical Usage</li>
+<li>Actual Usage</li>
+<li>Variance Amount</li>
+<li>Variance %</li>
+<li>Status (Good/Warning/Critical)</li>
+</ul>
+</li>
+<li>Sort by variance to identify problem areas</li>
+</ul>
+<p><strong>Tab 3: By Item</strong></p>
+<ul>
+<li>Item-level detail view</li>
+<li>Drill-down capability</li>
+<li>Table with columns:<ul>
+<li>Item Name</li>
+<li>Recipe Code</li>
+<li>Qty Sold</li>
+<li>Theoretical Usage</li>
+<li>Actual Usage</li>
+<li>Variance Amount</li>
+<li>Variance %</li>
+<li>Actions (View Recipe, Adjust Recipe)</li>
+</ul>
+</li>
+</ul>
+<p><strong>Filters &amp; Controls</strong>:</p>
+<ul>
+<li><strong>Location Filter</strong>: All Locations or specific outlet</li>
+<li><strong>Date Range Selector</strong>: MTD, Last 7 Days, Last 30 Days, Custom</li>
+<li><strong>More Filters Button</strong>: Advanced filtering options</li>
+<li><strong>Export Button</strong>: Export variance report</li>
+</ul>
+<p><strong>Variance Thresholds</strong>:</p>
+<ul>
+<li><strong>Good</strong> (Green): ≤3% variance - Within acceptable limits</li>
+<li><strong>Warning</strong> (Yellow): 3-5% variance - Monitor closely</li>
+<li><strong>Critical</strong> (Red): &gt;5% variance - Requires immediate investigation</li>
+</ul>
+<p><strong>Common Variance Causes</strong>:</p>
+<p><strong>Positive Variance (Actual &gt; Theoretical)</strong>:</p>
+<ol>
+<li><strong>Waste</strong>: Food spoilage, preparation waste</li>
+<li><strong>Theft</strong>: Employee or external theft</li>
+<li><strong>Portion Control</strong>: Over-portioning by staff</li>
+<li><strong>Recipe Inaccuracy</strong>: Recipe quantities not matching reality</li>
+<li><strong>Measurement Errors</strong>: Inconsistent measuring practices</li>
+<li><strong>Spillage</strong>: Accidents during prep or service</li>
+<li><strong>Free Items</strong>: Complimentary items not recorded in POS</li>
+</ol>
+<p><strong>Negative Variance (Actual &lt; Theoretical)</strong>:</p>
+<ol>
+<li><strong>Under-portioning</strong>: Portions smaller than specified</li>
+<li><strong>Incomplete Recording</strong>: Items not properly deducted from inventory</li>
+<li><strong>Recipe Efficiency</strong>: Better yield than recipe specifies</li>
+<li><strong>Inventory Errors</strong>: Stock count inaccuracies</li>
+</ol>
+<p><strong>Investigation Workflow</strong>:</p>
+<ol>
+<li><p><strong>Identify High Variance Items</strong>:</p>
+<ul>
+<li>Navigate to &quot;By Item&quot; tab</li>
+<li>Sort by Variance % descending</li>
+<li>Focus on top 10 variances</li>
+</ul>
+</li>
+<li><p><strong>Analyze Patterns</strong>:</p>
+<ul>
+<li>Check if variance consistent or spike</li>
+<li>Review daily trend chart</li>
+<li>Compare across locations</li>
+</ul>
+</li>
+<li><p><strong>Investigate Root Cause</strong>:</p>
+<ul>
+<li>Review recipe accuracy</li>
+<li>Observe preparation process</li>
+<li>Check portion control tools (scales, measuring cups)</li>
+<li>Interview kitchen staff</li>
+<li>Review security footage (if theft suspected)</li>
+</ul>
+</li>
+<li><p><strong>Take Corrective Action</strong>:</p>
+<ul>
+<li>Adjust recipe if inaccurate</li>
+<li>Retrain staff on portioning</li>
+<li>Implement better measuring tools</li>
+<li>Enhance security measures</li>
+<li>Update par levels</li>
+</ul>
+</li>
+<li><p><strong>Monitor Improvement</strong>:</p>
+<ul>
+<li>Track variance over next period</li>
+<li>Verify corrective actions effective</li>
+<li>Adjust as needed</li>
+</ul>
+</li>
+</ol>
+<p><strong>Business Value</strong>:</p>
+<ul>
+<li><strong>Cost Control</strong>: Reduce waste by 1-3% typically saves $10K-30K annually</li>
+<li><strong>Recipe Validation</strong>: Ensure recipes reflect reality</li>
+<li><strong>Theft Detection</strong>: Early identification of inventory shrinkage</li>
+<li><strong>Staff Training</strong>: Data-driven feedback for portion control</li>
+<li><strong>Procurement Optimization</strong>: Accurate forecasting based on real usage</li>
+<li><strong>Profitability</strong>: Every 1% variance reduction improves bottom line</li>
+</ul>
+<p><strong>Formulas</strong>:</p>
+<pre><code>Theoretical Usage = Σ(Recipe Cost × Quantity Sold)
+Actual Usage = Σ(Inventory Deductions)
+Variance Amount = Actual Usage - Theoretical Usage
+Variance % = (Variance Amount / Theoretical Usage) × 100
+</code></pre>
+<h2 id="common-features-across-reports">Common Features Across Reports</h2>
+<h3 id="date-range-selection">Date Range Selection</h3>
+<p><strong>Presets</strong>:</p>
+<ul>
+<li>Today</li>
+<li>Yesterday</li>
+<li>This Week</li>
+<li>Last Week</li>
+<li>Month to Date (MTD)</li>
+<li>Last Month</li>
+<li>Year to Date (YTD)</li>
+<li>Custom Range</li>
+</ul>
+<p><strong>Custom Range</strong>:</p>
+<ul>
+<li>Start date picker</li>
+<li>End date picker</li>
+<li>Maximum range: 1 year</li>
+<li>Apply button</li>
+</ul>
+<h3 id="export-functionality">Export Functionality</h3>
+<p><strong>Formats</strong>:</p>
+<ul>
+<li><strong>PDF</strong>: Print-friendly format with charts</li>
+<li><strong>Excel</strong>: Data tables with formulas preserved</li>
+<li><strong>CSV</strong>: Raw data for further analysis</li>
+</ul>
+<p><strong>Export Options</strong>:</p>
+<ul>
+<li>Include charts (PDF only)</li>
+<li>Summary metrics only</li>
+<li>Detailed data</li>
+<li>Custom date range override</li>
+</ul>
+<h3 id="responsive-design">Responsive Design</h3>
+<ul>
+<li>Desktop: Full layout with charts</li>
+<li>Tablet: Stacked layout, charts adapt</li>
+<li>Mobile: Scrollable tables, simplified charts</li>
+</ul>
+<h3 id="performance-optimization">Performance Optimization</h3>
+<ul>
+<li>Server-side data aggregation</li>
+<li>Client-side caching (15-minute TTL)</li>
+<li>Lazy loading for large datasets</li>
+<li>Progressive rendering for charts</li>
+</ul>
+<h2 id="report-scheduling-future-enhancement">Report Scheduling (Future Enhancement)</h2>
+<p><strong>Planned Features</strong>:</p>
+<ol>
+<li><p><strong>Scheduled Reports</strong>:</p>
+<ul>
+<li>Daily, Weekly, Monthly frequency</li>
+<li>Email delivery to specified recipients</li>
+<li>PDF format with executive summary</li>
+</ul>
+</li>
+<li><p><strong>Report Subscriptions</strong>:</p>
+<ul>
+<li>Users subscribe to reports</li>
+<li>Automatic delivery based on preferences</li>
+<li>Customizable format and detail level</li>
+</ul>
+</li>
+<li><p><strong>Alerts</strong>:</p>
+<ul>
+<li>Threshold-based alerts (e.g., variance &gt;5%)</li>
+<li>Automatic email/SMS notifications</li>
+<li>Configurable alert rules</li>
+</ul>
+</li>
+</ol>
+<h2 id="best-practices">Best Practices</h2>
+<h3 id="gross-profit-analysis">Gross Profit Analysis</h3>
+<ol>
+<li><strong>Review Weekly</strong>: Track margin trends consistently</li>
+<li><strong>Compare Periods</strong>: Use vs last period comparison</li>
+<li><strong>Drill Down</strong>: Start with outlets, then categories, then items</li>
+<li><strong>Target Setting</strong>: Set realistic margin targets by category</li>
+<li><strong>Action Items</strong>: Address low-margin items or outlets</li>
+</ol>
+<h3 id="consumption-report">Consumption Report</h3>
+<ol>
+<li><strong>Review Daily</strong>: Catch variances early</li>
+<li><strong>Focus on High-Variance</strong>: Address biggest issues first</li>
+<li><strong>Pattern Recognition</strong>: Look for trends, not one-time spikes</li>
+<li><strong>Staff Involvement</strong>: Share data with kitchen staff</li>
+<li><strong>Continuous Improvement</strong>: Track month-over-month improvement</li>
+</ol>
+<h3 id="general">General</h3>
+<ol>
+<li><strong>Consistent Time Periods</strong>: Use same periods for comparison</li>
+<li><strong>Location-Specific Analysis</strong>: Different outlets have different dynamics</li>
+<li><strong>Seasonal Adjustment</strong>: Account for seasonal variation</li>
+<li><strong>Data Quality</strong>: Ensure recipe costs updated regularly</li>
+<li><strong>Documentation</strong>: Document investigation findings</li>
+</ol>
+<h2 id="integration-points">Integration Points</h2>
+<h3 id="transaction-management">Transaction Management</h3>
+<ul>
+<li>Sales transaction data source</li>
+<li>Item-level detail for analysis</li>
+<li>Transaction timestamps for trend analysis</li>
+</ul>
+<h3 id="recipe-management">Recipe Management</h3>
+<ul>
+<li>Recipe costs for theoretical calculations</li>
+<li>Recipe ingredients for usage tracking</li>
+<li>Recipe categories for grouping</li>
+</ul>
+<h3 id="inventory-management">Inventory Management</h3>
+<ul>
+<li>Actual usage data from stock movements</li>
+<li>Real-time inventory levels</li>
+<li>Par level information</li>
+</ul>
+<h3 id="finance">Finance</h3>
+<ul>
+<li>Cost of goods sold (COGS) calculation</li>
+<li>P&amp;L report integration</li>
+<li>Budget vs actual comparison</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="gross-profit-issues">Gross Profit Issues</h3>
+<p><strong>Low Margins Across All Items</strong>:</p>
+<ul>
+<li>Check if recipe costs updated recently</li>
+<li>Verify ingredient price increases</li>
+<li>Review pricing strategy</li>
+<li>Analyze competitive positioning</li>
+</ul>
+<p><strong>Specific Item Low Margin</strong>:</p>
+<ul>
+<li>Verify recipe cost calculation</li>
+<li>Check portioning accuracy</li>
+<li>Consider price increase</li>
+<li>Evaluate ingredient substitutions</li>
+</ul>
+<h3 id="consumption-report-issues">Consumption Report Issues</h3>
+<p><strong>High Variance Everywhere</strong>:</p>
+<ul>
+<li>Audit inventory counting process</li>
+<li>Verify recipe accuracy</li>
+<li>Check stock deduction automation</li>
+<li>Review staff training</li>
+</ul>
+<p><strong>Negative Variance</strong>:</p>
+<ul>
+<li>Investigate under-portioning</li>
+<li>Check inventory count accuracy</li>
+<li>Verify stock deductions configured correctly</li>
+</ul>
+<p><strong>Variance Fluctuations</strong>:</p>
+<ul>
+<li>Review staffing changes</li>
+<li>Check for new menu items</li>
+<li>Verify seasonal patterns</li>
+<li>Investigate equipment issues</li>
+</ul>
+<h2 id="future-enhancements">Future Enhancements</h2>
+<ol>
+<li><strong>AI-Powered Insights</strong>: Machine learning to predict variances and suggest optimizations</li>
+<li><strong>Benchmark Comparisons</strong>: Industry benchmarks and peer comparisons</li>
+<li><strong>What-If Analysis</strong>: Model price changes and cost reductions</li>
+<li><strong>Integrated Action Plans</strong>: Create and track improvement initiatives</li>
+<li><strong>Mobile Dashboard</strong>: Mobile-optimized views for on-the-go monitoring</li>
+<li><strong>Real-Time Alerts</strong>: Push notifications for critical variances</li>
+<li><strong>Video Tutorial Integration</strong>: Contextual help videos</li>
+<li><strong>Custom Reports</strong>: User-created custom reports with drag-and-drop</li>
+<li><strong>Historical Comparison</strong>: Multi-year trend analysis</li>
+<li><strong>Predictive Analytics</strong>: Forecast future costs and revenues</li>
+</ol>
+<h2 id="related-documentation">Related Documentation</h2>
+<ul>
+<li><a href="./POS-INTEGRATION-MODULE.html">POS Integration Module</a></li>
+<li><a href="./MAPPING.html">Mapping Documentation</a></li>
+<li><a href="./TRANSACTIONS.html">Transactions Documentation</a></li>
+<li><a href="../operational-planning/RECIPE-MANAGEMENT.html">Recipe Management</a></li>
+<li><a href="../inventory/">Inventory Management</a></li>
+</ul>
+<hr>
+<p><strong>Last Updated</strong>: October 10, 2025<br><strong>Version</strong>: 1.0<br><strong>Status</strong>: Production</p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#pos-reports" class="level-1">POS Reports</a>
+<a href="#overview" class="level-2">Overview</a>
+<a href="#screenshots" class="level-2">Screenshots</a>
+<a href="#report-types" class="level-2">Report Types</a>
+<a href="#1-gross-profit-analysis" class="level-3">1. Gross Profit Analysis</a>
+<a href="#2-consumption-report" class="level-3">2. Consumption Report</a>
+<a href="#common-features-across-reports" class="level-2">Common Features Across Reports</a>
+<a href="#date-range-selection" class="level-3">Date Range Selection</a>
+<a href="#export-functionality" class="level-3">Export Functionality</a>
+<a href="#responsive-design" class="level-3">Responsive Design</a>
+<a href="#performance-optimization" class="level-3">Performance Optimization</a>
+<a href="#report-scheduling-future-enhancement" class="level-2">Report Scheduling (Future Enhancement)</a>
+<a href="#best-practices" class="level-2">Best Practices</a>
+<a href="#gross-profit-analysis" class="level-3">Gross Profit Analysis</a>
+<a href="#consumption-report" class="level-3">Consumption Report</a>
+<a href="#general" class="level-3">General</a>
+<a href="#integration-points" class="level-2">Integration Points</a>
+<a href="#transaction-management" class="level-3">Transaction Management</a>
+<a href="#recipe-management" class="level-3">Recipe Management</a>
+<a href="#inventory-management" class="level-3">Inventory Management</a>
+<a href="#finance" class="level-3">Finance</a>
+<a href="#troubleshooting" class="level-2">Troubleshooting</a>
+<a href="#gross-profit-issues" class="level-3">Gross Profit Issues</a>
+<a href="#consumption-report-issues" class="level-3">Consumption Report Issues</a>
+<a href="#future-enhancements" class="level-2">Future Enhancements</a>
+<a href="#related-documentation" class="level-2">Related Documentation</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

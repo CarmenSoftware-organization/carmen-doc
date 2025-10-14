@@ -1,0 +1,1691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carmen ERP - System Architecture Documentation - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: var(--bg-gradient);
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr 300px;
+            gap: 2rem;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 1.5rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .back-to-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: var(--primary-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        .back-to-home:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        /* Content Area */
+        .doc-content {
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 260px 1fr 280px;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 1.5rem;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 2.5rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            .doc-nav {
+                display: none;
+            }
+            .doc-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </div>
+            <div class="doc-header-actions">
+                <a href="../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../SYSTEM-DOCUMENTATION-INDEX.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Documentation Index</span>
+                    </a>
+                    <a href="../DOCUMENTATION-CATALOG.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Catalog</span>
+                    </a>
+                    <a href="../DOCUMENTATION-SUMMARY-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Summary</span>
+                    </a>
+                    <a href="../MODULE-VERIFICATION-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Module Verification</span>
+                    </a>
+                    <a href="../SYSTEM-GAPS-AND-ROADMAP.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Gaps & Roadmap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../architecture/SYSTEM-ARCHITECTURE.html" class="nav-item active">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-users"></i>
+                    <span>Stakeholders</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../stakeholders/BUSINESS-VALUE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pr/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Requests</span>
+                    </a>
+                    <a href="../po/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Orders</span>
+                    </a>
+                    <a href="../grn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Goods Received Note</span>
+                    </a>
+                    <a href="../cn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Credit Notes</span>
+                    </a>
+                    <a href="../prt/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>PR Templates</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-boxes"></i>
+                    <span>Inventory Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../inv/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Overview</span>
+                    </a>
+                    <a href="../inv/inventory-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Specification</span>
+                    </a>
+                    <a href="../inv/inventory-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Sitemap</span>
+                    </a>
+                    <a href="../pc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Physical Count</span>
+                    </a>
+                    <a href="../sc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Spot Check</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-handshake"></i>
+                    <span>Vendor Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../vm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Overview</span>
+                    </a>
+                    <a href="../vm/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Module</span>
+                    </a>
+                    <a href="../vm/MANAGE-VENDORS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Manage Vendors</span>
+                    </a>
+                    <a href="../vm/TEMPLATES.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Templates</span>
+                    </a>
+                    <a href="../vm/CAMPAIGNS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Campaigns</span>
+                    </a>
+                    <a href="../vm/PRICELISTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Pricelists</span>
+                    </a>
+                    <a href="../vm/VENDOR-PORTAL.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Portal</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cube"></i>
+                    <span>Product Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Overview</span>
+                    </a>
+                    <a href="../pm/product-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Specification</span>
+                    </a>
+                    <a href="../pm/product-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-store"></i>
+                    <span>Store Operations</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../store-ops/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Overview</span>
+                    </a>
+                    <a href="../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Module</span>
+                    </a>
+                    <a href="../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Requisitions</span>
+                    </a>
+                    <a href="../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Stock Replenishment</span>
+                    </a>
+                    <a href="../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Wastage Reporting</span>
+                    </a>
+                    <a href="../store-ops/GLOSSARY.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Glossary</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Operational Planning</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../operational-planning/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Overview</span>
+                    </a>
+                    <a href="../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Module</span>
+                    </a>
+                    <a href="../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Menu Engineering</span>
+                    </a>
+                    <a href="../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Recipe Management</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cash-register"></i>
+                    <span>POS Integration</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pos-integration/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Overview</span>
+                    </a>
+                    <a href="../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Module</span>
+                    </a>
+                    <a href="../pos-integration/MAPPING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Mapping Subsystem</span>
+                    </a>
+                    <a href="../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Transaction Management</span>
+                    </a>
+                    <a href="../pos-integration/REPORTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports & Analytics</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../dashboard/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Overview</span>
+                    </a>
+                    <a href="../dashboard/sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>System Requirements</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../carmen-erp-system-requirements-documentation.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Requirements</span>
+                    </a>
+                    <a href="../comprehensive-schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="carmen-erp-system-architecture-documentation">Carmen ERP - System Architecture Documentation</h1>
+<blockquote>
+<p><strong>Document Type:</strong> Technical Architecture<br><strong>Audience:</strong> Senior Developers, System Architects, Technical Leads<br><strong>Last Updated:</strong> October 9, 2025<br><strong>Version:</strong> 1.0</p>
+</blockquote>
+<hr>
+<h2 id="-table-of-contents">📋 Table of Contents</h2>
+<ol>
+<li><a href="#system-overview">System Overview</a></li>
+<li><a href="#technology-stack">Technology Stack</a></li>
+<li><a href="#architecture-layers">Architecture Layers</a></li>
+<li><a href="#module-architecture">Module Architecture</a></li>
+<li><a href="#data-architecture">Data Architecture</a></li>
+<li><a href="#component-architecture">Component Architecture</a></li>
+<li><a href="#state-management">State Management</a></li>
+<li><a href="#security-architecture">Security Architecture</a></li>
+<li><a href="#integration-architecture">Integration Architecture</a></li>
+<li><a href="#deployment-architecture">Deployment Architecture</a></li>
+</ol>
+<hr>
+<h2 id="-system-overview">🎯 System Overview</h2>
+<p>Carmen ERP is a modern, cloud-ready hospitality management system built on Next.js 14 with TypeScript, implementing a server-side rendering strategy with client-side hydration for optimal performance.</p>
+<h3 id="architecture-principles">Architecture Principles</h3>
+<ol>
+<li><strong>Component-Based Architecture:</strong> Modular, reusable React components</li>
+<li><strong>Type Safety:</strong> Strict TypeScript throughout</li>
+<li><strong>Server-First:</strong> Leverage Next.js App Router and Server Components</li>
+<li><strong>Centralized Data:</strong> Unified type system and mock data layer</li>
+<li><strong>Role-Based Security:</strong> Comprehensive RBAC implementation</li>
+<li><strong>Responsive Design:</strong> Mobile-first, accessible UI</li>
+</ol>
+<hr>
+<h2 id="-technology-stack">🏗️ Technology Stack</h2>
+<h3 id="frontend-layer">Frontend Layer</h3>
+<div class="mermaid">
+graph TB
+    subgraph "Frontend Technologies"
+        A[Next.js 14.0+]
+        B[React 18]
+        C[TypeScript 5.8+]
+        D[Tailwind CSS 3.4+]
+        E[Shadcn/ui Components]
+    end
+
+    subgraph "Component Library"
+        F[Radix UI Primitives]
+        G[Lucide Icons]
+        H[React Hook Form]
+        I[Zod Validation]
+    end
+
+    subgraph "State Management"
+        J[Zustand]
+        K[React Query/TanStack Query]
+        L[React Context API]
+    end
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    E --> F
+    E --> G
+    B --> H
+    H --> I
+    B --> J
+    B --> K
+    B --> L
+
+</div>
+<h3 id="technology-stack-details">Technology Stack Details</h3>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Technology</th>
+<th>Version</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Framework</strong></td>
+<td>Next.js</td>
+<td>14.0+</td>
+<td>Full-stack React framework</td>
+</tr>
+<tr>
+<td><strong>Language</strong></td>
+<td>TypeScript</td>
+<td>5.8+</td>
+<td>Type-safe development</td>
+</tr>
+<tr>
+<td><strong>UI Library</strong></td>
+<td>React</td>
+<td>18</td>
+<td>Component-based UI</td>
+</tr>
+<tr>
+<td><strong>Styling</strong></td>
+<td>Tailwind CSS</td>
+<td>3.4+</td>
+<td>Utility-first CSS</td>
+</tr>
+<tr>
+<td><strong>Components</strong></td>
+<td>Shadcn/ui</td>
+<td>Latest</td>
+<td>Pre-built accessible components</td>
+</tr>
+<tr>
+<td><strong>Primitives</strong></td>
+<td>Radix UI</td>
+<td>Latest</td>
+<td>Headless UI components</td>
+</tr>
+<tr>
+<td><strong>Icons</strong></td>
+<td>Lucide React</td>
+<td>Latest</td>
+<td>Icon library</td>
+</tr>
+<tr>
+<td><strong>Forms</strong></td>
+<td>React Hook Form</td>
+<td>Latest</td>
+<td>Form state management</td>
+</tr>
+<tr>
+<td><strong>Validation</strong></td>
+<td>Zod</td>
+<td>Latest</td>
+<td>Schema validation</td>
+</tr>
+<tr>
+<td><strong>State (Global)</strong></td>
+<td>Zustand</td>
+<td>Latest</td>
+<td>Global state management</td>
+</tr>
+<tr>
+<td><strong>State (Server)</strong></td>
+<td>React Query</td>
+<td>Latest</td>
+<td>Server state &amp; caching</td>
+</tr>
+<tr>
+<td><strong>Date Utils</strong></td>
+<td>date-fns</td>
+<td>Latest</td>
+<td>Date manipulation</td>
+</tr>
+<tr>
+<td><strong>Testing</strong></td>
+<td>Vitest</td>
+<td>Latest</td>
+<td>Unit testing</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="-architecture-layers">🏛️ Architecture Layers</h2>
+<h3 id="high-level-system-architecture">High-Level System Architecture</h3>
+<div class="mermaid">
+graph TB
+    subgraph "Presentation Layer"
+        A[Web Browser]
+        B[Mobile Browser]
+    end
+
+    subgraph "Application Layer"
+        C[Next.js App Router]
+        D[Page Components]
+        E[Server Components]
+        F[Client Components]
+    end
+
+    subgraph "Business Logic Layer"
+        G[Server Actions]
+        H[API Route Handlers]
+        I[Business Rules]
+        J[Workflow Engine]
+    end
+
+    subgraph "Data Access Layer"
+        K[Type System]
+        L[Mock Data Services]
+        M[Data Validators]
+        N[Type Guards]
+        O[Type Converters]
+    end
+
+    subgraph "Cross-Cutting Concerns"
+        P[Authentication]
+        Q[Authorization RBAC]
+        R[Logging]
+        S[Error Handling]
+    end
+
+    A --> C
+    B --> C
+    C --> D
+    D --> E
+    D --> F
+    E --> G
+    F --> G
+    G --> I
+    H --> I
+    I --> J
+    I --> L
+    L --> K
+    L --> M
+    L --> N
+    L --> O
+    P --> G
+    Q --> G
+    R --> G
+    S --> G
+
+</div>
+<h3 id="layer-responsibilities">Layer Responsibilities</h3>
+<h4>1. Presentation Layer</h4>
+<ul>
+<li><strong>Responsibility:</strong> User interface rendering</li>
+<li><strong>Technologies:</strong> HTML, CSS (Tailwind), React Components</li>
+<li><strong>Pattern:</strong> Component-based, responsive design</li>
+</ul>
+<h4>2. Application Layer</h4>
+<ul>
+<li><strong>Responsibility:</strong> Application routing and component orchestration</li>
+<li><strong>Technologies:</strong> Next.js App Router, React Server Components</li>
+<li><strong>Pattern:</strong> File-system based routing, server-first rendering</li>
+</ul>
+<h4>3. Business Logic Layer</h4>
+<ul>
+<li><strong>Responsibility:</strong> Business rules, validations, workflows</li>
+<li><strong>Technologies:</strong> TypeScript, Server Actions, Zod</li>
+<li><strong>Pattern:</strong> Domain-driven design, service-oriented</li>
+</ul>
+<h4>4. Data Access Layer</h4>
+<ul>
+<li><strong>Responsibility:</strong> Data management, type safety, validation</li>
+<li><strong>Technologies:</strong> TypeScript interfaces, Mock data, Validators</li>
+<li><strong>Pattern:</strong> Repository pattern, type-safe data access</li>
+</ul>
+<h4>5. Cross-Cutting Concerns</h4>
+<ul>
+<li><strong>Responsibility:</strong> Security, logging, error handling</li>
+<li><strong>Technologies:</strong> User Context, RBAC, Error boundaries</li>
+<li><strong>Pattern:</strong> Aspect-oriented programming</li>
+</ul>
+<hr>
+<h2 id="-module-architecture">📦 Module Architecture</h2>
+<h3 id="module-structure">Module Structure</h3>
+<div class="mermaid">
+graph LR
+    subgraph "Core Business Modules"
+        A[Procurement]
+        B[Inventory Management]
+        C[Vendor Management]
+        D[Product Management]
+    end
+
+    subgraph "Operational Modules"
+        E[Store Operations]
+        F[Recipe Management]
+        G[Production]
+    end
+
+    subgraph "Support Modules"
+        H[Finance]
+        I[Reporting & Analytics]
+        J[System Administration]
+    end
+
+    subgraph "Foundation Modules"
+        K[User Context]
+        L[RBAC Engine]
+        M[Workflow Engine]
+    end
+
+    A <-->|Stock Updates| B
+    A <-->|Vendor Orders| C
+    B <-->|Product Data| D
+    B <-->|Transfers| E
+    C <-->|Pricing| D
+    D <-->|Recipes| F
+    E <-->|Inventory| B
+    F <-->|Production| G
+    H <-->|Transactions| A
+    H <-->|Valuation| B
+    I <-->|Data| A
+    I <-->|Data| B
+    I <-->|Data| C
+    J <-->|Config| K
+    J <-->|Permissions| L
+    J <-->|Workflows| M
+    K --> A
+    K --> B
+    K --> C
+    L --> A
+    L --> B
+    M --> A
+
+</div>
+<h3 id="module-dependencies">Module Dependencies</h3>
+<div class="mermaid">
+graph TD
+    subgraph "Independent Modules No Dependencies"
+        A[Product Management]
+        B[Vendor Management]
+        C[User Management]
+    end
+
+    subgraph "Low Dependency Modules"
+        D[Recipe Management]
+        E[Finance Configuration]
+    end
+
+    subgraph "Medium Dependency Modules"
+        F[Store Operations]
+        G[Inventory Management]
+    end
+
+    subgraph "High Dependency Modules"
+        H[Procurement]
+        I[Reporting & Analytics]
+        J[Production]
+    end
+
+    A --> D
+    A --> G
+    A --> H
+    B --> H
+    C --> H
+    D --> J
+    E --> H
+    E --> G
+    G --> F
+    G --> H
+    G --> I
+    H --> I
+    F --> I
+    D --> I
+
+</div>
+<hr>
+<h2 id="-data-architecture">💾 Data Architecture</h2>
+<h3 id="centralized-type-system">Centralized Type System</h3>
+<p>All types are centralized in <code>/lib/types/</code>:</p>
+<div class="mermaid">
+graph TB
+    subgraph "Type System Structure"
+        A[index.ts - Barrel Export]
+
+        subgraph "Domain Types"
+            B[common.ts]
+            C[user.ts]
+            D[inventory.ts]
+            E[procurement.ts]
+            F[vendor.ts]
+            G[product.ts]
+            H[recipe.ts]
+            I[finance.ts]
+        end
+
+        subgraph "Utility Types"
+            J[guards.ts]
+            K[converters.ts]
+            L[validators.ts]
+        end
+    end
+
+    A --> B
+    A --> C
+    A --> D
+    A --> E
+    A --> F
+    A --> G
+    A --> H
+    A --> I
+    A --> J
+    A --> K
+    A --> L
+
+</div>
+<h3 id="data-flow-architecture">Data Flow Architecture</h3>
+<div class="mermaid">
+sequenceDiagram
+    participant U as User
+    participant C as Component
+    participant S as Server Action
+    participant V as Validator
+    participant D as Data Service
+    participant M as Mock Data
+    participant T as Type Guards
+
+    U->>C: User Action
+    C->>S: Call Server Action
+    S->>V: Validate Input (Zod)
+    V-->>S: Validation Result
+
+    alt Valid Input
+        S->>D: Request Data Operation
+        D->>M: Access Mock Data
+        M-->>D: Return Data
+        D->>T: Type Guard Check
+        T-->>D: Type Confirmed
+        D-->>S: Typed Data
+        S-->>C: Success Response
+        C-->>U: Update UI
+    else Invalid Input
+        V-->>S: Validation Errors
+        S-->>C: Error Response
+        C-->>U: Show Errors
+    end
+
+</div>
+<h3 id="mock-data-architecture">Mock Data Architecture</h3>
+<p>Centralized mock data in <code>/lib/mock-data/</code>:</p>
+<div class="mermaid">
+graph TB
+    subgraph "Mock Data Structure"
+        A[index.ts - Barrel Export]
+
+        subgraph "Entity Data"
+            B[users.ts]
+            C[vendors.ts]
+            D[products.ts]
+            E[inventory.ts]
+            F[procurement.ts]
+            G[recipes.ts]
+            H[finance.ts]
+        end
+
+        subgraph "Factories"
+            I[factories.ts]
+            J[test-scenarios/]
+        end
+    end
+
+    A --> B
+    A --> C
+    A --> D
+    A --> E
+    A --> F
+    A --> G
+    A --> H
+    A --> I
+    A --> J
+    I --> B
+    I --> C
+    I --> D
+
+</div>
+<hr>
+<h2 id="-component-architecture">🧩 Component Architecture</h2>
+<h3 id="component-hierarchy">Component Hierarchy</h3>
+<div class="mermaid">
+graph TB
+    subgraph "Layout Components"
+        A[RootLayout]
+        B[MainLayout]
+        C[AuthLayout]
+    end
+
+    subgraph "Navigation Components"
+        D[AppSidebar]
+        E[TopNav]
+        F[Breadcrumbs]
+    end
+
+    subgraph "Page Components"
+        G[List Pages]
+        H[Detail Pages]
+        I[Form Pages]
+        J[Dashboard Pages]
+    end
+
+    subgraph "Feature Components"
+        K[Module-Specific Components]
+        L[Shared Components]
+    end
+
+    subgraph "UI Components"
+        M[Shadcn/ui Components]
+        N[Custom Components]
+    end
+
+    A --> B
+    A --> C
+    B --> D
+    B --> E
+    B --> F
+    B --> G
+    B --> H
+    B --> I
+    B --> J
+    G --> K
+    G --> L
+    H --> K
+    H --> L
+    I --> K
+    I --> L
+    J --> K
+    J --> L
+    K --> M
+    K --> N
+    L --> M
+    L --> N
+
+</div>
+<h3 id="component-patterns">Component Patterns</h3>
+<h4>1. Server Component Pattern (Default)</h4>
+<pre><code class="language-typescript">// app/(main)/procurement/purchase-requests/page.tsx
+import { getPurchaseRequests } from &#39;@/lib/data/procurement&#39;
+
+export default async function PurchaseRequestsPage() {
+  const requests = await getPurchaseRequests()
+
+  return (
+    &lt;div&gt;
+      &lt;PurchaseRequestList requests={requests} /&gt;
+    &lt;/div&gt;
+  )
+}
+</code></pre>
+<h4>2. Client Component Pattern</h4>
+<pre><code class="language-typescript">&#39;use client&#39;
+
+// components/procurement/PurchaseRequestList.tsx
+import { useState, useMemo } from &#39;react&#39;
+
+export function PurchaseRequestList({ requests }) {
+  const [filter, setFilter] = useState(&#39;&#39;)
+
+  const filtered = useMemo(() =&gt;
+    requests.filter(r =&gt; r.title.includes(filter)),
+    [requests, filter]
+  )
+
+  return (
+    // Component JSX
+  )
+}
+</code></pre>
+<h4>3. Form Component Pattern</h4>
+<pre><code class="language-typescript">&#39;use client&#39;
+
+import { useForm } from &#39;react-hook-form&#39;
+import { zodResolver } from &#39;@hookform/resolvers/zod&#39;
+import * as z from &#39;zod&#39;
+
+const schema = z.object({
+  title: z.string().min(1),
+  // ... other fields
+})
+
+export function PurchaseRequestForm() {
+  const form = useForm&lt;z.infer&lt;typeof schema&gt;&gt;({
+    resolver: zodResolver(schema),
+  })
+
+  async function onSubmit(data) {
+    // Server action call
+  }
+
+  return (
+    // Form JSX
+  )
+}
+</code></pre>
+<hr>
+<h2 id="-state-management">🔄 State Management</h2>
+<h3 id="state-management-architecture">State Management Architecture</h3>
+<div class="mermaid">
+graph TB
+    subgraph "Local Component State"
+        A[useState]
+        B[useReducer]
+        C[useRef]
+    end
+
+    subgraph "Form State"
+        D[React Hook Form]
+        E[Zod Validation]
+    end
+
+    subgraph "Global UI State"
+        F[Zustand Store]
+        G[sidebar state]
+        H[theme state]
+        I[filter state]
+    end
+
+    subgraph "Server State"
+        J[React Query]
+        K[Cache Management]
+        L[Optimistic Updates]
+    end
+
+    subgraph "Context State"
+        M[UserContext]
+        N[ThemeContext]
+    end
+
+    D --> E
+    F --> G
+    F --> H
+    F --> I
+    J --> K
+    J --> L
+
+</div>
+<h3 id="user-context-architecture">User Context Architecture</h3>
+<div class="mermaid">
+graph TB
+    subgraph "User Context Provider"
+        A[UserContextProvider]
+
+        subgraph "User State"
+            B[Current User]
+            C[Active Role]
+            D[Active Department]
+            E[Active Location]
+        end
+
+        subgraph "Permission State"
+            F[User Permissions]
+            G[Role Permissions]
+            H[Feature Flags]
+        end
+
+        subgraph "Actions"
+            I[Switch Role]
+            J[Switch Department]
+            K[Switch Location]
+            L[Check Permission]
+        end
+    end
+
+    A --> B
+    A --> C
+    A --> D
+    A --> E
+    A --> F
+    A --> G
+    A --> H
+    A --> I
+    A --> J
+    A --> K
+    A --> L
+
+    C --> F
+    C --> G
+    B --> F
+
+</div>
+<hr>
+<h2 id="-security-architecture">🔐 Security Architecture</h2>
+<h3 id="role-based-access-control-rbac">Role-Based Access Control (RBAC)</h3>
+<div class="mermaid">
+graph TB
+    subgraph "RBAC Components"
+        A[User]
+        B[Role Assignment]
+        C[Role]
+        D[Permissions]
+        E[Resources]
+    end
+
+    subgraph "Permission Check Flow"
+        F[Request]
+        G[Extract User]
+        H[Load Permissions]
+        I[Check Permission]
+        J[Allow/Deny]
+    end
+
+    A -->|has| B
+    B -->|defines| C
+    C -->|grants| D
+    D -->|to access| E
+
+    F --> G
+    G --> H
+    H --> I
+    I --> J
+
+</div>
+<h3 id="user-roles-amp-permissions">User Roles &amp; Permissions</h3>
+<div class="mermaid">
+graph LR
+    subgraph "User Roles"
+        A[System Administrator]
+        B[Financial Manager]
+        C[Department Manager]
+        D[Purchasing Staff]
+        E[Chef]
+        F[Counter Staff]
+        G[Staff]
+    end
+
+    subgraph "Permission Levels"
+        H[Full Access]
+        I[Departmental Access]
+        J[Limited Access]
+        K[View Only]
+    end
+
+    A --> H
+    B --> I
+    C --> I
+    D --> J
+    E --> J
+    F --> K
+    G --> K
+
+</div>
+<h3 id="authentication-flow">Authentication Flow</h3>
+<div class="mermaid">
+sequenceDiagram
+    participant U as User
+    participant L as Login Page
+    participant A as Auth Service
+    participant S as Session Manager
+    participant C as UserContext
+
+    U->>L: Enter Credentials
+    L->>A: Validate Credentials
+    A->>A: Check User DB
+
+    alt Valid Credentials
+        A->>S: Create Session
+        S->>C: Set User Context
+        C->>U: Redirect to Dashboard
+    else Invalid Credentials
+        A->>L: Return Error
+        L->>U: Show Error
+    end
+
+</div>
+<hr>
+<h2 id="-integration-architecture">🔌 Integration Architecture</h2>
+<h3 id="module-integration-points">Module Integration Points</h3>
+<div class="mermaid">
+graph TB
+    subgraph "Procurement Module"
+        A[Purchase Requests]
+        B[Purchase Orders]
+        C[GRN]
+    end
+
+    subgraph "Inventory Module"
+        D[Stock Levels]
+        E[Stock Transactions]
+        F[Physical Counts]
+    end
+
+    subgraph "Vendor Module"
+        G[Vendor Profiles]
+        H[Price Lists]
+    end
+
+    subgraph "Finance Module"
+        I[Account Codes]
+        J[Cost Centers]
+        K[Transactions]
+    end
+
+    A -->|Creates| B
+    B -->|References| G
+    B -->|Uses| H
+    B -->|Generates| C
+    C -->|Updates| D
+    C -->|Creates| E
+    E -->|Maps to| I
+    E -->|Allocates to| J
+    F -->|Adjusts| D
+    F -->|Creates| E
+
+</div>
+<h3 id="external-integration-architecture">External Integration Architecture</h3>
+<div class="mermaid">
+graph TB
+    subgraph "Carmen ERP"
+        A[POS Integration Module]
+        B[System Integrations]
+    end
+
+    subgraph "External Systems"
+        C[POS System]
+        D[Accounting System]
+        E[E-commerce Platform]
+    end
+
+    subgraph "Integration Layer"
+        F[API Gateway]
+        G[Data Transformation]
+        H[Error Handling]
+        I[Logging]
+    end
+
+    C <-->|Recipe/Product Mapping| A
+    C <-->|Sales Transactions| A
+    D <-->|Financial Data| B
+    E <-->|Product Data| B
+
+    A --> F
+    B --> F
+    F --> G
+    G --> H
+    G --> I
+
+</div>
+<hr>
+<h2 id="-deployment-architecture">🚀 Deployment Architecture</h2>
+<h3 id="deployment-model">Deployment Model</h3>
+<div class="mermaid">
+graph TB
+    subgraph "CDN Edge Network"
+        A[Static Assets]
+        B[Images]
+        C[CSS/JS Bundles]
+    end
+
+    subgraph "Next.js Application"
+        D[Server Components]
+        E[API Routes]
+        F[Server Actions]
+    end
+
+    subgraph "Database Layer Future"
+        G[PostgreSQL/Supabase]
+        H[Redis Cache]
+    end
+
+    subgraph "Storage Layer Future"
+        I[File Storage]
+        J[Document Storage]
+    end
+
+    A -->|Serves| D
+    B -->|Serves| D
+    C -->|Serves| D
+    D --> E
+    D --> F
+    E --> G
+    F --> G
+    E --> H
+    F --> H
+    E --> I
+    F --> J
+
+</div>
+<h3 id="file-system-architecture">File System Architecture</h3>
+<pre><code>carmen/
+├── app/                          # Next.js App Router
+│   ├── (auth)/                   # Authentication routes
+│   ├── (main)/                   # Main application routes
+│   │   ├── dashboard/
+│   │   ├── procurement/
+│   │   ├── inventory-management/
+│   │   ├── vendor-management/
+│   │   ├── product-management/
+│   │   ├── store-operations/
+│   │   ├── operational-planning/
+│   │   ├── production/
+│   │   ├── reporting-analytics/
+│   │   ├── finance/
+│   │   └── system-administration/
+│   ├── layout.tsx                # Root layout
+│   └── page.tsx                  # Home page
+│
+├── components/                   # React components
+│   ├── ui/                       # Shadcn/ui components
+│   ├── procurement/              # Procurement components
+│   ├── inventory/                # Inventory components
+│   ├── vendor/                   # Vendor components
+│   └── ...                       # Other module components
+│
+├── lib/                          # Utility libraries
+│   ├── types/                    # Centralized type system
+│   │   ├── index.ts              # Barrel export
+│   │   ├── common.ts             # Common types
+│   │   ├── user.ts               # User types
+│   │   ├── inventory.ts          # Inventory types
+│   │   ├── procurement.ts        # Procurement types
+│   │   ├── guards.ts             # Type guards
+│   │   ├── converters.ts         # Type converters
+│   │   └── validators.ts         # Validators
+│   │
+│   ├── mock-data/                # Centralized mock data
+│   │   ├── index.ts              # Barrel export
+│   │   ├── users.ts
+│   │   ├── vendors.ts
+│   │   ├── products.ts
+│   │   ├── factories.ts
+│   │   └── test-scenarios/
+│   │
+│   ├── context/                  # React contexts
+│   │   └── user-context.tsx     # User context &amp; RBAC
+│   │
+│   └── utils/                    # Utility functions
+│       ├── formatters.ts
+│       └── validators.ts
+│
+├── public/                       # Static assets
+└── docs/                         # Documentation
+    └── documents/                # System documentation
+</code></pre>
+<hr>
+<h2 id="-performance-architecture">📊 Performance Architecture</h2>
+<h3 id="rendering-strategy">Rendering Strategy</h3>
+<div class="mermaid">
+graph TB
+    subgraph "Server-Side Rendering"
+        A[Initial Page Load]
+        B[Server Component Render]
+        C[Static HTML Generation]
+        D[Stream to Client]
+    end
+
+    subgraph "Client-Side Hydration"
+        E[Client Component Hydration]
+        F[Event Handlers Attachment]
+        G[State Initialization]
+    end
+
+    subgraph "Subsequent Navigation"
+        H[Client-Side Routing]
+        I[Partial Revalidation]
+        J[Optimistic Updates]
+    end
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    E --> F
+    F --> G
+    G --> H
+    H --> I
+    H --> J
+
+</div>
+<h3 id="caching-strategy">Caching Strategy</h3>
+<div class="mermaid">
+graph LR
+    subgraph "Cache Layers"
+        A[Browser Cache]
+        B[CDN Cache]
+        C[Server Cache]
+        D[React Query Cache]
+    end
+
+    subgraph "Cache Invalidation"
+        E[Time-based TTL]
+        F[Event-based]
+        G[Manual]
+    end
+
+    A --> E
+    B --> E
+    C --> E
+    C --> F
+    D --> F
+    D --> G
+
+</div>
+<hr>
+<h2 id="-related-documents">📚 Related Documents</h2>
+<ul>
+<li><a href="./TECHNICAL-ARCHITECTURE.html">Technical Architecture Details</a></li>
+<li><a href="./DATA-FLOW-DIAGRAMS.html">Data Flow Diagrams</a></li>
+<li><a href="./INTEGRATION-ARCHITECTURE.html">Integration Architecture</a></li>
+<li><a href="../api/API-DOCUMENTATION.html">API Documentation</a></li>
+<li><a href="../development/DEVELOPMENT-GUIDE.html">Development Guide</a></li>
+</ul>
+<hr>
+<h2 id="-architecture-review">📧 Architecture Review</h2>
+<p>For architecture-related questions or proposals:</p>
+<ul>
+<li><strong>Email:</strong> <a href="mailto:architecture-team@carmen-erp.com">architecture-team@carmen-erp.com</a></li>
+<li><strong>Review Schedule:</strong> Bi-weekly</li>
+<li><strong>RFC Process:</strong> Submit via project management system</li>
+</ul>
+<hr>
+<h2 id="-version-history">📜 Version History</h2>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Changes</th>
+<th>Architect</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1.0</td>
+<td>2025-10-09</td>
+<td>Initial architecture documentation</td>
+<td>System Architecture Team</td>
+</tr>
+</tbody></table>
+<hr>
+<p><strong>Last Updated:</strong> October 9, 2025<br><strong>Next Review:</strong> November 1, 2025<br><strong>Architecture Version:</strong> 1.0</p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#carmen-erp-system-architecture-documentation" class="level-1">Carmen ERP - System Architecture Documentation</a>
+<a href="#-table-of-contents" class="level-2">📋 Table of Contents</a>
+<a href="#-system-overview" class="level-2">🎯 System Overview</a>
+<a href="#architecture-principles" class="level-3">Architecture Principles</a>
+<a href="#-technology-stack" class="level-2">🏗️ Technology Stack</a>
+<a href="#frontend-layer" class="level-3">Frontend Layer</a>
+<a href="#technology-stack-details" class="level-3">Technology Stack Details</a>
+<a href="#-architecture-layers" class="level-2">🏛️ Architecture Layers</a>
+<a href="#high-level-system-architecture" class="level-3">High-Level System Architecture</a>
+<a href="#layer-responsibilities" class="level-3">Layer Responsibilities</a>
+<a href="#-module-architecture" class="level-2">📦 Module Architecture</a>
+<a href="#module-structure" class="level-3">Module Structure</a>
+<a href="#module-dependencies" class="level-3">Module Dependencies</a>
+<a href="#-data-architecture" class="level-2">💾 Data Architecture</a>
+<a href="#centralized-type-system" class="level-3">Centralized Type System</a>
+<a href="#data-flow-architecture" class="level-3">Data Flow Architecture</a>
+<a href="#mock-data-architecture" class="level-3">Mock Data Architecture</a>
+<a href="#-component-architecture" class="level-2">🧩 Component Architecture</a>
+<a href="#component-hierarchy" class="level-3">Component Hierarchy</a>
+<a href="#component-patterns" class="level-3">Component Patterns</a>
+<a href="#-state-management" class="level-2">🔄 State Management</a>
+<a href="#state-management-architecture" class="level-3">State Management Architecture</a>
+<a href="#user-context-architecture" class="level-3">User Context Architecture</a>
+<a href="#-security-architecture" class="level-2">🔐 Security Architecture</a>
+<a href="#role-based-access-control-rbac" class="level-3">Role-Based Access Control (RBAC)</a>
+<a href="#user-roles-amp-permissions" class="level-3">User Roles &amp; Permissions</a>
+<a href="#authentication-flow" class="level-3">Authentication Flow</a>
+<a href="#-integration-architecture" class="level-2">🔌 Integration Architecture</a>
+<a href="#module-integration-points" class="level-3">Module Integration Points</a>
+<a href="#external-integration-architecture" class="level-3">External Integration Architecture</a>
+<a href="#-deployment-architecture" class="level-2">🚀 Deployment Architecture</a>
+<a href="#deployment-model" class="level-3">Deployment Model</a>
+<a href="#file-system-architecture" class="level-3">File System Architecture</a>
+<a href="#-performance-architecture" class="level-2">📊 Performance Architecture</a>
+<a href="#rendering-strategy" class="level-3">Rendering Strategy</a>
+<a href="#caching-strategy" class="level-3">Caching Strategy</a>
+<a href="#-related-documents" class="level-2">📚 Related Documents</a>
+<a href="#-architecture-review" class="level-2">📧 Architecture Review</a>
+<a href="#-version-history" class="level-2">📜 Version History</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

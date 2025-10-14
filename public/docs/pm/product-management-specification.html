@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management Module - Comprehensive Specification - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: var(--bg-gradient);
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr 300px;
+            gap: 2rem;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 1.5rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .back-to-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: var(--primary-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        .back-to-home:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        /* Content Area */
+        .doc-content {
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 260px 1fr 280px;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 1.5rem;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 2.5rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            .doc-nav {
+                display: none;
+            }
+            .doc-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </div>
+            <div class="doc-header-actions">
+                <a href="../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../SYSTEM-DOCUMENTATION-INDEX.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Documentation Index</span>
+                    </a>
+                    <a href="../DOCUMENTATION-CATALOG.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Catalog</span>
+                    </a>
+                    <a href="../DOCUMENTATION-SUMMARY-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Summary</span>
+                    </a>
+                    <a href="../MODULE-VERIFICATION-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Module Verification</span>
+                    </a>
+                    <a href="../SYSTEM-GAPS-AND-ROADMAP.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Gaps & Roadmap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../architecture/SYSTEM-ARCHITECTURE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-users"></i>
+                    <span>Stakeholders</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../stakeholders/BUSINESS-VALUE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pr/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Requests</span>
+                    </a>
+                    <a href="../po/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Orders</span>
+                    </a>
+                    <a href="../grn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Goods Received Note</span>
+                    </a>
+                    <a href="../cn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Credit Notes</span>
+                    </a>
+                    <a href="../prt/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>PR Templates</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-boxes"></i>
+                    <span>Inventory Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../inv/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Overview</span>
+                    </a>
+                    <a href="../inv/inventory-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Specification</span>
+                    </a>
+                    <a href="../inv/inventory-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Sitemap</span>
+                    </a>
+                    <a href="../pc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Physical Count</span>
+                    </a>
+                    <a href="../sc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Spot Check</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-handshake"></i>
+                    <span>Vendor Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../vm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Overview</span>
+                    </a>
+                    <a href="../vm/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Module</span>
+                    </a>
+                    <a href="../vm/MANAGE-VENDORS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Manage Vendors</span>
+                    </a>
+                    <a href="../vm/TEMPLATES.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Templates</span>
+                    </a>
+                    <a href="../vm/CAMPAIGNS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Campaigns</span>
+                    </a>
+                    <a href="../vm/PRICELISTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Pricelists</span>
+                    </a>
+                    <a href="../vm/VENDOR-PORTAL.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Portal</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cube"></i>
+                    <span>Product Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Overview</span>
+                    </a>
+                    <a href="../pm/product-management-specification.html" class="nav-item active">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Specification</span>
+                    </a>
+                    <a href="../pm/product-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-store"></i>
+                    <span>Store Operations</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../store-ops/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Overview</span>
+                    </a>
+                    <a href="../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Module</span>
+                    </a>
+                    <a href="../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Requisitions</span>
+                    </a>
+                    <a href="../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Stock Replenishment</span>
+                    </a>
+                    <a href="../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Wastage Reporting</span>
+                    </a>
+                    <a href="../store-ops/GLOSSARY.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Glossary</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Operational Planning</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../operational-planning/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Overview</span>
+                    </a>
+                    <a href="../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Module</span>
+                    </a>
+                    <a href="../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Menu Engineering</span>
+                    </a>
+                    <a href="../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Recipe Management</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cash-register"></i>
+                    <span>POS Integration</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pos-integration/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Overview</span>
+                    </a>
+                    <a href="../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Module</span>
+                    </a>
+                    <a href="../pos-integration/MAPPING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Mapping Subsystem</span>
+                    </a>
+                    <a href="../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Transaction Management</span>
+                    </a>
+                    <a href="../pos-integration/REPORTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports & Analytics</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../dashboard/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Overview</span>
+                    </a>
+                    <a href="../dashboard/sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>System Requirements</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../carmen-erp-system-requirements-documentation.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Requirements</span>
+                    </a>
+                    <a href="../comprehensive-schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="product-management-module-comprehensive-specification">Product Management Module - Comprehensive Specification</h1>
+<h2 id="overview">Overview</h2>
+<p>The Product Management module serves as the central hub for managing products, categories, units, and supplier relationships within the Carmen ERP system. Built with Next.js 14, TypeScript, and modern React patterns, it provides comprehensive product lifecycle management with advanced filtering, hierarchical categorization, and flexible unit management.</p>
+<h2 id="module-structure">Module Structure</h2>
+<h3 id="file-organization">File Organization</h3>
+<pre><code>app/(main)/product-management/
+├── page.tsx                           # Main dashboard (16 lines, placeholder)
+├── products/
+│   ├── page.tsx                       # Products wrapper
+│   └── components/
+│       ├── product-list.tsx           # Core product listing (960 lines)
+│       └── advanced-filter.tsx        # Advanced filter system (539 lines)
+├── categories/
+│   ├── page.tsx                       # Categories wrapper
+│   └── components/
+│       └── category-list.tsx          # Hierarchical tree management (802 lines)
+├── units/
+│   ├── page.tsx                       # Units wrapper
+│   └── components/
+│       └── unit-list-improved.tsx     # Unit management interface
+└── suppliers/                         # Future implementation
+</code></pre>
+<h2 id="1-product-dashboard-main-page">1. Product Dashboard (Main Page)</h2>
+<p><strong>File</strong>: <code>app/(main)/product-management/page.tsx</code><br><strong>Status</strong>: Placeholder Implementation<br><strong>Lines of Code</strong>: 16</p>
+<h3 id="current-implementation">Current Implementation</h3>
+<ul>
+<li>Basic page structure with &quot;Product Dashboard&quot; heading</li>
+<li>Placeholder for future dashboard widgets</li>
+<li>Imports prepared for React Beautiful DnD and Recharts</li>
+</ul>
+<h3 id="planned-features">Planned Features</h3>
+<ul>
+<li><strong>6 Dashboard Widgets</strong>:<ol>
+<li>Product Overview Chart</li>
+<li>Category Distribution</li>
+<li>Inventory Levels Summary</li>
+<li>Price Analysis</li>
+<li>Recent Products Activity</li>
+<li>Product Status Alerts</li>
+</ol>
+</li>
+<li><strong>Draggable Widget System</strong>: React Beautiful DnD integration</li>
+<li><strong>Real-time Analytics</strong>: Chart-based visualizations</li>
+<li><strong>Quick Navigation</strong>: Direct links to main product functions</li>
+</ul>
+<h2 id="2-products-module">2. Products Module</h2>
+<h3 id="21-product-list-component">2.1 Product List Component</h3>
+<p><strong>File</strong>: <code>app/(main)/product-management/products/components/product-list.tsx</code><br><strong>Status</strong>: Fully Implemented<br><strong>Lines of Code</strong>: 960<br><strong>Screenshot</strong>: <img src="./product-list.png" alt="Product List"></p>
+<h4>Data Structure</h4>
+<pre><code class="language-typescript">interface Product {
+  id: string;
+  productCode: string;
+  name: string;
+  description: string;
+  categoryName?: string;
+  subCategoryName?: string;
+  isActive: boolean;
+  basePrice: number;
+  costPrice?: number;
+  margin?: number;
+  supplierName?: string;
+  unitName?: string;
+  taxRate?: number;
+  allergens?: string[];
+  isVegetarian?: boolean;
+  isVegan?: boolean;
+  isGlutenFree?: boolean;
+  shelfLife?: number;
+  storageConditions?: string;
+  minOrderQty?: number;
+  maxOrderQty?: number;
+  leadTimeDays?: number;
+  supplierProductCode?: string;
+  barcode?: string;
+  images?: string[];
+  nutritionalInfo?: {
+    calories?: number;
+    protein?: number;
+    carbs?: number;
+    fat?: number;
+    fiber?: number;
+    sugar?: number;
+    sodium?: number;
+  };
+  createdAt: string;
+  updatedAt: string;
+  createdBy: string;
+  updatedBy: string;
+}
+</code></pre>
+<h4>Mock Data</h4>
+<ul>
+<li><strong>8 Sample Products</strong> with comprehensive attributes</li>
+<li><strong>Categories</strong>: Beverages, Dairy, Meat &amp; Poultry, Produce, Bakery</li>
+<li><strong>Price Range</strong>: £2.50 - £89.99</li>
+<li><strong>Multiple Suppliers</strong>: Various food suppliers</li>
+<li><strong>Nutritional Information</strong>: Complete nutritional profiles</li>
+<li><strong>Allergen Data</strong>: Comprehensive allergen tracking</li>
+</ul>
+<h4>View Modes</h4>
+<h5>Table View</h5>
+<ul>
+<li><strong>Sortable Columns</strong>: All major product attributes</li>
+<li><strong>Column Configuration</strong>: Show/hide columns dynamically</li>
+<li><strong>Row Actions</strong>: Edit, duplicate, delete, view details</li>
+<li><strong>Status Indicators</strong>: Visual badges for active/inactive status</li>
+<li><strong>Bulk Selection</strong>: Multi-row selection with actions</li>
+</ul>
+<p><strong>Table Columns</strong>:</p>
+<ol>
+<li>Product Code (sortable)</li>
+<li>Name (sortable, searchable)</li>
+<li>Category (filterable)</li>
+<li>Supplier (filterable)</li>
+<li>Base Price (sortable, formatted currency)</li>
+<li>Cost Price (sortable, formatted currency)</li>
+<li>Margin (calculated percentage)</li>
+<li>Status (filterable badge)</li>
+<li>Actions (dropdown menu)</li>
+</ol>
+<h5>Card View</h5>
+<ul>
+<li><strong>Grid Layout</strong>: Responsive card grid</li>
+<li><strong>Product Images</strong>: Visual product representation</li>
+<li><strong>Key Information</strong>: Price, category, status prominently displayed</li>
+<li><strong>Quick Actions</strong>: Edit, view, duplicate buttons</li>
+<li><strong>Hover Effects</strong>: Interactive card animations</li>
+<li><strong>Mobile Optimized</strong>: Touch-friendly interface</li>
+</ul>
+<p><strong>Card Elements</strong>:</p>
+<ul>
+<li>Product image placeholder</li>
+<li>Product name and code</li>
+<li>Category and supplier tags</li>
+<li>Price display with margin calculation</li>
+<li>Status badge</li>
+<li>Action buttons (Edit, View, Duplicate)</li>
+<li>Allergen indicators</li>
+<li>Nutritional highlights</li>
+</ul>
+<h4>Search and Filtering</h4>
+<h5>Basic Search</h5>
+<ul>
+<li><strong>Global Search</strong>: Searches across product name, code, and description</li>
+<li><strong>Real-time Results</strong>: Instant filtering as user types</li>
+<li><strong>Search Highlighting</strong>: Matched terms highlighted in results</li>
+<li><strong>Case Insensitive</strong>: Flexible search matching</li>
+</ul>
+<h5>Basic Filters</h5>
+<pre><code class="language-typescript">interface FilterState {
+  search: string;
+  category: string;
+  supplier: string;
+  status: &#39;all&#39; | &#39;active&#39; | &#39;inactive&#39;;
+  priceRange: {
+    min: number;
+    max: number;
+  };
+}
+</code></pre>
+<p><strong>Filter Types</strong>:</p>
+<ol>
+<li><strong>Category Filter</strong>: Dropdown with all available categories</li>
+<li><strong>Supplier Filter</strong>: Multi-select supplier dropdown</li>
+<li><strong>Status Filter</strong>: Active/Inactive/All toggle</li>
+<li><strong>Price Range</strong>: Min/max price sliders</li>
+<li><strong>Allergen Filter</strong>: Multi-select allergen checkboxes</li>
+<li><strong>Dietary Filter</strong>: Vegetarian/Vegan/Gluten-Free checkboxes</li>
+</ol>
+<h4>Bulk Operations</h4>
+<ul>
+<li><strong>Select All/None</strong>: Bulk selection controls</li>
+<li><strong>Selected Count</strong>: Display number of selected items</li>
+<li><strong>Bulk Actions Menu</strong>:<ul>
+<li>Bulk Activate/Deactivate</li>
+<li>Bulk Category Assignment</li>
+<li>Bulk Supplier Update</li>
+<li>Bulk Price Update</li>
+<li>Bulk Export</li>
+<li>Bulk Delete (with confirmation)</li>
+</ul>
+</li>
+</ul>
+<h4>Performance Features</h4>
+<ul>
+<li><strong>useMemo Optimization</strong>: Filtered and sorted data memoization</li>
+<li><strong>Virtual Scrolling</strong>: For large product catalogs</li>
+<li><strong>Lazy Loading</strong>: Progressive data loading</li>
+<li><strong>Debounced Search</strong>: Optimized search performance</li>
+</ul>
+<h3 id="22-advanced-filter-system">2.2 Advanced Filter System</h3>
+<p><strong>File</strong>: <code>app/(main)/product-management/products/components/advanced-filter.tsx</code><br><strong>Status</strong>: Fully Implemented<br><strong>Lines of Code</strong>: 539<br><strong>Screenshots</strong>:</p>
+<ul>
+<li><img src="./advanced-filter.png" alt="Advanced Filter - JSON View"></li>
+<li><img src="./advanced-filter-build.png" alt="Advanced Filter - Build View"></li>
+</ul>
+<h4>Filter Builder Interface</h4>
+<h5>Filter Conditions</h5>
+<pre><code class="language-typescript">interface FilterType&lt;T&gt; {
+  field: keyof T;
+  operator: FilterOperator;
+  value: string | string[];
+  logicalOperator?: &#39;AND&#39; | &#39;OR&#39;;
+}
+
+type FilterOperator =
+  | &#39;equals&#39; | &#39;not_equals&#39;
+  | &#39;contains&#39; | &#39;not_contains&#39;
+  | &#39;starts_with&#39; | &#39;ends_with&#39;
+  | &#39;greater_than&#39; | &#39;less_than&#39;
+  | &#39;greater_equal&#39; | &#39;less_equal&#39;
+  | &#39;between&#39; | &#39;in&#39; | &#39;not_in&#39;
+  | &#39;is_empty&#39; | &#39;is_not_empty&#39;;
+</code></pre>
+<h5>Field Types</h5>
+<ul>
+<li><strong>Text Fields</strong>: name, description, productCode, supplierProductCode</li>
+<li><strong>Numeric Fields</strong>: basePrice, costPrice, margin, shelfLife, minOrderQty</li>
+<li><strong>Boolean Fields</strong>: isActive, isVegetarian, isVegan, isGlutenFree</li>
+<li><strong>Date Fields</strong>: createdAt, updatedAt</li>
+<li><strong>Array Fields</strong>: allergens, images</li>
+<li><strong>Nested Fields</strong>: nutritionalInfo properties</li>
+</ul>
+<h5>Operator Mapping</h5>
+<pre><code class="language-typescript">const operatorsByFieldType = {
+  string: [&#39;equals&#39;, &#39;not_equals&#39;, &#39;contains&#39;, &#39;not_contains&#39;, &#39;starts_with&#39;, &#39;ends_with&#39;, &#39;is_empty&#39;, &#39;is_not_empty&#39;],
+  number: [&#39;equals&#39;, &#39;not_equals&#39;, &#39;greater_than&#39;, &#39;less_than&#39;, &#39;greater_equal&#39;, &#39;less_equal&#39;, &#39;between&#39;],
+  boolean: [&#39;equals&#39;, &#39;not_equals&#39;],
+  date: [&#39;equals&#39;, &#39;not_equals&#39;, &#39;greater_than&#39;, &#39;less_than&#39;, &#39;between&#39;],
+  array: [&#39;contains&#39;, &#39;not_contains&#39;, &#39;in&#39;, &#39;not_in&#39;, &#39;is_empty&#39;, &#39;is_not_empty&#39;]
+};
+</code></pre>
+<h4>Filter Management Features</h4>
+<h5>Saved Filters</h5>
+<ul>
+<li><strong>Filter Persistence</strong>: LocalStorage-based filter saving</li>
+<li><strong>Named Filters</strong>: Custom names for saved filter sets</li>
+<li><strong>Quick Load</strong>: One-click filter application</li>
+<li><strong>Filter Sharing</strong>: Export/import filter configurations</li>
+<li><strong>Default Filters</strong>: System-provided common filter sets</li>
+</ul>
+<h5>JSON View</h5>
+<ul>
+<li><strong>Raw JSON Display</strong>: Complete filter configuration visibility</li>
+<li><strong>Editable JSON</strong>: Direct JSON editing capability</li>
+<li><strong>Syntax Highlighting</strong>: Formatted JSON display</li>
+<li><strong>Validation</strong>: JSON structure validation</li>
+<li><strong>Import/Export</strong>: JSON-based filter sharing</li>
+</ul>
+<h4>Advanced Filter UI Components</h4>
+<h5>Filter Condition Builder</h5>
+<ol>
+<li><strong>Field Selector</strong>: Dropdown with all available product fields</li>
+<li><strong>Operator Selector</strong>: Context-aware operator dropdown</li>
+<li><strong>Value Input</strong>: Dynamic input based on field type<ul>
+<li>Text input for strings</li>
+<li>Number input for numeric fields</li>
+<li>Date picker for date fields</li>
+<li>Multi-select for array fields</li>
+<li>Checkbox for boolean fields</li>
+</ul>
+</li>
+<li><strong>Logical Operator</strong>: AND/OR selection for multiple conditions</li>
+<li><strong>Add/Remove Buttons</strong>: Dynamic condition management</li>
+</ol>
+<h5>Filter Actions</h5>
+<ul>
+<li><strong>Add Condition</strong>: Create new filter condition</li>
+<li><strong>Remove Condition</strong>: Delete existing condition</li>
+<li><strong>Clear All</strong>: Reset all filters</li>
+<li><strong>Apply Filters</strong>: Execute filter logic</li>
+<li><strong>Save Filter</strong>: Store current configuration</li>
+<li><strong>Load Filter</strong>: Apply saved configuration</li>
+</ul>
+<h2 id="3-category-management-module">3. Category Management Module</h2>
+<h3 id="31-category-tree-component">3.1 Category Tree Component</h3>
+<p><strong>File</strong>: <code>app/(main)/product-management/categories/components/category-list.tsx</code><br><strong>Status</strong>: Fully Implemented<br><strong>Lines of Code</strong>: 802<br><strong>Screenshot</strong>: <img src="./category-tree.png" alt="Category Tree"></p>
+<h4>Hierarchical Structure</h4>
+<h5>Three-Level Hierarchy</h5>
+<pre><code class="language-typescript">interface CategoryItem {
+  id: string;
+  name: string;
+  type: &#39;CATEGORY&#39; | &#39;SUBCATEGORY&#39; | &#39;ITEM_GROUP&#39;;
+  itemCount: number;
+  children?: CategoryItem[];
+  parentId?: string;
+  sortOrder: number;
+  isExpanded?: boolean;
+  isSelected?: boolean;
+  isHighlighted?: boolean;
+}
+</code></pre>
+<h5>Category Levels</h5>
+<ol>
+<li><p><strong>Main Categories</strong>: Top-level product categories</p>
+<ul>
+<li>Examples: Beverages, Dairy, Meat &amp; Poultry, Produce, Bakery</li>
+<li>Visual: Folder icon, bold text</li>
+<li>Actions: Add subcategory, edit, delete, move</li>
+</ul>
+</li>
+<li><p><strong>Subcategories</strong>: Second-level categorization</p>
+<ul>
+<li>Examples: Hot Beverages, Cold Beverages, Soft Drinks</li>
+<li>Visual: Subfolder icon, medium weight text</li>
+<li>Actions: Add item group, edit, delete, move</li>
+</ul>
+</li>
+<li><p><strong>Item Groups</strong>: Third-level specific groupings</p>
+<ul>
+<li>Examples: Coffee, Tea, Juices, Energy Drinks</li>
+<li>Visual: File icon, normal weight text</li>
+<li>Actions: Edit, delete, move</li>
+</ul>
+</li>
+</ol>
+<h4>Drag and Drop Functionality</h4>
+<h5>React DnD Implementation</h5>
+<pre><code class="language-typescript">// Drag Source
+interface DragItem {
+  type: string;
+  id: string;
+  categoryType: CategoryType;
+  parentId?: string;
+  index: number;
+}
+
+// Drop Target
+interface DropResult {
+  targetId: string;
+  targetType: CategoryType;
+  position: &#39;before&#39; | &#39;after&#39; | &#39;inside&#39;;
+}
+</code></pre>
+<h5>Drag and Drop Rules</h5>
+<ol>
+<li><strong>Category → Category</strong>: Reorder at same level or move to different parent</li>
+<li><strong>Subcategory → Category</strong>: Move subcategory to different parent category</li>
+<li><strong>Item Group → Subcategory</strong>: Move item group to different parent subcategory</li>
+<li><strong>Cross-level Restrictions</strong>: Prevent invalid hierarchy violations</li>
+<li><strong>Visual Feedback</strong>: Drop zones highlight during drag operations</li>
+</ol>
+<h5>Mobile Touch Support</h5>
+<ul>
+<li><strong>Touch Events</strong>: Touch start, move, end handling</li>
+<li><strong>Haptic Feedback</strong>: Vibration on successful operations</li>
+<li><strong>Long Press</strong>: Initiate drag operation</li>
+<li><strong>Visual Indicators</strong>: Touch-friendly drag handles</li>
+<li><strong>Gesture Recognition</strong>: Swipe gestures for actions</li>
+</ul>
+<h4>Search and Filtering</h4>
+<h5>Real-time Search</h5>
+<pre><code class="language-typescript">interface SearchState {
+  query: string;
+  matchedItems: string[];
+  expandedItems: string[];
+  highlightedItems: string[];
+}
+</code></pre>
+<h5>Search Features</h5>
+<ul>
+<li><strong>Instant Results</strong>: Real-time search as user types</li>
+<li><strong>Hierarchy Preservation</strong>: Maintain parent-child relationships in results</li>
+<li><strong>Auto-expand</strong>: Automatically expand parent categories containing matches</li>
+<li><strong>Highlight Matching</strong>: Visual highlighting of matched text</li>
+<li><strong>Clear Search</strong>: Quick reset to full tree view</li>
+</ul>
+<h5>Search Behavior</h5>
+<ol>
+<li><strong>Text Matching</strong>: Search category names and descriptions</li>
+<li><strong>Case Insensitive</strong>: Flexible matching</li>
+<li><strong>Partial Matches</strong>: Substring matching</li>
+<li><strong>Path Expansion</strong>: Show complete hierarchy path for matches</li>
+<li><strong>Result Navigation</strong>: Navigate through search results</li>
+</ol>
+<h4>Category Actions</h4>
+<h5>Context Menu Actions</h5>
+<pre><code class="language-typescript">interface CategoryAction {
+  id: string;
+  label: string;
+  icon: string;
+  action: () =&gt; void;
+  visible: (item: CategoryItem) =&gt; boolean;
+  disabled: (item: CategoryItem) =&gt; boolean;
+}
+</code></pre>
+<h5>Available Actions by Type</h5>
+<p><strong>Category Actions</strong>:</p>
+<ul>
+<li><strong>Add Subcategory</strong>: Create new subcategory under current category</li>
+<li><strong>Edit Category</strong>: Modify category name and properties</li>
+<li><strong>Delete Category</strong>: Remove category and all children (with confirmation)</li>
+<li><strong>Move Category</strong>: Drag-and-drop or menu-based moving</li>
+<li><strong>View Products</strong>: Show all products in this category tree</li>
+</ul>
+<p><strong>Subcategory Actions</strong>:</p>
+<ul>
+<li><strong>Add Item Group</strong>: Create new item group under current subcategory</li>
+<li><strong>Edit Subcategory</strong>: Modify subcategory properties</li>
+<li><strong>Delete Subcategory</strong>: Remove subcategory and all children</li>
+<li><strong>Move Subcategory</strong>: Relocate to different parent category</li>
+<li><strong>View Products</strong>: Show products in this subcategory</li>
+</ul>
+<p><strong>Item Group Actions</strong>:</p>
+<ul>
+<li><strong>Edit Item Group</strong>: Modify item group properties</li>
+<li><strong>Delete Item Group</strong>: Remove item group</li>
+<li><strong>Move Item Group</strong>: Relocate to different parent subcategory</li>
+<li><strong>View Products</strong>: Show products in this item group</li>
+</ul>
+<h4>Mobile Optimizations</h4>
+<h5>Responsive Design</h5>
+<ul>
+<li><strong>Collapsible Sidebar</strong>: Mobile-friendly navigation</li>
+<li><strong>Touch Targets</strong>: Minimum 44px touch areas</li>
+<li><strong>Swipe Gestures</strong>: Swipe to reveal actions</li>
+<li><strong>Pinch to Zoom</strong>: Scale tree for better visibility</li>
+<li><strong>Orientation Support</strong>: Landscape and portrait modes</li>
+</ul>
+<h5>Touch Interactions</h5>
+<pre><code class="language-typescript">interface TouchHandler {
+  onTouchStart: (e: TouchEvent) =&gt; void;
+  onTouchMove: (e: TouchEvent) =&gt; void;
+  onTouchEnd: (e: TouchEvent) =&gt; void;
+  onLongPress: (item: CategoryItem) =&gt; void;
+  onDoubleTap: (item: CategoryItem) =&gt; void;
+}
+</code></pre>
+<h5>Mobile Features</h5>
+<ul>
+<li><strong>Haptic Feedback</strong>: Vibration for drag operations and confirmations</li>
+<li><strong>Long Press Menu</strong>: Context actions via long press</li>
+<li><strong>Swipe Actions</strong>: Swipe left/right for quick actions</li>
+<li><strong>Pull to Refresh</strong>: Refresh category tree data</li>
+<li><strong>Smooth Animations</strong>: Touch-optimized transitions</li>
+</ul>
+<h2 id="4-unit-management-module">4. Unit Management Module</h2>
+<h3 id="41-unit-list-component">4.1 Unit List Component</h3>
+<p><strong>File</strong>: <code>app/(main)/product-management/units/components/unit-list-improved.tsx</code><br><strong>Status</strong>: Implemented<br><strong>Screenshot</strong>: <img src="./unit-list.png" alt="Unit Management"></p>
+<h4>Unit Data Structure</h4>
+<pre><code class="language-typescript">interface Unit {
+  id: string;
+  name: string;
+  symbol: string;
+  type: &#39;inventory&#39; | &#39;order&#39; | &#39;recipe&#39;;
+  isActive: boolean;
+  baseUnit?: string;
+  conversionFactor?: number;
+  description?: string;
+  usageCount: number;
+  createdAt: string;
+  updatedAt: string;
+}
+</code></pre>
+<h4>View Modes</h4>
+<h5>Table View</h5>
+<p><strong>Columns</strong>:</p>
+<ol>
+<li>Unit Name (sortable)</li>
+<li>Symbol (display)</li>
+<li>Type (filterable badge)</li>
+<li>Status (active/inactive badge)</li>
+<li>Usage Count (sortable)</li>
+<li>Actions (dropdown menu)</li>
+</ol>
+<h5>Card View</h5>
+<p><strong>Card Elements</strong>:</p>
+<ul>
+<li>Unit name and symbol</li>
+<li>Type badge</li>
+<li>Status indicator</li>
+<li>Usage statistics</li>
+<li>Quick action buttons</li>
+<li>Description tooltip</li>
+</ul>
+<h4>Filtering System</h4>
+<h5>Type Filters</h5>
+<ul>
+<li><strong>Inventory Units</strong>: Units used for stock management</li>
+<li><strong>Order Units</strong>: Units used for purchasing</li>
+<li><strong>Recipe Units</strong>: Units used in recipe formulations</li>
+</ul>
+<h5>Status Filters</h5>
+<ul>
+<li><strong>Active Units</strong>: Currently available for use</li>
+<li><strong>Inactive Units</strong>: Disabled units</li>
+<li><strong>All Units</strong>: Complete unit listing</li>
+</ul>
+<h4>Unit Actions</h4>
+<ul>
+<li><strong>Edit Unit</strong>: Modify unit properties</li>
+<li><strong>Delete Unit</strong>: Remove unit (if not in use)</li>
+<li><strong>Activate/Deactivate</strong>: Toggle unit status</li>
+<li><strong>View Usage</strong>: Show products/recipes using this unit</li>
+</ul>
+<h2 id="5-shared-components-and-systems">5. Shared Components and Systems</h2>
+<h3 id="51-status-badge-system">5.1 Status Badge System</h3>
+<h4>Status Types</h4>
+<pre><code class="language-typescript">type StatusType = &#39;active&#39; | &#39;inactive&#39; | &#39;draft&#39; | &#39;archived&#39;;
+type CategoryType = &#39;CATEGORY&#39; | &#39;SUBCATEGORY&#39; | &#39;ITEM_GROUP&#39;;
+type UnitType = &#39;inventory&#39; | &#39;order&#39; | &#39;recipe&#39;;
+</code></pre>
+<h4>Badge Styling</h4>
+<ul>
+<li><strong>Active</strong>: Green background, white text</li>
+<li><strong>Inactive</strong>: Red background, white text</li>
+<li><strong>Draft</strong>: Yellow background, dark text</li>
+<li><strong>Archived</strong>: Gray background, white text</li>
+</ul>
+<h3 id="52-search-components">5.2 Search Components</h3>
+<h4>Global Search</h4>
+<pre><code class="language-typescript">interface SearchProps {
+  placeholder: string;
+  onSearch: (query: string) =&gt; void;
+  value: string;
+  debounceMs?: number;
+}
+</code></pre>
+<h4>Features</h4>
+<ul>
+<li><strong>Debounced Input</strong>: Optimized search performance</li>
+<li><strong>Clear Button</strong>: Quick reset functionality</li>
+<li><strong>Search History</strong>: Recent search suggestions</li>
+<li><strong>Autocomplete</strong>: Intelligent search suggestions</li>
+</ul>
+<h3 id="53-view-toggle-components">5.3 View Toggle Components</h3>
+<h4>Toggle Implementation</h4>
+<pre><code class="language-typescript">interface ViewToggleProps {
+  currentView: &#39;table&#39; | &#39;card&#39;;
+  onViewChange: (view: &#39;table&#39; | &#39;card&#39;) =&gt; void;
+  disabled?: boolean;
+}
+</code></pre>
+<h4>Features</h4>
+<ul>
+<li><strong>Animated Transitions</strong>: Smooth view switching</li>
+<li><strong>Keyboard Support</strong>: Tab navigation</li>
+<li><strong>Preference Persistence</strong>: Remember user choice</li>
+<li><strong>Mobile Optimization</strong>: Touch-friendly toggles</li>
+</ul>
+<h3 id="54-action-menu-components">5.4 Action Menu Components</h3>
+<h4>Dropdown Menu Structure</h4>
+<pre><code class="language-typescript">interface ActionItem {
+  id: string;
+  label: string;
+  icon?: string;
+  action: () =&gt; void;
+  disabled?: boolean;
+  destructive?: boolean;
+  separator?: boolean;
+}
+</code></pre>
+<h4>Menu Features</h4>
+<ul>
+<li><strong>Keyboard Navigation</strong>: Arrow keys and Enter</li>
+<li><strong>Click Outside</strong>: Auto-close on outside click</li>
+<li><strong>Escape Key</strong>: Close menu</li>
+<li><strong>Disabled States</strong>: Visual and functional disable</li>
+<li><strong>Destructive Actions</strong>: Red styling for delete operations</li>
+</ul>
+<h2 id="6-technical-implementation">6. Technical Implementation</h2>
+<h3 id="61-state-management">6.1 State Management</h3>
+<h4>Local State with React Hooks</h4>
+<pre><code class="language-typescript">// Product List State
+const [products, setProducts] = useState&lt;Product[]&gt;([]);
+const [filteredProducts, setFilteredProducts] = useState&lt;Product[]&gt;([]);
+const [selectedProducts, setSelectedProducts] = useState&lt;string[]&gt;([]);
+const [viewMode, setViewMode] = useState&lt;&#39;table&#39; | &#39;card&#39;&gt;(&#39;table&#39;);
+const [sortConfig, setSortConfig] = useState&lt;SortConfig&gt;({ field: &#39;name&#39;, direction: &#39;asc&#39; });
+const [filterState, setFilterState] = useState&lt;FilterState&gt;(initialFilterState);
+</code></pre>
+<h4>Performance Optimizations</h4>
+<pre><code class="language-typescript">// Memoized filtered products
+const filteredProducts = useMemo(() =&gt; {
+  return products
+    .filter(product =&gt; matchesFilters(product, filterState))
+    .sort((a, b) =&gt; sortProducts(a, b, sortConfig));
+}, [products, filterState, sortConfig]);
+
+// Debounced search
+const debouncedSearch = useCallback(
+  debounce((query: string) =&gt; {
+    setFilterState(prev =&gt; ({ ...prev, search: query }));
+  }, 300),
+  []
+);
+</code></pre>
+<h3 id="62-mock-data-system">6.2 Mock Data System</h3>
+<h4>Data Structure</h4>
+<pre><code class="language-typescript">// Mock Products
+export const mockProducts: Product[] = [
+  {
+    id: &quot;1&quot;,
+    productCode: &quot;BEV001&quot;,
+    name: &quot;Premium Coffee Beans&quot;,
+    description: &quot;High-quality arabica coffee beans from Colombia&quot;,
+    categoryName: &quot;Beverages&quot;,
+    subCategoryName: &quot;Hot Beverages&quot;,
+    isActive: true,
+    basePrice: 24.99,
+    costPrice: 18.50,
+    margin: 26,
+    supplierName: &quot;Colombian Coffee Co.&quot;,
+    unitName: &quot;kg&quot;,
+    // ... additional properties
+  },
+  // ... 7 more products
+];
+</code></pre>
+<h4>Category Tree Mock Data</h4>
+<pre><code class="language-typescript">export const mockCategoryTree: CategoryItem[] = [
+  {
+    id: &quot;cat-1&quot;,
+    name: &quot;Beverages&quot;,
+    type: &quot;CATEGORY&quot;,
+    itemCount: 25,
+    sortOrder: 1,
+    children: [
+      {
+        id: &quot;subcat-1&quot;,
+        name: &quot;Hot Beverages&quot;,
+        type: &quot;SUBCATEGORY&quot;,
+        itemCount: 12,
+        parentId: &quot;cat-1&quot;,
+        children: [
+          {
+            id: &quot;item-1&quot;,
+            name: &quot;Coffee&quot;,
+            type: &quot;ITEM_GROUP&quot;,
+            itemCount: 8,
+            parentId: &quot;subcat-1&quot;
+          }
+        ]
+      }
+    ]
+  }
+];
+</code></pre>
+<h3 id="63-form-validation">6.3 Form Validation</h3>
+<h4>Zod Schema Validation</h4>
+<pre><code class="language-typescript">import { z } from &#39;zod&#39;;
+
+const ProductSchema = z.object({
+  productCode: z.string().min(3, &#39;Product code must be at least 3 characters&#39;),
+  name: z.string().min(2, &#39;Product name is required&#39;),
+  description: z.string().optional(),
+  categoryId: z.string().min(1, &#39;Category is required&#39;),
+  basePrice: z.number().min(0, &#39;Price must be non-negative&#39;),
+  costPrice: z.number().min(0, &#39;Cost must be non-negative&#39;).optional(),
+  isActive: z.boolean(),
+  allergens: z.array(z.string()).optional(),
+  nutritionalInfo: z.object({
+    calories: z.number().min(0).optional(),
+    protein: z.number().min(0).optional(),
+    carbs: z.number().min(0).optional(),
+    fat: z.number().min(0).optional(),
+  }).optional(),
+});
+</code></pre>
+<h3 id="64-error-handling">6.4 Error Handling</h3>
+<h4>Error Boundary Implementation</h4>
+<pre><code class="language-typescript">interface ErrorState {
+  hasError: boolean;
+  error: Error | null;
+  errorInfo: ErrorInfo | null;
+}
+
+class ProductManagementErrorBoundary extends Component&lt;Props, ErrorState&gt; {
+  constructor(props: Props) {
+    super(props);
+    this.state = { hasError: false, error: null, errorInfo: null };
+  }
+
+  static getDerivedStateFromError(error: Error): ErrorState {
+    return { hasError: true, error, errorInfo: null };
+  }
+
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    this.setState({ error, errorInfo });
+    console.error(&#39;Product Management Error:&#39;, error, errorInfo);
+  }
+}
+</code></pre>
+<h2 id="7-user-experience-features">7. User Experience Features</h2>
+<h3 id="71-accessibility">7.1 Accessibility</h3>
+<h4>WCAG 2.1 AA Compliance</h4>
+<ul>
+<li><strong>Keyboard Navigation</strong>: Full keyboard accessibility</li>
+<li><strong>Screen Reader Support</strong>: ARIA labels and descriptions</li>
+<li><strong>Color Contrast</strong>: Minimum 4.5:1 contrast ratio</li>
+<li><strong>Focus Management</strong>: Visible focus indicators</li>
+<li><strong>Alternative Text</strong>: Images and icons have alt text</li>
+</ul>
+<h4>ARIA Implementation</h4>
+<pre><code class="language-typescript">// Example ARIA attributes
+&lt;div
+  role=&quot;tree&quot;
+  aria-label=&quot;Product categories&quot;
+  aria-expanded={isExpanded}
+  aria-selected={isSelected}
+  tabIndex={isSelected ? 0 : -1}
+&gt;
+</code></pre>
+<h3 id="72-responsive-design">7.2 Responsive Design</h3>
+<h4>Breakpoints</h4>
+<pre><code class="language-css">/* Tailwind CSS breakpoints */
+sm: 640px   /* Mobile landscape */
+md: 768px   /* Tablet */
+lg: 1024px  /* Desktop */
+xl: 1280px  /* Large desktop */
+2xl: 1536px /* Extra large */
+</code></pre>
+<h4>Mobile Adaptations</h4>
+<ul>
+<li><strong>Collapsible Filters</strong>: Mobile-friendly filter panels</li>
+<li><strong>Touch Gestures</strong>: Swipe, long press, pinch to zoom</li>
+<li><strong>Responsive Tables</strong>: Horizontal scrolling for complex tables</li>
+<li><strong>Card View Priority</strong>: Card view as default on mobile</li>
+<li><strong>Bottom Navigation</strong>: Sticky action buttons</li>
+</ul>
+<h3 id="73-performance-optimization">7.3 Performance Optimization</h3>
+<h4>Code Splitting</h4>
+<pre><code class="language-typescript">// Lazy loading for large components
+const AdvancedFilter = lazy(() =&gt; import(&#39;./components/advanced-filter&#39;));
+const CategoryTree = lazy(() =&gt; import(&#39;./components/category-list&#39;));
+</code></pre>
+<h4>Virtual Scrolling</h4>
+<pre><code class="language-typescript">// React Window for large datasets
+import { FixedSizeList as List } from &#39;react-window&#39;;
+
+const ProductVirtualList = ({ products }: { products: Product[] }) =&gt; (
+  &lt;List
+    height={600}
+    itemCount={products.length}
+    itemSize={80}
+    itemData={products}
+  &gt;
+    {ProductRow}
+  &lt;/List&gt;
+);
+</code></pre>
+<h2 id="8-integration-points">8. Integration Points</h2>
+<h3 id="81-inventory-management-integration">8.1 Inventory Management Integration</h3>
+<ul>
+<li><strong>Stock Levels</strong>: Real-time inventory data display</li>
+<li><strong>Reorder Points</strong>: Automatic reorder notifications</li>
+<li><strong>Unit Conversions</strong>: Seamless unit conversion between modules</li>
+</ul>
+<h3 id="82-procurement-integration">8.2 Procurement Integration</h3>
+<ul>
+<li><strong>Supplier Products</strong>: Direct link to procurement module</li>
+<li><strong>Purchase Orders</strong>: Generate orders for selected products</li>
+<li><strong>Cost Updates</strong>: Automatic cost price updates from procurement</li>
+</ul>
+<h3 id="83-store-operations-integration">8.3 Store Operations Integration</h3>
+<ul>
+<li><strong>Requisition Items</strong>: Available products for store requisitions</li>
+<li><strong>Usage Tracking</strong>: Monitor product consumption patterns</li>
+<li><strong>Wastage Analysis</strong>: Product-specific waste reporting</li>
+</ul>
+<h2 id="9-future-enhancements">9. Future Enhancements</h2>
+<h3 id="91-planned-features">9.1 Planned Features</h3>
+<ul>
+<li><strong>Product Images</strong>: Image upload and gallery management</li>
+<li><strong>Batch Operations</strong>: Enhanced bulk operation capabilities</li>
+<li><strong>Product Templates</strong>: Reusable product templates</li>
+<li><strong>Approval Workflows</strong>: Multi-stage product approval process</li>
+<li><strong>Version Control</strong>: Track product changes over time</li>
+<li><strong>Import/Export</strong>: CSV/Excel data exchange</li>
+<li><strong>API Integration</strong>: Real-time data synchronization</li>
+<li><strong>Advanced Analytics</strong>: Product performance analytics</li>
+</ul>
+<h3 id="92-technical-improvements">9.2 Technical Improvements</h3>
+<ul>
+<li><strong>Real-time Updates</strong>: WebSocket integration for live updates</li>
+<li><strong>Offline Support</strong>: Progressive Web App capabilities</li>
+<li><strong>Advanced Search</strong>: Elasticsearch integration</li>
+<li><strong>Machine Learning</strong>: Intelligent product recommendations</li>
+<li><strong>Blockchain</strong>: Supply chain traceability</li>
+</ul>
+<h2 id="10-testing-strategy">10. Testing Strategy</h2>
+<h3 id="101-unit-testing">10.1 Unit Testing</h3>
+<ul>
+<li><strong>Component Testing</strong>: React Testing Library</li>
+<li><strong>Hook Testing</strong>: Custom hook validation</li>
+<li><strong>Utility Testing</strong>: Pure function validation</li>
+<li><strong>Mock Data Testing</strong>: Data structure validation</li>
+</ul>
+<h3 id="102-integration-testing">10.2 Integration Testing</h3>
+<ul>
+<li><strong>User Workflows</strong>: Complete user journey testing</li>
+<li><strong>Cross-module Integration</strong>: Module interaction testing</li>
+<li><strong>API Integration</strong>: Mock API response testing</li>
+<li><strong>State Management</strong>: Complex state interaction testing</li>
+</ul>
+<h3 id="103-e2e-testing">10.3 E2E Testing</h3>
+<ul>
+<li><strong>Critical Paths</strong>: Full user workflow validation</li>
+<li><strong>Browser Compatibility</strong>: Cross-browser testing</li>
+<li><strong>Mobile Testing</strong>: Touch interaction validation</li>
+<li><strong>Performance Testing</strong>: Load time and responsiveness</li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>The Product Management module represents a comprehensive solution for managing product catalogs, hierarchical categorization, and flexible unit systems. With 960+ lines of core functionality, advanced filtering capabilities, drag-and-drop tree management, and mobile-optimized interfaces, it provides a robust foundation for hospitality ERP product management needs.</p>
+<p>The module&#39;s architecture supports future enhancements while maintaining performance and usability standards, making it a scalable solution for growing businesses.</p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#product-management-module-comprehensive-specification" class="level-1">Product Management Module - Comprehensive Specification</a>
+<a href="#overview" class="level-2">Overview</a>
+<a href="#module-structure" class="level-2">Module Structure</a>
+<a href="#file-organization" class="level-3">File Organization</a>
+<a href="#1-product-dashboard-main-page" class="level-2">1. Product Dashboard (Main Page)</a>
+<a href="#current-implementation" class="level-3">Current Implementation</a>
+<a href="#planned-features" class="level-3">Planned Features</a>
+<a href="#2-products-module" class="level-2">2. Products Module</a>
+<a href="#21-product-list-component" class="level-3">2.1 Product List Component</a>
+<a href="#22-advanced-filter-system" class="level-3">2.2 Advanced Filter System</a>
+<a href="#3-category-management-module" class="level-2">3. Category Management Module</a>
+<a href="#31-category-tree-component" class="level-3">3.1 Category Tree Component</a>
+<a href="#4-unit-management-module" class="level-2">4. Unit Management Module</a>
+<a href="#41-unit-list-component" class="level-3">4.1 Unit List Component</a>
+<a href="#5-shared-components-and-systems" class="level-2">5. Shared Components and Systems</a>
+<a href="#51-status-badge-system" class="level-3">5.1 Status Badge System</a>
+<a href="#52-search-components" class="level-3">5.2 Search Components</a>
+<a href="#53-view-toggle-components" class="level-3">5.3 View Toggle Components</a>
+<a href="#54-action-menu-components" class="level-3">5.4 Action Menu Components</a>
+<a href="#6-technical-implementation" class="level-2">6. Technical Implementation</a>
+<a href="#61-state-management" class="level-3">6.1 State Management</a>
+<a href="#62-mock-data-system" class="level-3">6.2 Mock Data System</a>
+<a href="#63-form-validation" class="level-3">6.3 Form Validation</a>
+<a href="#64-error-handling" class="level-3">6.4 Error Handling</a>
+<a href="#7-user-experience-features" class="level-2">7. User Experience Features</a>
+<a href="#71-accessibility" class="level-3">7.1 Accessibility</a>
+<a href="#72-responsive-design" class="level-3">7.2 Responsive Design</a>
+<a href="#73-performance-optimization" class="level-3">7.3 Performance Optimization</a>
+<a href="#8-integration-points" class="level-2">8. Integration Points</a>
+<a href="#81-inventory-management-integration" class="level-3">8.1 Inventory Management Integration</a>
+<a href="#82-procurement-integration" class="level-3">8.2 Procurement Integration</a>
+<a href="#83-store-operations-integration" class="level-3">8.3 Store Operations Integration</a>
+<a href="#9-future-enhancements" class="level-2">9. Future Enhancements</a>
+<a href="#91-planned-features" class="level-3">9.1 Planned Features</a>
+<a href="#92-technical-improvements" class="level-3">9.2 Technical Improvements</a>
+<a href="#10-testing-strategy" class="level-2">10. Testing Strategy</a>
+<a href="#101-unit-testing" class="level-3">10.1 Unit Testing</a>
+<a href="#102-integration-testing" class="level-3">10.2 Integration Testing</a>
+<a href="#103-e2e-testing" class="level-3">10.3 E2E Testing</a>
+<a href="#conclusion" class="level-2">Conclusion</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

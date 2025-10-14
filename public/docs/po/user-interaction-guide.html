@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase Order Module - User Interaction Guide - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: var(--bg-gradient);
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr 300px;
+            gap: 2rem;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 1.5rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .back-to-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: var(--primary-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        .back-to-home:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        /* Content Area */
+        .doc-content {
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 260px 1fr 280px;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 1.5rem;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 2.5rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            .doc-nav {
+                display: none;
+            }
+            .doc-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </div>
+            <div class="doc-header-actions">
+                <a href="../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../SYSTEM-DOCUMENTATION-INDEX.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Documentation Index</span>
+                    </a>
+                    <a href="../DOCUMENTATION-CATALOG.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Catalog</span>
+                    </a>
+                    <a href="../DOCUMENTATION-SUMMARY-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Summary</span>
+                    </a>
+                    <a href="../MODULE-VERIFICATION-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Module Verification</span>
+                    </a>
+                    <a href="../SYSTEM-GAPS-AND-ROADMAP.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Gaps & Roadmap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../architecture/SYSTEM-ARCHITECTURE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-users"></i>
+                    <span>Stakeholders</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../stakeholders/BUSINESS-VALUE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pr/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Requests</span>
+                    </a>
+                    <a href="../po/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Orders</span>
+                    </a>
+                    <a href="../grn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Goods Received Note</span>
+                    </a>
+                    <a href="../cn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Credit Notes</span>
+                    </a>
+                    <a href="../prt/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>PR Templates</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-boxes"></i>
+                    <span>Inventory Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../inv/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Overview</span>
+                    </a>
+                    <a href="../inv/inventory-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Specification</span>
+                    </a>
+                    <a href="../inv/inventory-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Sitemap</span>
+                    </a>
+                    <a href="../pc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Physical Count</span>
+                    </a>
+                    <a href="../sc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Spot Check</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-handshake"></i>
+                    <span>Vendor Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../vm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Overview</span>
+                    </a>
+                    <a href="../vm/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Module</span>
+                    </a>
+                    <a href="../vm/MANAGE-VENDORS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Manage Vendors</span>
+                    </a>
+                    <a href="../vm/TEMPLATES.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Templates</span>
+                    </a>
+                    <a href="../vm/CAMPAIGNS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Campaigns</span>
+                    </a>
+                    <a href="../vm/PRICELISTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Pricelists</span>
+                    </a>
+                    <a href="../vm/VENDOR-PORTAL.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Portal</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cube"></i>
+                    <span>Product Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Overview</span>
+                    </a>
+                    <a href="../pm/product-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Specification</span>
+                    </a>
+                    <a href="../pm/product-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-store"></i>
+                    <span>Store Operations</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../store-ops/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Overview</span>
+                    </a>
+                    <a href="../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Module</span>
+                    </a>
+                    <a href="../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Requisitions</span>
+                    </a>
+                    <a href="../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Stock Replenishment</span>
+                    </a>
+                    <a href="../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Wastage Reporting</span>
+                    </a>
+                    <a href="../store-ops/GLOSSARY.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Glossary</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Operational Planning</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../operational-planning/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Overview</span>
+                    </a>
+                    <a href="../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Module</span>
+                    </a>
+                    <a href="../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Menu Engineering</span>
+                    </a>
+                    <a href="../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Recipe Management</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cash-register"></i>
+                    <span>POS Integration</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pos-integration/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Overview</span>
+                    </a>
+                    <a href="../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Module</span>
+                    </a>
+                    <a href="../pos-integration/MAPPING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Mapping Subsystem</span>
+                    </a>
+                    <a href="../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Transaction Management</span>
+                    </a>
+                    <a href="../pos-integration/REPORTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports & Analytics</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../dashboard/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Overview</span>
+                    </a>
+                    <a href="../dashboard/sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>System Requirements</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../carmen-erp-system-requirements-documentation.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Requirements</span>
+                    </a>
+                    <a href="../comprehensive-schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="purchase-order-module-user-interaction-guide">Purchase Order Module - User Interaction Guide</h1>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#navigation--entry-points">Navigation &amp; Entry Points</a></li>
+<li><a href="#primary-user-workflows">Primary User Workflows</a></li>
+<li><a href="#dialog-interactions">Dialog Interactions</a></li>
+<li><a href="#form-interactions">Form Interactions</a></li>
+<li><a href="#data-management">Data Management</a></li>
+<li><a href="#advanced-features">Advanced Features</a></li>
+</ol>
+<h2 id="navigation-amp-entry-points">Navigation &amp; Entry Points</h2>
+<h3 id="main-navigation">Main Navigation</h3>
+<ul>
+<li><strong>Primary Access:</strong> Procurement → Purchase Orders (sidebar menu)</li>
+<li><strong>Breadcrumb:</strong> Dashboard → Procurement → Purchase Orders</li>
+<li><strong>URL Pattern:</strong> <code>/procurement/purchase-orders</code></li>
+</ul>
+<h3 id="direct-links">Direct Links</h3>
+<ul>
+<li><strong>Specific PO:</strong> <code>/procurement/purchase-orders/[PO-ID]</code></li>
+<li><strong>Create New:</strong> <code>/procurement/purchase-orders/create</code></li>
+<li><strong>From PR:</strong> <code>/procurement/purchase-orders/create/from-pr</code></li>
+<li><strong>Bulk Create:</strong> <code>/procurement/purchase-orders/create/bulk</code></li>
+</ul>
+<h2 id="primary-user-workflows">Primary User Workflows</h2>
+<h3 id="1-create-purchase-order-from-scratch">1. Create Purchase Order from Scratch</h3>
+<p><strong>Step-by-Step Process:</strong></p>
+<ol>
+<li><p><strong>Navigate to PO List</strong></p>
+<ul>
+<li>Click &quot;Procurement&quot; in sidebar</li>
+<li>Select &quot;Purchase Orders&quot;</li>
+</ul>
+</li>
+<li><p><strong>Initiate Creation</strong></p>
+<ul>
+<li>Click &quot;New PO&quot; button</li>
+<li>Select &quot;Create Blank PO&quot; from dropdown</li>
+</ul>
+</li>
+<li><p><strong>Fill Header Information</strong></p>
+<ul>
+<li>Enter Order Date (defaults to today)</li>
+<li>Select Vendor from dropdown</li>
+<li>Set Delivery Date</li>
+<li>Choose Currency</li>
+<li>Enter Exchange Rate (if applicable)</li>
+<li>Add Credit Terms</li>
+<li>Write Description and Remarks</li>
+</ul>
+</li>
+<li><p><strong>Add Items</strong></p>
+<ul>
+<li>Navigate to Items tab</li>
+<li>Click &quot;Add Item&quot; button</li>
+<li>Fill item details:<ul>
+<li>Product Name and Description</li>
+<li>Quantity and Units</li>
+<li>Unit Price</li>
+<li>Tax Rate</li>
+<li>Discount Rate</li>
+</ul>
+</li>
+<li>Save item</li>
+</ul>
+</li>
+<li><p><strong>Review Financial Summary</strong></p>
+<ul>
+<li>Check calculated totals</li>
+<li>Verify currency amounts</li>
+<li>Confirm tax calculations</li>
+</ul>
+</li>
+<li><p><strong>Save and Send</strong></p>
+<ul>
+<li>Save as Draft for later editing</li>
+<li>Or change status to &quot;Sent&quot; to submit to vendor</li>
+</ul>
+</li>
+</ol>
+<p><strong>Screenshot References:</strong></p>
+<ul>
+<li><img src="./screenshots/purchase-order-detail-page.png" alt="PO Creation Form"></li>
+</ul>
+<h3 id="2-create-purchase-order-from-purchase-requests">2. Create Purchase Order from Purchase Requests</h3>
+<p><strong>Step-by-Step Process:</strong></p>
+<ol>
+<li><p><strong>Access PR to PO Conversion</strong></p>
+<ul>
+<li>From PO List page</li>
+<li>Click &quot;New PO&quot; → &quot;Create from Purchase Requests&quot;</li>
+</ul>
+</li>
+<li><p><strong>Select Purchase Requests</strong></p>
+<ul>
+<li>Dialog opens with available approved PRs</li>
+<li>Use search to find specific PRs</li>
+<li>Apply filters (vendor, date, amount)</li>
+<li>Select multiple PRs using checkboxes</li>
+</ul>
+</li>
+<li><p><strong>Review Grouping</strong></p>
+<ul>
+<li>System automatically groups by vendor and currency</li>
+<li>Preview shows how many POs will be created</li>
+<li>Review items that will be included</li>
+</ul>
+</li>
+<li><p><strong>Confirm Creation</strong></p>
+<ul>
+<li>Click &quot;Create PO(s)&quot; button</li>
+<li>System processes grouping logic</li>
+<li>Redirects to first PO or bulk creation page</li>
+</ul>
+</li>
+<li><p><strong>Review Generated PO</strong></p>
+<ul>
+<li>Check vendor information is correct</li>
+<li>Verify all PR items are included</li>
+<li>Adjust quantities if needed</li>
+<li>Modify terms and conditions</li>
+</ul>
+</li>
+<li><p><strong>Finalize</strong></p>
+<ul>
+<li>Save as Draft or Send to vendor</li>
+<li>System maintains PR traceability</li>
+</ul>
+</li>
+</ol>
+<h3 id="3-process-purchase-order-items">3. Process Purchase Order Items</h3>
+<p><strong>Item Management Workflow:</strong></p>
+<ol>
+<li><p><strong>Access Items Tab</strong></p>
+<ul>
+<li>Open specific PO detail page</li>
+<li>Click on &quot;Items&quot; tab</li>
+</ul>
+</li>
+<li><p><strong>Review Item Status</strong></p>
+<ul>
+<li>Check ordered vs received quantities</li>
+<li>Monitor delivery status</li>
+<li>Identify pending items</li>
+</ul>
+</li>
+<li><p><strong>Process Goods Receipt</strong></p>
+<ul>
+<li>Click &quot;Related GRNs&quot; for item</li>
+<li>Navigate to Goods Received Note</li>
+<li>Record actual received quantities</li>
+<li>Update item status automatically</li>
+</ul>
+</li>
+<li><p><strong>Handle Partial Deliveries</strong></p>
+<ul>
+<li>Use &quot;Split Line&quot; function for partial delivery</li>
+<li>Create separate line items</li>
+<li>Track multiple delivery dates</li>
+</ul>
+</li>
+<li><p><strong>Close Completed Items</strong></p>
+<ul>
+<li>Mark items as &quot;Fully Received&quot;</li>
+<li>Close line items when complete</li>
+<li>Update PO status when all items complete</li>
+</ul>
+</li>
+</ol>
+<h3 id="4-manage-purchase-order-status">4. Manage Purchase Order Status</h3>
+<p><strong>Status Change Workflow:</strong></p>
+<ol>
+<li><p><strong>Access Status Controls</strong></p>
+<ul>
+<li>Open PO detail page</li>
+<li>Enter edit mode</li>
+<li>Use status dropdown</li>
+</ul>
+</li>
+<li><p><strong>Select New Status</strong></p>
+<ul>
+<li>Choose from available status options</li>
+<li>System validates status progression</li>
+</ul>
+</li>
+<li><p><strong>Provide Justification (if required)</strong></p>
+<ul>
+<li>For cancellation/void: reason required</li>
+<li>Enter detailed explanation</li>
+<li>Specify business justification</li>
+</ul>
+</li>
+<li><p><strong>Confirm Change</strong></p>
+<ul>
+<li>Review status change impact</li>
+<li>Confirm action in dialog</li>
+<li>System updates activity log</li>
+</ul>
+</li>
+<li><p><strong>Verify Update</strong></p>
+<ul>
+<li>Check status badge updated</li>
+<li>Review activity log entry</li>
+<li>Confirm workflow progression</li>
+</ul>
+</li>
+</ol>
+<h2 id="dialog-interactions">Dialog Interactions</h2>
+<h3 id="1-create-from-purchase-requests-dialog">1. Create from Purchase Requests Dialog</h3>
+<p><strong>Interface Elements:</strong></p>
+<ul>
+<li>Search bar for PR filtering</li>
+<li>Filter buttons (status, vendor, date)</li>
+<li>Checkbox selection for multiple PRs</li>
+<li>Data table with PR details</li>
+<li>Summary panel showing selection count</li>
+<li>Preview of PO grouping</li>
+</ul>
+<p><strong>User Actions:</strong></p>
+<ul>
+<li><strong>Search:</strong> Type PR number or description</li>
+<li><strong>Filter:</strong> Click filter buttons to narrow results</li>
+<li><strong>Select:</strong> Use checkboxes to select PRs</li>
+<li><strong>Select All:</strong> Master checkbox for page selection</li>
+<li><strong>Preview:</strong> Review how PRs will be grouped</li>
+<li><strong>Create:</strong> Confirm selection and proceed</li>
+</ul>
+<p><strong>Validation:</strong></p>
+<ul>
+<li>Only approved PRs selectable</li>
+<li>Must select at least one PR</li>
+<li>System checks for vendor conflicts</li>
+</ul>
+<h3 id="2-status-change-confirmation-dialog">2. Status Change Confirmation Dialog</h3>
+<p><strong>Dialog Triggers:</strong></p>
+<ul>
+<li>Status dropdown change in edit mode</li>
+<li>Bulk status update operations</li>
+<li>Workflow progression actions</li>
+</ul>
+<p><strong>Interface Elements:</strong></p>
+<ul>
+<li>Warning icon for critical changes</li>
+<li>Dynamic message based on status change</li>
+<li>Required reason field (for void/cancel)</li>
+<li>Confirm and Cancel buttons</li>
+</ul>
+<p><strong>Business Rules:</strong></p>
+<ul>
+<li>Draft → Sent: Confirmation only</li>
+<li>Any → Cancelled/Voided: Reason required</li>
+<li>Cannot reverse certain progressions</li>
+<li>System validates status workflow</li>
+</ul>
+<h3 id="3-export-configuration-dialog">3. Export Configuration Dialog</h3>
+<p><strong>Format Selection:</strong></p>
+<ul>
+<li>Radio buttons for PDF, Excel, CSV</li>
+<li>Format-specific options</li>
+<li>Preview of output structure</li>
+</ul>
+<p><strong>Section Selection:</strong></p>
+<ul>
+<li>Checkboxes for each section</li>
+<li>Header Information</li>
+<li>Items Detail</li>
+<li>Financial Summary</li>
+<li>Vendor Information</li>
+<li>Comments and Attachments</li>
+</ul>
+<p><strong>Export Process:</strong></p>
+<ul>
+<li>Validate selections</li>
+<li>Generate file server-side</li>
+<li>Download prompt</li>
+<li>File naming convention</li>
+</ul>
+<h3 id="4-item-management-dialogs">4. Item Management Dialogs</h3>
+<p><strong>Add Item Dialog:</strong></p>
+<ul>
+<li>Product search/selection</li>
+<li>Quantity and unit specification</li>
+<li>Pricing information entry</li>
+<li>Tax and discount configuration</li>
+<li>Inventory information display</li>
+</ul>
+<p><strong>Edit Item Dialog:</strong></p>
+<ul>
+<li>Pre-populated with current values</li>
+<li>Modification tracking</li>
+<li>Validation of changes</li>
+<li>Impact on totals</li>
+</ul>
+<h2 id="form-interactions">Form Interactions</h2>
+<h3 id="1-header-information-form">1. Header Information Form</h3>
+<p><strong>Field Types and Validation:</strong></p>
+<p><strong>Date Fields:</strong></p>
+<ul>
+<li>HTML5 date picker</li>
+<li>Default to current date</li>
+<li>Future date validation for delivery</li>
+<li>Weekend/holiday consideration</li>
+</ul>
+<p><strong>Text Fields:</strong></p>
+<ul>
+<li>Auto-complete for vendor names</li>
+<li>Character limits enforced</li>
+<li>Required field indicators</li>
+<li>Real-time validation</li>
+</ul>
+<p><strong>Numeric Fields:</strong></p>
+<ul>
+<li>Exchange rate: 4 decimal places</li>
+<li>Amount fields: 2 decimal places</li>
+<li>Quantity fields: 3 decimal places</li>
+<li>Negative value prevention</li>
+</ul>
+<p><strong>Dropdown Fields:</strong></p>
+<ul>
+<li>Currency selection with search</li>
+<li>Vendor selection with filtering</li>
+<li>Status progression validation</li>
+<li>Dynamic option loading</li>
+</ul>
+<h3 id="2-item-details-form">2. Item Details Form</h3>
+<p><strong>Product Selection:</strong></p>
+<ul>
+<li>Searchable product catalog</li>
+<li>Recent items quick access</li>
+<li>Barcode scanning support</li>
+<li>Custom item creation</li>
+</ul>
+<p><strong>Quantity Management:</strong></p>
+<ul>
+<li>Multiple unit support</li>
+<li>Conversion factor handling</li>
+<li>Stock level checking</li>
+<li>Reorder point alerts</li>
+</ul>
+<p><strong>Pricing Configuration:</strong></p>
+<ul>
+<li>Multi-currency support</li>
+<li>Bulk discount tiers</li>
+<li>Tax calculation options</li>
+<li>Price history display</li>
+</ul>
+<h2 id="data-management">Data Management</h2>
+<h3 id="1-search-and-filtering">1. Search and Filtering</h3>
+<p><strong>Quick Filters:</strong></p>
+<ul>
+<li>Status-based filtering</li>
+<li>Date range selection</li>
+<li>Vendor filtering</li>
+<li>Amount range filtering</li>
+<li>Currency filtering</li>
+</ul>
+<p><strong>Advanced Search:</strong></p>
+<ul>
+<li>Multi-criteria search</li>
+<li>Saved search preferences</li>
+<li>Complex query building</li>
+<li>Result sorting options</li>
+</ul>
+<p><strong>Search Features:</strong></p>
+<ul>
+<li>Auto-complete suggestions</li>
+<li>Fuzzy matching</li>
+<li>Wildcard support</li>
+<li>Search history</li>
+</ul>
+<h3 id="2-bulk-operations">2. Bulk Operations</h3>
+<p><strong>Selection Methods:</strong></p>
+<ul>
+<li>Individual row selection</li>
+<li>Page-level select all</li>
+<li>Filter-based selection</li>
+<li>Manual range selection</li>
+</ul>
+<p><strong>Bulk Actions:</strong></p>
+<ul>
+<li>Status updates</li>
+<li>Export operations</li>
+<li>Print batches</li>
+<li>Email notifications</li>
+<li>Archive operations</li>
+</ul>
+<p><strong>Progress Tracking:</strong></p>
+<ul>
+<li>Operation progress bars</li>
+<li>Success/failure reporting</li>
+<li>Error detail display</li>
+<li>Rollback capabilities</li>
+</ul>
+<h3 id="3-data-export-and-import">3. Data Export and Import</h3>
+<p><strong>Export Options:</strong></p>
+<ul>
+<li>PDF formatted reports</li>
+<li>Excel spreadsheets</li>
+<li>CSV data files</li>
+<li>XML structured data</li>
+<li>JSON API format</li>
+</ul>
+<p><strong>Export Configurations:</strong></p>
+<ul>
+<li>Column selection</li>
+<li>Date range filtering</li>
+<li>Format customization</li>
+<li>Automated scheduling</li>
+</ul>
+<h2 id="advanced-features">Advanced Features</h2>
+<h3 id="1-multi-currency-handling">1. Multi-Currency Handling</h3>
+<p><strong>Currency Operations:</strong></p>
+<ul>
+<li>Real-time exchange rates</li>
+<li>Historical rate tracking</li>
+<li>Currency conversion display</li>
+<li>Local currency preference</li>
+</ul>
+<p><strong>Multi-Currency Display:</strong></p>
+<ul>
+<li>Primary currency (PO currency)</li>
+<li>Base currency (company default)</li>
+<li>Side-by-side comparison</li>
+<li>Conversion calculations</li>
+</ul>
+<h3 id="2-approval-workflows">2. Approval Workflows</h3>
+<p><strong>Approval Routing:</strong></p>
+<ul>
+<li>Amount-based approval limits</li>
+<li>Department-based routing</li>
+<li>Escalation procedures</li>
+<li>Approval tracking</li>
+</ul>
+<p><strong>Notification System:</strong></p>
+<ul>
+<li>Email notifications</li>
+<li>In-app notifications</li>
+<li>Mobile notifications</li>
+<li>Reminder scheduling</li>
+</ul>
+<h3 id="3-integration-features">3. Integration Features</h3>
+<p><strong>Purchase Request Integration:</strong></p>
+<ul>
+<li>Seamless PR to PO conversion</li>
+<li>Traceability maintenance</li>
+<li>Status synchronization</li>
+<li>Workflow continuation</li>
+</ul>
+<p><strong>Inventory Integration:</strong></p>
+<ul>
+<li>Stock level checking</li>
+<li>Reorder point monitoring</li>
+<li>Availability validation</li>
+<li>Reservation handling</li>
+</ul>
+<p><strong>Vendor Integration:</strong></p>
+<ul>
+<li>Vendor catalog access</li>
+<li>Price agreement checking</li>
+<li>Contract compliance</li>
+<li>Performance tracking</li>
+</ul>
+<hr>
+<p><em>Generated on: Latest</em><br><em>User Interaction Guide Version: 1.0</em></p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#purchase-order-module-user-interaction-guide" class="level-1">Purchase Order Module - User Interaction Guide</a>
+<a href="#table-of-contents" class="level-2">Table of Contents</a>
+<a href="#navigation-amp-entry-points" class="level-2">Navigation &amp; Entry Points</a>
+<a href="#main-navigation" class="level-3">Main Navigation</a>
+<a href="#direct-links" class="level-3">Direct Links</a>
+<a href="#primary-user-workflows" class="level-2">Primary User Workflows</a>
+<a href="#1-create-purchase-order-from-scratch" class="level-3">1. Create Purchase Order from Scratch</a>
+<a href="#2-create-purchase-order-from-purchase-requests" class="level-3">2. Create Purchase Order from Purchase Requests</a>
+<a href="#3-process-purchase-order-items" class="level-3">3. Process Purchase Order Items</a>
+<a href="#4-manage-purchase-order-status" class="level-3">4. Manage Purchase Order Status</a>
+<a href="#dialog-interactions" class="level-2">Dialog Interactions</a>
+<a href="#1-create-from-purchase-requests-dialog" class="level-3">1. Create from Purchase Requests Dialog</a>
+<a href="#2-status-change-confirmation-dialog" class="level-3">2. Status Change Confirmation Dialog</a>
+<a href="#3-export-configuration-dialog" class="level-3">3. Export Configuration Dialog</a>
+<a href="#4-item-management-dialogs" class="level-3">4. Item Management Dialogs</a>
+<a href="#form-interactions" class="level-2">Form Interactions</a>
+<a href="#1-header-information-form" class="level-3">1. Header Information Form</a>
+<a href="#2-item-details-form" class="level-3">2. Item Details Form</a>
+<a href="#data-management" class="level-2">Data Management</a>
+<a href="#1-search-and-filtering" class="level-3">1. Search and Filtering</a>
+<a href="#2-bulk-operations" class="level-3">2. Bulk Operations</a>
+<a href="#3-data-export-and-import" class="level-3">3. Data Export and Import</a>
+<a href="#advanced-features" class="level-2">Advanced Features</a>
+<a href="#1-multi-currency-handling" class="level-3">1. Multi-Currency Handling</a>
+<a href="#2-approval-workflows" class="level-3">2. Approval Workflows</a>
+<a href="#3-integration-features" class="level-3">3. Integration Features</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

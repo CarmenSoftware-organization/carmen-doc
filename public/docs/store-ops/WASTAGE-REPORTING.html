@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wastage Reporting Submodule - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: var(--bg-gradient);
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr 300px;
+            gap: 2rem;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 1.5rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .back-to-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: var(--primary-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        .back-to-home:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        /* Content Area */
+        .doc-content {
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 260px 1fr 280px;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 1.5rem;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 2.5rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            .doc-nav {
+                display: none;
+            }
+            .doc-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </div>
+            <div class="doc-header-actions">
+                <a href="../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../SYSTEM-DOCUMENTATION-INDEX.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Documentation Index</span>
+                    </a>
+                    <a href="../DOCUMENTATION-CATALOG.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Catalog</span>
+                    </a>
+                    <a href="../DOCUMENTATION-SUMMARY-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Summary</span>
+                    </a>
+                    <a href="../MODULE-VERIFICATION-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Module Verification</span>
+                    </a>
+                    <a href="../SYSTEM-GAPS-AND-ROADMAP.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Gaps & Roadmap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../architecture/SYSTEM-ARCHITECTURE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-users"></i>
+                    <span>Stakeholders</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../stakeholders/BUSINESS-VALUE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pr/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Requests</span>
+                    </a>
+                    <a href="../po/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Orders</span>
+                    </a>
+                    <a href="../grn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Goods Received Note</span>
+                    </a>
+                    <a href="../cn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Credit Notes</span>
+                    </a>
+                    <a href="../prt/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>PR Templates</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-boxes"></i>
+                    <span>Inventory Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../inv/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Overview</span>
+                    </a>
+                    <a href="../inv/inventory-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Specification</span>
+                    </a>
+                    <a href="../inv/inventory-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Sitemap</span>
+                    </a>
+                    <a href="../pc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Physical Count</span>
+                    </a>
+                    <a href="../sc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Spot Check</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-handshake"></i>
+                    <span>Vendor Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../vm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Overview</span>
+                    </a>
+                    <a href="../vm/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Module</span>
+                    </a>
+                    <a href="../vm/MANAGE-VENDORS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Manage Vendors</span>
+                    </a>
+                    <a href="../vm/TEMPLATES.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Templates</span>
+                    </a>
+                    <a href="../vm/CAMPAIGNS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Campaigns</span>
+                    </a>
+                    <a href="../vm/PRICELISTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Pricelists</span>
+                    </a>
+                    <a href="../vm/VENDOR-PORTAL.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Portal</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cube"></i>
+                    <span>Product Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Overview</span>
+                    </a>
+                    <a href="../pm/product-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Specification</span>
+                    </a>
+                    <a href="../pm/product-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-store"></i>
+                    <span>Store Operations</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../store-ops/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Overview</span>
+                    </a>
+                    <a href="../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Module</span>
+                    </a>
+                    <a href="../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Requisitions</span>
+                    </a>
+                    <a href="../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Stock Replenishment</span>
+                    </a>
+                    <a href="../store-ops/WASTAGE-REPORTING.html" class="nav-item active">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Wastage Reporting</span>
+                    </a>
+                    <a href="../store-ops/GLOSSARY.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Glossary</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Operational Planning</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../operational-planning/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Overview</span>
+                    </a>
+                    <a href="../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Module</span>
+                    </a>
+                    <a href="../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Menu Engineering</span>
+                    </a>
+                    <a href="../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Recipe Management</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cash-register"></i>
+                    <span>POS Integration</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pos-integration/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Overview</span>
+                    </a>
+                    <a href="../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Module</span>
+                    </a>
+                    <a href="../pos-integration/MAPPING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Mapping Subsystem</span>
+                    </a>
+                    <a href="../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Transaction Management</span>
+                    </a>
+                    <a href="../pos-integration/REPORTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports & Analytics</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../dashboard/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Overview</span>
+                    </a>
+                    <a href="../dashboard/sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>System Requirements</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../carmen-erp-system-requirements-documentation.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Requirements</span>
+                    </a>
+                    <a href="../comprehensive-schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="wastage-reporting-submodule">Wastage Reporting Submodule</h1>
+<p><strong>Submodule</strong>: Wastage Reporting<br><strong>Route</strong>: <code>/store-operations/wastage-reporting</code><br><strong>Status</strong>: 🚧 Prototype/Demo Only<br><strong>Last Updated</strong>: 2025-10-02</p>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#pages">Pages</a></li>
+<li><a href="#components">Components</a></li>
+<li><a href="#action-flows">Action Flows</a></li>
+<li><a href="#future-features">Future Features</a></li>
+</ol>
+<hr>
+<h2 id="overview">Overview</h2>
+<p>The Wastage Reporting module tracks and analyzes inventory wastage across all operational units. It helps identify wastage patterns, calculate financial impact, and implement corrective measures. This is currently a <strong>prototype/demo</strong> with mock data.</p>
+<p><strong>Key Capabilities</strong>:</p>
+<ul>
+<li>Record wastage events</li>
+<li>Categorize wastage by reason</li>
+<li>Track monthly wastage trends</li>
+<li>Calculate cost impact</li>
+<li>Manage approval workflows</li>
+<li>Generate wastage reports</li>
+</ul>
+<p><strong>Screenshot</strong>: <img src="wastage-reporting-dashboard.png" alt="Wastage Reporting Dashboard"></p>
+<hr>
+<h2 id="pages">Pages</h2>
+<h3 id="wastage-reporting-dashboard">Wastage Reporting Dashboard</h3>
+<p><strong>Path</strong>: <code>/store-operations/wastage-reporting</code><br><strong>Component</strong>: <code>WastageReportingDashboard</code></p>
+<h4>Page Structure</h4>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│ ┌─── Dashboard Stats ───────────────────────────────────┐  │
+│ │ Total Wastage    Items Written Off   Pending Reviews  │  │
+│ │  $3,458.50             45                  12         │  │
+│ │  -12% vs last        +8% vs last      Requires        │  │
+│ └───────────────────────────────────────────────────────┘  │
+├─────────────────────────────────────────────────────────────┤
+│ ┌─ Monthly Wastage Trend ─┐ ┌─ Wastage by Reason ──────┐  │
+│ │ Line chart (6 months)   │ │ Pie chart                 │  │
+│ │                          │ │ - Expiration: 45%        │  │
+│ │                          │ │ - Damage: 25%            │  │
+│ │                          │ │ - Quality Issues: 20%    │  │
+│ │                          │ │ - Other: 10%             │  │
+│ └──────────────────────────┘ └───────────────────────────┘  │
+├─────────────────────────────────────────────────────────────┤
+│ Wastage Records                         [+ Report Wastage]  │
+│ [Search...] [Date Range] [Reason Filter] [Status Filter]    │
+├─────────────────────────────────────────────────────────────┤
+│  Date  Item   Qty  Unit Cost  Loss  Reason  Reporter  Status│
+│  ─────────────────────────────────────────────────────────...│
+│  Data rows with wastage details...                          │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
+</code></pre>
+<h4>Dashboard Statistics</h4>
+<p><strong>Total Wastage This Month Card</strong>:</p>
+<ul>
+<li>Shows monetary value of wasted inventory</li>
+<li>Current Value: $3,458.50</li>
+<li>Comparison: -12% vs last month (improvement)</li>
+<li>Color: Red (loss indicator)</li>
+</ul>
+<p><strong>Items Written Off Card</strong>:</p>
+<ul>
+<li>Shows count of items marked as wastage</li>
+<li>Current Value: 45 items</li>
+<li>Comparison: +8% vs last month (increase)</li>
+<li>Neutral indicator</li>
+</ul>
+<p><strong>Pending Reviews Card</strong>:</p>
+<ul>
+<li>Shows wastage entries awaiting approval</li>
+<li>Current Value: 12</li>
+<li>Status: Requires attention</li>
+<li>Color: Orange (action needed)</li>
+</ul>
+<h4>Monthly Wastage Trend Chart</h4>
+<p><strong>Type</strong>: Line Chart<br><strong>Period</strong>: 6 months (January-June)<br><strong>Features</strong>:</p>
+<ul>
+<li>Time series visualization</li>
+<li>Interactive tooltips</li>
+<li>Trend identification</li>
+<li>Responsive design</li>
+</ul>
+<p><strong>Monthly Data</strong>:</p>
+<ul>
+<li>January: $2,500</li>
+<li>February: $1,800</li>
+<li>March: $3,200</li>
+<li>April: $2,200</li>
+<li>May: $2,800</li>
+<li>June: $1,900</li>
+</ul>
+<p><strong>Insights</strong>:</p>
+<ul>
+<li>Highest wastage: March ($3,200)</li>
+<li>Lowest wastage: February ($1,800)</li>
+<li>Average: $2,400/month</li>
+<li>Current trend: Decreasing</li>
+</ul>
+<h4>Wastage by Reason Chart</h4>
+<p><strong>Type</strong>: Donut/Pie Chart<br><strong>Categories</strong>: 4 wastage reasons</p>
+<p><strong>Breakdown</strong>:</p>
+<ul>
+<li><strong>Expiration</strong>: 45% (Red)<ul>
+<li>Expired products past shelf life</li>
+<li>Primary wastage cause</li>
+</ul>
+</li>
+<li><strong>Damage</strong>: 25% (Orange)<ul>
+<li>Physical damage during handling/storage</li>
+<li>Secondary cause</li>
+</ul>
+</li>
+<li><strong>Quality Issues</strong>: 20% (Yellow)<ul>
+<li>Failed quality inspections</li>
+<li>Contamination concerns</li>
+</ul>
+</li>
+<li><strong>Other</strong>: 10% (Green)<ul>
+<li>Miscellaneous reasons</li>
+<li>Includes spillage, customer returns, etc.</li>
+</ul>
+</li>
+</ul>
+<h4>Wastage Records Table</h4>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Chronological wastage log</li>
+<li>Searchable records</li>
+<li>Multi-filter support</li>
+<li>Status tracking</li>
+<li>Export capability</li>
+</ul>
+<p><strong>Table Columns</strong>:</p>
+<ol>
+<li><strong>Date</strong> - When wastage occurred</li>
+<li><strong>Item Code</strong> - Product SKU</li>
+<li><strong>Item Name</strong> - Product description</li>
+<li><strong>Quantity</strong> - Amount wasted</li>
+<li><strong>Unit Cost</strong> - Cost per unit</li>
+<li><strong>Total Loss</strong> - Calculated financial impact</li>
+<li><strong>Reason</strong> - Wastage category</li>
+<li><strong>Reported By</strong> - Staff member who logged</li>
+<li><strong>Status</strong> - Approval status</li>
+<li><strong>Actions</strong> - View/Edit/Approve/Delete</li>
+</ol>
+<p><strong>Sample Records</strong>:</p>
+<p><strong>Record 1</strong>:</p>
+<ul>
+<li>Date: 2024-01-15</li>
+<li>Item Code: BEV-001</li>
+<li>Item Name: Thai Milk Tea (12 pack)</li>
+<li>Quantity: 5</li>
+<li>Unit Cost: $45.99</li>
+<li>Total Loss: $229.95</li>
+<li>Reason: Expiration</li>
+<li>Reported By: John Smith</li>
+<li>Status: Pending Review</li>
+</ul>
+<p><strong>Record 2</strong>:</p>
+<ul>
+<li>Date: 2024-01-14</li>
+<li>Item Code: BEV-002</li>
+<li>Item Name: Coffee Beans (1kg)</li>
+<li>Quantity: 2</li>
+<li>Unit Cost: $28.50</li>
+<li>Total Loss: $57.00</li>
+<li>Reason: Quality Issues</li>
+<li>Reported By: Jane Doe</li>
+<li>Status: Approved</li>
+</ul>
+<hr>
+<h2 id="components">Components</h2>
+<h3 id="dashboard-stat-card">Dashboard Stat Card</h3>
+<p><strong>Component</strong>: <code>Card</code> with wastage statistics<br><strong>Features</strong>:</p>
+<ul>
+<li>Primary value display</li>
+<li>Trend comparison</li>
+<li>Color-coded indicators</li>
+<li>Percentage change</li>
+</ul>
+<p><strong>Variants</strong>:</p>
+<ul>
+<li><strong>Total Wastage</strong>: Red theme, currency format</li>
+<li><strong>Items Written Off</strong>: Neutral theme, count</li>
+<li><strong>Pending Reviews</strong>: Orange theme, action indicator</li>
+</ul>
+<h3 id="monthly-wastage-chart">Monthly Wastage Chart</h3>
+<p><strong>Component</strong>: ResponsiveContainer with LineChart<br><strong>Library</strong>: Recharts<br><strong>Configuration</strong>:</p>
+<ul>
+<li>Line color: Red (#ef4444)</li>
+<li>Smooth curve</li>
+<li>Grid lines</li>
+<li>Month labels on X-axis</li>
+<li>Dollar values on Y-axis</li>
+</ul>
+<h3 id="wastage-by-reason-chart">Wastage by Reason Chart</h3>
+<p><strong>Component</strong>: ResponsiveContainer with PieChart<br><strong>Library</strong>: Recharts<br><strong>Configuration</strong>:</p>
+<ul>
+<li>Donut style (inner radius: 60, outer radius: 80)</li>
+<li>4 color segments</li>
+<li>Padding between segments</li>
+<li>Percentage labels</li>
+<li>Interactive tooltips</li>
+</ul>
+<p><strong>Colors</strong>:</p>
+<ul>
+<li>Expiration: #ef4444 (Red)</li>
+<li>Damage: #f97316 (Orange)</li>
+<li>Quality Issues: #eab308 (Yellow)</li>
+<li>Other: #84cc16 (Green)</li>
+</ul>
+<h3 id="wastage-records-table">Wastage Records Table</h3>
+<p><strong>Component</strong>: Custom data table<br><strong>Features</strong>:</p>
+<ul>
+<li>Sortable columns</li>
+<li>Row hover effects</li>
+<li>Status badges</li>
+<li>Action menus</li>
+<li>Pagination support</li>
+</ul>
+<h3 id="status-badge">Status Badge</h3>
+<p><strong>Component</strong>: Badge with color coding<br><strong>Variants</strong>:</p>
+<ul>
+<li><strong>Pending Review</strong>: Orange</li>
+<li><strong>Approved</strong>: Green</li>
+<li><strong>Rejected</strong>: Red</li>
+<li><strong>Void</strong>: Gray</li>
+</ul>
+<hr>
+<h2 id="action-flows">Action Flows</h2>
+<h3 id="view-dashboard">View Dashboard</h3>
+<p><strong>Trigger</strong>: Navigate to <code>/store-operations/wastage-reporting</code></p>
+<div class="mermaid">
+flowchart LR
+    Load["Load Page"] --> Fetch["Fetch Wastage Data"]
+    Fetch --> Stats["Render Statistics"]
+    Stats --> Charts["Render Charts"]
+    Charts --> Table["Load Wastage Records"]
+
+</div>
+<h3 id="report-new-wastage">Report New Wastage</h3>
+<p><strong>Trigger</strong>: Click &quot;+ Report Wastage&quot; button</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Report Wastage"] --> Open["Open Wastage Form"]
+    Open --> Fill["Fill Form Fields"]
+    Fill --> Validate["Validate Entry"]
+    Validate --> Submit["Submit Wastage"]
+    Submit --> Create["Create Record"]
+    Create --> Notify["Send Approval Notification"]
+    Notify --> Refresh["Refresh Dashboard"]
+
+</div>
+<h3 id="search-wastage-records">Search Wastage Records</h3>
+<p><strong>Trigger</strong>: Type in search box</p>
+<div class="mermaid">
+flowchart LR
+    Type["Type Search Term"] --> Filter["Filter Records"]
+    Filter --> Highlight["Highlight Matches"]
+    Highlight --> Update["Update Table"]
+
+</div>
+<h3 id="filter-by-date-range">Filter by Date Range</h3>
+<p><strong>Trigger</strong>: Select date range</p>
+<div class="mermaid">
+flowchart LR
+    Select["Select Date Range"] --> Filter["Filter by Dates"]
+    Filter --> Update["Update Table and Charts"]
+
+</div>
+<h3 id="filter-by-reason">Filter by Reason</h3>
+<p><strong>Trigger</strong>: Select wastage reason</p>
+<div class="mermaid">
+flowchart LR
+    Select["Select Reason"] --> Filter["Filter Records"]
+    Filter --> Update["Update Display"]
+
+</div>
+<h3 id="filter-by-status">Filter by Status</h3>
+<p><strong>Trigger</strong>: Select approval status</p>
+<div class="mermaid">
+flowchart LR
+    Select["Select Status"] --> Filter["Filter Records"]
+    Filter --> Update["Update Table"]
+
+</div>
+<h3 id="approve-wastage-entry">Approve Wastage Entry</h3>
+<p><strong>Trigger</strong>: Click &quot;Approve&quot; in actions menu</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Approve"] --> Validate["Validate Permissions"]
+    Validate --> Comment["Add Approval Comment"]
+    Comment --> Update["Update Status to Approved"]
+    Update --> Journal["Generate Journal Entry"]
+    Journal --> Stock["Update Inventory"]
+    Stock --> Notify["Notify Requester"]
+    Notify --> Refresh["Refresh Display"]
+
+</div>
+<h3 id="reject-wastage-entry">Reject Wastage Entry</h3>
+<p><strong>Trigger</strong>: Click &quot;Reject&quot; in actions menu</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Reject"] --> Reason["Enter Rejection Reason"]
+    Reason --> Validate["Validate Permissions"]
+    Validate --> Update["Update Status to Rejected"]
+    Update --> Notify["Notify Requester"]
+    Notify --> Refresh["Refresh Display"]
+
+</div>
+<h3 id="edit-wastage-entry">Edit Wastage Entry</h3>
+<p><strong>Trigger</strong>: Click &quot;Edit&quot; in actions menu (if pending)</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Edit"] --> Check["Check Status"]
+    Check --> Open["Open Edit Form"]
+    Open --> Modify["Modify Fields"]
+    Modify --> Validate["Validate Changes"]
+    Validate --> Save["Save Updates"]
+    Save --> Refresh["Refresh Display"]
+
+</div>
+<h3 id="delete-wastage-entry">Delete Wastage Entry</h3>
+<p><strong>Trigger</strong>: Click &quot;Delete&quot; in actions menu</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Delete"] --> Confirm["Show Confirmation"]
+    Confirm --> Validate["Validate Permissions"]
+    Validate --> Delete["Delete Record"]
+    Delete --> Refresh["Refresh Display"]
+
+</div>
+<h3 id="export-wastage-report">Export Wastage Report</h3>
+<p><strong>Trigger</strong>: Click &quot;Export&quot; button</p>
+<div class="mermaid">
+flowchart LR
+    Click["Click Export"] --> Select["Select Format"]
+    Select --> Filter["Apply Current Filters"]
+    Filter --> Generate["Generate Report"]
+    Generate --> Download["Download File"]
+
+</div>
+<h3 id="view-wastage-trends">View Wastage Trends</h3>
+<p><strong>Trigger</strong>: Hover on chart elements</p>
+<div class="mermaid">
+flowchart LR
+    Hover["Hover on Chart"] --> Show["Show Tooltip"]
+    Show --> Display["Display Value Details"]
+
+</div>
+<hr>
+<h2 id="future-features">Future Features</h2>
+<h3 id="planned-enhancements">Planned Enhancements</h3>
+<p><strong>Advanced Analytics</strong>:</p>
+<ul>
+<li>Wastage by department/location</li>
+<li>Wastage by product category</li>
+<li>Wastage by vendor (product source)</li>
+<li>Cost impact by time period</li>
+<li>Predictive wastage alerts</li>
+</ul>
+<p><strong>Root Cause Analysis</strong>:</p>
+<ul>
+<li>Pattern recognition for recurring wastage</li>
+<li>Correlation with purchase dates</li>
+<li>Quality issue trending</li>
+<li>Storage condition tracking</li>
+<li>Supplier quality correlation</li>
+</ul>
+<p><strong>Workflow Automation</strong>:</p>
+<ul>
+<li>Auto-approval for small amounts</li>
+<li>Escalation for high-value wastage</li>
+<li>Recurring wastage alerts</li>
+<li>Preventive action tracking</li>
+<li>Corrective action workflows</li>
+</ul>
+<p><strong>Integration Features</strong>:</p>
+<ul>
+<li>Photo attachment for evidence</li>
+<li>Barcode scanning for item entry</li>
+<li>Inventory auto-adjustment</li>
+<li>Finance system integration</li>
+<li>Quality management linkage</li>
+</ul>
+<p><strong>Reporting Enhancements</strong>:</p>
+<ul>
+<li>Custom report builder</li>
+<li>Scheduled reports</li>
+<li>Wastage variance analysis</li>
+<li>Benchmark comparisons</li>
+<li>Sustainability metrics (waste reduction)</li>
+</ul>
+<p><strong>Mobile Capabilities</strong>:</p>
+<ul>
+<li>Mobile wastage reporting</li>
+<li>Quick capture with camera</li>
+<li>Offline data entry</li>
+<li>Push notifications</li>
+<li>Location-based logging</li>
+</ul>
+<hr>
+<h2 id="data-models">Data Models</h2>
+<h3 id="wastage-record">Wastage Record</h3>
+<pre><code class="language-typescript">interface WastageRecord {
+  id: number
+  date: string
+  itemCode: string
+  itemName: string
+  quantity: number
+  unit: string
+  unitCost: number
+  totalLoss: number
+  reason: &#39;Expiration&#39; | &#39;Damage&#39; | &#39;Quality Issues&#39; | &#39;Other&#39;
+  reasonDetails?: string
+  reportedBy: string
+  reportedById: string
+  location: string
+  locationCode: string
+  status: &#39;Pending Review&#39; | &#39;Approved&#39; | &#39;Rejected&#39; | &#39;Void&#39;
+  approver?: string
+  approvedAt?: string
+  approvalComments?: string
+  photoEvidence?: string[]
+  createdAt: string
+  updatedAt: string
+}
+</code></pre>
+<h3 id="wastage-statistics">Wastage Statistics</h3>
+<pre><code class="language-typescript">interface WastageStats {
+  totalWastageThisMonth: number
+  wastageChange: number // percentage vs last month
+  itemsWrittenOff: number
+  itemsChange: number // percentage vs last month
+  pendingReviews: number
+}
+</code></pre>
+<h3 id="wastage-trend-data">Wastage Trend Data</h3>
+<pre><code class="language-typescript">interface WastageTrendData {
+  month: string
+  value: number
+}
+</code></pre>
+<h3 id="wastage-by-reason">Wastage by Reason</h3>
+<pre><code class="language-typescript">interface WastageByReason {
+  name: string
+  value: number // percentage
+}
+</code></pre>
+<hr>
+<h2 id="validation-rules">Validation Rules</h2>
+<h3 id="wastage-entry-form">Wastage Entry Form</h3>
+<p><strong>Required Fields</strong>:</p>
+<ul>
+<li>Date (cannot be future date)</li>
+<li>Item selection</li>
+<li>Quantity (must be &gt; 0)</li>
+<li>Unit cost (must be &gt;= 0)</li>
+<li>Reason</li>
+<li>Location</li>
+</ul>
+<p><strong>Business Rules</strong>:</p>
+<ul>
+<li>Quantity cannot exceed current stock</li>
+<li>Date cannot be more than 30 days in past (configurable)</li>
+<li>High-value wastage (&gt; $1000) requires manager approval</li>
+<li>Photo evidence required for Quality Issues</li>
+<li>Detailed reason required for &quot;Other&quot; category</li>
+</ul>
+<p><strong>Permissions</strong>:</p>
+<ul>
+<li>All staff can report wastage</li>
+<li>Department managers can approve up to $1000</li>
+<li>Store managers can approve up to $5000</li>
+<li>Financial managers can approve any amount</li>
+<li>Only original reporter or manager can edit pending entries</li>
+</ul>
+<hr>
+<h2 id="technical-notes">Technical Notes</h2>
+<p><strong>Mock Data</strong>: This module uses mock data for demonstration. Real implementation requires:</p>
+<ul>
+<li>API integration for wastage data</li>
+<li>Database for wastage records</li>
+<li>Inventory system integration for stock adjustments</li>
+<li>Finance system integration for journal entries</li>
+<li>User permission validation</li>
+<li>File upload for evidence photos</li>
+</ul>
+<p><strong>Performance Considerations</strong>:</p>
+<ul>
+<li>Paginated table for large datasets</li>
+<li>Chart data aggregation for performance</li>
+<li>Cached statistics calculations</li>
+<li>Lazy loading of historical data</li>
+</ul>
+<p><strong>Accessibility</strong>:</p>
+<ul>
+<li>ARIA labels on all interactive elements</li>
+<li>Keyboard navigation support</li>
+<li>Screen reader compatible charts</li>
+<li>High contrast color scheme</li>
+<li>Focus indicators</li>
+</ul>
+<p><strong>Security</strong>:</p>
+<ul>
+<li>Role-based access control</li>
+<li>Audit trail for all changes</li>
+<li>Approval workflow enforcement</li>
+<li>Data validation</li>
+<li>SQL injection prevention</li>
+</ul>
+<hr>
+<p><strong>Last Updated</strong>: 2025-10-02<br><strong>Module</strong>: Store Operations &gt; Wastage Reporting<br><strong>Status</strong>: 🚧 Prototype/Demo Only</p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#wastage-reporting-submodule" class="level-1">Wastage Reporting Submodule</a>
+<a href="#table-of-contents" class="level-2">Table of Contents</a>
+<a href="#overview" class="level-2">Overview</a>
+<a href="#pages" class="level-2">Pages</a>
+<a href="#wastage-reporting-dashboard" class="level-3">Wastage Reporting Dashboard</a>
+<a href="#components" class="level-2">Components</a>
+<a href="#dashboard-stat-card" class="level-3">Dashboard Stat Card</a>
+<a href="#monthly-wastage-chart" class="level-3">Monthly Wastage Chart</a>
+<a href="#wastage-by-reason-chart" class="level-3">Wastage by Reason Chart</a>
+<a href="#wastage-records-table" class="level-3">Wastage Records Table</a>
+<a href="#status-badge" class="level-3">Status Badge</a>
+<a href="#action-flows" class="level-2">Action Flows</a>
+<a href="#view-dashboard" class="level-3">View Dashboard</a>
+<a href="#report-new-wastage" class="level-3">Report New Wastage</a>
+<a href="#search-wastage-records" class="level-3">Search Wastage Records</a>
+<a href="#filter-by-date-range" class="level-3">Filter by Date Range</a>
+<a href="#filter-by-reason" class="level-3">Filter by Reason</a>
+<a href="#filter-by-status" class="level-3">Filter by Status</a>
+<a href="#approve-wastage-entry" class="level-3">Approve Wastage Entry</a>
+<a href="#reject-wastage-entry" class="level-3">Reject Wastage Entry</a>
+<a href="#edit-wastage-entry" class="level-3">Edit Wastage Entry</a>
+<a href="#delete-wastage-entry" class="level-3">Delete Wastage Entry</a>
+<a href="#export-wastage-report" class="level-3">Export Wastage Report</a>
+<a href="#view-wastage-trends" class="level-3">View Wastage Trends</a>
+<a href="#future-features" class="level-2">Future Features</a>
+<a href="#planned-enhancements" class="level-3">Planned Enhancements</a>
+<a href="#data-models" class="level-2">Data Models</a>
+<a href="#wastage-record" class="level-3">Wastage Record</a>
+<a href="#wastage-statistics" class="level-3">Wastage Statistics</a>
+<a href="#wastage-trend-data" class="level-3">Wastage Trend Data</a>
+<a href="#wastage-by-reason" class="level-3">Wastage by Reason</a>
+<a href="#validation-rules" class="level-2">Validation Rules</a>
+<a href="#wastage-entry-form" class="level-3">Wastage Entry Form</a>
+<a href="#technical-notes" class="level-2">Technical Notes</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

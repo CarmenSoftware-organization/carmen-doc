@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit Note Module - Components Detailed Documentation - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: var(--bg-gradient);
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr 300px;
+            gap: 2rem;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 1.5rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .back-to-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: var(--primary-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        .back-to-home:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        /* Content Area */
+        .doc-content {
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 260px 1fr 280px;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 1.5rem;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 2.5rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            .doc-nav {
+                display: none;
+            }
+            .doc-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </div>
+            <div class="doc-header-actions">
+                <a href="../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../SYSTEM-DOCUMENTATION-INDEX.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Documentation Index</span>
+                    </a>
+                    <a href="../DOCUMENTATION-CATALOG.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Catalog</span>
+                    </a>
+                    <a href="../DOCUMENTATION-SUMMARY-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Summary</span>
+                    </a>
+                    <a href="../MODULE-VERIFICATION-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Module Verification</span>
+                    </a>
+                    <a href="../SYSTEM-GAPS-AND-ROADMAP.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Gaps & Roadmap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../architecture/SYSTEM-ARCHITECTURE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-users"></i>
+                    <span>Stakeholders</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../stakeholders/BUSINESS-VALUE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pr/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Requests</span>
+                    </a>
+                    <a href="../po/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Orders</span>
+                    </a>
+                    <a href="../grn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Goods Received Note</span>
+                    </a>
+                    <a href="../cn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Credit Notes</span>
+                    </a>
+                    <a href="../prt/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>PR Templates</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-boxes"></i>
+                    <span>Inventory Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../inv/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Overview</span>
+                    </a>
+                    <a href="../inv/inventory-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Specification</span>
+                    </a>
+                    <a href="../inv/inventory-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Sitemap</span>
+                    </a>
+                    <a href="../pc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Physical Count</span>
+                    </a>
+                    <a href="../sc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Spot Check</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-handshake"></i>
+                    <span>Vendor Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../vm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Overview</span>
+                    </a>
+                    <a href="../vm/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Module</span>
+                    </a>
+                    <a href="../vm/MANAGE-VENDORS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Manage Vendors</span>
+                    </a>
+                    <a href="../vm/TEMPLATES.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Templates</span>
+                    </a>
+                    <a href="../vm/CAMPAIGNS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Campaigns</span>
+                    </a>
+                    <a href="../vm/PRICELISTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Pricelists</span>
+                    </a>
+                    <a href="../vm/VENDOR-PORTAL.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Portal</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cube"></i>
+                    <span>Product Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Overview</span>
+                    </a>
+                    <a href="../pm/product-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Specification</span>
+                    </a>
+                    <a href="../pm/product-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-store"></i>
+                    <span>Store Operations</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../store-ops/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Overview</span>
+                    </a>
+                    <a href="../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Module</span>
+                    </a>
+                    <a href="../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Requisitions</span>
+                    </a>
+                    <a href="../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Stock Replenishment</span>
+                    </a>
+                    <a href="../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Wastage Reporting</span>
+                    </a>
+                    <a href="../store-ops/GLOSSARY.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Glossary</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Operational Planning</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../operational-planning/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Overview</span>
+                    </a>
+                    <a href="../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Module</span>
+                    </a>
+                    <a href="../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Menu Engineering</span>
+                    </a>
+                    <a href="../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Recipe Management</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cash-register"></i>
+                    <span>POS Integration</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pos-integration/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Overview</span>
+                    </a>
+                    <a href="../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Module</span>
+                    </a>
+                    <a href="../pos-integration/MAPPING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Mapping Subsystem</span>
+                    </a>
+                    <a href="../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Transaction Management</span>
+                    </a>
+                    <a href="../pos-integration/REPORTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports & Analytics</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../dashboard/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Overview</span>
+                    </a>
+                    <a href="../dashboard/sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>System Requirements</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../carmen-erp-system-requirements-documentation.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Requirements</span>
+                    </a>
+                    <a href="../comprehensive-schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="credit-note-module-components-detailed-documentation">Credit Note Module - Components Detailed Documentation</h1>
+<p>Comprehensive documentation for all Credit Note module components with technical specifications, props interfaces, and interaction patterns.</p>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#page-components">Page Components</a></li>
+<li><a href="#form-components">Form Components</a></li>
+<li><a href="#dialog-components">Dialog Components</a></li>
+<li><a href="#tab-components">Tab Components</a></li>
+<li><a href="#utility-components">Utility Components</a></li>
+<li><a href="#component-interaction-patterns">Component Interaction Patterns</a></li>
+</ol>
+<h2 id="page-components">Page Components</h2>
+<h3 id="1-credit-note-list-page-pagetsx">1. Credit Note List Page (<code>page.tsx</code>)</h3>
+<p><strong>Purpose</strong>: Main landing page for Credit Note management with table and card view modes</p>
+<p><strong>Location</strong>: <code>app/(main)/procurement/credit-note/page.tsx</code></p>
+<p><strong>Component Structure</strong>:</p>
+<pre><code class="language-typescript">interface CreditNoteListPageProps {
+  searchParams?: {
+    view?: &#39;table&#39; | &#39;card&#39;
+    status?: string
+    vendor?: string
+  }
+}
+</code></pre>
+<p><strong>Key Features</strong>:</p>
+<ul>
+<li>Dynamic view mode switching (table/card)</li>
+<li>Advanced filtering and search</li>
+<li>Bulk operations support</li>
+<li>Real-time status updates</li>
+<li>Export functionality</li>
+</ul>
+<p><strong>State Management</strong>:</p>
+<pre><code class="language-typescript">const [creditNotes, setCreditNotes] = useState&lt;CreditNote[]&gt;(mockCreditNotes)
+const [viewMode, setViewMode] = useState&lt;&#39;table&#39; | &#39;card&#39;&gt;(&#39;card&#39;)
+const [selectedNotes, setSelectedNotes] = useState&lt;number[]&gt;([])
+const [searchQuery, setSearchQuery] = useState(&#39;&#39;)
+const [statusFilter, setStatusFilter] = useState&lt;string&gt;(&#39;all&#39;)
+</code></pre>
+<p><strong>Child Components</strong>:</p>
+<ul>
+<li><code>CreditNoteManagement</code> - Main list management component</li>
+<li><code>Header</code> - Page header with navigation</li>
+<li><code>FilterBar</code> - Search and filter controls</li>
+<li><code>ExportDialog</code> - Data export functionality</li>
+</ul>
+<h3 id="2-credit-note-detail-page-idpagetsx">2. Credit Note Detail Page (<code>[id]/page.tsx</code>)</h3>
+<p><strong>Purpose</strong>: Detailed view and management of individual credit notes</p>
+<p><strong>Location</strong>: <code>app/(main)/procurement/credit-note/[id]/page.tsx</code></p>
+<p><strong>Component Structure</strong>:</p>
+<pre><code class="language-typescript">interface CreditNoteDetailPageProps {
+  params: { id: string }
+  searchParams?: { mode?: &#39;view&#39; | &#39;edit&#39; | &#39;confirm&#39; }
+}
+</code></pre>
+<p><strong>Key Features</strong>:</p>
+<ul>
+<li>Multi-mode support (view/edit/confirm)</li>
+<li>Tab-based navigation for different aspects</li>
+<li>Real-time validation and updates</li>
+<li>Document attachment management</li>
+<li>Activity logging</li>
+</ul>
+<p><strong>State Management</strong>:</p>
+<pre><code class="language-typescript">const [creditNote, setCreditNote] = useState&lt;CreditNote | null&gt;(null)
+const [mode, setMode] = useState&lt;&#39;view&#39; | &#39;edit&#39; | &#39;confirm&#39;&gt;(&#39;view&#39;)
+const [activeTab, setActiveTab] = useState(&#39;details&#39;)
+const [isLoading, setIsLoading] = useState(true)
+const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
+</code></pre>
+<p><strong>Child Components</strong>:</p>
+<ul>
+<li><code>CreditNoteDetail</code> - Main detail component</li>
+<li><code>CreditNoteItems</code> - Items management tab</li>
+<li><code>DocumentsTab</code> - Document attachments</li>
+<li><code>ActivityLogTab</code> - Audit trail</li>
+<li><code>CommentsAttachmentsTab</code> - Comments and files</li>
+</ul>
+<h3 id="3-new-credit-note-creation-pages">3. New Credit Note Creation Pages</h3>
+<h4>Vendor Selection Page (<code>new/vendor-selection/page.tsx</code>)</h4>
+<p><strong>Purpose</strong>: First step in credit note creation - vendor selection</p>
+<p><strong>Component Structure</strong>:</p>
+<pre><code class="language-typescript">interface VendorSelectionPageProps {
+  searchParams?: {
+    returnUrl?: string
+    preselectedVendor?: string
+  }
+}
+</code></pre>
+<p><strong>Key Features</strong>:</p>
+<ul>
+<li>Searchable vendor list</li>
+<li>Vendor information display</li>
+<li>Quick filters for active vendors</li>
+<li>Navigation breadcrumbs</li>
+</ul>
+<h4>GRN Selection Page (<code>new/grn-selection/page.tsx</code>)</h4>
+<p><strong>Purpose</strong>: Second step - selecting GRNs from chosen vendor</p>
+<p><strong>Component Structure</strong>:</p>
+<pre><code class="language-typescript">interface GRNSelectionPageProps {
+  searchParams?: {
+    vendorId: string
+    returnUrl?: string
+  }
+}
+</code></pre>
+<p><strong>Key Features</strong>:</p>
+<ul>
+<li>Vendor-specific GRN filtering</li>
+<li>Multi-select GRN capability</li>
+<li>GRN summary information</li>
+<li>Date range filtering</li>
+</ul>
+<h4>Item &amp; Lot Selection Page (<code>new/item-lot-selection/page.tsx</code>)</h4>
+<p><strong>Purpose</strong>: Final step - selecting specific items and lots for credit note</p>
+<p><strong>Component Structure</strong>:</p>
+<pre><code class="language-typescript">interface ItemLotSelectionPageProps {
+  searchParams?: {
+    vendorId: string
+    grnIds: string
+    returnUrl?: string
+  }
+}
+</code></pre>
+<p><strong>Key Features</strong>:</p>
+<ul>
+<li>Item-level selection from GRNs</li>
+<li>Lot number tracking</li>
+<li>Quantity specification</li>
+<li>Reason code assignment</li>
+</ul>
+<h2 id="form-components">Form Components</h2>
+<h3 id="1-credit-note-detail-form">1. Credit Note Detail Form</h3>
+<p><strong>Purpose</strong>: Main form for credit note information management</p>
+<p><strong>Component</strong>: <code>CreditNoteDetailForm</code></p>
+<p><strong>Props Interface</strong>:</p>
+<pre><code class="language-typescript">interface CreditNoteDetailFormProps {
+  creditNote: CreditNote
+  mode: &#39;view&#39; | &#39;edit&#39; | &#39;confirm&#39;
+  onSave: (data: CreditNoteFormData) =&gt; Promise&lt;void&gt;
+  onCancel: () =&gt; void
+  validationErrors?: ValidationError[]
+}
+</code></pre>
+<p><strong>Form Schema</strong>:</p>
+<pre><code class="language-typescript">const creditNoteSchema = z.object({
+  refNumber: z.string().min(1, &#39;Reference number is required&#39;),
+  vendorId: z.string().min(1, &#39;Vendor is required&#39;),
+  type: z.enum([&#39;QUANTITY_RETURN&#39;, &#39;AMOUNT_DISCOUNT&#39;]),
+  date: z.date(),
+  totalAmount: z.number().positive(),
+  reason: z.string().min(10, &#39;Reason must be at least 10 characters&#39;),
+  items: z.array(creditNoteItemSchema).min(1, &#39;At least one item is required&#39;)
+})
+</code></pre>
+<p><strong>Key Features</strong>:</p>
+<ul>
+<li>Real-time validation with Zod</li>
+<li>Multi-step form navigation</li>
+<li>Auto-save functionality</li>
+<li>Field-level error display</li>
+<li>Currency formatting</li>
+</ul>
+<h3 id="2-credit-note-item-form">2. Credit Note Item Form</h3>
+<p><strong>Purpose</strong>: Form for managing individual credit note items</p>
+<p><strong>Component</strong>: <code>CreditNoteItemForm</code></p>
+<p><strong>Props Interface</strong>:</p>
+<pre><code class="language-typescript">interface CreditNoteItemFormProps {
+  item?: CreditNoteItem
+  onSave: (item: CreditNoteItem) =&gt; void
+  onCancel: () =&gt; void
+  availableItems: InventoryItem[]
+  mode: &#39;add&#39; | &#39;edit&#39;
+}
+</code></pre>
+<p><strong>Form Schema</strong>:</p>
+<pre><code class="language-typescript">const creditNoteItemSchema = z.object({
+  productId: z.string().min(1, &#39;Product is required&#39;),
+  quantity: z.number().positive(&#39;Quantity must be positive&#39;),
+  unitPrice: z.number().positive(&#39;Unit price must be positive&#39;),
+  reasonCode: z.string().min(1, &#39;Reason code is required&#39;),
+  lotNumber: z.string().optional(),
+  expiryDate: z.date().optional(),
+  notes: z.string().optional()
+})
+</code></pre>
+<p><strong>Key Features</strong>:</p>
+<ul>
+<li>Product selection with search</li>
+<li>Quantity validation against available stock</li>
+<li>Automatic amount calculations</li>
+<li>Lot number management</li>
+<li>Reason code categorization</li>
+</ul>
+<h3 id="3-vendor-selection-form">3. Vendor Selection Form</h3>
+<p><strong>Purpose</strong>: Form for selecting vendors during credit note creation</p>
+<p><strong>Component</strong>: <code>VendorSelectionForm</code></p>
+<p><strong>Props Interface</strong>:</p>
+<pre><code class="language-typescript">interface VendorSelectionFormProps {
+  onVendorSelect: (vendor: Vendor) =&gt; void
+  preselectedVendor?: string
+  filters?: VendorFilters
+}
+</code></pre>
+<p><strong>Key Features</strong>:</p>
+<ul>
+<li>Real-time vendor search</li>
+<li>Vendor information preview</li>
+<li>Active vendor filtering</li>
+<li>Recent vendor suggestions</li>
+</ul>
+<h2 id="dialog-components">Dialog Components</h2>
+<h3 id="1-new-credit-note-process-selector">1. New Credit Note Process Selector</h3>
+<p><strong>Purpose</strong>: Initial dialog for selecting credit note creation method</p>
+<p><strong>Component</strong>: <code>NewCreditNoteProcessSelector</code></p>
+<p><strong>Props Interface</strong>:</p>
+<pre><code class="language-typescript">interface NewCreditNoteProcessSelectorProps {
+  isOpen: boolean
+  onClose: () =&gt; void
+  onProcessSelect: (process: &#39;from-grn&#39; | &#39;manual&#39;) =&gt; void
+}
+</code></pre>
+<p><strong>Process Options</strong>:</p>
+<ul>
+<li><strong>From GRN</strong>: Create credit note based on existing goods received notes</li>
+<li><strong>Manual</strong>: Create credit note manually without GRN reference</li>
+</ul>
+<p><strong>Key Features</strong>:</p>
+<ul>
+<li>Process selection cards</li>
+<li>Process description and guidance</li>
+<li>Navigation to appropriate workflow</li>
+</ul>
+<h3 id="2-item-selection-dialog">2. Item Selection Dialog</h3>
+<p><strong>Purpose</strong>: Dialog for selecting items to include in credit note</p>
+<p><strong>Component</strong>: <code>ItemSelectionDialog</code></p>
+<p><strong>Props Interface</strong>:</p>
+<pre><code class="language-typescript">interface ItemSelectionDialogProps {
+  isOpen: boolean
+  onClose: () =&gt; void
+  availableItems: InventoryItem[]
+  selectedItems: CreditNoteItem[]
+  onItemsSelect: (items: CreditNoteItem[]) =&gt; void
+  grnContext?: GRN[]
+}
+</code></pre>
+<p><strong>Key Features</strong>:</p>
+<ul>
+<li>Multi-select item list</li>
+<li>Item search and filtering</li>
+<li>Quantity input per item</li>
+<li>Real-time total calculation</li>
+</ul>
+<h3 id="3-credit-note-preview-dialog">3. Credit Note Preview Dialog</h3>
+<p><strong>Purpose</strong>: Preview dialog before finalizing credit note</p>
+<p><strong>Component</strong>: <code>CreditNotePreviewDialog</code></p>
+<p><strong>Props Interface</strong>:</p>
+<pre><code class="language-typescript">interface CreditNotePreviewDialogProps {
+  isOpen: boolean
+  onClose: () =&gt; void
+  creditNote: CreditNote
+  onConfirm: () =&gt; Promise&lt;void&gt;
+  onEdit: () =&gt; void
+}
+</code></pre>
+<p><strong>Key Features</strong>:</p>
+<ul>
+<li>Complete credit note preview</li>
+<li>Financial summary display</li>
+<li>Edit/confirm actions</li>
+<li>Print preview option</li>
+</ul>
+<h3 id="4-bulk-actions-dialog">4. Bulk Actions Dialog</h3>
+<p><strong>Purpose</strong>: Dialog for performing bulk operations on multiple credit notes</p>
+<p><strong>Component</strong>: <code>BulkActionsDialog</code></p>
+<p><strong>Props Interface</strong>:</p>
+<pre><code class="language-typescript">interface BulkActionsDialogProps {
+  isOpen: boolean
+  onClose: () =&gt; void
+  selectedItems: number[]
+  availableActions: BulkAction[]
+  onActionConfirm: (action: string, items: number[]) =&gt; Promise&lt;void&gt;
+}
+</code></pre>
+<p><strong>Available Actions</strong>:</p>
+<ul>
+<li>Export selected credit notes</li>
+<li>Update status in bulk</li>
+<li>Generate batch reports</li>
+<li>Delete multiple credit notes</li>
+</ul>
+<h2 id="tab-components">Tab Components</h2>
+<h3 id="1-credit-note-items-tab">1. Credit Note Items Tab</h3>
+<p><strong>Purpose</strong>: Tab component for managing credit note items</p>
+<p><strong>Component</strong>: <code>CreditNoteItemsTab</code></p>
+<p><strong>Props Interface</strong>:</p>
+<pre><code class="language-typescript">interface CreditNoteItemsTabProps {
+  creditNote: CreditNote
+  mode: &#39;view&#39; | &#39;edit&#39;
+  onItemsUpdate: (items: CreditNoteItem[]) =&gt; void
+}
+</code></pre>
+<p><strong>Key Features</strong>:</p>
+<ul>
+<li>Item list with edit capabilities</li>
+<li>Add/remove item functionality</li>
+<li>Bulk item operations</li>
+<li>Real-time total calculations</li>
+</ul>
+<p><strong>Sub-components</strong>:</p>
+<ul>
+<li><code>ItemDetailsEditForm</code> - Individual item editing</li>
+<li><code>ItemBulkActions</code> - Bulk operations menu</li>
+<li><code>ItemSearchSelector</code> - Product search and selection</li>
+</ul>
+<h3 id="2-documents-tab">2. Documents Tab</h3>
+<p><strong>Purpose</strong>: Tab for managing credit note documents and attachments</p>
+<p><strong>Component</strong>: <code>CreditNoteDocumentsTab</code></p>
+<p><strong>Props Interface</strong>:</p>
+<pre><code class="language-typescript">interface CreditNoteDocumentsTabProps {
+  creditNote: CreditNote
+  onDocumentsUpdate: (documents: Document[]) =&gt; void
+  allowEdit: boolean
+}
+</code></pre>
+<p><strong>Key Features</strong>:</p>
+<ul>
+<li>File upload and management</li>
+<li>Document preview</li>
+<li>File type validation</li>
+<li>Version control for documents</li>
+</ul>
+<h3 id="3-related-grns-tab">3. Related GRNs Tab</h3>
+<p><strong>Purpose</strong>: Tab showing related Goods Received Notes</p>
+<p><strong>Component</strong>: <code>RelatedGRNsTab</code></p>
+<p><strong>Props Interface</strong>:</p>
+<pre><code class="language-typescript">interface RelatedGRNsTabProps {
+  creditNote: CreditNote
+  relatedGRNs: GRN[]
+  onGRNNavigate: (grnId: string) =&gt; void
+}
+</code></pre>
+<p><strong>Key Features</strong>:</p>
+<ul>
+<li>GRN list with details</li>
+<li>Direct navigation to GRNs</li>
+<li>GRN status tracking</li>
+<li>Item mapping visualization</li>
+</ul>
+<h3 id="4-activity-log-tab">4. Activity Log Tab</h3>
+<p><strong>Purpose</strong>: Tab displaying credit note activity history</p>
+<p><strong>Component</strong>: <code>ActivityLogTab</code></p>
+<p><strong>Props Interface</strong>:</p>
+<pre><code class="language-typescript">interface ActivityLogTabProps {
+  creditNote: CreditNote
+  activities: ActivityLogEntry[]
+  showUserDetails: boolean
+}
+</code></pre>
+<p><strong>Key Features</strong>:</p>
+<ul>
+<li>Chronological activity display</li>
+<li>User action tracking</li>
+<li>Status change history</li>
+<li>Detailed change logs</li>
+</ul>
+<h2 id="utility-components">Utility Components</h2>
+<h3 id="1-credit-note-summary-card">1. Credit Note Summary Card</h3>
+<p><strong>Purpose</strong>: Reusable summary card component</p>
+<p><strong>Component</strong>: <code>CreditNoteSummaryCard</code></p>
+<p><strong>Props Interface</strong>:</p>
+<pre><code class="language-typescript">interface CreditNoteSummaryCardProps {
+  creditNote: CreditNote
+  variant: &#39;compact&#39; | &#39;detailed&#39;
+  showActions?: boolean
+  onActionClick?: (action: string, id: number) =&gt; void
+}
+</code></pre>
+<p><strong>Key Features</strong>:</p>
+<ul>
+<li>Responsive card layout</li>
+<li>Status indicators</li>
+<li>Quick action buttons</li>
+<li>Currency formatting</li>
+</ul>
+<h3 id="2-status-badge-component">2. Status Badge Component</h3>
+<p><strong>Purpose</strong>: Standardized status display component</p>
+<p><strong>Component</strong>: <code>StatusBadge</code></p>
+<p><strong>Props Interface</strong>:</p>
+<pre><code class="language-typescript">interface StatusBadgeProps {
+  status: CreditNoteStatus
+  size?: &#39;sm&#39; | &#39;md&#39; | &#39;lg&#39;
+  variant?: &#39;default&#39; | &#39;outline&#39;
+}
+</code></pre>
+<p><strong>Status Types</strong>:</p>
+<ul>
+<li><code>DRAFT</code> - Orange badge</li>
+<li><code>PENDING_APPROVAL</code> - Yellow badge</li>
+<li><code>APPROVED</code> - Blue badge</li>
+<li><code>PROCESSED</code> - Green badge</li>
+<li><code>REJECTED</code> - Red badge</li>
+<li><code>CANCELLED</code> - Gray badge</li>
+</ul>
+<h3 id="3-financial-summary-component">3. Financial Summary Component</h3>
+<p><strong>Purpose</strong>: Component for displaying financial calculations</p>
+<p><strong>Component</strong>: <code>FinancialSummary</code></p>
+<p><strong>Props Interface</strong>:</p>
+<pre><code class="language-typescript">interface FinancialSummaryProps {
+  items: CreditNoteItem[]
+  currency: string
+  showBreakdown?: boolean
+  onCalculationUpdate?: (totals: FinancialTotals) =&gt; void
+}
+</code></pre>
+<p><strong>Key Features</strong>:</p>
+<ul>
+<li>Real-time calculations</li>
+<li>Multi-currency support</li>
+<li>Tax calculations</li>
+<li>Discount applications</li>
+</ul>
+<h3 id="4-search-and-filter-bar">4. Search and Filter Bar</h3>
+<p><strong>Purpose</strong>: Reusable search and filtering component</p>
+<p><strong>Component</strong>: <code>SearchFilterBar</code></p>
+<p><strong>Props Interface</strong>:</p>
+<pre><code class="language-typescript">interface SearchFilterBarProps {
+  onSearchChange: (query: string) =&gt; void
+  onFilterChange: (filters: FilterOptions) =&gt; void
+  availableFilters: FilterConfig[]
+  placeholder?: string
+}
+</code></pre>
+<p><strong>Filter Types</strong>:</p>
+<ul>
+<li>Status filters</li>
+<li>Date range filters</li>
+<li>Vendor filters</li>
+<li>Amount range filters</li>
+</ul>
+<h2 id="component-interaction-patterns">Component Interaction Patterns</h2>
+<h3 id="1-form-validation-pattern">1. Form Validation Pattern</h3>
+<p><strong>Validation Strategy</strong>:</p>
+<pre><code class="language-typescript">// Real-time validation with Zod
+const form = useForm&lt;CreditNoteFormData&gt;({
+  resolver: zodResolver(creditNoteSchema),
+  mode: &#39;onChange&#39;
+})
+
+// Field-level validation
+const validateField = (field: string, value: any) =&gt; {
+  try {
+    creditNoteSchema.shape[field].parse(value)
+    return null
+  } catch (error) {
+    return error.errors[0]?.message
+  }
+}
+</code></pre>
+<h3 id="2-state-management-pattern">2. State Management Pattern</h3>
+<p><strong>Component State Flow</strong>:</p>
+<pre><code class="language-typescript">// Parent component manages global state
+const [creditNote, setCreditNote] = useState&lt;CreditNote&gt;()
+
+// Child components receive state via props
+&lt;CreditNoteDetail
+  creditNote={creditNote}
+  onUpdate={setCreditNote}
+/&gt;
+
+// State updates flow upward via callbacks
+const handleItemUpdate = (items: CreditNoteItem[]) =&gt; {
+  setCreditNote(prev =&gt; ({
+    ...prev,
+    items,
+    totalAmount: calculateTotal(items)
+  }))
+}
+</code></pre>
+<h3 id="3-navigation-pattern">3. Navigation Pattern</h3>
+<p><strong>Tab Navigation</strong>:</p>
+<pre><code class="language-typescript">const tabs = [
+  { id: &#39;details&#39;, label: &#39;Details&#39;, icon: FileText },
+  { id: &#39;items&#39;, label: &#39;Items&#39;, icon: Package },
+  { id: &#39;documents&#39;, label: &#39;Documents&#39;, icon: Paperclip },
+  { id: &#39;activity&#39;, label: &#39;Activity&#39;, icon: Clock }
+]
+
+const [activeTab, setActiveTab] = useState(&#39;details&#39;)
+</code></pre>
+<h3 id="4-error-handling-pattern">4. Error Handling Pattern</h3>
+<p><strong>Error Display Strategy</strong>:</p>
+<pre><code class="language-typescript">interface ErrorBoundaryProps {
+  fallback: React.ComponentType&lt;{ error: Error }&gt;
+  onError?: (error: Error) =&gt; void
+}
+
+// Field-level errors
+&lt;FormField error={errors.quantity?.message} /&gt;
+
+// Form-level errors
+&lt;ErrorAlert errors={form.formState.errors} /&gt;
+
+// Page-level errors
+&lt;ErrorBoundary fallback={ErrorFallback}&gt;
+  &lt;CreditNoteDetail /&gt;
+&lt;/ErrorBoundary&gt;
+</code></pre>
+<h3 id="5-loading-states-pattern">5. Loading States Pattern</h3>
+<p><strong>Loading Management</strong>:</p>
+<pre><code class="language-typescript">const [loadingStates, setLoadingStates] = useState({
+  saving: false,
+  deleting: false,
+  uploading: false
+})
+
+// Component loading states
+{loadingStates.saving ? (
+  &lt;Spinner /&gt;
+) : (
+  &lt;SaveButton onClick={handleSave} /&gt;
+)}
+</code></pre>
+<h3 id="6-modal-management-pattern">6. Modal Management Pattern</h3>
+<p><strong>Dialog State Management</strong>:</p>
+<pre><code class="language-typescript">const [dialogs, setDialogs] = useState({
+  itemSelection: false,
+  preview: false,
+  confirmation: false
+})
+
+const openDialog = (dialogName: string) =&gt; {
+  setDialogs(prev =&gt; ({ ...prev, [dialogName]: true }))
+}
+
+const closeDialog = (dialogName: string) =&gt; {
+  setDialogs(prev =&gt; ({ ...prev, [dialogName]: false }))
+}
+</code></pre>
+<h2 id="component-testing-patterns">Component Testing Patterns</h2>
+<h3 id="1-unit-testing">1. Unit Testing</h3>
+<p><strong>Component Testing Strategy</strong>:</p>
+<pre><code class="language-typescript">describe(&#39;CreditNoteDetail&#39;, () =&gt; {
+  it(&#39;renders credit note information correctly&#39;, () =&gt; {
+    render(&lt;CreditNoteDetail creditNote={mockCreditNote} /&gt;)
+    expect(screen.getByText(mockCreditNote.refNumber)).toBeInTheDocument()
+  })
+
+  it(&#39;handles edit mode transitions&#39;, () =&gt; {
+    const onModeChange = jest.fn()
+    render(&lt;CreditNoteDetail onModeChange={onModeChange} /&gt;)
+    fireEvent.click(screen.getByText(&#39;Edit&#39;))
+    expect(onModeChange).toHaveBeenCalledWith(&#39;edit&#39;)
+  })
+})
+</code></pre>
+<h3 id="2-integration-testing">2. Integration Testing</h3>
+<p><strong>Multi-component Testing</strong>:</p>
+<pre><code class="language-typescript">describe(&#39;Credit Note Creation Flow&#39;, () =&gt; {
+  it(&#39;completes full creation workflow&#39;, async () =&gt; {
+    render(&lt;CreditNoteCreationFlow /&gt;)
+
+    // Step 1: Vendor selection
+    fireEvent.click(screen.getByText(&#39;Select Vendor&#39;))
+    fireEvent.click(screen.getByText(&#39;ACME Corp&#39;))
+
+    // Step 2: GRN selection
+    fireEvent.click(screen.getByText(&#39;Next&#39;))
+    fireEvent.click(screen.getByTestId(&#39;grn-checkbox-1&#39;))
+
+    // Step 3: Item selection
+    fireEvent.click(screen.getByText(&#39;Continue&#39;))
+    fireEvent.change(screen.getByLabelText(&#39;Quantity&#39;), { target: { value: &#39;5&#39; } })
+
+    // Final confirmation
+    fireEvent.click(screen.getByText(&#39;Create Credit Note&#39;))
+
+    await waitFor(() =&gt; {
+      expect(screen.getByText(&#39;Credit Note Created Successfully&#39;)).toBeInTheDocument()
+    })
+  })
+})
+</code></pre>
+<hr>
+<p><em>Generated on: 2025-09-23</em><br><em>Component Documentation Version: 1.0</em><br><em>Carmen ERP - Credit Note Module</em></p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#credit-note-module-components-detailed-documentation" class="level-1">Credit Note Module - Components Detailed Documentation</a>
+<a href="#table-of-contents" class="level-2">Table of Contents</a>
+<a href="#page-components" class="level-2">Page Components</a>
+<a href="#1-credit-note-list-page-pagetsx" class="level-3">1. Credit Note List Page (page.tsx)</a>
+<a href="#2-credit-note-detail-page-idpagetsx" class="level-3">2. Credit Note Detail Page ([id]/page.tsx)</a>
+<a href="#3-new-credit-note-creation-pages" class="level-3">3. New Credit Note Creation Pages</a>
+<a href="#form-components" class="level-2">Form Components</a>
+<a href="#1-credit-note-detail-form" class="level-3">1. Credit Note Detail Form</a>
+<a href="#2-credit-note-item-form" class="level-3">2. Credit Note Item Form</a>
+<a href="#3-vendor-selection-form" class="level-3">3. Vendor Selection Form</a>
+<a href="#dialog-components" class="level-2">Dialog Components</a>
+<a href="#1-new-credit-note-process-selector" class="level-3">1. New Credit Note Process Selector</a>
+<a href="#2-item-selection-dialog" class="level-3">2. Item Selection Dialog</a>
+<a href="#3-credit-note-preview-dialog" class="level-3">3. Credit Note Preview Dialog</a>
+<a href="#4-bulk-actions-dialog" class="level-3">4. Bulk Actions Dialog</a>
+<a href="#tab-components" class="level-2">Tab Components</a>
+<a href="#1-credit-note-items-tab" class="level-3">1. Credit Note Items Tab</a>
+<a href="#2-documents-tab" class="level-3">2. Documents Tab</a>
+<a href="#3-related-grns-tab" class="level-3">3. Related GRNs Tab</a>
+<a href="#4-activity-log-tab" class="level-3">4. Activity Log Tab</a>
+<a href="#utility-components" class="level-2">Utility Components</a>
+<a href="#1-credit-note-summary-card" class="level-3">1. Credit Note Summary Card</a>
+<a href="#2-status-badge-component" class="level-3">2. Status Badge Component</a>
+<a href="#3-financial-summary-component" class="level-3">3. Financial Summary Component</a>
+<a href="#4-search-and-filter-bar" class="level-3">4. Search and Filter Bar</a>
+<a href="#component-interaction-patterns" class="level-2">Component Interaction Patterns</a>
+<a href="#1-form-validation-pattern" class="level-3">1. Form Validation Pattern</a>
+<a href="#2-state-management-pattern" class="level-3">2. State Management Pattern</a>
+<a href="#3-navigation-pattern" class="level-3">3. Navigation Pattern</a>
+<a href="#4-error-handling-pattern" class="level-3">4. Error Handling Pattern</a>
+<a href="#5-loading-states-pattern" class="level-3">5. Loading States Pattern</a>
+<a href="#6-modal-management-pattern" class="level-3">6. Modal Management Pattern</a>
+<a href="#component-testing-patterns" class="level-2">Component Testing Patterns</a>
+<a href="#1-unit-testing" class="level-3">1. Unit Testing</a>
+<a href="#2-integration-testing" class="level-3">2. Integration Testing</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

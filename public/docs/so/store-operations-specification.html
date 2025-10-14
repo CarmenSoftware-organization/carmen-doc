@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store Operations Module - Complete Specification - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: var(--bg-gradient);
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr 300px;
+            gap: 2rem;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 1.5rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .back-to-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: var(--primary-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        .back-to-home:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        /* Content Area */
+        .doc-content {
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 260px 1fr 280px;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 1.5rem;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 2.5rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            .doc-nav {
+                display: none;
+            }
+            .doc-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </div>
+            <div class="doc-header-actions">
+                <a href="../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../SYSTEM-DOCUMENTATION-INDEX.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Documentation Index</span>
+                    </a>
+                    <a href="../DOCUMENTATION-CATALOG.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Catalog</span>
+                    </a>
+                    <a href="../DOCUMENTATION-SUMMARY-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Summary</span>
+                    </a>
+                    <a href="../MODULE-VERIFICATION-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Module Verification</span>
+                    </a>
+                    <a href="../SYSTEM-GAPS-AND-ROADMAP.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Gaps & Roadmap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../architecture/SYSTEM-ARCHITECTURE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-users"></i>
+                    <span>Stakeholders</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../stakeholders/BUSINESS-VALUE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pr/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Requests</span>
+                    </a>
+                    <a href="../po/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Orders</span>
+                    </a>
+                    <a href="../grn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Goods Received Note</span>
+                    </a>
+                    <a href="../cn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Credit Notes</span>
+                    </a>
+                    <a href="../prt/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>PR Templates</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-boxes"></i>
+                    <span>Inventory Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../inv/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Overview</span>
+                    </a>
+                    <a href="../inv/inventory-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Specification</span>
+                    </a>
+                    <a href="../inv/inventory-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Sitemap</span>
+                    </a>
+                    <a href="../pc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Physical Count</span>
+                    </a>
+                    <a href="../sc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Spot Check</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-handshake"></i>
+                    <span>Vendor Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../vm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Overview</span>
+                    </a>
+                    <a href="../vm/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Module</span>
+                    </a>
+                    <a href="../vm/MANAGE-VENDORS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Manage Vendors</span>
+                    </a>
+                    <a href="../vm/TEMPLATES.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Templates</span>
+                    </a>
+                    <a href="../vm/CAMPAIGNS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Campaigns</span>
+                    </a>
+                    <a href="../vm/PRICELISTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Pricelists</span>
+                    </a>
+                    <a href="../vm/VENDOR-PORTAL.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Portal</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cube"></i>
+                    <span>Product Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Overview</span>
+                    </a>
+                    <a href="../pm/product-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Specification</span>
+                    </a>
+                    <a href="../pm/product-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-store"></i>
+                    <span>Store Operations</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../store-ops/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Overview</span>
+                    </a>
+                    <a href="../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Module</span>
+                    </a>
+                    <a href="../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Requisitions</span>
+                    </a>
+                    <a href="../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Stock Replenishment</span>
+                    </a>
+                    <a href="../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Wastage Reporting</span>
+                    </a>
+                    <a href="../store-ops/GLOSSARY.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Glossary</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Operational Planning</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../operational-planning/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Overview</span>
+                    </a>
+                    <a href="../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Module</span>
+                    </a>
+                    <a href="../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Menu Engineering</span>
+                    </a>
+                    <a href="../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Recipe Management</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cash-register"></i>
+                    <span>POS Integration</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pos-integration/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Overview</span>
+                    </a>
+                    <a href="../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Module</span>
+                    </a>
+                    <a href="../pos-integration/MAPPING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Mapping Subsystem</span>
+                    </a>
+                    <a href="../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Transaction Management</span>
+                    </a>
+                    <a href="../pos-integration/REPORTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports & Analytics</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../dashboard/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Overview</span>
+                    </a>
+                    <a href="../dashboard/sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>System Requirements</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../carmen-erp-system-requirements-documentation.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Requirements</span>
+                    </a>
+                    <a href="../comprehensive-schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="store-operations-module-complete-specification">Store Operations Module - Complete Specification</h1>
+<h2 id="module-overview">Module Overview</h2>
+<p>The Store Operations module is a comprehensive inventory and requisition management system designed for hospitality operations. It manages store-to-store requisitions, stock replenishment tracking, and wastage reporting through an integrated interface.</p>
+<p><strong>Primary Functions:</strong></p>
+<ul>
+<li>Store requisition lifecycle management</li>
+<li>Stock replenishment monitoring and alerts</li>
+<li>Wastage tracking and reporting</li>
+<li>Drag-and-drop dashboard customization</li>
+<li>Multi-level approval workflows</li>
+</ul>
+<h2 id="architecture-overview">Architecture Overview</h2>
+<pre><code>app/(main)/store-operations/
+├── page.tsx                           # Dashboard with draggable widgets
+├── components/
+│   ├── store-requisition-list.tsx     # Main requisitions list component
+│   ├── store-replenishment.tsx        # Stock replenishment dashboard
+│   └── wastage-reporting.tsx          # Wastage analytics component
+├── store-requisitions/
+│   └── components/
+│       └── store-requisition-detail.tsx # Detailed requisition management (1950 lines)
+├── stock-replenishment/
+│   └── page.tsx                       # Stock replenishment page wrapper
+└── wastage-reporting/
+    └── page.tsx                       # Wastage reporting page wrapper
+</code></pre>
+<hr>
+<h2 id="1-store-operations-dashboard">1. Store Operations Dashboard</h2>
+<p><img src="store-operations-dashboard.png" alt="Store Operations Dashboard"></p>
+<p><strong>File:</strong> <code>app/(main)/store-operations/page.tsx</code></p>
+<h3 id="features">Features</h3>
+<ul>
+<li><strong>Draggable Widget System</strong>: 6 customizable dashboard widgets using React Beautiful DnD</li>
+<li><strong>Interactive Charts</strong>: Recharts integration for data visualization</li>
+<li><strong>Real-time Statistics</strong>: Key performance indicators for store operations</li>
+</ul>
+<h3 id="widgets-available">Widgets Available</h3>
+<h4>1. Stock Replenishment Trend</h4>
+<ul>
+<li><strong>Type</strong>: Line Chart (Recharts)</li>
+<li><strong>Data</strong>: Monthly stock level trends</li>
+<li><strong>Interactions</strong>: Hover tooltips, trend analysis</li>
+</ul>
+<h4>2. Wastage by Type</h4>
+<ul>
+<li><strong>Type</strong>: Bar Chart (Recharts)</li>
+<li><strong>Categories</strong>: Food, Beverages, Supplies, Equipment</li>
+<li><strong>Color Coding</strong>: Category-specific color scheme</li>
+</ul>
+<h4>3. Top 5 Stores by Requisitions</h4>
+<ul>
+<li><strong>Type</strong>: Horizontal Bar Chart</li>
+<li><strong>Metrics</strong>: Requisition count, value totals</li>
+<li><strong>Sorting</strong>: Descending by requisition count</li>
+</ul>
+<h4>4. Pending Approvals Count</h4>
+<ul>
+<li><strong>Type</strong>: Metric Card</li>
+<li><strong>Data</strong>: Real-time approval queue count</li>
+<li><strong>Alert</strong>: Red indicator for overdue approvals</li>
+</ul>
+<h4>5. Low Stock Alerts</h4>
+<ul>
+<li><strong>Type</strong>: Alert List</li>
+<li><strong>Threshold</strong>: Below reorder point</li>
+<li><strong>Actions</strong>: Quick requisition creation</li>
+</ul>
+<h4>6. Recent Activity Feed</h4>
+<ul>
+<li><strong>Type</strong>: Timeline List</li>
+<li><strong>Events</strong>: Requisitions, approvals, stock movements</li>
+<li><strong>Real-time</strong>: Auto-refresh capability</li>
+</ul>
+<h3 id="drag-and-drop-implementation">Drag and Drop Implementation</h3>
+<pre><code class="language-typescript">// Widget dragging using React Beautiful DnD
+const onDragEnd = (result: DropResult) =&gt; {
+  if (!result.destination) return;
+
+  const newItems = Array.from(items);
+  const [reorderedItem] = newItems.splice(result.source.index, 1);
+  newItems.splice(result.destination.index, 0, reorderedItem);
+
+  setItems(newItems);
+};
+</code></pre>
+<hr>
+<h2 id="2-store-requisitions-list">2. Store Requisitions List</h2>
+<p><img src="store-requisition-list.png" alt="Store Requisitions List"></p>
+<p><strong>File:</strong> <code>app/(main)/store-operations/components/store-requisition-list.tsx</code></p>
+<h3 id="primary-features">Primary Features</h3>
+<h4>View Toggle System</h4>
+<ul>
+<li><strong>Table View</strong>: Comprehensive data grid with sorting</li>
+<li><strong>Card View</strong>: Visual card layout for mobile-friendly browsing</li>
+<li><strong>Toggle Control</strong>: Seamless switching between views</li>
+</ul>
+<h4>Advanced Filter System</h4>
+<ul>
+<li><strong>Filter Builder</strong>: Dynamic filter construction</li>
+<li><strong>Pre-built Filters</strong>: Quick access to common filter combinations</li>
+<li><strong>Date Range Picker</strong>: Custom date range selection</li>
+<li><strong>Status Filters</strong>: Multi-select status filtering</li>
+<li><strong>Location Filters</strong>: Store and department filtering</li>
+</ul>
+<h4>Data Table Features</h4>
+<ul>
+<li><strong>Column Sorting</strong>: All columns sortable (ascending/descending)</li>
+<li><strong>Multi-select</strong>: Checkbox selection for bulk operations</li>
+<li><strong>Row Actions</strong>: Context menu for individual items</li>
+<li><strong>Pagination</strong>: Server-side pagination with page size selection</li>
+<li><strong>Go-to-page</strong>: Direct page navigation input</li>
+</ul>
+<h4>Search Functionality</h4>
+<ul>
+<li><strong>Global Search</strong>: Searches across all visible columns</li>
+<li><strong>Real-time</strong>: Debounced search with instant results</li>
+<li><strong>Highlight</strong>: Search term highlighting in results</li>
+</ul>
+<h3 id="data-structure">Data Structure</h3>
+<pre><code class="language-typescript">interface Requisition {
+  date: string
+  refNo: string              // Unique reference number
+  requestTo: string          // Target location/department
+  toLocation: string         // Physical location
+  storeName: string          // Requesting store name
+  description: string        // Requisition description
+  status: &#39;In Process&#39; | &#39;Complete&#39; | &#39;Reject&#39; | &#39;Void&#39; | &#39;Draft&#39;
+  workflowStage?: string     // Current workflow stage
+  totalAmount: number        // Total monetary value
+  currency: string           // Currency code (USD, etc.)
+}
+</code></pre>
+<h3 id="status-badge-system">Status Badge System</h3>
+<ul>
+<li><strong>In Process</strong>: Blue badge with processing icon</li>
+<li><strong>Complete</strong>: Green badge with checkmark</li>
+<li><strong>Reject</strong>: Red badge with X icon</li>
+<li><strong>Void</strong>: Gray badge with void indicator</li>
+<li><strong>Draft</strong>: Orange badge with draft icon</li>
+</ul>
+<h3 id="bulk-actions-available">Bulk Actions Available</h3>
+<ul>
+<li><strong>Bulk Approve</strong>: Approve multiple requisitions</li>
+<li><strong>Bulk Reject</strong>: Reject multiple with reason</li>
+<li><strong>Export Selected</strong>: Export to CSV/Excel</li>
+<li><strong>Print Selected</strong>: Print requisition documents</li>
+<li><strong>Bulk Status Update</strong>: Change status for multiple items</li>
+</ul>
+<hr>
+<h2 id="3-store-requisition-detail">3. Store Requisition Detail</h2>
+<p><img src="store-requisition-detail-items.png" alt="Store Requisition Detail - Items Tab"><br><img src="store-requisition-detail-stock.png" alt="Store Requisition Detail - Stock Movements"></p>
+<p><strong>File:</strong> <code>app/(main)/store-operations/store-requisitions/components/store-requisition-detail.tsx</code><br><strong>Size:</strong> 1,950 lines - Most complex component in the module</p>
+<h3 id="tab-navigation-system">Tab Navigation System</h3>
+<h4>Tab 1: Items Management</h4>
+<p><strong>Primary Focus:</strong> Individual item management within requisitions</p>
+<h5>Item Data Table</h5>
+<ul>
+<li><strong>Columns</strong>: Description, Unit, Required Qty, Approved Qty, Issued Qty, Cost, Total, Tax, Discount</li>
+<li><strong>Inline Editing</strong>: Direct cell editing for quantity adjustments</li>
+<li><strong>Approval Controls</strong>: Individual item approval/rejection</li>
+<li><strong>Status Tracking</strong>: Per-item approval status (Pending, Approved, Reject, Review)</li>
+</ul>
+<h5>Item Detail Modal</h5>
+<p><strong>Triggered by:</strong> Edit button on any item row</p>
+<p><strong>Fields Available:</strong></p>
+<ul>
+<li>Product Information (Name, SKU, Description)</li>
+<li>Quantity Management (Required, Approved, Issued)</li>
+<li>Pricing (Unit Cost, Tax Rate, Discount Rate)</li>
+<li>Approval Status and Comments</li>
+<li>Inventory Details (Current Stock, Location)</li>
+</ul>
+<h5>Bulk Item Operations</h5>
+<ul>
+<li><strong>Bulk Approve</strong>: Approve all selected items</li>
+<li><strong>Bulk Reject</strong>: Reject with bulk reason</li>
+<li><strong>Quantity Adjustments</strong>: Bulk quantity changes</li>
+<li><strong>Price Updates</strong>: Bulk pricing modifications</li>
+</ul>
+<h4>Tab 2: Stock Movements</h4>
+<p><strong>Primary Focus:</strong> Inventory transaction tracking</p>
+<h5>Movement Records Table</h5>
+<ul>
+<li><strong>Columns</strong>: Date, Type, Item, Quantity, From Location, To Location, Lot Number, Expiry</li>
+<li><strong>Movement Types</strong>: Issue, Receipt, Transfer, Adjustment, Return</li>
+<li><strong>Lot Tracking</strong>: Full lot number traceability</li>
+<li><strong>Expiry Management</strong>: Date tracking for perishables</li>
+</ul>
+<h5>Movement History</h5>
+<ul>
+<li><strong>Chronological</strong>: Time-ordered movement log</li>
+<li><strong>Filtering</strong>: By date range, movement type, item</li>
+<li><strong>Export</strong>: Movement history export capability</li>
+</ul>
+<h4>Tab 3: Journal Entries</h4>
+<p><strong>Primary Focus:</strong> Financial transaction recording</p>
+<h5>Journal Entry List</h5>
+<ul>
+<li><strong>Columns</strong>: Date, Account, Description, Debit, Credit, Reference</li>
+<li><strong>Auto-generation</strong>: Automatic entry creation from approvals</li>
+<li><strong>Manual Entries</strong>: Ability to add manual journal entries</li>
+<li><strong>Validation</strong>: Account balance validation</li>
+</ul>
+<h4>Tab 4: Approval Workflow</h4>
+<p><strong>Primary Focus:</strong> Multi-stage approval management</p>
+<h5>Workflow Status Display</h5>
+<ul>
+<li><strong>Stage Indicators</strong>: Visual workflow progress</li>
+<li><strong>Approver Queue</strong>: Current and pending approvers</li>
+<li><strong>History</strong>: Complete approval history log</li>
+<li><strong>Escalation</strong>: Automatic escalation for overdue approvals</li>
+</ul>
+<h5>Approval Actions</h5>
+<ul>
+<li><strong>Approve</strong>: Full requisition approval</li>
+<li><strong>Reject</strong>: Rejection with mandatory reason</li>
+<li><strong>Request Changes</strong>: Send back for modifications</li>
+<li><strong>Delegate</strong>: Delegate approval to another user</li>
+<li><strong>Add Comments</strong>: Approval comments and notes</li>
+</ul>
+<h3 id="activity-sidebar">Activity Sidebar</h3>
+<h4>Comments Section</h4>
+<ul>
+<li><strong>Threaded Comments</strong>: Reply capability</li>
+<li><strong>User Attribution</strong>: Commenter identification and timestamp</li>
+<li><strong>Rich Text</strong>: Basic formatting support</li>
+<li><strong>Notifications</strong>: Comment notification system</li>
+</ul>
+<h4>Attachments Section</h4>
+<ul>
+<li><strong>File Upload</strong>: Drag-and-drop file upload</li>
+<li><strong>File Types</strong>: Documents, images, spreadsheets</li>
+<li><strong>File Preview</strong>: In-browser file preview</li>
+<li><strong>Version Control</strong>: File version management</li>
+</ul>
+<h4>Activity Log</h4>
+<ul>
+<li><strong>Event Tracking</strong>: All requisition activities logged</li>
+<li><strong>User Actions</strong>: Who, what, when for all changes</li>
+<li><strong>System Events</strong>: Automatic system-generated events</li>
+<li><strong>Export</strong>: Activity log export capability</li>
+</ul>
+<h4>Toggle Controls</h4>
+<ul>
+<li><strong>Show/Hide Sidebar</strong>: Collapsible sidebar for screen space</li>
+<li><strong>Section Toggles</strong>: Individual section show/hide</li>
+<li><strong>Persistent Settings</strong>: User preference storage</li>
+</ul>
+<h3 id="complex-data-structures">Complex Data Structures</h3>
+<pre><code class="language-typescript">interface RequisitionItem {
+  id: number
+  description: string
+  unit: string
+  qtyRequired: number
+  qtyApproved: number
+  qtyIssued: number
+  costPerUnit: number
+  total: number
+  taxRate: number
+  discountRate: number
+  approvalStatus: &#39;Pending&#39; | &#39;Approved&#39; | &#39;Reject&#39; | &#39;Review&#39;
+  inventory: InventoryInfo
+  itemInfo: ItemInfo
+  comments?: string[]
+  attachments?: AttachmentInfo[]
+}
+
+interface StockMovement {
+  id: number
+  date: string
+  type: &#39;Issue&#39; | &#39;Receipt&#39; | &#39;Transfer&#39; | &#39;Adjustment&#39; | &#39;Return&#39;
+  itemId: number
+  quantity: number
+  fromLocation: string
+  toLocation: string
+  lotNumber?: string
+  expiryDate?: string
+  reference: string
+  userId: number
+}
+
+interface JournalEntry {
+  id: number
+  date: string
+  account: string
+  description: string
+  debitAmount: number
+  creditAmount: number
+  reference: string
+  requisitionId: number
+  userId: number
+}
+</code></pre>
+<hr>
+<h2 id="4-stock-replenishment">4. Stock Replenishment</h2>
+<p><img src="store-replenishment-page.png" alt="Stock Replenishment"></p>
+<p><strong>File:</strong> <code>app/(main)/store-operations/components/stock-replenishment.tsx</code></p>
+<h3 id="dashboard-components">Dashboard Components</h3>
+<h4>Statistics Cards</h4>
+<ol>
+<li><strong>Total SKUs</strong>: Overall product count (1,234)</li>
+<li><strong>Low Stock Items</strong>: Items below reorder point (28 - Red alert)</li>
+<li><strong>Items on Order</strong>: Currently ordered items (45 - Orange indicator)</li>
+<li><strong>Stock Value</strong>: Total inventory value ($45,678 - Green trending up)</li>
+</ol>
+<h4>Stock Level Trend Chart</h4>
+<ul>
+<li><strong>Type</strong>: Responsive Line Chart (Recharts)</li>
+<li><strong>Data Period</strong>: 6-month rolling trend</li>
+<li><strong>Interactions</strong>: Hover tooltips, zoom capability</li>
+<li><strong>Y-axis</strong>: Stock level quantities</li>
+<li><strong>X-axis</strong>: Monthly periods (Jan-Jun)</li>
+</ul>
+<h4>Low Stock Alert Banner</h4>
+<ul>
+<li><strong>Alert Type</strong>: Warning banner with red styling</li>
+<li><strong>Message</strong>: &quot;8 items are below minimum stock levels and require immediate attention&quot;</li>
+<li><strong>Icon</strong>: Alert Triangle (Lucide React)</li>
+<li><strong>Action</strong>: Click to filter low stock items</li>
+</ul>
+<h3 id="inventory-status-table">Inventory Status Table</h3>
+<h4>Table Structure</h4>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Type</th>
+<th>Description</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Select</td>
+<td>Checkbox</td>
+<td>Multi-select for bulk operations</td>
+<td>Select all/individual</td>
+</tr>
+<tr>
+<td>Location</td>
+<td>Text + Code</td>
+<td>Store location with code</td>
+<td>Sortable</td>
+</tr>
+<tr>
+<td>Product</td>
+<td>Text + SKU</td>
+<td>Product name, SKU, description</td>
+<td>Searchable</td>
+</tr>
+<tr>
+<td>Current Stock</td>
+<td>Number</td>
+<td>Current quantity on hand</td>
+<td>Color-coded alerts</td>
+</tr>
+<tr>
+<td>PAR Level</td>
+<td>Number</td>
+<td>Periodic Automatic Replenishment level</td>
+<td>Editable</td>
+</tr>
+<tr>
+<td>Reorder Point</td>
+<td>Number</td>
+<td>Minimum stock trigger point</td>
+<td>Editable</td>
+</tr>
+<tr>
+<td>On Order</td>
+<td>Number</td>
+<td>Quantity currently on order</td>
+<td>Read-only</td>
+</tr>
+<tr>
+<td>Order Amount</td>
+<td>Number Input</td>
+<td>Suggested/manual order quantity</td>
+<td>Editable</td>
+</tr>
+<tr>
+<td>Order Unit</td>
+<td>Dropdown</td>
+<td>Unit of measure selection</td>
+<td>Selectable</td>
+</tr>
+<tr>
+<td>Status</td>
+<td>Badge</td>
+<td>Stock status indicator</td>
+<td>Visual</td>
+</tr>
+</tbody></table>
+<h4>Advanced Features</h4>
+<h5>Smart Reorder Calculations</h5>
+<pre><code class="language-typescript">const suggestedOrder = Math.max(0, item.parLevel - (item.currentStock + item.onOrder));
+</code></pre>
+<h5>Status Color Coding</h5>
+<ul>
+<li><strong>LOW</strong>: Red background, white text - Below reorder point</li>
+<li><strong>NORMAL</strong>: Green background, white text - Above reorder point</li>
+<li><strong>HIGH</strong>: Blue background, white text - Above PAR level</li>
+</ul>
+<h5>Unit Selection Options</h5>
+<ul>
+<li>Box, Bag, Pack, Piece, Kg (Dropdown selection)</li>
+<li>Dynamic unit conversion capability</li>
+<li>Vendor-specific unit preferences</li>
+</ul>
+<h4>Search and Filter System</h4>
+<ul>
+<li><strong>Global Search</strong>: Product name, SKU, location search</li>
+<li><strong>Advanced Filters</strong>: Status, location, stock level ranges</li>
+<li><strong>Quick Filters</strong>: Low stock, on order, specific locations</li>
+</ul>
+<h4>Bulk Operations</h4>
+<ul>
+<li><strong>Create Requisition</strong>: Generate requisition from selected items</li>
+<li><strong>Bulk Order Amount</strong>: Set order amounts for multiple items</li>
+<li><strong>Export</strong>: Export selection to CSV/Excel</li>
+<li><strong>Print</strong>: Print stock status report</li>
+</ul>
+<hr>
+<h2 id="5-wastage-reporting">5. Wastage Reporting</h2>
+<p><img src="wastage-reporting-page.png" alt="Wastage Reporting"></p>
+<p><strong>File:</strong> <code>app/(main)/store-operations/wastage-reporting/page.tsx</code></p>
+<h3 id="statistics-dashboard">Statistics Dashboard</h3>
+<h4>Key Metrics Cards</h4>
+<ol>
+<li><strong>Total Wastage</strong>: Monthly wastage value ($2,450)</li>
+<li><strong>Items Written Off</strong>: Count of written-off items (23 items)</li>
+<li><strong>Pending Reviews</strong>: Items awaiting review (5 pending)</li>
+</ol>
+<h4>Monthly Wastage Trend</h4>
+<ul>
+<li><strong>Chart Type</strong>: Area Chart (Recharts)</li>
+<li><strong>Time Period</strong>: 12-month rolling view</li>
+<li><strong>Data Points</strong>: Monthly wastage values</li>
+<li><strong>Trend Analysis</strong>: Month-over-month comparison</li>
+</ul>
+<h3 id="wastage-records-management">Wastage Records Management</h3>
+<h4>Records Table Structure</h4>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Data Type</th>
+<th>Description</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Date</td>
+<td>Date</td>
+<td>Wastage occurrence date</td>
+<td>Sortable</td>
+</tr>
+<tr>
+<td>Location</td>
+<td>Text</td>
+<td>Store/department location</td>
+<td>Filterable</td>
+</tr>
+<tr>
+<td>Item</td>
+<td>Text + SKU</td>
+<td>Product details</td>
+<td>Searchable</td>
+</tr>
+<tr>
+<td>Quantity</td>
+<td>Number</td>
+<td>Waste quantity</td>
+<td>Numeric input</td>
+</tr>
+<tr>
+<td>Unit</td>
+<td>Text</td>
+<td>Unit of measure</td>
+<td>Dropdown</td>
+</tr>
+<tr>
+<td>Reason</td>
+<td>Text</td>
+<td>Wastage reason/category</td>
+<td>Categorized</td>
+</tr>
+<tr>
+<td>Cost</td>
+<td>Currency</td>
+<td>Financial impact</td>
+<td>Calculated</td>
+</tr>
+<tr>
+<td>Status</td>
+<td>Badge</td>
+<td>Review status</td>
+<td>Workflow</td>
+</tr>
+<tr>
+<td>Actions</td>
+<td>Buttons</td>
+<td>Record management</td>
+<td>CRUD operations</td>
+</tr>
+</tbody></table>
+<h4>Wastage Categories</h4>
+<ul>
+<li><strong>Expiry</strong>: Items past expiration date</li>
+<li><strong>Damage</strong>: Physical damage during handling/storage</li>
+<li><strong>Spoilage</strong>: Natural spoilage/deterioration</li>
+<li><strong>Contamination</strong>: Cross-contamination incidents</li>
+<li><strong>Over-preparation</strong>: Excess food preparation</li>
+<li><strong>Quality Issues</strong>: Below quality standards</li>
+<li><strong>Other</strong>: Miscellaneous reasons</li>
+</ul>
+<h4>Advanced Analytics</h4>
+<ul>
+<li><strong>Cost Analysis</strong>: Wastage cost breakdown by category</li>
+<li><strong>Trend Analysis</strong>: Seasonal and monthly patterns</li>
+<li><strong>Location Comparison</strong>: Store-by-store wastage comparison</li>
+<li><strong>Item Analysis</strong>: Most wasted items identification</li>
+<li><strong>Root Cause</strong>: Recurring wastage pattern analysis</li>
+</ul>
+<hr>
+<h2 id="shared-components-and-utilities">Shared Components and Utilities</h2>
+<h3 id="1-advanced-filter-builder">1. Advanced Filter Builder</h3>
+<pre><code class="language-typescript">interface FilterRule {
+  field: string
+  operator: &#39;equals&#39; | &#39;contains&#39; | &#39;greater_than&#39; | &#39;less_than&#39; | &#39;between&#39;
+  value: string | number | Date
+  condition: &#39;and&#39; | &#39;or&#39;
+}
+</code></pre>
+<p><strong>Features:</strong></p>
+<ul>
+<li>Dynamic filter rule construction</li>
+<li>Multiple condition support (AND/OR logic)</li>
+<li>Field-specific operators</li>
+<li>Saved filter profiles</li>
+<li>Quick filter templates</li>
+</ul>
+<h3 id="2-status-badge-component">2. Status Badge Component</h3>
+<pre><code class="language-typescript">interface StatusBadgeProps {
+  status: string
+  variant: &#39;success&#39; | &#39;warning&#39; | &#39;error&#39; | &#39;info&#39; | &#39;neutral&#39;
+  icon?: boolean
+  size?: &#39;sm&#39; | &#39;md&#39; | &#39;lg&#39;
+}
+</code></pre>
+<p><strong>Variants:</strong></p>
+<ul>
+<li><strong>Success</strong>: Green background, checkmark icon</li>
+<li><strong>Warning</strong>: Orange background, warning icon</li>
+<li><strong>Error</strong>: Red background, X icon</li>
+<li><strong>Info</strong>: Blue background, info icon</li>
+<li><strong>Neutral</strong>: Gray background, no icon</li>
+</ul>
+<h3 id="3-pagination-component">3. Pagination Component</h3>
+<pre><code class="language-typescript">interface PaginationProps {
+  currentPage: number
+  totalPages: number
+  pageSize: number
+  totalItems: number
+  onPageChange: (page: number) =&gt; void
+  onPageSizeChange: (size: number) =&gt; void
+}
+</code></pre>
+<p><strong>Features:</strong></p>
+<ul>
+<li>First/Previous/Next/Last navigation</li>
+<li>Direct page input (go-to-page)</li>
+<li>Page size selection (10, 25, 50, 100)</li>
+<li>Total count display</li>
+<li>Responsive design</li>
+</ul>
+<h3 id="4-modal-dialog-system">4. Modal Dialog System</h3>
+<p><strong>Types Available:</strong></p>
+<ul>
+<li><strong>Edit Item Modal</strong>: Full item editing interface</li>
+<li><strong>Confirmation Dialog</strong>: Action confirmation with details</li>
+<li><strong>Advanced Filter Modal</strong>: Complex filter construction</li>
+<li><strong>Upload Modal</strong>: File upload interface</li>
+<li><strong>Comment Modal</strong>: Comment creation/editing</li>
+</ul>
+<p><strong>Common Features:</strong></p>
+<ul>
+<li>Backdrop click to close (configurable)</li>
+<li>Escape key handling</li>
+<li>Focus management</li>
+<li>Size variants (sm, md, lg, xl, full)</li>
+<li>Scrollable content areas</li>
+</ul>
+<hr>
+<h2 id="data-flow-and-state-management">Data Flow and State Management</h2>
+<h3 id="1-requisition-lifecycle">1. Requisition Lifecycle</h3>
+<div class="mermaid">
+stateDiagram-v2
+    [*] --> Draft
+    Draft --> Submitted
+    Submitted --> In_Process
+    In_Process --> Approved
+    In_Process --> Rejected
+    In_Process --> Requires_Changes
+    Requires_Changes --> Submitted
+    Approved --> Fulfilled
+    Approved --> Partially_Fulfilled
+    Partially_Fulfilled --> Fulfilled
+    Rejected --> [*]
+    Fulfilled --> [*]
+
+</div>
+<h3 id="2-stock-replenishment-flow">2. Stock Replenishment Flow</h3>
+<div class="mermaid">
+flowchart TD
+    A[Monitor Stock Levels] --> B{Below Reorder Point?}
+    B -->|Yes| C[Generate Alert]
+    B -->|No| A
+    C --> D[Review Suggested Orders]
+    D --> E[Adjust Order Quantities]
+    E --> F[Create Requisition]
+    F --> G[Submit for Approval]
+    G --> H[Approval Workflow]
+    H --> I[Generate Purchase Order]
+    I --> J[Track Delivery]
+    J --> K[Update Stock Levels]
+    K --> A
+
+</div>
+<h3 id="3-wastage-reporting-workflow">3. Wastage Reporting Workflow</h3>
+<div class="mermaid">
+flowchart TD
+    A[Identify Waste] --> B[Record Waste Entry]
+    B --> C[Classify Reason]
+    C --> D[Calculate Cost Impact]
+    D --> E[Submit for Review]
+    E --> F{Approve Waste?}
+    F -->|Yes| G[Write Off Inventory]
+    F -->|No| H[Return for Investigation]
+    H --> C
+    G --> I[Update Financial Records]
+    I --> J[Generate Reports]
+
+</div>
+<hr>
+<h2 id="api-integration-points">API Integration Points</h2>
+<h3 id="1-data-fetching-patterns">1. Data Fetching Patterns</h3>
+<pre><code class="language-typescript">// Requisition data fetching with filtering
+const fetchRequisitions = async (filters: FilterOptions) =&gt; {
+  const params = new URLSearchParams({
+    page: filters.page.toString(),
+    pageSize: filters.pageSize.toString(),
+    status: filters.status,
+    dateRange: JSON.stringify(filters.dateRange),
+    searchTerm: filters.searchTerm
+  });
+
+  const response = await fetch(`/api/requisitions?${params}`);
+  return response.json();
+};
+
+// Real-time stock level monitoring
+const useStockLevels = () =&gt; {
+  const [stockData, setStockData] = useState([]);
+
+  useEffect(() =&gt; {
+    const interval = setInterval(async () =&gt; {
+      const data = await fetch(&#39;/api/stock-levels&#39;).then(r =&gt; r.json());
+      setStockData(data);
+    }, 30000); // Update every 30 seconds
+
+    return () =&gt; clearInterval(interval);
+  }, []);
+
+  return stockData;
+};
+</code></pre>
+<h3 id="2-state-management-patterns">2. State Management Patterns</h3>
+<pre><code class="language-typescript">// Zustand store for requisition management
+interface RequisitionStore {
+  requisitions: Requisition[]
+  filters: FilterOptions
+  selectedItems: string[]
+  loading: boolean
+
+  setRequisitions: (requisitions: Requisition[]) =&gt; void
+  updateFilters: (filters: Partial&lt;FilterOptions&gt;) =&gt; void
+  toggleItemSelection: (id: string) =&gt; void
+  clearSelection: () =&gt; void
+}
+
+// React Query for server state
+const useRequisitionDetail = (id: string) =&gt; {
+  return useQuery({
+    queryKey: [&#39;requisition&#39;, id],
+    queryFn: () =&gt; fetchRequisitionDetail(id),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    refetchOnWindowFocus: false,
+  });
+};
+</code></pre>
+<hr>
+<h2 id="performance-considerations">Performance Considerations</h2>
+<h3 id="1-code-splitting">1. Code Splitting</h3>
+<pre><code class="language-typescript">// Lazy loading for heavy components
+const StoreRequisitionDetail = lazy(() =&gt;
+  import(&#39;./components/store-requisition-detail&#39;)
+);
+
+// Route-based code splitting
+const StockReplenishment = lazy(() =&gt;
+  import(&#39;./stock-replenishment/page&#39;)
+);
+</code></pre>
+<h3 id="2-data-virtualization">2. Data Virtualization</h3>
+<ul>
+<li><strong>Large Tables</strong>: Virtual scrolling for 1000+ rows</li>
+<li><strong>Infinite Scroll</strong>: Progressive data loading</li>
+<li><strong>Pagination</strong>: Server-side pagination for performance</li>
+<li><strong>Caching</strong>: Intelligent data caching strategies</li>
+</ul>
+<h3 id="3-optimization-strategies">3. Optimization Strategies</h3>
+<ul>
+<li><strong>Memoization</strong>: React.memo for expensive components</li>
+<li><strong>Debouncing</strong>: Search input debouncing (300ms)</li>
+<li><strong>Bundle Splitting</strong>: Route-based code splitting</li>
+<li><strong>Image Optimization</strong>: Next.js Image component usage</li>
+</ul>
+<hr>
+<h2 id="accessibility-features">Accessibility Features</h2>
+<h3 id="1-keyboard-navigation">1. Keyboard Navigation</h3>
+<ul>
+<li><strong>Tab Order</strong>: Logical tab sequence through all interactive elements</li>
+<li><strong>Skip Links</strong>: Skip to main content functionality</li>
+<li><strong>Focus Management</strong>: Visible focus indicators</li>
+<li><strong>Shortcuts</strong>: Keyboard shortcuts for common actions</li>
+</ul>
+<h3 id="2-screen-reader-support">2. Screen Reader Support</h3>
+<ul>
+<li><strong>ARIA Labels</strong>: Comprehensive ARIA labeling</li>
+<li><strong>Role Attributes</strong>: Proper semantic roles</li>
+<li><strong>Live Regions</strong>: Dynamic content announcements</li>
+<li><strong>Alt Text</strong>: Descriptive alternative text for images</li>
+</ul>
+<h3 id="3-visual-accessibility">3. Visual Accessibility</h3>
+<ul>
+<li><strong>Color Contrast</strong>: WCAG AA compliant contrast ratios</li>
+<li><strong>Font Sizes</strong>: Scalable text with rem units</li>
+<li><strong>Motion Preferences</strong>: Respects reduced motion preferences</li>
+<li><strong>High Contrast</strong>: High contrast mode support</li>
+</ul>
+<hr>
+<h2 id="testing-strategy">Testing Strategy</h2>
+<h3 id="1-unit-testing">1. Unit Testing</h3>
+<pre><code class="language-typescript">// Component testing with Jest and React Testing Library
+describe(&#39;StoreRequisitionList&#39;, () =&gt; {
+  it(&#39;should filter requisitions by status&#39;, async () =&gt; {
+    render(&lt;StoreRequisitionList /&gt;);
+
+    const statusFilter = screen.getByRole(&#39;combobox&#39;, { name: /status/i });
+    fireEvent.change(statusFilter, { target: { value: &#39;approved&#39; } });
+
+    await waitFor(() =&gt; {
+      expect(screen.getByText(&#39;Approved&#39;)).toBeInTheDocument();
+    });
+  });
+});
+</code></pre>
+<h3 id="2-integration-testing">2. Integration Testing</h3>
+<ul>
+<li><strong>API Integration</strong>: Mock API responses for consistent testing</li>
+<li><strong>User Workflows</strong>: End-to-end user journey testing</li>
+<li><strong>Data Flow</strong>: State management integration testing</li>
+</ul>
+<h3 id="3-performance-testing">3. Performance Testing</h3>
+<ul>
+<li><strong>Load Testing</strong>: Large dataset rendering performance</li>
+<li><strong>Memory Testing</strong>: Memory leak detection</li>
+<li><strong>Bundle Analysis</strong>: Bundle size optimization testing</li>
+</ul>
+<hr>
+<h2 id="security-considerations">Security Considerations</h2>
+<h3 id="1-data-protection">1. Data Protection</h3>
+<ul>
+<li><strong>Input Sanitization</strong>: XSS prevention through proper sanitization</li>
+<li><strong>CSRF Protection</strong>: Cross-site request forgery protection</li>
+<li><strong>Authentication</strong>: Role-based access control</li>
+<li><strong>Authorization</strong>: Permission-based feature access</li>
+</ul>
+<h3 id="2-data-validation">2. Data Validation</h3>
+<pre><code class="language-typescript">// Zod schema validation
+const requisitionSchema = z.object({
+  description: z.string().min(1).max(500),
+  totalAmount: z.number().positive(),
+  status: z.enum([&#39;draft&#39;, &#39;submitted&#39;, &#39;approved&#39;, &#39;rejected&#39;]),
+  items: z.array(requisitionItemSchema).min(1),
+});
+</code></pre>
+<hr>
+<p>This specification provides comprehensive documentation of the Store Operations module, covering all UI elements, workflows, actions, and technical implementation details. The module represents a sophisticated inventory management system with complex approval workflows, real-time monitoring, and comprehensive reporting capabilities.</p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#store-operations-module-complete-specification" class="level-1">Store Operations Module - Complete Specification</a>
+<a href="#module-overview" class="level-2">Module Overview</a>
+<a href="#architecture-overview" class="level-2">Architecture Overview</a>
+<a href="#1-store-operations-dashboard" class="level-2">1. Store Operations Dashboard</a>
+<a href="#features" class="level-3">Features</a>
+<a href="#widgets-available" class="level-3">Widgets Available</a>
+<a href="#drag-and-drop-implementation" class="level-3">Drag and Drop Implementation</a>
+<a href="#2-store-requisitions-list" class="level-2">2. Store Requisitions List</a>
+<a href="#primary-features" class="level-3">Primary Features</a>
+<a href="#data-structure" class="level-3">Data Structure</a>
+<a href="#status-badge-system" class="level-3">Status Badge System</a>
+<a href="#bulk-actions-available" class="level-3">Bulk Actions Available</a>
+<a href="#3-store-requisition-detail" class="level-2">3. Store Requisition Detail</a>
+<a href="#tab-navigation-system" class="level-3">Tab Navigation System</a>
+<a href="#activity-sidebar" class="level-3">Activity Sidebar</a>
+<a href="#complex-data-structures" class="level-3">Complex Data Structures</a>
+<a href="#4-stock-replenishment" class="level-2">4. Stock Replenishment</a>
+<a href="#dashboard-components" class="level-3">Dashboard Components</a>
+<a href="#inventory-status-table" class="level-3">Inventory Status Table</a>
+<a href="#5-wastage-reporting" class="level-2">5. Wastage Reporting</a>
+<a href="#statistics-dashboard" class="level-3">Statistics Dashboard</a>
+<a href="#wastage-records-management" class="level-3">Wastage Records Management</a>
+<a href="#shared-components-and-utilities" class="level-2">Shared Components and Utilities</a>
+<a href="#1-advanced-filter-builder" class="level-3">1. Advanced Filter Builder</a>
+<a href="#2-status-badge-component" class="level-3">2. Status Badge Component</a>
+<a href="#3-pagination-component" class="level-3">3. Pagination Component</a>
+<a href="#4-modal-dialog-system" class="level-3">4. Modal Dialog System</a>
+<a href="#data-flow-and-state-management" class="level-2">Data Flow and State Management</a>
+<a href="#1-requisition-lifecycle" class="level-3">1. Requisition Lifecycle</a>
+<a href="#2-stock-replenishment-flow" class="level-3">2. Stock Replenishment Flow</a>
+<a href="#3-wastage-reporting-workflow" class="level-3">3. Wastage Reporting Workflow</a>
+<a href="#api-integration-points" class="level-2">API Integration Points</a>
+<a href="#1-data-fetching-patterns" class="level-3">1. Data Fetching Patterns</a>
+<a href="#2-state-management-patterns" class="level-3">2. State Management Patterns</a>
+<a href="#performance-considerations" class="level-2">Performance Considerations</a>
+<a href="#1-code-splitting" class="level-3">1. Code Splitting</a>
+<a href="#2-data-virtualization" class="level-3">2. Data Virtualization</a>
+<a href="#3-optimization-strategies" class="level-3">3. Optimization Strategies</a>
+<a href="#accessibility-features" class="level-2">Accessibility Features</a>
+<a href="#1-keyboard-navigation" class="level-3">1. Keyboard Navigation</a>
+<a href="#2-screen-reader-support" class="level-3">2. Screen Reader Support</a>
+<a href="#3-visual-accessibility" class="level-3">3. Visual Accessibility</a>
+<a href="#testing-strategy" class="level-2">Testing Strategy</a>
+<a href="#1-unit-testing" class="level-3">1. Unit Testing</a>
+<a href="#2-integration-testing" class="level-3">2. Integration Testing</a>
+<a href="#3-performance-testing" class="level-3">3. Performance Testing</a>
+<a href="#security-considerations" class="level-2">Security Considerations</a>
+<a href="#1-data-protection" class="level-3">1. Data Protection</a>
+<a href="#2-data-validation" class="level-3">2. Data Validation</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

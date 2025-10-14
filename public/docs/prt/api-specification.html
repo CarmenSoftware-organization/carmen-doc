@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase Request Template API Specification - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: var(--bg-gradient);
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr 300px;
+            gap: 2rem;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 1.5rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 4rem);
+            overflow-y: auto;
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .back-to-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            background: var(--primary-gradient);
+            color: white;
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        .back-to-home:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        /* Content Area */
+        .doc-content {
+            background: white;
+            border-radius: var(--border-radius-xl);
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 260px 1fr 280px;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 1.5rem;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 2.5rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            .doc-nav {
+                display: none;
+            }
+            .doc-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </div>
+            <div class="doc-header-actions">
+                <a href="../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../SYSTEM-DOCUMENTATION-INDEX.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Documentation Index</span>
+                    </a>
+                    <a href="../DOCUMENTATION-CATALOG.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Catalog</span>
+                    </a>
+                    <a href="../DOCUMENTATION-SUMMARY-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Summary</span>
+                    </a>
+                    <a href="../MODULE-VERIFICATION-REPORT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Module Verification</span>
+                    </a>
+                    <a href="../SYSTEM-GAPS-AND-ROADMAP.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Gaps & Roadmap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../architecture/SYSTEM-ARCHITECTURE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-users"></i>
+                    <span>Stakeholders</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../stakeholders/BUSINESS-VALUE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Procurement</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pr/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Requests</span>
+                    </a>
+                    <a href="../po/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Purchase Orders</span>
+                    </a>
+                    <a href="../grn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Goods Received Note</span>
+                    </a>
+                    <a href="../cn/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Credit Notes</span>
+                    </a>
+                    <a href="../prt/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>PR Templates</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-boxes"></i>
+                    <span>Inventory Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../inv/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Overview</span>
+                    </a>
+                    <a href="../inv/inventory-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Specification</span>
+                    </a>
+                    <a href="../inv/inventory-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Inventory Sitemap</span>
+                    </a>
+                    <a href="../pc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Physical Count</span>
+                    </a>
+                    <a href="../sc/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Spot Check</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-handshake"></i>
+                    <span>Vendor Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../vm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Overview</span>
+                    </a>
+                    <a href="../vm/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Management Module</span>
+                    </a>
+                    <a href="../vm/MANAGE-VENDORS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Manage Vendors</span>
+                    </a>
+                    <a href="../vm/TEMPLATES.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Templates</span>
+                    </a>
+                    <a href="../vm/CAMPAIGNS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Campaigns</span>
+                    </a>
+                    <a href="../vm/PRICELISTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Pricelists</span>
+                    </a>
+                    <a href="../vm/VENDOR-PORTAL.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Vendor Portal</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cube"></i>
+                    <span>Product Management</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pm/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Overview</span>
+                    </a>
+                    <a href="../pm/product-management-specification.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Specification</span>
+                    </a>
+                    <a href="../pm/product-management-sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Product Management Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-store"></i>
+                    <span>Store Operations</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../store-ops/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Overview</span>
+                    </a>
+                    <a href="../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Operations Module</span>
+                    </a>
+                    <a href="../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Store Requisitions</span>
+                    </a>
+                    <a href="../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Stock Replenishment</span>
+                    </a>
+                    <a href="../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Wastage Reporting</span>
+                    </a>
+                    <a href="../store-ops/GLOSSARY.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Glossary</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Operational Planning</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../operational-planning/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Overview</span>
+                    </a>
+                    <a href="../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Operational Planning Module</span>
+                    </a>
+                    <a href="../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Menu Engineering</span>
+                    </a>
+                    <a href="../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Recipe Management</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-cash-register"></i>
+                    <span>POS Integration</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../pos-integration/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Overview</span>
+                    </a>
+                    <a href="../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>POS Integration Module</span>
+                    </a>
+                    <a href="../pos-integration/MAPPING.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Mapping Subsystem</span>
+                    </a>
+                    <a href="../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Transaction Management</span>
+                    </a>
+                    <a href="../pos-integration/REPORTS.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports & Analytics</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../dashboard/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Overview</span>
+                    </a>
+                    <a href="../dashboard/sitemap.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Dashboard Sitemap</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>System Requirements</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../carmen-erp-system-requirements-documentation.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Requirements</span>
+                    </a>
+                    <a href="../comprehensive-schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="purchase-request-template-api-specification">Purchase Request Template API Specification</h1>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#authentication--authorization">Authentication &amp; Authorization</a></li>
+<li><a href="#core-endpoints">Core Endpoints</a></li>
+<li><a href="#data-models">Data Models</a></li>
+<li><a href="#error-handling">Error Handling</a></li>
+<li><a href="#rate-limiting">Rate Limiting</a></li>
+<li><a href="#webhooks">Webhooks</a></li>
+</ol>
+<h2 id="authentication-amp-authorization">Authentication &amp; Authorization</h2>
+<h3 id="authentication">Authentication</h3>
+<ul>
+<li><strong>Type</strong>: Bearer Token (JWT)</li>
+<li><strong>Header</strong>: <code>Authorization: Bearer &lt;token&gt;</code></li>
+<li><strong>Token Expiry</strong>: 24 hours</li>
+<li><strong>Refresh</strong>: Automatic refresh before expiry</li>
+</ul>
+<h3 id="authorization-levels">Authorization Levels</h3>
+<ul>
+<li><strong>View Templates</strong>: <code>templates:read</code></li>
+<li><strong>Create Templates</strong>: <code>templates:create</code></li>
+<li><strong>Edit Templates</strong>: <code>templates:update</code></li>
+<li><strong>Delete Templates</strong>: <code>templates:delete</code></li>
+<li><strong>Admin Operations</strong>: <code>templates:admin</code></li>
+</ul>
+<h3 id="role-based-access">Role-Based Access</h3>
+<pre><code class="language-typescript">interface UserPermissions {
+  purchasing_staff: [&#39;templates:read&#39;, &#39;templates:create&#39;, &#39;templates:update&#39;]
+  department_manager: [&#39;templates:read&#39;, &#39;templates:create&#39;, &#39;templates:update&#39;, &#39;templates:delete&#39;]
+  financial_manager: [&#39;templates:read&#39;, &#39;templates:admin&#39;]
+  admin: [&#39;templates:read&#39;, &#39;templates:create&#39;, &#39;templates:update&#39;, &#39;templates:delete&#39;, &#39;templates:admin&#39;]
+}
+</code></pre>
+<h2 id="core-endpoints">Core Endpoints</h2>
+<h3 id="templates">Templates</h3>
+<h4>GET /api/purchase-request-templates</h4>
+<p>Get list of purchase request templates with filtering and pagination.</p>
+<p><strong>Query Parameters:</strong></p>
+<pre><code class="language-typescript">interface GetTemplatesQuery {
+  page?: number          // Page number (default: 1)
+  limit?: number         // Items per page (default: 20, max: 100)
+  sort?: string         // Sort field (name, created_at, updated_at)
+  order?: &#39;asc&#39; | &#39;desc&#39; // Sort order (default: desc)
+  search?: string       // Search term for name/description
+  type?: TemplateType   // Filter by template type
+  department?: string   // Filter by department
+  status?: TemplateStatus // Filter by status
+  created_after?: string // ISO date string
+  created_before?: string // ISO date string
+}
+</code></pre>
+<p><strong>Response:</strong></p>
+<pre><code class="language-typescript">interface GetTemplatesResponse {
+  data: PurchaseRequestTemplate[]
+  pagination: {
+    page: number
+    limit: number
+    total: number
+    pages: number
+  }
+  filters: {
+    types: TemplateType[]
+    departments: string[]
+    statuses: TemplateStatus[]
+  }
+}
+</code></pre>
+<p><strong>Example:</strong></p>
+<pre><code class="language-bash">GET /api/purchase-request-templates?page=1&amp;limit=10&amp;type=general&amp;department=kitchen
+</code></pre>
+<h4>GET /api/purchase-request-templates/:id</h4>
+<p>Get specific purchase request template by ID.</p>
+<p><strong>Path Parameters:</strong></p>
+<ul>
+<li><code>id</code> (string): Template UUID</li>
+</ul>
+<p><strong>Response:</strong></p>
+<pre><code class="language-typescript">interface GetTemplateResponse {
+  data: PurchaseRequestTemplate
+  items: TemplateItem[]
+  metadata: {
+    created_by: User
+    updated_by: User
+    usage_count: number
+    last_used: string | null
+  }
+}
+</code></pre>
+<h4>POST /api/purchase-request-templates</h4>
+<p>Create new purchase request template.</p>
+<p><strong>Request Body:</strong></p>
+<pre><code class="language-typescript">interface CreateTemplateRequest {
+  name: string
+  description?: string
+  type: TemplateType
+  department: string
+  requestor_id: string
+  reference_number?: string
+  items: CreateTemplateItemRequest[]
+  budget_codes?: string[]
+  account_codes?: string[]
+  approval_workflow?: string
+  is_default?: boolean
+}
+
+interface CreateTemplateItemRequest {
+  item_code: string
+  description: string
+  uom: string
+  quantity: number
+  unit_price: number
+  currency: CurrencyCode
+  budget_code: string
+  account_code: string
+  tax_code?: string
+  department?: string
+}
+</code></pre>
+<p><strong>Response:</strong></p>
+<pre><code class="language-typescript">interface CreateTemplateResponse {
+  data: PurchaseRequestTemplate
+  message: string
+}
+</code></pre>
+<h4>PUT /api/purchase-request-templates/:id</h4>
+<p>Update existing purchase request template.</p>
+<p><strong>Path Parameters:</strong></p>
+<ul>
+<li><code>id</code> (string): Template UUID</li>
+</ul>
+<p><strong>Request Body:</strong></p>
+<pre><code class="language-typescript">interface UpdateTemplateRequest {
+  name?: string
+  description?: string
+  type?: TemplateType
+  department?: string
+  requestor_id?: string
+  items?: UpdateTemplateItemRequest[]
+  is_active?: boolean
+  is_default?: boolean
+}
+
+interface UpdateTemplateItemRequest {
+  id?: string           // Include for updates, omit for new items
+  item_code?: string
+  description?: string
+  uom?: string
+  quantity?: number
+  unit_price?: number
+  currency?: CurrencyCode
+  budget_code?: string
+  account_code?: string
+  _action?: &#39;create&#39; | &#39;update&#39; | &#39;delete&#39;
+}
+</code></pre>
+<h4>DELETE /api/purchase-request-templates/:id</h4>
+<p>Delete purchase request template.</p>
+<p><strong>Path Parameters:</strong></p>
+<ul>
+<li><code>id</code> (string): Template UUID</li>
+</ul>
+<p><strong>Query Parameters:</strong></p>
+<ul>
+<li><code>force</code> (boolean): Force delete even if template is in use</li>
+</ul>
+<p><strong>Response:</strong></p>
+<pre><code class="language-typescript">interface DeleteTemplateResponse {
+  message: string
+  affected_records?: {
+    purchase_requests: number
+    related_templates: number
+  }
+}
+</code></pre>
+<h4>POST /api/purchase-request-templates/:id/clone</h4>
+<p>Clone existing template with modifications.</p>
+<p><strong>Path Parameters:</strong></p>
+<ul>
+<li><code>id</code> (string): Source template UUID</li>
+</ul>
+<p><strong>Request Body:</strong></p>
+<pre><code class="language-typescript">interface CloneTemplateRequest {
+  name: string
+  description?: string
+  department?: string
+  modifications?: {
+    items?: {
+      include_all?: boolean
+      exclude_items?: string[]
+      quantity_multiplier?: number
+    }
+    pricing?: {
+      adjust_prices?: boolean
+      price_multiplier?: number
+      new_currency?: CurrencyCode
+    }
+  }
+}
+</code></pre>
+<h4>PUT /api/purchase-request-templates/:id/set-default</h4>
+<p>Set template as department default.</p>
+<p><strong>Path Parameters:</strong></p>
+<ul>
+<li><code>id</code> (string): Template UUID</li>
+</ul>
+<p><strong>Request Body:</strong></p>
+<pre><code class="language-typescript">interface SetDefaultRequest {
+  department: string
+  replace_existing?: boolean
+}
+</code></pre>
+<h3 id="template-items">Template Items</h3>
+<h4>GET /api/purchase-request-templates/:id/items</h4>
+<p>Get items for specific template.</p>
+<p><strong>Path Parameters:</strong></p>
+<ul>
+<li><code>id</code> (string): Template UUID</li>
+</ul>
+<p><strong>Response:</strong></p>
+<pre><code class="language-typescript">interface GetTemplateItemsResponse {
+  data: TemplateItem[]
+  summary: {
+    total_items: number
+    total_amount: number
+    currencies: CurrencyCode[]
+    departments: string[]
+  }
+}
+</code></pre>
+<h4>POST /api/purchase-request-templates/:id/items</h4>
+<p>Add item to template.</p>
+<p><strong>Path Parameters:</strong></p>
+<ul>
+<li><code>id</code> (string): Template UUID</li>
+</ul>
+<p><strong>Request Body:</strong></p>
+<pre><code class="language-typescript">interface AddItemRequest {
+  item_code: string
+  description: string
+  uom: string
+  quantity: number
+  unit_price: number
+  currency: CurrencyCode
+  budget_code: string
+  account_code: string
+  tax_code?: string
+  department?: string
+}
+</code></pre>
+<h4>PUT /api/purchase-request-templates/:id/items/:item_id</h4>
+<p>Update template item.</p>
+<p><strong>Path Parameters:</strong></p>
+<ul>
+<li><code>id</code> (string): Template UUID</li>
+<li><code>item_id</code> (string): Item UUID</li>
+</ul>
+<h4>DELETE /api/purchase-request-templates/:id/items/:item_id</h4>
+<p>Remove item from template.</p>
+<h3 id="bulk-operations">Bulk Operations</h3>
+<h4>POST /api/purchase-request-templates/bulk</h4>
+<p>Perform bulk operations on templates.</p>
+<p><strong>Request Body:</strong></p>
+<pre><code class="language-typescript">interface BulkOperationRequest {
+  operation: &#39;delete&#39; | &#39;clone&#39; | &#39;set_status&#39; | &#39;export&#39;
+  template_ids: string[]
+  parameters?: {
+    status?: TemplateStatus
+    clone_prefix?: string
+    export_format?: &#39;csv&#39; | &#39;xlsx&#39; | &#39;json&#39;
+  }
+}
+</code></pre>
+<h3 id="analytics-amp-reporting">Analytics &amp; Reporting</h3>
+<h4>GET /api/purchase-request-templates/analytics/usage</h4>
+<p>Get template usage analytics.</p>
+<p><strong>Query Parameters:</strong></p>
+<pre><code class="language-typescript">interface UsageAnalyticsQuery {
+  period?: &#39;day&#39; | &#39;week&#39; | &#39;month&#39; | &#39;quarter&#39; | &#39;year&#39;
+  start_date?: string
+  end_date?: string
+  department?: string
+  template_ids?: string[]
+}
+</code></pre>
+<p><strong>Response:</strong></p>
+<pre><code class="language-typescript">interface UsageAnalyticsResponse {
+  data: {
+    template_id: string
+    template_name: string
+    usage_count: number
+    total_amount: number
+    avg_amount: number
+    departments: string[]
+    last_used: string
+  }[]
+  summary: {
+    total_templates: number
+    active_templates: number
+    total_usage: number
+    total_value: number
+  }
+}
+</code></pre>
+<h4>GET /api/purchase-request-templates/analytics/trends</h4>
+<p>Get template usage trends over time.</p>
+<h2 id="data-models">Data Models</h2>
+<h3 id="purchaserequesttemplate">PurchaseRequestTemplate</h3>
+<pre><code class="language-typescript">interface PurchaseRequestTemplate {
+  id: string
+  name: string
+  description: string | null
+  reference_number: string
+  type: TemplateType
+  department: string
+  requestor_id: string
+  status: TemplateStatus
+  is_active: boolean
+  is_default: boolean
+  total_amount: number
+  currency: CurrencyCode
+  item_count: number
+  budget_codes: string[]
+  account_codes: string[]
+  approval_workflow: string | null
+  created_at: string
+  updated_at: string
+  created_by: string
+  updated_by: string
+  version: number
+}
+
+type TemplateType = &#39;general&#39; | &#39;asset&#39; | &#39;service&#39; | &#39;recurring&#39;
+type TemplateStatus = &#39;draft&#39; | &#39;active&#39; | &#39;inactive&#39; | &#39;archived&#39;
+</code></pre>
+<h3 id="templateitem">TemplateItem</h3>
+<pre><code class="language-typescript">interface TemplateItem {
+  id: string
+  template_id: string
+  item_code: string
+  description: string
+  uom: string
+  quantity: number
+  unit_price: number
+  total_amount: number
+  currency: CurrencyCode
+  exchange_rate: number
+  budget_code: string
+  account_code: string
+  department: string
+  tax_code: string | null
+  tax_rate: number
+  tax_amount: number
+  sort_order: number
+  created_at: string
+  updated_at: string
+}
+</code></pre>
+<h3 id="user">User</h3>
+<pre><code class="language-typescript">interface User {
+  id: string
+  name: string
+  email: string
+  department: string
+  role: UserRole
+  permissions: string[]
+}
+
+type UserRole = &#39;purchasing_staff&#39; | &#39;department_manager&#39; | &#39;financial_manager&#39; | &#39;admin&#39;
+</code></pre>
+<h3 id="department">Department</h3>
+<pre><code class="language-typescript">interface Department {
+  id: string
+  name: string
+  code: string
+  budget_codes: string[]
+  default_template_id: string | null
+  parent_department_id: string | null
+}
+</code></pre>
+<h2 id="error-handling">Error Handling</h2>
+<h3 id="error-response-format">Error Response Format</h3>
+<pre><code class="language-typescript">interface ErrorResponse {
+  error: {
+    code: string
+    message: string
+    details?: any
+    timestamp: string
+    request_id: string
+  }
+}
+</code></pre>
+<h3 id="common-error-codes">Common Error Codes</h3>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Status</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>TEMPLATE_NOT_FOUND</code></td>
+<td>404</td>
+<td>Template does not exist</td>
+</tr>
+<tr>
+<td><code>TEMPLATE_NAME_EXISTS</code></td>
+<td>409</td>
+<td>Template name already exists</td>
+</tr>
+<tr>
+<td><code>INVALID_TEMPLATE_TYPE</code></td>
+<td>400</td>
+<td>Invalid template type specified</td>
+</tr>
+<tr>
+<td><code>INSUFFICIENT_PERMISSIONS</code></td>
+<td>403</td>
+<td>User lacks required permissions</td>
+</tr>
+<tr>
+<td><code>TEMPLATE_IN_USE</code></td>
+<td>409</td>
+<td>Cannot delete template in use</td>
+</tr>
+<tr>
+<td><code>INVALID_ITEM_DATA</code></td>
+<td>400</td>
+<td>Template item validation failed</td>
+</tr>
+<tr>
+<td><code>BUDGET_CODE_INVALID</code></td>
+<td>400</td>
+<td>Invalid budget code specified</td>
+</tr>
+<tr>
+<td><code>CURRENCY_MISMATCH</code></td>
+<td>400</td>
+<td>Currency inconsistency in items</td>
+</tr>
+<tr>
+<td><code>TEMPLATE_LIMIT_EXCEEDED</code></td>
+<td>429</td>
+<td>Too many templates for department</td>
+</tr>
+<tr>
+<td><code>BULK_OPERATION_FAILED</code></td>
+<td>422</td>
+<td>Bulk operation partially failed</td>
+</tr>
+</tbody></table>
+<h3 id="validation-errors">Validation Errors</h3>
+<pre><code class="language-typescript">interface ValidationError {
+  field: string
+  code: string
+  message: string
+  value?: any
+}
+
+interface ValidationErrorResponse extends ErrorResponse {
+  error: {
+    code: &#39;VALIDATION_FAILED&#39;
+    message: string
+    validation_errors: ValidationError[]
+  }
+}
+</code></pre>
+<h2 id="rate-limiting">Rate Limiting</h2>
+<h3 id="limits">Limits</h3>
+<ul>
+<li><strong>Read Operations</strong>: 1000 requests/hour per user</li>
+<li><strong>Write Operations</strong>: 200 requests/hour per user</li>
+<li><strong>Bulk Operations</strong>: 50 requests/hour per user</li>
+<li><strong>Analytics</strong>: 100 requests/hour per user</li>
+</ul>
+<h3 id="headers">Headers</h3>
+<pre><code>X-RateLimit-Limit: 1000
+X-RateLimit-Remaining: 999
+X-RateLimit-Reset: 1640995200
+X-RateLimit-Window: 3600
+</code></pre>
+<h3 id="rate-limit-exceeded">Rate Limit Exceeded</h3>
+<pre><code class="language-typescript">interface RateLimitResponse {
+  error: {
+    code: &#39;RATE_LIMIT_EXCEEDED&#39;
+    message: &#39;Rate limit exceeded&#39;
+    retry_after: number
+  }
+}
+</code></pre>
+<h2 id="webhooks">Webhooks</h2>
+<h3 id="available-events">Available Events</h3>
+<ul>
+<li><code>template.created</code></li>
+<li><code>template.updated</code></li>
+<li><code>template.deleted</code></li>
+<li><code>template.cloned</code></li>
+<li><code>template.set_default</code></li>
+<li><code>template.item.added</code></li>
+<li><code>template.item.updated</code></li>
+<li><code>template.item.removed</code></li>
+</ul>
+<h3 id="webhook-payload">Webhook Payload</h3>
+<pre><code class="language-typescript">interface WebhookPayload {
+  event: string
+  timestamp: string
+  data: {
+    template: PurchaseRequestTemplate
+    changes?: any
+    user: User
+  }
+  organization_id: string
+}
+</code></pre>
+<h3 id="webhook-configuration">Webhook Configuration</h3>
+<pre><code class="language-typescript">interface WebhookConfig {
+  url: string
+  events: string[]
+  secret: string
+  active: boolean
+  retry_policy: {
+    max_retries: number
+    backoff_multiplier: number
+  }
+}
+</code></pre>
+<hr>
+<p><em>Generated on: 2025-09-23</em><br><em>API Specification Version: 1.0</em><br><em>Carmen ERP - Hospitality Supply Chain Management</em></p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#purchase-request-template-api-specification" class="level-1">Purchase Request Template API Specification</a>
+<a href="#table-of-contents" class="level-2">Table of Contents</a>
+<a href="#authentication-amp-authorization" class="level-2">Authentication &amp; Authorization</a>
+<a href="#authentication" class="level-3">Authentication</a>
+<a href="#authorization-levels" class="level-3">Authorization Levels</a>
+<a href="#role-based-access" class="level-3">Role-Based Access</a>
+<a href="#core-endpoints" class="level-2">Core Endpoints</a>
+<a href="#templates" class="level-3">Templates</a>
+<a href="#template-items" class="level-3">Template Items</a>
+<a href="#bulk-operations" class="level-3">Bulk Operations</a>
+<a href="#analytics-amp-reporting" class="level-3">Analytics &amp; Reporting</a>
+<a href="#data-models" class="level-2">Data Models</a>
+<a href="#purchaserequesttemplate" class="level-3">PurchaseRequestTemplate</a>
+<a href="#templateitem" class="level-3">TemplateItem</a>
+<a href="#user" class="level-3">User</a>
+<a href="#department" class="level-3">Department</a>
+<a href="#error-handling" class="level-2">Error Handling</a>
+<a href="#error-response-format" class="level-3">Error Response Format</a>
+<a href="#common-error-codes" class="level-3">Common Error Codes</a>
+<a href="#validation-errors" class="level-3">Validation Errors</a>
+<a href="#rate-limiting" class="level-2">Rate Limiting</a>
+<a href="#limits" class="level-3">Limits</a>
+<a href="#headers" class="level-3">Headers</a>
+<a href="#rate-limit-exceeded" class="level-3">Rate Limit Exceeded</a>
+<a href="#webhooks" class="level-2">Webhooks</a>
+<a href="#available-events" class="level-3">Available Events</a>
+<a href="#webhook-payload" class="level-3">Webhook Payload</a>
+<a href="#webhook-configuration" class="level-3">Webhook Configuration</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
