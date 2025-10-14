@@ -12,19 +12,19 @@ This document provides detailed implementation guidance for developers building 
 ## Visual System Reference
 
 ### Purchase Request List Implementation
-![Purchase Request List View](../../assets/screenshots/purchase-requests-list-view.png)
+![Purchase Request List View](./purchase-request-list-view.png)
 
 *Reference implementation showing data table patterns, filtering controls, status indicators, and responsive design principles used throughout the system.*
 
 ### Purchase Request Detail Implementation
-![Purchase Request Detail View](../../assets/screenshots/purchase-request-detail-working.png)
+![Purchase Request Detail View](./purchase-request-detail-view.png)
 
 *Implementation example demonstrating tab-based navigation, workflow status indicators, data formatting, and interactive table components with expandable rows.*
 
-### Budget Management Implementation
-![Purchase Request Budget Tab](../../assets/screenshots/purchase-request-budgets-tab.png)
+### Purchase Request Creation Form
+![Purchase Request Creation Form](./purchase-request-creation-form.png)
 
-*Reference for budget allocation interfaces showing color-coded status indicators, data validation feedback, and financial data presentation patterns.*
+*Reference for form interfaces showing validation feedback, multi-step workflows, and user input patterns.*
 
 ## Architecture Implementation
 

@@ -201,7 +201,7 @@ interface FilterState {
 **Status**: Fully Implemented
 **Lines of Code**: 539
 **Screenshots**:
-- ![Advanced Filter - JSON View](./advanced-filter-fixed.png)
+- ![Advanced Filter - JSON View](./advanced-filter.png)
 - ![Advanced Filter - Build View](./advanced-filter-build.png)
 
 #### Filter Builder Interface

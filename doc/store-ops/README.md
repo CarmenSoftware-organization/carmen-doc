@@ -58,22 +58,22 @@ This directory contains comprehensive documentation and screenshots for the **St
 ### Screenshots
 
 #### Dashboard & Overview
-- `store-operations-dashboard.png` - Main Store Operations dashboard
+- [Store Operations Dashboard](./store-operations-dashboard.png) - Main Store Operations dashboard
 
 #### Store Requisitions
-- `store-requisitions-list-table.png` - List view in table format
-- `store-requisitions-list-card.png` - List view in card format
-- `store-requisitions-filters.png` - Advanced filtering interface
+- [Store Requisitions List (Table)](./store-requisitions-list-table.png) - List view in table format
+- [Store Requisitions List (Card)](./store-requisitions-list-card.png) - List view in card format
+- [Store Requisitions Filters](./store-requisitions-filters.png) - Advanced filtering interface
 
 #### Store Requisition Detail Views
-- `store-requisition-detail-items.png` - Items tab showing requisition line items
-- `store-requisition-detail-stock-movements.png` - Stock movements tracking
-- `store-requisition-detail-journal.png` - Financial journal entries
-- `store-requisition-detail-approval-workflow.png` - Approval workflow visualization
+- [Requisition Detail - Items Tab](./store-requisition-detail-items.png) - Items tab showing requisition line items
+- [Requisition Detail - Stock Movements](./store-requisition-detail-stock-movements.png) - Stock movements tracking
+- [Requisition Detail - Journal](./store-requisition-detail-journal.png) - Financial journal entries
+- [Requisition Detail - Approval Workflow](./store-requisition-detail-approval-workflow.png) - Approval workflow visualization
 
 #### Other Modules
-- `stock-replenishment-dashboard.png` - Stock replenishment management
-- `wastage-reporting-dashboard.png` - Wastage tracking and reporting
+- [Stock Replenishment Dashboard](./stock-replenishment-dashboard.png) - Stock replenishment management
+- [Wastage Reporting Dashboard](./wastage-reporting-dashboard.png) - Wastage tracking and reporting
 
 ## Module Structure
 

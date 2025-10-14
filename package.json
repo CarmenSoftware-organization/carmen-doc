@@ -1,0 +1,1 @@
+{"name": "carmen-doc","version": "1.0.0","type": "module","description": "Carmen ERP Documentation","scripts": {"convert": "node convert-docs.js"},"devDependencies": {"marked": "^12.0.0"}}

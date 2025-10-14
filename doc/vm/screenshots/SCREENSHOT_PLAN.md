@@ -527,7 +527,7 @@ pkill -f "npm run dev"
 ```markdown
 ## Vendor List View
 
-![Vendor List Table](./screenshots/vm-vendor-list-table.png)
+![Vendor List Table](./vm-vendor-list.png)
 *Vendor list in table view with search and filter options*
 ```
 
@@ -535,7 +535,7 @@ pkill -f "npm run dev"
 ```markdown
 ## Advanced Filter Component
 
-![Advanced Filter Dialog](./screenshots/vm-advanced-filter-dialog.png)
+![Advanced Filter Dialog](./vm-vendor-list-search.png)
 *Advanced filter dialog showing multi-criteria selection*
 ```
 

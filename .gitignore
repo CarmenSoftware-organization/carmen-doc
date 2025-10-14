@@ -1,0 +1,57 @@
+# Node.js dependencies
+node_modules/
+package-lock.json
+
+# Claude Code configuration
+.claude/
+
+# Playwright MCP
+.playwright-mcp/
+
+# Logs
+*.log
+npm-debug.log*
+server.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Generated documentation files
+DOCUMENTATION-IMAGES-LIST.md
+IMAGE-AUDIT-REPORT.md
+LINK-VERIFICATION-REPORT.md
+MODULE-VERIFICATION-REPORT.md
+DOCUMENTATION-SUMMARY-REPORT.md
+
+# Documentation generation scripts
+check-images.js
+convert-docs.js
+list-docs-with-images.js
+
+# Generated/compiled assets
+public/
+dist/
+build/
+
+# Documentation catalog files (if auto-generated)
+doc/DOCUMENTATION-CATALOG.md
+doc/SYSTEM-DOCUMENTATION-INDEX.md
+doc/SYSTEM-GAPS-AND-ROADMAP.md
+
+# Temporary files
+*.tmp
+*.temp
+~*
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment files
+.env
+.env.local
+.env.*.local

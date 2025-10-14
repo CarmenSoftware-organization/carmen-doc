@@ -10,9 +10,8 @@ This directory contains comprehensive documentation for the Physical Count modul
 - [`README.md`](./README.md) - This index file
 
 ### Screenshots
-- [`physical-count-dashboard.png`](./.playwright-mcp/docs/documents/pc/physical-count-dashboard.png) - Dashboard overview interface
-- [`physical-count-wizard-setup.png`](./.playwright-mcp/docs/documents/pc/physical-count-wizard-setup.png) - Count creation wizard setup step
-- [`physical-count-management.png`](./.playwright-mcp/docs/documents/pc/physical-count-management.png) - Management interface with list view
+Screenshots for the Physical Count module can be found in the inventory module documentation:
+- See [`inventory/screenshots/`](../inventory/screenshots/) for physical count interface screenshots
 
 ## 🎯 Module Overview
 
@@ -52,36 +51,13 @@ Physical Count Module
 
 ## 📸 Screenshots Overview
 
-### Physical Count Dashboard
-![Physical Count Dashboard](/.playwright-mcp/docs/documents/pc/physical-count-dashboard.png)
+Physical Count interface screenshots are available in the inventory module documentation at [`../inventory/screenshots/`](../inventory/screenshots/).
 
-**Key Features Shown:**
-- Statistics cards (Total Counts, In Progress, Active Counters, Pending Review)
-- Activity chart with time-based filtering
-- Recent counts panel with status indicators
-- Comprehensive counts table with search and export functionality
-
-### Physical Count Creation Wizard - Setup Step
-![Physical Count Wizard Setup](/.playwright-mcp/docs/documents/pc/physical-count-wizard-setup.png)
-
-**Key Features Shown:**
-- 4-step progress indicator
-- Setup form with auto-populated counter name
-- Department selection dropdown
-- Date & time picker
-- Notes field for additional instructions
-- Form validation and navigation controls
-
-### Physical Count Management Interface
-![Physical Count Management](/.playwright-mcp/docs/documents/pc/physical-count-management.png)
-
-**Key Features Shown:**
-- List view with detailed count information
-- Search functionality and filtering options
-- Status indicators (Pending, Completed, In Progress)
-- Progress bars and completion statistics
-- Action buttons for count operations
-- Expanded navigation showing inventory management hierarchy
+**Available Screenshots:**
+- `physical-count-dashboard.png` - Dashboard overview with statistics and activity charts
+- `physical-count-setup.png` - Count creation wizard setup step
+- `spot-check-dashboard.png` - Spot check management interface
+- `spot-check-active.png` - Active counting interface with real-time updates
 
 ## 🔧 Technical Implementation
 

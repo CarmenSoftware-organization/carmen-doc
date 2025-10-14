@@ -528,7 +528,7 @@ flowchart LR
 **Path**: `/inventory-management/stock-in/[id]`
 **File**: `app/(main)/inventory-management/stock-in/components/stock-in-detail.tsx`
 
-![Stock In Detail](screenshots/stock-in-detail.png)
+![Stock In Detail](screenshots/stock-in-list.png)
 *Stock In Detail - Receipt entry and posting*
 
 **Status**: ⚠️ Partial Implementation
@@ -808,7 +808,7 @@ flowchart LR
 **Path**: `/inventory-management/physical-count/active/[id]`
 **File**: `app/(main)/inventory-management/physical-count/active/[id]/page.tsx`
 
-![Active Count](screenshots/physical-count-active.png)
+![Active Count](screenshots/spot-check-active.png)
 *Active Count - Item counting interface*
 
 **Status**: ⚠️ Partial Implementation
@@ -1264,7 +1264,7 @@ flowchart LR
 **Path**: `/inventory-management/period-end/[id]`
 **File**: `app/(main)/inventory-management/period-end/[id]/page.tsx`
 
-![Period End Detail](screenshots/period-end-detail.png)
+![Period End Detail](./screenshots/period-end.png)
 *Period End Detail - Closing checklist and reports*
 
 **Status**: ⚠️ Partial Implementation
@@ -1320,7 +1320,7 @@ flowchart LR
 **Path**: `/inventory-management/physical-count-management`
 **File**: `app/(main)/inventory-management/physical-count-management/page.tsx`
 
-![Count Management](screenshots/physical-count-management.png)
+![Count Management](screenshots/physical-count-dashboard.png)
 *Physical Count Management - Scheduling and oversight*
 
 **Status**: ✅ Production

@@ -17,24 +17,24 @@ This module handles the complete lifecycle of purchase requests from initial cre
 ## System Screenshots
 
 ### Purchase Request List View
-![Purchase Request List View](./purchase-requests-list-view.png)
+![Purchase Request List View](./purchase-request-list-view.png)
 
 *The main Purchase Request list interface showing filtering, sorting, and status management capabilities with comprehensive data display including requestor, department, amounts, and workflow status.*
 
 ### Purchase Request Detail View - Items Tab
-![Purchase Request Detail View](./purchase-request-detail-working.png)
+![Purchase Request Detail View](./purchase-request-detail-view.png)
 
 *Detailed view of a purchase request showing the Items tab with comprehensive item management, including location status, product details, pricing, and approval workflow progress indicators.*
 
-### Purchase Request Detail View - Budget Tab
-![Purchase Request Budget Tab](./purchase-request-budgets-tab.png)
+### Purchase Request Creation Form
+![Purchase Request Creation Form](./purchase-request-creation-form.png)
 
-*Budget allocation management interface showing budget categories, total budget amounts, soft and hard commitments, available budget, and current PR amounts with status indicators for budget compliance.*
+*Purchase request creation interface with template selection, item management, budget allocation, and workflow submission capabilities.*
 
-### System Dashboard Context
-![Dashboard Overview](./dashboard-overview.png)
+### Role-Based View - Purchasing Staff
+![Role-Based Purchasing Staff View](./role-based-purchasing-staff-view.png)
 
-*Carmen ERP dashboard showing the procurement context with key metrics including total orders, active suppliers, inventory value, and monthly spend analytics.*
+*Specialized view for purchasing staff showing additional controls and bulk operations for efficient purchase request processing.*
 
 ## Functional Requirements
 

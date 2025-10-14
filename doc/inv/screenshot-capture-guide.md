@@ -490,7 +490,7 @@ Add screenshots to spec document using:
 
 ```markdown
 ### Screenshot: Dashboard Full View
-![Dashboard](./screenshots/dashboard/inv-dashboard-full-view.png)
+![Dashboard](./inventory-management-dashboard.png)
 *Figure 1: Main Inventory Management Dashboard with draggable widgets*
 ```
 

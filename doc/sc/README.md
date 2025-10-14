@@ -8,17 +8,17 @@ This directory contains comprehensive documentation for the Spot Check module, i
 
 ### Documentation Files
 
-- **`spot-check-specification.md`** - Complete technical specification with all pages, components, and functionality
-- **`spot-check-sitemap.md`** - Visual site map showing navigation structure and user flows
-- **`README.md`** - This overview file
+- [**Spot Check Specification**](./spot-check-specification.md) - Complete technical specification with all pages, components, and functionality
+- [**Spot Check Sitemap**](./spot-check-sitemap.md) - Visual site map showing navigation structure and user flows
+- [**README**](./README.md) - This overview file
 
 ### Screenshots
 
-- **`main-spot-check-page.png`** - Main spot check listing page (list and grid views)
-- **`spot-check-dashboard.png`** - Dashboard overview with statistics and active monitoring
-- **`new-spot-check-page.png`** - New spot check creation form interface
-- **`active-counts-page.png`** - Active/pending counts management page
-- **`completed-counts-page.png`** - Historical completed counts with search and filters
+- [Main Spot Check Page](./main-spot-check-page.png) - Main spot check listing page (list and grid views)
+- [Spot Check Dashboard](./spot-check-dashboard.png) - Dashboard overview with statistics and active monitoring
+- [New Spot Check Page](./new-spot-check-page.png) - New spot check creation form interface
+- [Active Counts Page](./active-counts-page.png) - Active/pending counts management page
+- [Completed Counts Page](./completed-counts-page.png) - Historical completed counts with search and filters
 
 ## 🎯 Module Overview
 

@@ -115,10 +115,9 @@ Technical implementation guidance for developers:
 ### **Visual References**
 - [System Screenshots →](./purchase-request-module-spec.md#system-screenshots)
 - [Implementation Examples →](./purchase-request-implementation-spec.md#visual-system-reference)
-- [Dashboard Context →](../assets/screenshots/dashboard-overview.png)
-- [List View Interface →](../assets/screenshots/purchase-requests-list-view.png)
-- [Detail View Interface →](../assets/screenshots/purchase-request-detail-working.png)
-- [Budget Management →](../assets/screenshots/purchase-request-budgets-tab.png)
+- [List View Interface →](./purchase-request-list-view.png)
+- [Detail View Interface →](./purchase-request-detail-view.png)
+- [Creation Form →](./purchase-request-creation-form.png)
 
 ## 📖 How to Use This Documentation
 
