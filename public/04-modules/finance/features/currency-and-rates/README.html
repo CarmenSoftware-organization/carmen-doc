@@ -1,0 +1,1873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Management & Exchange Rates - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: #f8fafc;
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 15% 70% 15%;
+            gap: 0;
+            width: 100%;
+            padding: 1rem 0 2rem 0;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 1rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 2rem);
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-right: 1px solid var(--border-color);
+            padding-right: 2rem;
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 0.75rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+        .nav-subgroup {
+            margin: 0.5rem 0 0.5rem 0.5rem;
+        }
+        .nav-subgroup-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-subgroup-header:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .nav-subitems {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+            margin-left: 0.75rem;
+            margin-top: 0.25rem;
+        }
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 1rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 2rem);
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-left: 1px solid var(--border-color);
+            padding-left: 2rem;
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header - Modern Compact Design */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 52px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+        }
+        .header-content {
+            height: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--foreground);
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+        .logo:hover {
+            opacity: 0.8;
+        }
+        .logo i {
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+        .header-search-container {
+            display: flex;
+            align-items: center;
+        }
+        .header-search-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.375rem 0.75rem;
+            background: var(--secondary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.8125rem;
+            color: var(--muted-foreground);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            min-width: 180px;
+            flex-shrink: 0;
+        }
+        .header-search-btn:hover {
+            background: var(--background);
+            border-color: var(--primary);
+        }
+        .header-search-btn i {
+            color: var(--muted-foreground);
+            font-size: 0.875rem;
+        }
+        .header-search-btn span {
+            flex: 1;
+            text-align: left;
+        }
+        .header-search-btn kbd {
+            padding: 0.125rem 0.375rem;
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.6875rem;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--muted-foreground);
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        .back-to-home {
+            display: none; /* Hidden - navigation is sufficient */
+        }
+
+        /* Responsive Header */
+        @media (max-width: 768px) {
+            .header-search-btn {
+                min-width: auto;
+            }
+            .header-search-btn span {
+                display: none;
+            }
+        }
+
+        /* Search Modal */
+        .search-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            padding: 2rem;
+        }
+        .search-modal.active {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 10vh;
+        }
+        .search-modal-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 640px;
+            max-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            animation: slideDown 0.2s ease-out;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .search-modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .search-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .search-input-wrapper i {
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+        }
+        .search-input-wrapper input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 1.125rem;
+            color: var(--text-primary);
+        }
+        .search-close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .search-close-btn:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .search-results {
+            overflow-y: auto;
+            max-height: calc(70vh - 150px);
+        }
+        .search-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 2rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+        .search-empty i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        .search-result {
+            display: block;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+        .search-result:hover,
+        .search-result.selected {
+            background: var(--bg-secondary);
+        }
+        .search-result.selected {
+            border-left: 3px solid var(--primary-color);
+        }
+        .result-header {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .result-category {
+            font-size: 0.75rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .result-title {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        .result-badge {
+            display: inline-block;
+            padding: 0.125rem 0.5rem;
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-radius: 4px;
+            font-size: 0.6875rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        .result-content {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        .result-content mark {
+            background: rgba(79, 70, 229, 0.2);
+            color: var(--primary-color);
+            font-weight: 600;
+            padding: 0.125rem 0.25rem;
+            border-radius: 2px;
+        }
+        .search-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            border-bottom-left-radius: var(--border-radius-xl);
+            border-bottom-right-radius: var(--border-radius-xl);
+        }
+        .search-shortcuts {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        .search-shortcuts kbd {
+            padding: 0.25rem 0.5rem;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        /* Content Area */
+        .doc-content {
+            padding: 0 2rem;
+            width: 100%;
+            max-width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 0.9375rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Image Styles */
+        .doc-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 1.5rem auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Limit screenshot width to 80% for better readability */
+        .doc-content p > img {
+            max-width: 80%;
+        }
+
+        /* Table Styles */
+        .doc-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.875rem;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .doc-content table thead {
+            background: #f8fafc;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .doc-content table th {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #0f172a;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        .doc-content table td {
+            padding: 0.75rem 1rem;
+            border-top: 1px solid #e2e8f0;
+            color: #334155;
+        }
+
+        .doc-content table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        /* Table responsive wrapper */
+        .doc-content table {
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .doc-content table thead,
+        .doc-content table tbody,
+        .doc-content table tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 18% 64% 18%;
+                gap: 0;
+                padding: 1rem 0 1.5rem 0;
+            }
+            .doc-nav {
+                padding-right: 1.5rem;
+            }
+            .doc-toc {
+                padding-left: 1.5rem;
+            }
+            .doc-content {
+                padding: 0 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 0;
+                padding: 1rem 0 1.5rem 0;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 0 2rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                gap: 0;
+                padding: 0.5rem 0 1rem 0;
+            }
+            .doc-nav {
+                display: none;
+                border-right: none;
+            }
+            .doc-content {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="../../../../index.html" class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </a>
+            <div class="doc-header-actions">
+                <div class="header-search-container">
+                    <button class="header-search-btn" id="headerSearchBtn">
+                        <i class="fas fa-search"></i>
+                        <span>Search documentation...</span>
+                        <kbd>Ctrl+K</kbd>
+                    </button>
+                </div>
+                <a href="../../../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../../01-overview/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Index</span>
+                    </a>
+                    <a href="../../../../01-overview/business-value.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value & ROI</span>
+                    </a>
+                    <a href="../../../../01-overview/tech-stack.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Technology Stack</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../../02-architecture/system-architecture.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-database"></i>
+                    <span>Data Model</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../../03-data-model/data-dictionary.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Data Dictionary</span>
+                    </a>
+                    <a href="../../../../03-data-model/schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-th-large"></i>
+                    <span>Application Modules</span>
+                </div>
+                <div class="nav-items">
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Procurement</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../../04-modules/procurement/purchase-requests/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Purchase Requests</span>
+                            </a>
+                            <a href="../../../../04-modules/procurement/purchase-orders/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Purchase Orders</span>
+                            </a>
+                            <a href="../../../../04-modules/procurement/goods-received-notes/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Goods Received Notes</span>
+                            </a>
+                            <a href="../../../../04-modules/procurement/credit-notes/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Credit Notes</span>
+                            </a>
+                            <a href="../../../../04-modules/procurement/templates/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Templates</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-boxes"></i>
+                            <span>Inventory Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../../04-modules/inventory/stock-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Stock Management</span>
+                            </a>
+                            <a href="../../../../04-modules/inventory/physical-count/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Physical Count</span>
+                            </a>
+                            <a href="../../../../04-modules/inventory/spot-check/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Spot Check</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span>Finance</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../../04-modules/finance/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Finance Module</span>
+                            </a>
+                            <a href="../../../../04-modules/finance/features/account-code-mapping/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Account Code Mapping</span>
+                            </a>
+                            <a href="../../../../04-modules/finance/features/currency-and-rates/README.html" class="nav-item active">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Currency Management</span>
+                            </a>
+                            <a href="../../../../04-modules/finance/features/departments/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Departments</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-handshake"></i>
+                            <span>Vendor Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../../04-modules/vendor-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Management</span>
+                            </a>
+                            <a href="../../../../04-modules/vendor-management/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Management Module</span>
+                            </a>
+                            <a href="../../../../04-modules/vendor-management/MANAGE-VENDORS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Manage Vendors</span>
+                            </a>
+                            <a href="../../../../04-modules/vendor-management/VENDOR-PORTAL.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Portal</span>
+                            </a>
+                            <a href="../../../../04-modules/vendor-management/CAMPAIGNS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Campaigns</span>
+                            </a>
+                            <a href="../../../../04-modules/vendor-management/PRICELISTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Pricelists</span>
+                            </a>
+                            <a href="../../../../04-modules/vendor-management/TEMPLATES.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Templates</span>
+                            </a>
+                            <a href="../../../../04-modules/vendor-management/sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Sitemap</span>
+                            </a>
+                            <a href="../../../../04-modules/vendor-management/PAGES-AND-COMPONENTS-SPEC.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Pages & Components Spec</span>
+                            </a>
+                            <a href="../../../../04-modules/vendor-management/SHARED-COMPONENTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Shared Components</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-box"></i>
+                            <span>Product Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../../04-modules/product-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management</span>
+                            </a>
+                            <a href="../../../../04-modules/product-management/product-management-specification.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management Specification</span>
+                            </a>
+                            <a href="../../../../04-modules/product-management/product-management-sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management Sitemap</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-store"></i>
+                            <span>Store Operations</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../../store-ops/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Operations</span>
+                            </a>
+                            <a href="../../../../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Operations Module</span>
+                            </a>
+                            <a href="../../../../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Requisitions</span>
+                            </a>
+                            <a href="../../../../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Stock Replenishment</span>
+                            </a>
+                            <a href="../../../../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Wastage Reporting</span>
+                            </a>
+                            <a href="../../../../store-ops/SHARED-COMPONENTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Shared Components</span>
+                            </a>
+                            <a href="../../../../store-ops/GLOSSARY.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Glossary</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-clipboard-list"></i>
+                            <span>Operational Planning</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../../operational-planning/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Operational Planning</span>
+                            </a>
+                            <a href="../../../../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Operational Planning Module</span>
+                            </a>
+                            <a href="../../../../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Recipe Management</span>
+                            </a>
+                            <a href="../../../../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Menu Engineering</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-cog"></i>
+                            <span>System Administration</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../../sa/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>System Administration</span>
+                            </a>
+                            <a href="../../../../sa/system-administration-sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>System Administration Sitemap</span>
+                            </a>
+                            <a href="../../../../sa/features/permission-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Permission Management</span>
+                            </a>
+                            <a href="../../../../sa/features/permission-management/specification.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Permission Specification</span>
+                            </a>
+                            <a href="../../../../sa/features/location-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Location Management</span>
+                            </a>
+                            <a href="../../../../sa/features/workflow/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Workflow</span>
+                            </a>
+                            <a href="../../../../sa/features/pos-integration/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Reporting</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../../04-modules/reporting/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Reporting & Analytics</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../../dashboard/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard</span>
+                            </a>
+                            <a href="../../../../dashboard/sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard Sitemap</span>
+                            </a>
+                            <a href="../../../../dashboard/components/components-overview.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Components Overview</span>
+                            </a>
+                            <a href="../../../../dashboard/api/api-specifications.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>API Specifications</span>
+                            </a>
+                            <a href="../../../../dashboard/business-logic/dashboard-business-rules.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard Business Rules</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-industry"></i>
+                            <span>Production</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../../04-modules/production/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Production</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-cash-register"></i>
+                            <span>POS Integration</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../../pos-integration/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration</span>
+                            </a>
+                            <a href="../../../../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration Module</span>
+                            </a>
+                            <a href="../../../../pos-integration/MAPPING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Mapping</span>
+                            </a>
+                            <a href="../../../../pos-integration/REPORTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Reports</span>
+                            </a>
+                            <a href="../../../../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Transactions</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="currency-management-amp-exchange-rates">Currency Management &amp; Exchange Rates</h1>
+<blockquote>
+<p><strong>Features:</strong> Finance &gt; Currency Management &amp; Exchange Rates<br><strong>Pages:</strong> 4 (2 Currency + 2 Exchange Rates)<br><strong>Status:</strong> ✅ Production Ready</p>
+</blockquote>
+<hr>
+<h2 id="overview">Overview</h2>
+<p>Currency Management and Exchange Rates provide comprehensive multi-currency support for Carmen ERP, enabling international operations with automatic currency conversion, real-time exchange rate tracking, and accurate financial reporting across multiple currencies.</p>
+<hr>
+<h1 id="currency-management">Currency Management</h1>
+<h2 id="overview">Overview</h2>
+<p>Configure and manage all currencies used in the system, including activation controls, currency descriptions, and integration with transactions across all modules.</p>
+<h3 id="page-structure">Page Structure</h3>
+<p><strong>Route:</strong> <code>/finance/currency-management</code></p>
+<hr>
+<h2 id="data-model">Data Model</h2>
+<pre><code class="language-typescript">interface Currency {
+  // Identity
+  code: string; // ISO 4217 (3-letter code: USD, EUR, GBP)
+  description: string; // Full currency name
+  symbol?: string; // Currency symbol ($, €, £)
+
+  // Configuration
+  active: boolean; // Enable/disable for transactions
+  decimalPlaces?: number; // Decimal precision (default: 2)
+
+  // Metadata
+  createdAt: string;
+  updatedAt: string;
+  createdBy: string;
+  lastModifiedBy: string;
+}
+
+// Example Currencies
+const currencies: Currency[] = [
+  {
+    code: &#39;USD&#39;,
+    description: &#39;United States Dollar&#39;,
+    symbol: &#39;$&#39;,
+    active: true,
+    decimalPlaces: 2
+  },
+  {
+    code: &#39;EUR&#39;,
+    description: &#39;Euro&#39;,
+    symbol: &#39;€&#39;,
+    active: true,
+    decimalPlaces: 2
+  },
+  {
+    code: &#39;JPY&#39;,
+    description: &#39;Japanese Yen&#39;,
+    symbol: &#39;¥&#39;,
+    active: true,
+    decimalPlaces: 0
+  },
+  {
+    code: &#39;GBP&#39;,
+    description: &#39;British Pound Sterling&#39;,
+    symbol: &#39;£&#39;,
+    active: true,
+    decimalPlaces: 2
+  }
+];
+</code></pre>
+<hr>
+<h2 id="features-amp-functionality">Features &amp; Functionality</h2>
+<h3 id="1-currency-list-view">1. Currency List View</h3>
+<p><strong>Columns:</strong></p>
+<ul>
+<li>Selection checkbox (for bulk operations)</li>
+<li><strong>Currency Code</strong>: ISO 4217 code</li>
+<li><strong>Currency Description</strong>: Full name</li>
+<li><strong>Active</strong>: Status toggle checkbox</li>
+<li><strong>Actions</strong>: Edit/Delete options</li>
+</ul>
+<p><strong>Features:</strong></p>
+<ul>
+<li>Sortable columns</li>
+<li>Multi-select for bulk operations</li>
+<li>Inline activation toggle</li>
+<li>Real-time search filtering</li>
+<li>Active-only filter</li>
+</ul>
+<h3 id="2-search-amp-filter">2. Search &amp; Filter</h3>
+<p><strong>Search:</strong></p>
+<ul>
+<li>Search by currency code</li>
+<li>Search by description</li>
+<li>Real-time filtering</li>
+<li>Case-insensitive</li>
+</ul>
+<p><strong>Filter:</strong></p>
+<ul>
+<li>&quot;Show Active&quot; checkbox</li>
+<li>Filter active/inactive currencies</li>
+<li>Combined with search</li>
+</ul>
+<h3 id="3-currency-operations">3. Currency Operations</h3>
+<p><strong>Create Currency:</strong></p>
+<ol>
+<li>Click &quot;Create&quot; button</li>
+<li>Enter currency code (ISO 4217)</li>
+<li>Enter description</li>
+<li>Set active status</li>
+<li>Save</li>
+</ol>
+<p><strong>Activate/Deactivate:</strong></p>
+<ul>
+<li>Toggle checkbox in Active column</li>
+<li>Immediate update</li>
+<li>Confirmation for deactivation if currency in use</li>
+</ul>
+<p><strong>Delete Currency:</strong></p>
+<ol>
+<li>Select currencies via checkbox</li>
+<li>Click &quot;Delete&quot; button</li>
+<li>Confirmation dialog</li>
+<li>Delete if no transactions exist</li>
+</ol>
+<h3 id="4-bulk-operations">4. Bulk Operations</h3>
+<p><strong>Actions:</strong></p>
+<ul>
+<li>Bulk activate</li>
+<li>Bulk deactivate</li>
+<li>Bulk delete</li>
+<li>Bulk export</li>
+</ul>
+<p><strong>Print:</strong></p>
+<ul>
+<li>Print currency list</li>
+<li>PDF export</li>
+<li>Filtered results</li>
+</ul>
+<hr>
+<h2 id="business-rules">Business Rules</h2>
+<h3 id="currency-validation">Currency Validation</h3>
+<ol>
+<li><strong>ISO 4217 Compliance</strong>: Currency code must be valid ISO 4217 code</li>
+<li><strong>Unique Codes</strong>: No duplicate currency codes allowed</li>
+<li><strong>Active Check</strong>: At least one currency must be active (typically base currency)</li>
+<li><strong>Delete Protection</strong>: Cannot delete currency with existing transactions</li>
+<li><strong>Deactivation Warning</strong>: Warn if deactivating currency with pending transactions</li>
+</ol>
+<h3 id="currency-configuration">Currency Configuration</h3>
+<ol>
+<li><strong>Base Currency</strong>: System designates one base currency (often USD)</li>
+<li><strong>Decimal Places</strong>: Configurable per currency (JPY = 0, most others = 2)</li>
+<li><strong>Symbol Display</strong>: Optional currency symbol for UI display</li>
+<li><strong>Description Required</strong>: Full currency name mandatory</li>
+</ol>
+<h3 id="system-integration">System Integration</h3>
+<ol>
+<li><strong>Default Currency</strong>: New transactions default to base currency</li>
+<li><strong>Multi-Currency Transactions</strong>: Can create transactions in any active currency</li>
+<li><strong>Reporting</strong>: All reports can display in base currency or transaction currency</li>
+<li><strong>Exchange Rate Linkage</strong>: Active currencies require exchange rates</li>
+</ol>
+<hr>
+<h1 id="exchange-rate-management">Exchange Rate Management</h1>
+<h2 id="overview">Overview</h2>
+<p>Manage exchange rates for currency conversion, supporting both manual entry and automated updates from external sources.</p>
+<h3 id="page-structure">Page Structure</h3>
+<p><strong>Route:</strong> <code>/finance/exchange-rates</code></p>
+<hr>
+<h2 id="data-model">Data Model</h2>
+<pre><code class="language-typescript">interface ExchangeRate {
+  // Identity
+  code: string; // Currency code (foreign currency)
+  name: string; // Currency full name
+
+  // Rate Information
+  rate: number; // Exchange rate (6 decimal precision)
+  baseCurrency: string; // Base currency (e.g., &#39;USD&#39;)
+  rateType: &#39;manual&#39; | &#39;automatic&#39; | &#39;api&#39;;
+
+  // Temporal
+  effectiveDate: string; // When rate becomes active
+  expiryDate?: string; // When rate expires (optional)
+  lastUpdated: string; // Last update timestamp
+
+  // Source
+  source?: string; // Rate provider (e.g., &#39;Central Bank&#39;, &#39;XE.com&#39;)
+  updatedBy?: string; // User who updated (for manual)
+
+  // Metadata
+  historical: boolean; // Is this a historical rate?
+}
+
+// Example Exchange Rates
+const exchangeRates: ExchangeRate[] = [
+  {
+    code: &quot;USD&quot;,
+    name: &quot;United States Dollar&quot;,
+    rate: 1.000000,
+    baseCurrency: &quot;USD&quot;,
+    rateType: &quot;manual&quot;,
+    effectiveDate: &quot;2023-07-01&quot;,
+    lastUpdated: &quot;2023-07-01&quot;,
+    historical: false
+  },
+  {
+    code: &quot;EUR&quot;,
+    name: &quot;Euro&quot;,
+    rate: 0.920000,
+    baseCurrency: &quot;USD&quot;,
+    rateType: &quot;api&quot;,
+    effectiveDate: &quot;2023-07-01&quot;,
+    lastUpdated: &quot;2023-07-01&quot;,
+    source: &quot;ECB&quot;,
+    historical: false
+  },
+  {
+    code: &quot;JPY&quot;,
+    name: &quot;Japanese Yen&quot;,
+    rate: 144.500000,
+    baseCurrency: &quot;USD&quot;,
+    rateType: &quot;api&quot;,
+    effectiveDate: &quot;2023-07-01&quot;,
+    lastUpdated: &quot;2023-07-01&quot;,
+    source: &quot;BOJ&quot;,
+    historical: false
+  }
+];
+</code></pre>
+<hr>
+<h2 id="features-amp-functionality">Features &amp; Functionality</h2>
+<h3 id="1-exchange-rate-viewer">1. Exchange Rate Viewer</h3>
+<p><strong>Columns:</strong></p>
+<ul>
+<li><strong>Currency Code</strong>: ISO code</li>
+<li><strong>Currency Name</strong>: Full name</li>
+<li><strong>Rate</strong>: Exchange rate (6 decimals)</li>
+<li><strong>Last Updated</strong>: Timestamp</li>
+<li><strong>Actions</strong>: Edit/Delete/History</li>
+</ul>
+<p><strong>Display Features:</strong></p>
+<ul>
+<li>Current rates only (default)</li>
+<li>Historical rates view (optional)</li>
+<li>Color-coded rate changes (increase/decrease)</li>
+<li>Sortable by any column</li>
+</ul>
+<h3 id="2-rate-entry-methods">2. Rate Entry Methods</h3>
+<p><strong>Method 1: Manual Entry</strong></p>
+<ol>
+<li>Click &quot;Add Rate&quot; button</li>
+<li>Select currency</li>
+<li>Enter rate (6 decimal places)</li>
+<li>Set effective date</li>
+<li>Optional: Add source/notes</li>
+<li>Save</li>
+</ol>
+<p><strong>Method 2: CSV Import</strong></p>
+<ol>
+<li>Click &quot;Import CSV&quot; button</li>
+<li>Download template (optional)</li>
+<li>Prepare CSV file:<pre><code class="language-csv">Currency Code,Rate,Effective Date,Source
+EUR,0.920000,2023-07-01,ECB
+JPY,144.500000,2023-07-01,BOJ
+GBP,0.790000,2023-07-01,BoE
+</code></pre>
+</li>
+<li>Upload file</li>
+<li>Validate and preview</li>
+<li>Confirm import</li>
+</ol>
+<p><strong>Method 3: API Integration (Future)</strong></p>
+<ul>
+<li>Configure API provider</li>
+<li>Schedule automatic updates</li>
+<li>Real-time rate fetching</li>
+</ul>
+<h3 id="3-search-amp-filter">3. Search &amp; Filter</h3>
+<p><strong>Search:</strong></p>
+<ul>
+<li>Currency code</li>
+<li>Currency name</li>
+<li>Quick lookup</li>
+</ul>
+<p><strong>Filter:</strong></p>
+<ul>
+<li>Date range</li>
+<li>Rate type (manual/automatic/api)</li>
+<li>Currency group (e.g., European, Asian)</li>
+<li>Active currencies only</li>
+</ul>
+<h3 id="4-rate-history">4. Rate History</h3>
+<p><strong>Historical Tracking:</strong></p>
+<ul>
+<li>View all historical rates for a currency</li>
+<li>Compare rates over time</li>
+<li>Rate change percentage</li>
+<li>Trend visualization</li>
+</ul>
+<p><strong>History Table:</strong></p>
+<ul>
+<li>Effective date</li>
+<li>Rate value</li>
+<li>Rate change (%)</li>
+<li>Source</li>
+<li>Updated by</li>
+<li>Timestamp</li>
+</ul>
+<hr>
+<h2 id="currency-conversion">Currency Conversion</h2>
+<h3 id="conversion-logic">Conversion Logic</h3>
+<pre><code class="language-typescript">function convertCurrency(
+  amount: number,
+  fromCurrency: string,
+  toCurrency: string,
+  exchangeRates: ExchangeRate[]
+): number {
+  // Both currencies are the same
+  if (fromCurrency === toCurrency) {
+    return amount;
+  }
+
+  // Get exchange rates
+  const fromRate = exchangeRates.find(r =&gt; r.code === fromCurrency)?.rate || 1;
+  const toRate = exchangeRates.find(r =&gt; r.code === toCurrency)?.rate || 1;
+
+  // Convert to base currency first, then to target currency
+  const baseAmount = amount / fromRate;
+  const convertedAmount = baseAmount * toRate;
+
+  return convertedAmount;
+}
+
+// Example usage
+const usdAmount = 100;
+const eurRate = 0.92; // 1 USD = 0.92 EUR
+const eurAmount = convertCurrency(usdAmount, &#39;USD&#39;, &#39;EUR&#39;, exchangeRates);
+// Result: 92.00 EUR
+</code></pre>
+<h3 id="conversion-rules">Conversion Rules</h3>
+<ol>
+<li><strong>Base Currency</strong>: All conversions go through base currency</li>
+<li><strong>Rate Precision</strong>: Maintain 6 decimal precision during calculation</li>
+<li><strong>Rounding</strong>: Round final result to currency decimal places</li>
+<li><strong>Rate Date</strong>: Use rate effective on transaction date</li>
+<li><strong>Missing Rate</strong>: Error if no rate available for transaction date</li>
+</ol>
+<hr>
+<h2 id="business-rules">Business Rules</h2>
+<h3 id="exchange-rate-management">Exchange Rate Management</h3>
+<ol>
+<li><strong>Base Currency Rate</strong>: Base currency always has rate of 1.000000</li>
+<li><strong>Rate Precision</strong>: All rates stored with 6 decimal places</li>
+<li><strong>Effective Date Required</strong>: Every rate must have effective date</li>
+<li><strong>Rate History</strong>: System maintains complete rate history</li>
+<li><strong>No Retroactive Changes</strong>: Cannot modify historical rates (create new rate instead)</li>
+</ol>
+<h3 id="rate-updates">Rate Updates</h3>
+<ol>
+<li><strong>Manual Override</strong>: Manual rates take precedence over automatic</li>
+<li><strong>Update Frequency</strong>:<ul>
+<li>Manual: On-demand</li>
+<li>API: Configurable (hourly, daily, weekly)</li>
+</ul>
+</li>
+<li><strong>Rate Validation</strong>: Warn if rate change exceeds threshold (e.g., &gt;10%)</li>
+<li><strong>Source Tracking</strong>: Record source of all rate updates</li>
+</ol>
+<h3 id="transaction-impact">Transaction Impact</h3>
+<ol>
+<li><strong>Transaction Currency</strong>: Transactions store original currency amount</li>
+<li><strong>Base Currency Equivalent</strong>: Also store base currency amount at transaction time</li>
+<li><strong>Rate Locking</strong>: Transaction uses rate from transaction date</li>
+<li><strong>Recalculation</strong>: Can recalculate base amounts if rate corrected</li>
+</ol>
+<hr>
+<h2 id="integration-points">Integration Points</h2>
+<h3 id="multi-currency-transactions">Multi-Currency Transactions</h3>
+<p><strong>Purchase Orders:</strong></p>
+<pre><code>PO in EUR → Exchange Rate (EUR to USD) → USD Equivalent
+</code></pre>
+<p><strong>Vendor Invoices:</strong></p>
+<pre><code>Invoice in GBP → Exchange Rate (GBP to USD) → USD Posting
+</code></pre>
+<p><strong>Sales:</strong></p>
+<pre><code>Sale in JPY → Exchange Rate (JPY to USD) → USD Revenue
+</code></pre>
+<h3 id="financial-reporting">Financial Reporting</h3>
+<p><strong>Currency Presentation:</strong></p>
+<ul>
+<li>Transactional Currency (original)</li>
+<li>Base Currency (converted)</li>
+<li>Reporting Currency (optional third currency)</li>
+</ul>
+<p><strong>Exchange Gain/Loss:</strong></p>
+<ul>
+<li>Track realized gains/losses on settlement</li>
+<li>Track unrealized gains/losses on open items</li>
+<li>Automatic GL posting for gains/losses</li>
+</ul>
+<hr>
+<h2 id="api-endpoints">API Endpoints</h2>
+<pre><code class="language-http"># Currency Management
+GET /api/finance/currencies
+POST /api/finance/currencies
+PUT /api/finance/currencies/:code
+DELETE /api/finance/currencies/:code
+PATCH /api/finance/currencies/:code/activate
+PATCH /api/finance/currencies/:code/deactivate
+
+# Exchange Rates
+GET /api/finance/exchange-rates
+POST /api/finance/exchange-rates
+PUT /api/finance/exchange-rates/:id
+DELETE /api/finance/exchange-rates/:id
+
+# Rate Lookup
+GET /api/finance/exchange-rates/current
+GET /api/finance/exchange-rates/history/:code
+GET /api/finance/exchange-rates/on-date?date=YYYY-MM-DD
+POST /api/finance/exchange-rates/convert
+
+# Bulk Operations
+POST /api/finance/exchange-rates/import
+GET /api/finance/exchange-rates/export
+POST /api/finance/exchange-rates/update-all
+</code></pre>
+<hr>
+<h2 id="user-guide">User Guide</h2>
+<h3 id="adding-a-currency">Adding a Currency</h3>
+<ol>
+<li>Navigate to Currency Management</li>
+<li>Click &quot;Create&quot; button</li>
+<li>Enter currency code (e.g., CAD)</li>
+<li>Enter description (e.g., Canadian Dollar)</li>
+<li>Check &quot;Active&quot; checkbox</li>
+<li>Save</li>
+</ol>
+<h3 id="updating-exchange-rates">Updating Exchange Rates</h3>
+<p><strong>Single Rate:</strong></p>
+<ol>
+<li>Navigate to Exchange Rates</li>
+<li>Find currency row</li>
+<li>Click edit icon</li>
+<li>Enter new rate</li>
+<li>Save</li>
+</ol>
+<p><strong>Bulk Update via CSV:</strong></p>
+<ol>
+<li>Click &quot;Import CSV&quot;</li>
+<li>Download template</li>
+<li>Fill in rates</li>
+<li>Upload file</li>
+<li>Review preview</li>
+<li>Confirm</li>
+</ol>
+<h3 id="viewing-rate-history">Viewing Rate History</h3>
+<ol>
+<li>Navigate to Exchange Rates</li>
+<li>Click on currency row</li>
+<li>Select &quot;View History&quot;</li>
+<li>Browse historical rates</li>
+<li>Export history if needed</li>
+</ol>
+<hr>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="issue-currency-won39t-delete">Issue: Currency Won&#39;t Delete</h3>
+<p><strong>Cause</strong>: Currency has associated transactions<br><strong>Solution</strong>: Deactivate currency instead of deleting</p>
+<h3 id="issue-exchange-rate-not-found">Issue: Exchange Rate Not Found</h3>
+<p><strong>Cause</strong>: No rate configured for transaction date<br><strong>Solution</strong>: Add historical rate for that date or use current rate</p>
+<h3 id="issue-csv-import-fails">Issue: CSV Import Fails</h3>
+<p><strong>Cause</strong>: Invalid format or missing required fields<br><strong>Solution</strong>: Download template, verify data format, check currency codes</p>
+<h3 id="issue-rate-conversion-incorrect">Issue: Rate Conversion Incorrect</h3>
+<p><strong>Cause</strong>: Using wrong base currency or outdated rate<br><strong>Solution</strong>: Verify base currency setting, check rate effective dates</p>
+<hr>
+<h2 id="best-practices">Best Practices</h2>
+<h3 id="currency-setup">Currency Setup</h3>
+<ol>
+<li><strong>Complete Setup First</strong>: Configure all currencies before transactions</li>
+<li><strong>ISO Compliance</strong>: Always use ISO 4217 codes</li>
+<li><strong>Descriptive Names</strong>: Use full currency names</li>
+<li><strong>Active Management</strong>: Keep inactive list clean</li>
+</ol>
+<h3 id="exchange-rate-management">Exchange Rate Management</h3>
+<ol>
+<li><strong>Daily Updates</strong>: Update rates daily for accuracy</li>
+<li><strong>Rate Validation</strong>: Cross-check rates with official sources</li>
+<li><strong>Historical Preservation</strong>: Never delete historical rates</li>
+<li><strong>Audit Trail</strong>: Review rate changes regularly</li>
+<li><strong>Backup</strong>: Export rates weekly for backup</li>
+</ol>
+<h3 id="multi-currency-operations">Multi-Currency Operations</h3>
+<ol>
+<li><strong>Consistent Base</strong>: Use one base currency across organization</li>
+<li><strong>Rate Documentation</strong>: Document rate sources and methodology</li>
+<li><strong>Threshold Alerts</strong>: Set alerts for significant rate changes</li>
+<li><strong>Reconciliation</strong>: Regular forex reconciliation</li>
+<li><strong>Reporting</strong>: Use consistent currency for executive reports</li>
+</ol>
+<hr>
+<h2 id="implementation-notes">Implementation Notes</h2>
+<h3 id="dialog-fix">Dialog Fix</h3>
+<p>The component includes a comprehensive fix for the Radix UI Dialog pointer-events issue:</p>
+<ul>
+<li><strong>Fixed at shadcn/ui Dialog component level</strong>: Global fix applied to <code>components/ui/dialog.tsx</code></li>
+<li><strong>Dual protection mechanism</strong>: useEffect cleanup + onCloseAutoFocus with setTimeout(0)</li>
+<li><strong>Ensures proper interaction</strong>: All dialogs work correctly without blocking application interactions</li>
+<li><strong>No per-component workarounds needed</strong>: Single fix applies to all dialogs throughout the application</li>
+</ul>
+<h3 id="component-location">Component Location</h3>
+<ul>
+<li><strong>File</strong>: <code>app/(main)/finance/currency-and-rates/page.tsx</code></li>
+<li><strong>Route</strong>: <code>/finance/currency-and-rates</code></li>
+<li><strong>Framework</strong>: Next.js 14 App Router with React Server Components</li>
+</ul>
+<h3 id="technical-stack">Technical Stack</h3>
+<ul>
+<li>React Server Components for data fetching</li>
+<li>Client-side state management for dialog interactions</li>
+<li>shadcn/ui Dialog components for modal operations</li>
+<li>Radix UI primitives with accessibility features</li>
+<li>TypeScript for type safety</li>
+</ul>
+<hr>
+<h2 id="future-enhancements">Future Enhancements</h2>
+<p><strong>Planned Features:</strong></p>
+<ul>
+<li>Real-time API integration with forex providers</li>
+<li>Automatic rate alerts for significant changes</li>
+<li>Currency basket support</li>
+<li>Forward contract management</li>
+<li>Hedging recommendations</li>
+<li>Multi-base currency support</li>
+<li>Custom conversion rules</li>
+<li>Advanced analytics and trending</li>
+</ul>
+<hr>
+<p><strong>Last Updated:</strong> 2025-10-25<br><strong>Version:</strong> 1.1.0</p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#currency-management-amp-exchange-rates" class="level-1">Currency Management &amp; Exchange Rates</a>
+<a href="#overview" class="level-2">Overview</a>
+<a href="#currency-management" class="level-1">Currency Management</a>
+<a href="#overview" class="level-2">Overview</a>
+<a href="#page-structure" class="level-3">Page Structure</a>
+<a href="#data-model" class="level-2">Data Model</a>
+<a href="#features-amp-functionality" class="level-2">Features &amp; Functionality</a>
+<a href="#1-currency-list-view" class="level-3">1. Currency List View</a>
+<a href="#2-search-amp-filter" class="level-3">2. Search &amp; Filter</a>
+<a href="#3-currency-operations" class="level-3">3. Currency Operations</a>
+<a href="#4-bulk-operations" class="level-3">4. Bulk Operations</a>
+<a href="#business-rules" class="level-2">Business Rules</a>
+<a href="#currency-validation" class="level-3">Currency Validation</a>
+<a href="#currency-configuration" class="level-3">Currency Configuration</a>
+<a href="#system-integration" class="level-3">System Integration</a>
+<a href="#exchange-rate-management" class="level-1">Exchange Rate Management</a>
+<a href="#overview" class="level-2">Overview</a>
+<a href="#page-structure" class="level-3">Page Structure</a>
+<a href="#data-model" class="level-2">Data Model</a>
+<a href="#features-amp-functionality" class="level-2">Features &amp; Functionality</a>
+<a href="#1-exchange-rate-viewer" class="level-3">1. Exchange Rate Viewer</a>
+<a href="#2-rate-entry-methods" class="level-3">2. Rate Entry Methods</a>
+<a href="#3-search-amp-filter" class="level-3">3. Search &amp; Filter</a>
+<a href="#4-rate-history" class="level-3">4. Rate History</a>
+<a href="#currency-conversion" class="level-2">Currency Conversion</a>
+<a href="#conversion-logic" class="level-3">Conversion Logic</a>
+<a href="#conversion-rules" class="level-3">Conversion Rules</a>
+<a href="#business-rules" class="level-2">Business Rules</a>
+<a href="#exchange-rate-management" class="level-3">Exchange Rate Management</a>
+<a href="#rate-updates" class="level-3">Rate Updates</a>
+<a href="#transaction-impact" class="level-3">Transaction Impact</a>
+<a href="#integration-points" class="level-2">Integration Points</a>
+<a href="#multi-currency-transactions" class="level-3">Multi-Currency Transactions</a>
+<a href="#financial-reporting" class="level-3">Financial Reporting</a>
+<a href="#api-endpoints" class="level-2">API Endpoints</a>
+<a href="#user-guide" class="level-2">User Guide</a>
+<a href="#adding-a-currency" class="level-3">Adding a Currency</a>
+<a href="#updating-exchange-rates" class="level-3">Updating Exchange Rates</a>
+<a href="#viewing-rate-history" class="level-3">Viewing Rate History</a>
+<a href="#troubleshooting" class="level-2">Troubleshooting</a>
+<a href="#issue-currency-won39t-delete" class="level-3">Issue: Currency Won&#39;t Delete</a>
+<a href="#issue-exchange-rate-not-found" class="level-3">Issue: Exchange Rate Not Found</a>
+<a href="#issue-csv-import-fails" class="level-3">Issue: CSV Import Fails</a>
+<a href="#issue-rate-conversion-incorrect" class="level-3">Issue: Rate Conversion Incorrect</a>
+<a href="#best-practices" class="level-2">Best Practices</a>
+<a href="#currency-setup" class="level-3">Currency Setup</a>
+<a href="#exchange-rate-management" class="level-3">Exchange Rate Management</a>
+<a href="#multi-currency-operations" class="level-3">Multi-Currency Operations</a>
+<a href="#implementation-notes" class="level-2">Implementation Notes</a>
+<a href="#dialog-fix" class="level-3">Dialog Fix</a>
+<a href="#component-location" class="level-3">Component Location</a>
+<a href="#technical-stack" class="level-3">Technical Stack</a>
+<a href="#future-enhancements" class="level-2">Future Enhancements</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Search Modal -->
+    <div class="search-modal" id="searchModal">
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchModalInput" placeholder="Search documentation..." autofocus>
+                    <button class="search-close-btn" id="searchCloseBtn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="search-results" id="searchResults">
+                <div class="search-empty">
+                    <i class="fas fa-search"></i>
+                    <p>Start typing to search...</p>
+                </div>
+            </div>
+            <div class="search-footer">
+                <div class="search-shortcuts">
+                    <kbd>↑↓</kbd> Navigate
+                    <kbd>Enter</kbd> Select
+                    <kbd>Esc</kbd> Close
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Search functionality
+        let searchIndex = [];
+        let selectedResultIndex = -1;
+
+        // Load search index
+        fetch('../../../../search-index.json')
+            .then(res => res.json())
+            .then(data => {
+                searchIndex = data;
+                console.log('✓ Search index loaded:', searchIndex.length, 'entries');
+            })
+            .catch(err => console.error('❌ Failed to load search index:', err));
+
+        // Open search modal
+        function openSearchModal() {
+            console.log('🔍 Opening search modal...');
+            document.getElementById('searchModal').classList.add('active');
+            document.getElementById('searchModalInput').focus();
+            selectedResultIndex = -1;
+        }
+
+        // Close search modal
+        function closeSearchModal() {
+            document.getElementById('searchModal').classList.remove('active');
+            document.getElementById('searchModalInput').value = '';
+            document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-search"></i><p>Start typing to search...</p></div>';
+            selectedResultIndex = -1;
+        }
+
+        // Search function
+        function performSearch(query) {
+            console.log('🔎 Searching for:', query);
+
+            if (!query || query.length < 2) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-search"></i><p>Start typing to search...</p></div>';
+                return;
+            }
+
+            if (searchIndex.length === 0) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-exclamation-circle"></i><p>Search index not loaded</p></div>';
+                return;
+            }
+
+            const queryLower = query.toLowerCase();
+            const queryWords = queryLower.split(/s+/).filter(word => word.length > 1);
+
+            // Search and score results
+            const results = searchIndex
+                .map(entry => {
+                    let score = 0;
+
+                    // Title match (highest weight)
+                    if (entry.title.toLowerCase().includes(queryLower)) {
+                        score += 100;
+                    }
+                    queryWords.forEach(word => {
+                        if (entry.title.toLowerCase().includes(word)) score += 50;
+                    });
+
+                    // Content match
+                    if (entry.content.toLowerCase().includes(queryLower)) {
+                        score += 10;
+                    }
+                    queryWords.forEach(word => {
+                        if (entry.content.toLowerCase().includes(word)) score += 5;
+                    });
+
+                    return { ...entry, score };
+                })
+                .filter(result => result.score > 0)
+                .sort((a, b) => b.score - a.score)
+                .slice(0, 10); // Top 10 results
+
+            console.log('📊 Found', results.length, 'results');
+
+            // Display results
+            if (results.length === 0) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-times-circle"></i><p>No results found</p></div>';
+                return;
+            }
+
+            const resultsHtml = results.map((result, index) => {
+                const urlPath = '../../../../' + result.url;
+                return '<a href="' + urlPath + '" class="search-result ' + (index === 0 ? 'selected' : '') + '" data-index="' + index + '">' +
+                    '<div class="result-title">' + result.title + '</div>' +
+                    '<div class="result-content">' + highlightMatch(result.content, query) + '</div>' +
+                    '</a>';
+            }).join('');
+
+            document.getElementById('searchResults').innerHTML = resultsHtml;
+            selectedResultIndex = 0;
+        }
+
+        // Highlight matching text
+        function highlightMatch(text, query) {
+            if (!text) return '';
+            const queryWords = query.split(/\s+/).join('|');
+            const regex = new RegExp('(' + queryWords + ')', 'gi');
+            return text.substring(0, 150).replace(regex, '<mark>$1</mark>') + '...';
+        }
+
+        // Navigate results with keyboard
+        function navigateResults(direction) {
+            const results = document.querySelectorAll('.search-result');
+            if (results.length === 0) return;
+
+            results[selectedResultIndex]?.classList.remove('selected');
+
+            if (direction === 'down') {
+                selectedResultIndex = (selectedResultIndex + 1) % results.length;
+            } else if (direction === 'up') {
+                selectedResultIndex = (selectedResultIndex - 1 + results.length) % results.length;
+            }
+
+            results[selectedResultIndex]?.classList.add('selected');
+            results[selectedResultIndex]?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+
+        // Select result
+        function selectResult() {
+            const selected = document.querySelector('.search-result.selected');
+            if (selected) {
+                window.location.href = selected.href;
+            }
+        }
+
+        // Event listeners
+        document.getElementById('headerSearchBtn')?.addEventListener('click', openSearchModal);
+        document.getElementById('searchCloseBtn')?.addEventListener('click', closeSearchModal);
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Ctrl+K or Cmd+K to open search
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                openSearchModal();
+            }
+
+            // Esc to close search
+            if (e.key === 'Escape' && document.getElementById('searchModal').classList.contains('active')) {
+                closeSearchModal();
+            }
+
+            // Navigate results
+            if (document.getElementById('searchModal').classList.contains('active')) {
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    navigateResults('down');
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    navigateResults('up');
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    selectResult();
+                }
+            }
+        });
+
+        // Search input
+        document.getElementById('searchModalInput')?.addEventListener('input', (e) => {
+            performSearch(e.target.value);
+        });
+
+        // Click outside to close
+        document.getElementById('searchModal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'searchModal') {
+                closeSearchModal();
+            }
+        });
+    </script>
+</body>
+</html>
