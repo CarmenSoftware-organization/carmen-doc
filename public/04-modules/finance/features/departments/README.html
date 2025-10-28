@@ -4,1023 +4,405 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Department Management - Carmen ERP Documentation</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../../../styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
     <style>
-        /* Override for document pages */
-        body {
-            background: #f8fafc;
-        }
-        .doc-layout {
-            display: grid;
-            grid-template-columns: 15% 70% 15%;
-            gap: 0;
-            width: 100%;
-            padding: 1rem 0 2rem 0;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        /* Global Navigation Sidebar */
-        .doc-nav {
-            position: sticky;
-            top: calc(var(--header-height) + 1rem);
-            height: fit-content;
-            max-height: calc(100vh - var(--header-height) - 2rem);
+        :root {
+            --primary: #2563eb;
+            --secondary: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg-light: #f8fafc;
+            --bg-white: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: var(--bg-light);
+            color: var(--text-primary);
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: var(--bg-white);
+            border-right: 1px solid var(--border);
+            position: fixed;
+            height: 100vh;
             overflow-y: auto;
-            overflow-x: hidden;
-            border-right: 1px solid var(--border-color);
-            padding-right: 2rem;
+            padding: 2rem 0;
         }
-        .doc-nav h4 {
-            margin: 0 0 1rem 0;
-            font-size: 0.875rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+
+        .sidebar-header {
+            padding: 0 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
             color: var(--text-secondary);
-        }
-        .nav-group {
+            text-decoration: none;
+            font-size: 0.875rem;
             margin-bottom: 1rem;
         }
-        .nav-group-header {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 0.5rem;
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            cursor: pointer;
-            border-radius: 6px;
-            transition: var(--transition);
-        }
-        .nav-group-header:hover {
-            background: var(--bg-secondary);
-        }
-        .nav-group-header i.fa-chevron-down {
-            font-size: 0.75rem;
-            transition: transform 0.2s ease;
-        }
-        .nav-group.collapsed .fa-chevron-down {
-            transform: rotate(-90deg);
-        }
-        .nav-group.collapsed .nav-items {
-            display: none;
-        }
-        .nav-items {
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-            margin-left: 0.75rem;
-        }
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 0.75rem;
-            font-size: 0.8125rem;
-            color: var(--text-secondary);
-            text-decoration: none;
-            border-radius: 6px;
-            transition: var(--transition);
-        }
-        .nav-item:hover {
-            background: var(--bg-secondary);
-            color: var(--primary-color);
-        }
-        .nav-item.active {
-            background: rgba(79, 70, 229, 0.1);
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-        .nav-item i {
-        .nav-subgroup {
-            margin: 0.5rem 0 0.5rem 0.5rem;
-        }
-        .nav-subgroup-header {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem;
-            font-size: 0.8125rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-            cursor: pointer;
-            border-radius: 6px;
-            transition: var(--transition);
-        }
-        .nav-subgroup-header:hover {
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-        }
-        .nav-subitems {
-            display: flex;
-            flex-direction: column;
-            gap: 0.125rem;
-            margin-left: 0.75rem;
-            margin-top: 0.25rem;
-        }
-            font-size: 0.75rem;
-        }
 
-        /* TOC Sidebar */
-        .doc-toc {
-            position: sticky;
-            top: calc(var(--header-height) + 1rem);
-            height: fit-content;
-            max-height: calc(100vh - var(--header-height) - 2rem);
-            overflow-y: auto;
-            overflow-x: hidden;
-            border-left: 1px solid var(--border-color);
-            padding-left: 2rem;
-        }
-        .doc-toc h4 {
-            margin: 0 0 1rem 0;
-            font-size: 0.875rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--text-secondary);
-        }
-        .doc-toc nav {
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-        }
-        .doc-toc a {
-            display: block;
-            padding: 0.5rem 0.75rem;
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            text-decoration: none;
-            border-radius: 6px;
-            transition: var(--transition);
-            border-left: 2px solid transparent;
-        }
-        .doc-toc a:hover {
-            background: var(--bg-secondary);
-            color: var(--primary-color);
-        }
-        .doc-toc a.active {
-            background: rgba(79, 70, 229, 0.1);
-            color: var(--primary-color);
-            border-left-color: var(--primary-color);
-            font-weight: 600;
-        }
-        .doc-toc a.level-2 {
-            padding-left: 1rem;
-        }
-        .doc-toc a.level-3 {
-            padding-left: 2rem;
-            font-size: 0.8125rem;
-        }
-
-        /* Header - Modern Compact Design */
-        .header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 52px;
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-color);
-            z-index: 1000;
-            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
-        }
-        .header-content {
-            height: 100%;
-            max-width: 100%;
-            margin: 0 auto;
-            padding: 0 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.625rem;
-            font-size: 1.125rem;
-            font-weight: 700;
-            color: var(--foreground);
-            text-decoration: none;
-            transition: opacity 0.2s;
-        }
-        .logo:hover {
-            opacity: 0.8;
-        }
-        .logo i {
-            font-size: 1.25rem;
+        .back-link:hover {
             color: var(--primary);
         }
 
-        /* Header Actions */
-        .doc-header-actions {
-            display: flex;
-            gap: 0.75rem;
-            align-items: center;
+        .sidebar nav {
+            padding: 0 1rem;
         }
-        .header-search-container {
-            display: flex;
-            align-items: center;
+
+        .nav-section {
+            margin-bottom: 1.5rem;
         }
-        .header-search-btn {
+
+        .nav-section h3 {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            padding: 0 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-section ul {
+            list-style: none;
+        }
+
+        .nav-section a {
+            display: block;
+            padding: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+
+        .nav-section a:hover,
+        .nav-section a.active {
+            background: var(--bg-light);
+            color: var(--primary);
+        }
+
+        .main-content {
+            margin-left: 280px;
+            flex: 1;
+            padding: 2rem;
+            max-width: calc(100% - 280px);
+        }
+
+        .breadcrumb {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .breadcrumb a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .content-wrapper {
             display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.375rem 0.75rem;
-            background: var(--secondary);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            font-size: 0.8125rem;
-            color: var(--muted-foreground);
-            cursor: pointer;
-            transition: all 0.15s ease;
-            min-width: 180px;
+            gap: 2rem;
+        }
+
+        .document-content {
+            flex: 1;
+            background: var(--bg-white);
+            padding: 2.5rem;
+            border-radius: 0.75rem;
+            box-shadow: var(--shadow);
+            min-width: 0;
+        }
+
+        .toc-sidebar {
+            width: 250px;
             flex-shrink: 0;
         }
-        .header-search-btn:hover {
-            background: var(--background);
-            border-color: var(--primary);
-        }
-        .header-search-btn i {
-            color: var(--muted-foreground);
-            font-size: 0.875rem;
-        }
-        .header-search-btn span {
-            flex: 1;
-            text-align: left;
-        }
-        .header-search-btn kbd {
-            padding: 0.125rem 0.375rem;
-            background: var(--background);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            font-size: 0.6875rem;
-            font-family: var(--font-mono);
-            font-weight: 600;
-            color: var(--muted-foreground);
-            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-        }
-        .back-to-home {
-            display: none; /* Hidden - navigation is sufficient */
-        }
 
-        /* Responsive Header */
-        @media (max-width: 768px) {
-            .header-search-btn {
-                min-width: auto;
-            }
-            .header-search-btn span {
-                display: none;
-            }
-        }
-
-        /* Search Modal */
-        .search-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
-            z-index: 10000;
-            padding: 2rem;
-        }
-        .search-modal.active {
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-            padding-top: 10vh;
-        }
-        .search-modal-content {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            width: 100%;
-            max-width: 640px;
-            max-height: 70vh;
-            display: flex;
-            flex-direction: column;
-            animation: slideDown 0.2s ease-out;
-        }
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .search-modal-header {
+        .toc-sticky {
+            position: sticky;
+            top: 2rem;
+            background: var(--bg-white);
             padding: 1.5rem;
-            border-bottom: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            box-shadow: var(--shadow);
         }
-        .search-input-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-        .search-input-wrapper i {
-            color: var(--text-secondary);
-            font-size: 1.25rem;
-        }
-        .search-input-wrapper input {
-            flex: 1;
-            border: none;
-            outline: none;
-            font-size: 1.125rem;
-            color: var(--text-primary);
-        }
-        .search-close-btn {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 6px;
-            transition: var(--transition);
-        }
-        .search-close-btn:hover {
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-        }
-        .search-results {
-            overflow-y: auto;
-            max-height: calc(70vh - 150px);
-        }
-        .search-empty {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 3rem 2rem;
-            color: var(--text-secondary);
-            text-align: center;
-        }
-        .search-empty i {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            opacity: 0.5;
-        }
-        .search-result {
-            display: block;
-            padding: 1rem 1.5rem;
-            border-bottom: 1px solid var(--border-color);
-            text-decoration: none;
-            color: inherit;
-            transition: var(--transition);
-        }
-        .search-result:hover,
-        .search-result.selected {
-            background: var(--bg-secondary);
-        }
-        .search-result.selected {
-            border-left: 3px solid var(--primary-color);
-        }
-        .result-header {
-            display: flex;
-            flex-direction: column;
-            gap: 0.25rem;
-            margin-bottom: 0.5rem;
-        }
-        .result-category {
-            font-size: 0.75rem;
-            color: var(--primary-color);
+
+        .toc-title {
+            font-size: 0.875rem;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
         }
-        .result-title {
-            font-size: 0.9375rem;
-            font-weight: 600;
+
+        .toc-list {
+            list-style: none;
+        }
+
+        .toc-list a {
+            display: block;
+            padding: 0.25rem 0;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.2s;
+        }
+
+        .toc-list a:hover {
+            color: var(--primary);
+        }
+
+        .toc-list .toc-h2 {
+            margin-left: 0;
+            font-weight: 500;
+        }
+
+        .toc-list .toc-h3 {
+            margin-left: 1rem;
+            font-size: 0.8125rem;
+        }
+
+        .toc-list .toc-h4 {
+            margin-left: 2rem;
+            font-size: 0.75rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
             color: var(--text-primary);
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 1.875rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 1.5rem 0 1rem;
+            color: var(--text-primary);
+        }
+
+        h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 1.25rem 0 0.75rem;
+            color: var(--text-primary);
+        }
+
+        p {
+            margin-bottom: 1rem;
+            line-height: 1.75;
+        }
+
+        ul, ol {
+            margin-bottom: 1rem;
+            padding-left: 2rem;
+        }
+
+        li {
             margin-bottom: 0.5rem;
         }
-        .result-badge {
+
+        code {
+            background: var(--bg-light);
+            padding: 0.125rem 0.375rem;
+            border-radius: 0.25rem;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.875em;
+            color: var(--danger);
+        }
+
+        pre {
+            background: var(--bg-light);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border);
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            color: var(--text-primary);
+        }
+
+        .badge {
             display: inline-block;
-            padding: 0.125rem 0.5rem;
-            background: rgba(79, 70, 229, 0.1);
-            color: var(--primary-color);
-            border-radius: 4px;
-            font-size: 0.6875rem;
-            font-weight: 600;
-            margin-left: 0.5rem;
-        }
-        .result-content {
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-            line-height: 1.5;
-        }
-        .result-content mark {
-            background: rgba(79, 70, 229, 0.2);
-            color: var(--primary-color);
-            font-weight: 600;
-            padding: 0.125rem 0.25rem;
-            border-radius: 2px;
-        }
-        .search-footer {
-            padding: 1rem 1.5rem;
-            border-top: 1px solid var(--border-color);
-            background: var(--bg-secondary);
-            border-bottom-left-radius: var(--border-radius-xl);
-            border-bottom-right-radius: var(--border-radius-xl);
-        }
-        .search-shortcuts {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
+            padding: 0.25rem 0.625rem;
+            border-radius: 0.375rem;
             font-size: 0.75rem;
-            color: var(--text-secondary);
-        }
-        .search-shortcuts kbd {
-            padding: 0.25rem 0.5rem;
-            background: white;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            font-family: monospace;
-            font-size: 0.75rem;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            font-weight: 600;
+            background: var(--success);
+            color: white;
         }
 
-        /* Content Area */
-        .doc-content {
-            padding: 0 2rem;
-            width: 100%;
-            max-width: 100%;
-        }
-        .doc-content p,
-        .doc-content li {
-            font-size: 0.9375rem;
-            line-height: 1.7;
-        }
-        .doc-content h1,
-        .doc-content h2,
-        .doc-content h3 {
-            scroll-margin-top: calc(var(--header-height) + 2rem);
+        .badge.status-warning {
+            background: var(--warning);
         }
 
-        /* Image Styles */
-        .doc-content img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 1.5rem auto;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            border: 1px solid var(--border-color);
+        .badge.status-info {
+            background: var(--primary);
         }
 
-        /* Limit screenshot width to 80% for better readability */
-        .doc-content p > img {
-            max-width: 80%;
-        }
-
-        /* Table Styles */
-        .doc-content table {
+        table {
             width: 100%;
             border-collapse: collapse;
-            margin: 1.5rem 0;
-            font-size: 0.875rem;
-            background: white;
-            border-radius: 8px;
+            margin-bottom: 1rem;
             overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border-radius: 0.5rem;
+            box-shadow: var(--shadow);
         }
 
-        .doc-content table thead {
-            background: #f8fafc;
-            border-bottom: 2px solid #e2e8f0;
-        }
-
-        .doc-content table th {
-            padding: 0.75rem 1rem;
+        th {
+            background: var(--bg-light);
+            padding: 0.75rem;
             text-align: left;
             font-weight: 600;
-            color: #0f172a;
-            text-transform: uppercase;
-            font-size: 0.75rem;
-            letter-spacing: 0.05em;
+            border-bottom: 2px solid var(--border);
         }
 
-        .doc-content table td {
-            padding: 0.75rem 1rem;
-            border-top: 1px solid #e2e8f0;
-            color: #334155;
+        td {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border);
         }
 
-        .doc-content table tbody tr:hover {
-            background: #f8fafc;
+        tr:last-child td {
+            border-bottom: none;
         }
 
-        /* Table responsive wrapper */
-        .doc-content table {
-            display: block;
+        blockquote {
+            border-left: 4px solid var(--primary);
+            padding-left: 1rem;
+            margin: 1rem 0;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .info-box {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .info-box strong {
+            color: var(--primary);
+        }
+
+        .ascii-art {
+            background: var(--bg-light);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
             overflow-x: auto;
-            white-space: nowrap;
-        }
-
-        .doc-content table thead,
-        .doc-content table tbody,
-        .doc-content table tr {
-            display: table;
-            width: 100%;
-            table-layout: fixed;
-        }
-
-        /* Responsive */
-        @media (max-width: 1400px) {
-            .doc-layout {
-                grid-template-columns: 18% 64% 18%;
-                gap: 0;
-                padding: 1rem 0 1.5rem 0;
-            }
-            .doc-nav {
-                padding-right: 1.5rem;
-            }
-            .doc-toc {
-                padding-left: 1.5rem;
-            }
-            .doc-content {
-                padding: 0 1.5rem;
-            }
-        }
-        @media (max-width: 1200px) {
-            .doc-layout {
-                grid-template-columns: 240px 1fr;
-                gap: 0;
-                padding: 1rem 0 1.5rem 0;
-            }
-            .doc-toc {
-                display: none;
-            }
-            .doc-content {
-                padding: 0 2rem;
-            }
-        }
-        @media (max-width: 768px) {
-            .doc-layout {
-                grid-template-columns: 1fr;
-                gap: 0;
-                padding: 0.5rem 0 1rem 0;
-            }
-            .doc-nav {
-                display: none;
-                border-right: none;
-            }
-            .doc-content {
-                padding: 0 1rem;
-            }
+            margin: 1rem 0;
+            line-height: 1.4;
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="header-content">
-            <a href="../../../../index.html" class="logo">
-                <i class="fas fa-book"></i>
-                <span>Carmen ERP Docs</span>
-            </a>
-            <div class="doc-header-actions">
-                <div class="header-search-container">
-                    <button class="header-search-btn" id="headerSearchBtn">
-                        <i class="fas fa-search"></i>
-                        <span>Search documentation...</span>
-                        <kbd>Ctrl+K</kbd>
-                    </button>
-                </div>
-                <a href="../../../../index.html" class="back-to-home">
-                    <i class="fas fa-home"></i> Back to Home
-                </a>
-            </div>
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <a href="../index.html" class="back-link">← Back to Modules</a>
+            <h1>Finance</h1>
         </div>
-    </header>
+        <nav>
+            <div class="nav-section">
+                <h3>Features</h3>
+                <ul>
+                    <li><a href="account-code-mapping.html">Account Code Mapping</a></li>
+                    <li><a href="department-management.html" class="active">Department Management</a></li>
+                </ul>
+            </div>
+        </nav>
+    </aside>
 
-    <!-- Main Container -->
-    <div class="container" style="margin-top: var(--header-height);">
-        <div class="doc-layout">
-            <!-- Global Navigation -->
-            <aside class="doc-nav">
-                <h4><i class="fas fa-bars"></i> Documentation</h4>
-                
-            <div class="nav-group">
-                <div class="nav-group-header">
-                    <i class="fas fa-chevron-down"></i>
-                    <i class="fas fa-home"></i>
-                    <span>Overview</span>
-                </div>
-                <div class="nav-items">
-                    <a href="../../../../01-overview/README.html" class="nav-item ">
-                        <i class="fas fa-file-alt"></i>
-                        <span>Documentation Index</span>
-                    </a>
-                    <a href="../../../../01-overview/business-value.html" class="nav-item ">
-                        <i class="fas fa-file-alt"></i>
-                        <span>Business Value & ROI</span>
-                    </a>
-                    <a href="../../../../01-overview/tech-stack.html" class="nav-item ">
-                        <i class="fas fa-file-alt"></i>
-                        <span>Technology Stack</span>
-                    </a>
-                </div>
-            </div>
-            <div class="nav-group">
-                <div class="nav-group-header">
-                    <i class="fas fa-chevron-down"></i>
-                    <i class="fas fa-sitemap"></i>
-                    <span>Architecture</span>
-                </div>
-                <div class="nav-items">
-                    <a href="../../../../02-architecture/system-architecture.html" class="nav-item ">
-                        <i class="fas fa-file-alt"></i>
-                        <span>System Architecture</span>
-                    </a>
-                </div>
-            </div>
-            <div class="nav-group">
-                <div class="nav-group-header">
-                    <i class="fas fa-chevron-down"></i>
-                    <i class="fas fa-database"></i>
-                    <span>Data Model</span>
-                </div>
-                <div class="nav-items">
-                    <a href="../../../../03-data-model/data-dictionary.html" class="nav-item ">
-                        <i class="fas fa-file-alt"></i>
-                        <span>Data Dictionary</span>
-                    </a>
-                    <a href="../../../../03-data-model/schema-analysis.html" class="nav-item ">
-                        <i class="fas fa-file-alt"></i>
-                        <span>Schema Analysis</span>
-                    </a>
-                </div>
-            </div>
-            <div class="nav-group">
-                <div class="nav-group-header">
-                    <i class="fas fa-chevron-down"></i>
-                    <i class="fas fa-th-large"></i>
-                    <span>Application Modules</span>
-                </div>
-                <div class="nav-items">
-                    <div class="nav-subgroup">
-                        <div class="nav-subgroup-header">
-                            <i class="fas fa-shopping-cart"></i>
-                            <span>Procurement</span>
-                        </div>
-                        <div class="nav-subitems">
-                            <a href="../../../../04-modules/procurement/purchase-requests/README.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Purchase Requests</span>
-                            </a>
-                            <a href="../../../../04-modules/procurement/purchase-orders/README.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Purchase Orders</span>
-                            </a>
-                            <a href="../../../../04-modules/procurement/goods-received-notes/README.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Goods Received Notes</span>
-                            </a>
-                            <a href="../../../../04-modules/procurement/credit-notes/README.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Credit Notes</span>
-                            </a>
-                            <a href="../../../../04-modules/procurement/templates/README.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Templates</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="nav-subgroup">
-                        <div class="nav-subgroup-header">
-                            <i class="fas fa-boxes"></i>
-                            <span>Inventory Management</span>
-                        </div>
-                        <div class="nav-subitems">
-                            <a href="../../../../04-modules/inventory/stock-management/README.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Stock Management</span>
-                            </a>
-                            <a href="../../../../04-modules/inventory/physical-count/README.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Physical Count</span>
-                            </a>
-                            <a href="../../../../04-modules/inventory/spot-check/README.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Spot Check</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="nav-subgroup">
-                        <div class="nav-subgroup-header">
-                            <i class="fas fa-dollar-sign"></i>
-                            <span>Finance</span>
-                        </div>
-                        <div class="nav-subitems">
-                            <a href="../../../../04-modules/finance/README.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Finance Module</span>
-                            </a>
-                            <a href="../../../../04-modules/finance/features/account-code-mapping/README.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Account Code Mapping</span>
-                            </a>
-                            <a href="../../../../04-modules/finance/features/currency-and-rates/README.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Currency Management</span>
-                            </a>
-                            <a href="../../../../04-modules/finance/features/departments/README.html" class="nav-item active">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Departments</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="nav-subgroup">
-                        <div class="nav-subgroup-header">
-                            <i class="fas fa-handshake"></i>
-                            <span>Vendor Management</span>
-                        </div>
-                        <div class="nav-subitems">
-                            <a href="../../../../04-modules/vendor-management/README.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Vendor Management</span>
-                            </a>
-                            <a href="../../../../04-modules/vendor-management/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Vendor Management Module</span>
-                            </a>
-                            <a href="../../../../04-modules/vendor-management/MANAGE-VENDORS.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Manage Vendors</span>
-                            </a>
-                            <a href="../../../../04-modules/vendor-management/VENDOR-PORTAL.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Vendor Portal</span>
-                            </a>
-                            <a href="../../../../04-modules/vendor-management/CAMPAIGNS.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Campaigns</span>
-                            </a>
-                            <a href="../../../../04-modules/vendor-management/PRICELISTS.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Pricelists</span>
-                            </a>
-                            <a href="../../../../04-modules/vendor-management/TEMPLATES.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Templates</span>
-                            </a>
-                            <a href="../../../../04-modules/vendor-management/sitemap.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Sitemap</span>
-                            </a>
-                            <a href="../../../../04-modules/vendor-management/PAGES-AND-COMPONENTS-SPEC.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Pages & Components Spec</span>
-                            </a>
-                            <a href="../../../../04-modules/vendor-management/SHARED-COMPONENTS.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Shared Components</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="nav-subgroup">
-                        <div class="nav-subgroup-header">
-                            <i class="fas fa-box"></i>
-                            <span>Product Management</span>
-                        </div>
-                        <div class="nav-subitems">
-                            <a href="../../../../04-modules/product-management/README.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Product Management</span>
-                            </a>
-                            <a href="../../../../04-modules/product-management/product-management-specification.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Product Management Specification</span>
-                            </a>
-                            <a href="../../../../04-modules/product-management/product-management-sitemap.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Product Management Sitemap</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="nav-subgroup">
-                        <div class="nav-subgroup-header">
-                            <i class="fas fa-store"></i>
-                            <span>Store Operations</span>
-                        </div>
-                        <div class="nav-subitems">
-                            <a href="../../../../store-ops/README.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Store Operations</span>
-                            </a>
-                            <a href="../../../../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Store Operations Module</span>
-                            </a>
-                            <a href="../../../../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Store Requisitions</span>
-                            </a>
-                            <a href="../../../../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Stock Replenishment</span>
-                            </a>
-                            <a href="../../../../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Wastage Reporting</span>
-                            </a>
-                            <a href="../../../../store-ops/SHARED-COMPONENTS.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Shared Components</span>
-                            </a>
-                            <a href="../../../../store-ops/GLOSSARY.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Glossary</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="nav-subgroup">
-                        <div class="nav-subgroup-header">
-                            <i class="fas fa-clipboard-list"></i>
-                            <span>Operational Planning</span>
-                        </div>
-                        <div class="nav-subitems">
-                            <a href="../../../../operational-planning/README.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Operational Planning</span>
-                            </a>
-                            <a href="../../../../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Operational Planning Module</span>
-                            </a>
-                            <a href="../../../../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Recipe Management</span>
-                            </a>
-                            <a href="../../../../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Menu Engineering</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="nav-subgroup">
-                        <div class="nav-subgroup-header">
-                            <i class="fas fa-cog"></i>
-                            <span>System Administration</span>
-                        </div>
-                        <div class="nav-subitems">
-                            <a href="../../../../sa/README.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>System Administration</span>
-                            </a>
-                            <a href="../../../../sa/system-administration-sitemap.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>System Administration Sitemap</span>
-                            </a>
-                            <a href="../../../../sa/features/permission-management/README.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Permission Management</span>
-                            </a>
-                            <a href="../../../../sa/features/permission-management/specification.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Permission Specification</span>
-                            </a>
-                            <a href="../../../../sa/features/location-management/README.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Location Management</span>
-                            </a>
-                            <a href="../../../../sa/features/workflow/README.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Workflow</span>
-                            </a>
-                            <a href="../../../../sa/features/pos-integration/README.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>POS Integration</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="nav-subgroup">
-                        <div class="nav-subgroup-header">
-                            <i class="fas fa-chart-bar"></i>
-                            <span>Reporting</span>
-                        </div>
-                        <div class="nav-subitems">
-                            <a href="../../../../04-modules/reporting/README.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Reporting & Analytics</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="nav-subgroup">
-                        <div class="nav-subgroup-header">
-                            <i class="fas fa-tachometer-alt"></i>
-                            <span>Dashboard</span>
-                        </div>
-                        <div class="nav-subitems">
-                            <a href="../../../../dashboard/README.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Dashboard</span>
-                            </a>
-                            <a href="../../../../dashboard/sitemap.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Dashboard Sitemap</span>
-                            </a>
-                            <a href="../../../../dashboard/components/components-overview.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Components Overview</span>
-                            </a>
-                            <a href="../../../../dashboard/api/api-specifications.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>API Specifications</span>
-                            </a>
-                            <a href="../../../../dashboard/business-logic/dashboard-business-rules.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Dashboard Business Rules</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="nav-subgroup">
-                        <div class="nav-subgroup-header">
-                            <i class="fas fa-industry"></i>
-                            <span>Production</span>
-                        </div>
-                        <div class="nav-subitems">
-                            <a href="../../../../04-modules/production/README.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Production</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="nav-subgroup">
-                        <div class="nav-subgroup-header">
-                            <i class="fas fa-cash-register"></i>
-                            <span>POS Integration</span>
-                        </div>
-                        <div class="nav-subitems">
-                            <a href="../../../../pos-integration/README.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>POS Integration</span>
-                            </a>
-                            <a href="../../../../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>POS Integration Module</span>
-                            </a>
-                            <a href="../../../../pos-integration/MAPPING.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Mapping</span>
-                            </a>
-                            <a href="../../../../pos-integration/REPORTS.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Reports</span>
-                            </a>
-                            <a href="../../../../pos-integration/TRANSACTIONS.html" class="nav-item ">
-                                <i class="fas fa-file-alt"></i>
-                                <span>Transactions</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            </aside>
+    <div class="main-content">
+        <div class="breadcrumb">
+            <a href="../index.html">Documentation</a> /
+            <a href="#finance">Finance</a> /
+            Department Management
+        </div>
 
-            <!-- Main Content -->
-            <main>
-                <article class="doc-content content">
-                    <h1 id="department-management">Department Management</h1>
-<blockquote>
-<p><strong>Feature:</strong> Finance &gt; Department Management<br><strong>Pages:</strong> 1<br><strong>Status:</strong> ✅ Production Ready</p>
-</blockquote>
-<hr>
-<h2 id="overview">Overview</h2>
-<p>Department Management provides organizational structure configuration for Carmen ERP, enabling cost center tracking, departmental hierarchy, budget allocation, and expense categorization. This feature integrates with Account Code Mapping to ensure proper GL account assignment by department.</p>
-<h3 id="key-capabilities">Key Capabilities</h3>
-<ol>
-<li><strong>Department CRUD</strong> - Create, edit, and manage departments</li>
-<li><strong>Head of Department</strong> - Assign multiple department heads</li>
-<li><strong>Account Code Linking</strong> - Link departments to default GL accounts</li>
-<li><strong>Active Status Management</strong> - Enable/disable departments</li>
-<li><strong>Search &amp; Filter</strong> - Quick department lookup</li>
-</ol>
-<hr>
-<h2 id="page-structure">Page Structure</h2>
-<p><strong>Route:</strong> <code>/finance/department-list</code></p>
-<hr>
-<h2 id="data-model">Data Model</h2>
-<pre><code class="language-typescript">interface Department {
+        <div class="content-wrapper">
+            <div class="document-content">
+                <h1 id="heading-0">Department Management</h1>
+
+                <div class="info-box">
+                    <strong>Feature:</strong> Finance &gt; Department Management<br>
+                    <strong>Pages:</strong> 1<br>
+                    <strong>Status:</strong> <span class="badge">✅ Production Ready</span>
+                </div>
+
+                <h2 id="overview">Overview</h2>
+                <p>Department Management provides organizational structure configuration for Carmen ERP, enabling cost center tracking, departmental hierarchy, budget allocation, and expense categorization. This feature integrates with Account Code Mapping to ensure proper GL account assignment by department.</p>
+
+                <h3 id="key-capabilities">Key Capabilities</h3>
+                <ol>
+                    <li><strong>Department CRUD</strong> - Create, edit, and manage departments</li>
+                    <li><strong>Head of Department</strong> - Assign multiple department heads</li>
+                    <li><strong>User Assignment</strong> - Assign users to departments with enhanced visual interface</li>
+                    <li><strong>Account Code Linking</strong> - Link departments to default GL accounts</li>
+                    <li><strong>Active Status Management</strong> - Enable/disable departments</li>
+                    <li><strong>Search & Filter</strong> - Quick department lookup</li>
+                </ol>
+
+                <h2 id="page-structure">Page Structure</h2>
+                <p><strong>Route:</strong> <code>/finance/department-list</code></p>
+
+                <h2 id="data-model">Data Model</h2>
+                <pre><code>interface Department {
   // Identity
   code: string; // Department code (2-4 characters)
   name: string; // Department name/description
 
   // Leadership
   heads: string[]; // Array of email addresses for department heads
+
+  // User Assignment
+  assignedUsers?: string[]; // Array of user IDs assigned to this department
 
   // Financial
   accountCode: string; // Default GL account code for department expenses
@@ -1039,715 +421,255 @@
   updatedAt: string;
   createdBy: string;
   lastModifiedBy: string;
-}
+}</code></pre>
 
-// Example Departments
-const departments: Department[] = [
-  {
-    code: &quot;AC&quot;,
-    name: &quot;Finance / Accounting&quot;,
-    heads: [&quot;finance.head@example.com&quot;],
-    accountCode: &quot;1&quot;,
-    active: true
-  },
-  {
-    code: &quot;AD&quot;,
-    name: &quot;Administrator&quot;,
-    heads: [&quot;admin1@example.com&quot;, &quot;admin2@example.com&quot;],
-    accountCode: &quot;&quot;,
-    active: true
-  },
-  {
-    code: &quot;FB&quot;,
-    name: &quot;Food and Beverage&quot;,
-    heads: [&quot;fb.manager@example.com&quot;],
-    accountCode: &quot;&quot;,
-    active: false
-  },
-  {
-    code: &quot;HR&quot;,
-    name: &quot;Human Resources&quot;,
-    heads: [&quot;hr.director@example.com&quot;],
-    accountCode: &quot;&quot;,
-    active: true
+                <h2 id="features-functionality">Features & Functionality</h2>
+
+                <h3 id="department-list">1. Department List View</h3>
+                <h4>Columns:</h4>
+                <ul>
+                    <li><strong>Code</strong>: Department code (badge display)</li>
+                    <li><strong>Name</strong>: Full department name</li>
+                    <li><strong>Head of Department</strong>: Email(s) of department head(s)</li>
+                    <li><strong>Account Code</strong>: Linked GL account</li>
+                    <li><strong>Active</strong>: Status checkbox (display only)</li>
+                    <li><strong>Actions</strong>: Edit/Delete buttons</li>
+                </ul>
+
+                <h4>Features:</h4>
+                <ul>
+                    <li>Sortable columns</li>
+                    <li>Search by code or name</li>
+                    <li>Real-time filtering</li>
+                    <li>Responsive table design</li>
+                    <li>Badge styling for codes</li>
+                </ul>
+
+                <h3 id="department-form">2. Department Creation/Edit Form</h3>
+
+                <h4>Form Fields:</h4>
+
+                <p><strong>Basic Information:</strong></p>
+                <ul>
+                    <li><strong>Code</strong> (required): 2-4 character unique code</li>
+                    <li><strong>Name</strong> (required): Full department name</li>
+                    <li><strong>Account Code</strong> (optional): Default GL account</li>
+                    <li><strong>Active</strong>: Checkbox for status</li>
+                </ul>
+
+                <p><strong>Department Heads:</strong></p>
+                <ul>
+                    <li>List of assigned heads (email addresses)</li>
+                    <li>Add new head (email input + Add button)</li>
+                    <li>Remove existing head (Remove button per entry)</li>
+                    <li>Multiple heads supported</li>
+                </ul>
+
+                <p><strong>User Assignment:</strong></p>
+                <ul>
+                    <li>Enhanced dual-panel interface for assigning users to department</li>
+                    <li>Visual hierarchy showing user avatar, name, role, and current departments</li>
+                    <li>Three-column layout with chevron buttons for assignment/removal</li>
+                    <li>Search and filter capabilities</li>
+                    <li>Select All functionality for bulk operations</li>
+                </ul>
+
+                <h3 id="user-assignment-interface">2.1. Enhanced User Assignment Interface</h3>
+
+                <p><strong>Overview:</strong><br>
+                The department edit form includes an enhanced user assignment component that provides a visual, intuitive way to manage which users are assigned to each department.</p>
+
+                <p><strong>Interface Layout:</strong></p>
+                <div class="ascii-art">┌────────────────────────────────────────────────────┐
+│  Assigned Users        [&lt;] [&gt;]    Available Users  │
+│  ┌─────────────────┐           ┌─────────────────┐│
+│  │ 🔵 John Smith   │           │ 🟢 Jane Doe     ││
+│  │ 📋 Manager      │           │ 📋 Staff        ││
+│  │ 🏢 Finance      │           │ 🏢 Operations   ││
+│  └─────────────────┘           └─────────────────┘│
+└────────────────────────────────────────────────────┘</div>
+
+                <h4>Key Features:</h4>
+
+                <p><strong>1. Visual Hierarchy:</strong></p>
+                <ul>
+                    <li><strong>Color-coded avatar</strong>: Shows user initials on colored background (7 color variations)</li>
+                    <li><strong>Name</strong>: Prominent display of user's full name</li>
+                    <li><strong>Role/Position</strong>: Secondary display with briefcase icon</li>
+                    <li><strong>Department</strong>: Current department assignment with building icon</li>
+                    <li><strong>Additional departments</strong>: Badge display for users in multiple departments</li>
+                </ul>
+
+                <p><strong>2. Three-Column Layout:</strong></p>
+                <ul>
+                    <li><strong>Left Panel</strong>: "Assigned Users" - Users currently assigned to this department</li>
+                    <li><strong>Center</strong>: Action buttons with chevron icons</li>
+                    <li><strong>Right Panel</strong>: "Available Users" - Users not yet assigned to this department</li>
+                </ul>
+
+                <p><strong>3. Assignment Actions:</strong></p>
+                <ul>
+                    <li><strong>ChevronLeft (←)</strong>: Move selected users from Available to Assigned</li>
+                    <li><strong>ChevronRight (→)</strong>: Remove selected users from Assigned to Available</li>
+                    <li><strong>Buttons disabled</strong> when no users are selected</li>
+                </ul>
+
+                <p><strong>4. Search & Filter:</strong></p>
+                <ul>
+                    <li>Search by user name or email in both panels</li>
+                    <li>Real-time filtering as you type</li>
+                    <li>Independent search for each panel</li>
+                </ul>
+
+                <p><strong>5. Bulk Selection:</strong></p>
+                <ul>
+                    <li><strong>Select All checkbox</strong> in each panel header</li>
+                    <li>Select individual users with checkboxes</li>
+                    <li>Visual feedback for selected users (blue highlight)</li>
+                </ul>
+
+                <p><strong>6. Panel Features:</strong></p>
+                <ul>
+                    <li>Equal height panels (384px) with scrolling</li>
+                    <li>Empty state messages when no data</li>
+                    <li>User count display</li>
+                    <li>Hover states for better UX</li>
+                </ul>
+
+                <p><strong>User Experience:</strong></p>
+                <ol>
+                    <li>Search for users in either panel</li>
+                    <li>Select one or more users using checkboxes</li>
+                    <li>Use Select All to select all visible users</li>
+                    <li>Click chevron button to assign/remove selected users</li>
+                    <li>Changes saved when form is submitted</li>
+                </ol>
+
+                <h2 id="technical-implementation">Technical Implementation</h2>
+
+                <h3 id="components">Components</h3>
+
+                <p><strong>UserAssignment Component</strong> (<code>user-assignment.tsx</code>):</p>
+                <ul>
+                    <li>Reusable component for department-user relationships</li>
+                    <li><strong>Props:</strong>
+                        <ul>
+                            <li><code>assignedUserIds: string[]</code> - Currently assigned user IDs</li>
+                            <li><code>onAssignedUsersChange: (userIds: string[]) => void</code> - Callback for changes</li>
+                        </ul>
+                    </li>
+                    <li><strong>Features:</strong>
+                        <ul>
+                            <li>Dual-panel layout with independent search</li>
+                            <li>Visual user cards with avatar, role, and department</li>
+                            <li>Bulk selection and assignment</li>
+                            <li>Real-time filtering</li>
+                            <li>Dark mode support</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <p><strong>Helper Functions:</strong></p>
+                <pre><code>getUserInitials(name: string): string // Returns user initials for avatar
+getAvatarColor(userId: string): string // Returns consistent color class
+getUserDepartments(userId: string): Department[] // Gets user's departments</code></pre>
+
+                <p><strong>State Management:</strong></p>
+                <ul>
+                    <li>Local state for search queries and selections</li>
+                    <li>useMemo hooks for filtering performance</li>
+                    <li>Optimized re-rendering with proper dependency arrays</li>
+                </ul>
+
+                <h3 id="api-integration">API Integration</h3>
+
+                <p><strong>Department User Assignment:</strong></p>
+                <pre><code>PUT /api/finance/departments/:code
+Body: {
+  code: string
+  name: string
+  assignedUsers: string[]
+  ...
+}</code></pre>
+
+                <p><strong>Response:</strong></p>
+                <pre><code>{
+  "success": true,
+  "data": {
+    "code": "IT",
+    "name": "Information Technology",
+    "assignedUsers": ["user-001", "user-002"],
+    ...
   }
-];
-</code></pre>
-<hr>
-<h2 id="features-amp-functionality">Features &amp; Functionality</h2>
-<h3 id="1-department-list-view">1. Department List View</h3>
-<p><strong>Columns:</strong></p>
-<ul>
-<li><strong>Code</strong>: Department code (badge display)</li>
-<li><strong>Name</strong>: Full department name</li>
-<li><strong>Head of Department</strong>: Email(s) of department head(s)</li>
-<li><strong>Account Code</strong>: Linked GL account</li>
-<li><strong>Active</strong>: Status checkbox (display only)</li>
-<li><strong>Actions</strong>: Edit/Delete buttons</li>
-</ul>
-<p><strong>Features:</strong></p>
-<ul>
-<li>Sortable columns</li>
-<li>Search by code or name</li>
-<li>Real-time filtering</li>
-<li>Responsive table design</li>
-<li>Badge styling for codes</li>
-</ul>
-<h3 id="2-department-creationedit-modal">2. Department Creation/Edit Modal</h3>
-<p><strong>Form Fields:</strong></p>
-<p><strong>Basic Information:</strong></p>
-<ul>
-<li><strong>Code</strong> (required): 2-4 character unique code</li>
-<li><strong>Name</strong> (required): Full department name</li>
-<li><strong>Account Code</strong> (optional): Default GL account</li>
-<li><strong>Active</strong>: Checkbox for status</li>
-</ul>
-<p><strong>Department Heads:</strong></p>
-<ul>
-<li>List of assigned heads (email addresses)</li>
-<li>Add new head (email input + Add button)</li>
-<li>Remove existing head (Remove button per entry)</li>
-<li>Multiple heads supported</li>
-</ul>
-<p><strong>Modal Actions:</strong></p>
-<ul>
-<li>Save: Create or update department</li>
-<li>Cancel: Close without saving</li>
-<li>X button: Close modal</li>
-</ul>
-<h3 id="3-search-functionality">3. Search Functionality</h3>
-<p><strong>Search Features:</strong></p>
-<ul>
-<li>Search icon indicator</li>
-<li>Real-time filtering</li>
-<li>Search across:<ul>
-<li>Department code</li>
-<li>Department name</li>
-</ul>
-</li>
-<li>Case-insensitive matching</li>
-<li>Clear search capability</li>
-</ul>
-<h3 id="4-department-operations">4. Department Operations</h3>
-<p><strong>Create Department:</strong></p>
-<ol>
-<li>Click &quot;New Department&quot; button</li>
-<li>Fill in department code</li>
-<li>Enter department name</li>
-<li>Add account code (optional)</li>
-<li>Set active status</li>
-<li>Add department head(s)</li>
-<li>Save</li>
-</ol>
-<p><strong>Edit Department:</strong></p>
-<ol>
-<li>Click Edit icon in Actions column</li>
-<li>Modify fields as needed</li>
-<li>Add/remove department heads</li>
-<li>Save changes</li>
-</ol>
-<p><strong>Delete Department:</strong></p>
-<ol>
-<li>Click Delete icon in Actions column</li>
-<li>Confirm deletion</li>
-<li>Department removed (if no dependencies)</li>
-</ol>
-<hr>
-<h2 id="business-rules">Business Rules</h2>
-<h3 id="department-validation">Department Validation</h3>
-<ol>
-<li><strong>Unique Code</strong>: Department codes must be unique across organization</li>
-<li><strong>Code Format</strong>: 2-4 uppercase alphanumeric characters</li>
-<li><strong>Name Required</strong>: Department name is mandatory</li>
-<li><strong>Head Email Validation</strong>: Email addresses must be valid format</li>
-<li><strong>Delete Protection</strong>: Cannot delete department with:<ul>
-<li>Active transactions</li>
-<li>Assigned employees</li>
-<li>Child departments (if hierarchy enabled)</li>
-</ul>
-</li>
-</ol>
-<h3 id="department-configuration">Department Configuration</h3>
-<ol>
-<li><strong>Active Status</strong>: Only active departments available for new transactions</li>
-<li><strong>Default Account</strong>: Optional default GL account for department expenses</li>
-<li><strong>Multiple Heads</strong>: Departments can have multiple heads</li>
-<li><strong>Head Notifications</strong>: Department heads receive relevant notifications</li>
-</ol>
-<h3 id="hierarchy-rules-if-implemented">Hierarchy Rules (If Implemented)</h3>
-<ol>
-<li><strong>Parent Department</strong>: Can assign parent for hierarchy</li>
-<li><strong>Circular Prevention</strong>: Cannot create circular hierarchy</li>
-<li><strong>Level Calculation</strong>: Automatic level calculation based on parents</li>
-<li><strong>Rollup</strong>: Budget/expenses can roll up to parent departments</li>
-</ol>
-<hr>
-<h2 id="integration-points">Integration Points</h2>
-<h3 id="account-code-mapping">Account Code Mapping</h3>
-<p><strong>Department → GL Account:</strong></p>
-<pre><code>Department Code → Default Account Code → GL Posting
-</code></pre>
-<p><strong>Mapping Priority:</strong></p>
-<pre><code>1. Specific category/item mapping
-2. Department default account
-3. Store default account
-</code></pre>
-<h3 id="user-management">User Management</h3>
-<p><strong>Department Assignment:</strong></p>
-<ul>
-<li>Users assigned to primary department</li>
-<li>Secondary department assignments</li>
-<li>Department-based permissions</li>
-<li>Department head role assignment</li>
-</ul>
-<h3 id="expense-tracking">Expense Tracking</h3>
-<p><strong>Department Expenses:</strong></p>
-<pre><code>Purchase Order → Department Code → Budget Tracking
-Vendor Invoice → Department → Cost Center Posting
-</code></pre>
-<h3 id="budget-management">Budget Management</h3>
-<p><strong>Budget Allocation:</strong></p>
-<ul>
-<li>Annual budget per department</li>
-<li>Periodic budget (monthly/quarterly)</li>
-<li>Budget vs. actual tracking</li>
-<li>Variance reporting</li>
-</ul>
-<h3 id="reporting">Reporting</h3>
-<p><strong>Department Reports:</strong></p>
-<ul>
-<li>Expense by department</li>
-<li>Budget variance by department</li>
-<li>Headcount by department</li>
-<li>Performance metrics by department</li>
-</ul>
-<hr>
-<h2 id="api-endpoints">API Endpoints</h2>
-<pre><code class="language-http"># Department Management
-GET /api/finance/departments
-POST /api/finance/departments
-GET /api/finance/departments/:code
-PUT /api/finance/departments/:code
-DELETE /api/finance/departments/:code
+}</code></pre>
 
-# Department Hierarchy
-GET /api/finance/departments/hierarchy
-GET /api/finance/departments/:code/children
-GET /api/finance/departments/:code/parent
+                <h2 id="changelog">Changelog</h2>
 
-# Department Heads
-POST /api/finance/departments/:code/heads
-DELETE /api/finance/departments/:code/heads/:email
+                <h3>Version 1.1.0 (2025-01-28)</h3>
 
-# Department Budget
-GET /api/finance/departments/:code/budget
-PUT /api/finance/departments/:code/budget
+                <p><strong>Added:</strong></p>
+                <ul>
+                    <li>Enhanced user assignment interface with visual hierarchy</li>
+                    <li>Color-coded user avatars with initials</li>
+                    <li>Three-column layout with chevron button navigation</li>
+                    <li>Role and department display for each user</li>
+                    <li>Bulk selection with "Select All" functionality</li>
+                    <li>Independent search for Assigned and Available users panels</li>
+                    <li>Real-time filtering and empty state handling</li>
+                    <li>Dark mode support throughout interface</li>
+                </ul>
 
-# Department Reporting
-GET /api/finance/departments/:code/expenses
-GET /api/finance/departments/:code/budget-variance
-</code></pre>
-<hr>
-<h2 id="user-guide">User Guide</h2>
-<h3 id="creating-a-new-department">Creating a New Department</h3>
-<ol>
-<li>Navigate to Department List</li>
-<li>Click &quot;New Department&quot; button</li>
-<li>Enter department code (e.g., &quot;IT&quot;)</li>
-<li>Enter department name (e.g., &quot;Information Technology&quot;)</li>
-<li>(Optional) Enter account code</li>
-<li>Check &quot;Active&quot; if department should be active</li>
-<li>Add department head email(s):<ul>
-<li>Enter email in input field</li>
-<li>Click &quot;Add&quot; button</li>
-<li>Repeat for multiple heads</li>
-</ul>
-</li>
-<li>Click &quot;Save&quot;</li>
-</ol>
-<h3 id="editing-an-existing-department">Editing an Existing Department</h3>
-<ol>
-<li>Find department in list (use search if needed)</li>
-<li>Click Edit icon in Actions column</li>
-<li>Modify desired fields</li>
-<li>To change heads:<ul>
-<li>Click &quot;Remove&quot; next to existing heads to delete</li>
-<li>Add new heads using email input and &quot;Add&quot; button</li>
-</ul>
-</li>
-<li>Click &quot;Save&quot; to apply changes</li>
-<li>Click &quot;Cancel&quot; to discard changes</li>
-</ol>
-<h3 id="deleting-a-department">Deleting a Department</h3>
-<ol>
-<li>Find department in list</li>
-<li>Click Delete icon in Actions column</li>
-<li>Confirm deletion in dialog</li>
-<li>Department will be deleted if no dependencies exist</li>
-</ol>
-<p><strong>Note:</strong> Cannot delete departments with:</p>
-<ul>
-<li>Active transactions</li>
-<li>Assigned users</li>
-<li>Budget allocations</li>
-<li>Child departments</li>
-</ul>
-<h3 id="searching-for-departments">Searching for Departments</h3>
-<ol>
-<li>Use search box at top of page</li>
-<li>Type department code or name</li>
-<li>List filters automatically as you type</li>
-<li>Clear search to show all departments</li>
-</ol>
-<hr>
-<h2 id="troubleshooting">Troubleshooting</h2>
-<h3 id="issue-cannot-delete-department">Issue: Cannot Delete Department</h3>
-<p><strong>Cause</strong>: Department has dependencies (transactions, users, budgets)<br><strong>Solution</strong>: Deactivate department instead or reassign dependencies first</p>
-<h3 id="issue-duplicate-department-code">Issue: Duplicate Department Code</h3>
-<p><strong>Cause</strong>: Code already exists in system<br><strong>Solution</strong>: Use a different code or edit existing department</p>
-<h3 id="issue-head-email-not-saving">Issue: Head Email Not Saving</h3>
-<p><strong>Cause</strong>: Invalid email format<br><strong>Solution</strong>: Verify email format is valid (<a href="mailto:user@domain.com">user@domain.com</a>)</p>
-<h3 id="issue-department-not-appearing-in-dropdowns">Issue: Department Not Appearing in Dropdowns</h3>
-<p><strong>Cause</strong>: Department is inactive<br><strong>Solution</strong>: Edit department and set Active status to checked</p>
-<hr>
-<h2 id="best-practices">Best Practices</h2>
-<h3 id="department-design">Department Design</h3>
-<ol>
-<li><strong>Meaningful Codes</strong>: Use intuitive 2-4 character codes</li>
-<li><strong>Consistent Naming</strong>: Follow naming conventions</li>
-<li><strong>Active Management</strong>: Deactivate unused departments instead of deleting</li>
-<li><strong>Documentation</strong>: Maintain department descriptions</li>
-<li><strong>Hierarchy Planning</strong>: Plan department structure before creating</li>
-</ol>
-<h3 id="department-heads">Department Heads</h3>
-<ol>
-<li><strong>Multiple Heads</strong>: Assign backup/secondary heads for coverage</li>
-<li><strong>Email Accuracy</strong>: Verify email addresses are correct</li>
-<li><strong>Role Alignment</strong>: Ensure heads have appropriate system permissions</li>
-<li><strong>Notification Setup</strong>: Configure notifications for department heads</li>
-<li><strong>Regular Review</strong>: Review and update head assignments quarterly</li>
-</ol>
-<h3 id="account-code-integration">Account Code Integration</h3>
-<ol>
-<li><strong>Default Accounts</strong>: Set default accounts for departments</li>
-<li><strong>Expense Categories</strong>: Map common expense categories to departments</li>
-<li><strong>Budget Alignment</strong>: Align account codes with budget structure</li>
-<li><strong>GL Reconciliation</strong>: Regular reconciliation of department expenses</li>
-<li><strong>Cost Center Mapping</strong>: Map departments to GL cost centers</li>
-</ol>
-<h3 id="data-quality">Data Quality</h3>
-<ol>
-<li><strong>Regular Audit</strong>: Review department list quarterly</li>
-<li><strong>Inactive Cleanup</strong>: Deactivate unused departments</li>
-<li><strong>Head Validation</strong>: Verify department heads are current</li>
-<li><strong>Account Updates</strong>: Update account codes as GL changes</li>
-<li><strong>Budget Maintenance</strong>: Keep budget allocations current</li>
-</ol>
-<hr>
-<h2 id="reporting">Reporting</h2>
-<h3 id="available-reports">Available Reports</h3>
-<ol>
-<li><p><strong>Department List Report</strong>:</p>
-<ul>
-<li>All departments with details</li>
-<li>Active vs. inactive count</li>
-<li>Department hierarchy view</li>
-</ul>
-</li>
-<li><p><strong>Department Expense Report</strong>:</p>
-<ul>
-<li>Expenses by department</li>
-<li>Period comparison</li>
-<li>Budget variance</li>
-</ul>
-</li>
-<li><p><strong>Department Headcount Report</strong>:</p>
-<ul>
-<li>Employees by department</li>
-<li>Head assignments</li>
-<li>Staffing levels</li>
-</ul>
-</li>
-<li><p><strong>Budget vs. Actual Report</strong>:</p>
-<ul>
-<li>Department budget tracking</li>
-<li>Variance analysis</li>
-<li>Trend visualization</li>
-</ul>
-</li>
-</ol>
-<hr>
-<h2 id="implementation-notes">Implementation Notes</h2>
-<h3 id="dialog-fix">Dialog Fix</h3>
-<p>The component includes a comprehensive fix for the Radix UI Dialog pointer-events issue:</p>
-<ul>
-<li><strong>Fixed at shadcn/ui Dialog component level</strong>: Global fix applied to <code>components/ui/dialog.tsx</code></li>
-<li><strong>Dual protection mechanism</strong>: useEffect cleanup + onCloseAutoFocus with setTimeout(0)</li>
-<li><strong>Ensures proper interaction</strong>: All dialogs work correctly without blocking application interactions</li>
-<li><strong>No per-component workarounds needed</strong>: Single fix applies to all dialogs throughout the application</li>
-</ul>
-<h3 id="component-location">Component Location</h3>
-<ul>
-<li><strong>File</strong>: <code>app/(main)/finance/departments/page.tsx</code></li>
-<li><strong>Route</strong>: <code>/finance/departments</code></li>
-<li><strong>Framework</strong>: Next.js 14 App Router with React Server Components</li>
-</ul>
-<h3 id="technical-stack">Technical Stack</h3>
-<ul>
-<li>React Server Components for data fetching</li>
-<li>Client-side state management for dialog interactions</li>
-<li>shadcn/ui Dialog components for modal operations</li>
-<li>Radix UI primitives with accessibility features</li>
-<li>TypeScript for type safety</li>
-</ul>
-<hr>
-<h2 id="future-enhancements">Future Enhancements</h2>
-<p><strong>Planned Features:</strong></p>
-<ul>
-<li>Department hierarchy visualization</li>
-<li>Drag-and-drop hierarchy management</li>
-<li>Budget workflow and approvals</li>
-<li>Department dashboard with KPIs</li>
-<li>Automated head notifications</li>
-<li>Department tags/categories</li>
-<li>Custom fields per department</li>
-<li>Department templates</li>
-<li>Inter-department transfers</li>
-<li>Department consolidation tools</li>
-</ul>
-<hr>
-<p><strong>Last Updated:</strong> 2025-10-25<br><strong>Version:</strong> 1.1.0</p>
+                <p><strong>Improved:</strong></p>
+                <ul>
+                    <li>User experience for assigning users to departments</li>
+                    <li>Visual feedback for selected users</li>
+                    <li>Performance optimization with useMemo hooks</li>
+                </ul>
 
-                </article>
-            </main>
+                <p><strong>Technical:</strong></p>
+                <ul>
+                    <li>Added <code>assignedUsers</code> field to Department data model</li>
+                    <li>Created reusable UserAssignment component</li>
+                    <li>Implemented helper functions for avatar colors and user data</li>
+                </ul>
 
-            <!-- Table of Contents -->
-            
-            <aside class="doc-toc">
-                <h4><i class="fas fa-list"></i> On This Page</h4>
-                <nav id="toc-nav">
-                    <a href="#department-management" class="level-1">Department Management</a>
-<a href="#overview" class="level-2">Overview</a>
-<a href="#key-capabilities" class="level-3">Key Capabilities</a>
-<a href="#page-structure" class="level-2">Page Structure</a>
-<a href="#data-model" class="level-2">Data Model</a>
-<a href="#features-amp-functionality" class="level-2">Features &amp; Functionality</a>
-<a href="#1-department-list-view" class="level-3">1. Department List View</a>
-<a href="#2-department-creationedit-modal" class="level-3">2. Department Creation/Edit Modal</a>
-<a href="#3-search-functionality" class="level-3">3. Search Functionality</a>
-<a href="#4-department-operations" class="level-3">4. Department Operations</a>
-<a href="#business-rules" class="level-2">Business Rules</a>
-<a href="#department-validation" class="level-3">Department Validation</a>
-<a href="#department-configuration" class="level-3">Department Configuration</a>
-<a href="#hierarchy-rules-if-implemented" class="level-3">Hierarchy Rules (If Implemented)</a>
-<a href="#integration-points" class="level-2">Integration Points</a>
-<a href="#account-code-mapping" class="level-3">Account Code Mapping</a>
-<a href="#user-management" class="level-3">User Management</a>
-<a href="#expense-tracking" class="level-3">Expense Tracking</a>
-<a href="#budget-management" class="level-3">Budget Management</a>
-<a href="#reporting" class="level-3">Reporting</a>
-<a href="#api-endpoints" class="level-2">API Endpoints</a>
-<a href="#user-guide" class="level-2">User Guide</a>
-<a href="#creating-a-new-department" class="level-3">Creating a New Department</a>
-<a href="#editing-an-existing-department" class="level-3">Editing an Existing Department</a>
-<a href="#deleting-a-department" class="level-3">Deleting a Department</a>
-<a href="#searching-for-departments" class="level-3">Searching for Departments</a>
-<a href="#troubleshooting" class="level-2">Troubleshooting</a>
-<a href="#issue-cannot-delete-department" class="level-3">Issue: Cannot Delete Department</a>
-<a href="#issue-duplicate-department-code" class="level-3">Issue: Duplicate Department Code</a>
-<a href="#issue-head-email-not-saving" class="level-3">Issue: Head Email Not Saving</a>
-<a href="#issue-department-not-appearing-in-dropdowns" class="level-3">Issue: Department Not Appearing in Dropdowns</a>
-<a href="#best-practices" class="level-2">Best Practices</a>
-<a href="#department-design" class="level-3">Department Design</a>
-<a href="#department-heads" class="level-3">Department Heads</a>
-<a href="#account-code-integration" class="level-3">Account Code Integration</a>
-<a href="#data-quality" class="level-3">Data Quality</a>
-<a href="#reporting" class="level-2">Reporting</a>
-<a href="#available-reports" class="level-3">Available Reports</a>
-<a href="#implementation-notes" class="level-2">Implementation Notes</a>
-<a href="#dialog-fix" class="level-3">Dialog Fix</a>
-<a href="#component-location" class="level-3">Component Location</a>
-<a href="#technical-stack" class="level-3">Technical Stack</a>
-<a href="#future-enhancements" class="level-2">Future Enhancements</a>
-                </nav>
+                <h3>Version 1.0.0 (2025-01-17)</h3>
+                <ul>
+                    <li>Initial Department Management implementation</li>
+                    <li>CRUD operations for departments</li>
+                    <li>Department head assignment</li>
+                    <li>Account code linking</li>
+                    <li>Status management</li>
+                </ul>
+
+                <hr style="margin: 2rem 0; border: none; border-top: 1px solid var(--border);">
+
+                <p style="color: var(--text-secondary); font-size: 0.875rem;">
+                    <strong>Last Updated:</strong> 2025-01-28<br>
+                    <strong>Version:</strong> 1.1.0
+                </p>
+            </div>
+
+            <aside class="toc-sidebar">
+                <div class="toc-sticky">
+                    <div class="toc-title">On This Page</div>
+                    <ul class="toc-list">
+                        <li class="toc-h2"><a href="#overview">Overview</a></li>
+                        <li class="toc-h3"><a href="#key-capabilities">Key Capabilities</a></li>
+                        <li class="toc-h2"><a href="#page-structure">Page Structure</a></li>
+                        <li class="toc-h2"><a href="#data-model">Data Model</a></li>
+                        <li class="toc-h2"><a href="#features-functionality">Features & Functionality</a></li>
+                        <li class="toc-h3"><a href="#department-list">Department List View</a></li>
+                        <li class="toc-h3"><a href="#department-form">Department Form</a></li>
+                        <li class="toc-h3"><a href="#user-assignment-interface">User Assignment Interface</a></li>
+                        <li class="toc-h2"><a href="#technical-implementation">Technical Implementation</a></li>
+                        <li class="toc-h3"><a href="#components">Components</a></li>
+                        <li class="toc-h3"><a href="#api-integration">API Integration</a></li>
+                        <li class="toc-h2"><a href="#changelog">Changelog</a></li>
+                    </ul>
+                </div>
             </aside>
-            
         </div>
     </div>
-
-    <!-- Search Modal -->
-    <div class="search-modal" id="searchModal">
-        <div class="search-modal-content">
-            <div class="search-modal-header">
-                <div class="search-input-wrapper">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="searchModalInput" placeholder="Search documentation..." autofocus>
-                    <button class="search-close-btn" id="searchCloseBtn">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="search-results" id="searchResults">
-                <div class="search-empty">
-                    <i class="fas fa-search"></i>
-                    <p>Start typing to search...</p>
-                </div>
-            </div>
-            <div class="search-footer">
-                <div class="search-shortcuts">
-                    <kbd>↑↓</kbd> Navigate
-                    <kbd>Enter</kbd> Select
-                    <kbd>Esc</kbd> Close
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <script>
-        // Initialize Mermaid
-        mermaid.initialize({
-            startOnLoad: true,
-            theme: 'default',
-            securityLevel: 'loose',
-            flowchart: {
-                useMaxWidth: true,
-                htmlLabels: true,
-                curve: 'basis'
-            }
-        });
-
-        // Highlight code blocks
-        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
-            hljs.highlightElement(block);
-        });
-
-        // Navigation - Collapsible groups
-        document.querySelectorAll('.nav-group-header').forEach(header => {
-            header.addEventListener('click', () => {
-                const group = header.parentElement;
-                group.classList.toggle('collapsed');
-            });
-        });
-
-        // Expand active group
-        const activeNavItem = document.querySelector('.nav-item.active');
-        if (activeNavItem) {
-            const activeGroup = activeNavItem.closest('.nav-group');
-            if (activeGroup) {
-                activeGroup.classList.remove('collapsed');
-            }
-        }
-
-        // Table of Contents - Active state on scroll
-        const tocLinks = document.querySelectorAll('#toc-nav a');
-        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
-
-        function updateActiveLink() {
-            let current = '';
-            headings.forEach(heading => {
-                const rect = heading.getBoundingClientRect();
-                if (rect.top <= 150) {
-                    current = heading.id;
-                }
-            });
-
-            tocLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === '#' + current) {
-                    link.classList.add('active');
-                }
-            });
-        }
-
-        if (tocLinks.length > 0) {
-            window.addEventListener('scroll', updateActiveLink);
-            updateActiveLink();
-        }
-
-        // Smooth scroll for TOC links
-        tocLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const targetId = link.getAttribute('href').substring(1);
-                const target = document.getElementById(targetId);
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
-
-        // Search functionality
-        let searchIndex = [];
-        let selectedResultIndex = -1;
-
-        // Load search index
-        fetch('../../../../search-index.json')
-            .then(res => res.json())
-            .then(data => {
-                searchIndex = data;
-                console.log('✓ Search index loaded:', searchIndex.length, 'entries');
-            })
-            .catch(err => console.error('❌ Failed to load search index:', err));
-
-        // Open search modal
-        function openSearchModal() {
-            console.log('🔍 Opening search modal...');
-            document.getElementById('searchModal').classList.add('active');
-            document.getElementById('searchModalInput').focus();
-            selectedResultIndex = -1;
-        }
-
-        // Close search modal
-        function closeSearchModal() {
-            document.getElementById('searchModal').classList.remove('active');
-            document.getElementById('searchModalInput').value = '';
-            document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-search"></i><p>Start typing to search...</p></div>';
-            selectedResultIndex = -1;
-        }
-
-        // Search function
-        function performSearch(query) {
-            console.log('🔎 Searching for:', query);
-
-            if (!query || query.length < 2) {
-                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-search"></i><p>Start typing to search...</p></div>';
-                return;
-            }
-
-            if (searchIndex.length === 0) {
-                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-exclamation-circle"></i><p>Search index not loaded</p></div>';
-                return;
-            }
-
-            const queryLower = query.toLowerCase();
-            const queryWords = queryLower.split(/s+/).filter(word => word.length > 1);
-
-            // Search and score results
-            const results = searchIndex
-                .map(entry => {
-                    let score = 0;
-
-                    // Title match (highest weight)
-                    if (entry.title.toLowerCase().includes(queryLower)) {
-                        score += 100;
-                    }
-                    queryWords.forEach(word => {
-                        if (entry.title.toLowerCase().includes(word)) score += 50;
-                    });
-
-                    // Content match
-                    if (entry.content.toLowerCase().includes(queryLower)) {
-                        score += 10;
-                    }
-                    queryWords.forEach(word => {
-                        if (entry.content.toLowerCase().includes(word)) score += 5;
-                    });
-
-                    return { ...entry, score };
-                })
-                .filter(result => result.score > 0)
-                .sort((a, b) => b.score - a.score)
-                .slice(0, 10); // Top 10 results
-
-            console.log('📊 Found', results.length, 'results');
-
-            // Display results
-            if (results.length === 0) {
-                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-times-circle"></i><p>No results found</p></div>';
-                return;
-            }
-
-            const resultsHtml = results.map((result, index) => {
-                const urlPath = '../../../../' + result.url;
-                return '<a href="' + urlPath + '" class="search-result ' + (index === 0 ? 'selected' : '') + '" data-index="' + index + '">' +
-                    '<div class="result-title">' + result.title + '</div>' +
-                    '<div class="result-content">' + highlightMatch(result.content, query) + '</div>' +
-                    '</a>';
-            }).join('');
-
-            document.getElementById('searchResults').innerHTML = resultsHtml;
-            selectedResultIndex = 0;
-        }
-
-        // Highlight matching text
-        function highlightMatch(text, query) {
-            if (!text) return '';
-            const queryWords = query.split(/\s+/).join('|');
-            const regex = new RegExp('(' + queryWords + ')', 'gi');
-            return text.substring(0, 150).replace(regex, '<mark>$1</mark>') + '...';
-        }
-
-        // Navigate results with keyboard
-        function navigateResults(direction) {
-            const results = document.querySelectorAll('.search-result');
-            if (results.length === 0) return;
-
-            results[selectedResultIndex]?.classList.remove('selected');
-
-            if (direction === 'down') {
-                selectedResultIndex = (selectedResultIndex + 1) % results.length;
-            } else if (direction === 'up') {
-                selectedResultIndex = (selectedResultIndex - 1 + results.length) % results.length;
-            }
-
-            results[selectedResultIndex]?.classList.add('selected');
-            results[selectedResultIndex]?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-        }
-
-        // Select result
-        function selectResult() {
-            const selected = document.querySelector('.search-result.selected');
-            if (selected) {
-                window.location.href = selected.href;
-            }
-        }
-
-        // Event listeners
-        document.getElementById('headerSearchBtn')?.addEventListener('click', openSearchModal);
-        document.getElementById('searchCloseBtn')?.addEventListener('click', closeSearchModal);
-
-        // Keyboard shortcuts
-        document.addEventListener('keydown', (e) => {
-            // Ctrl+K or Cmd+K to open search
-            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-                e.preventDefault();
-                openSearchModal();
-            }
-
-            // Esc to close search
-            if (e.key === 'Escape' && document.getElementById('searchModal').classList.contains('active')) {
-                closeSearchModal();
-            }
-
-            // Navigate results
-            if (document.getElementById('searchModal').classList.contains('active')) {
-                if (e.key === 'ArrowDown') {
-                    e.preventDefault();
-                    navigateResults('down');
-                } else if (e.key === 'ArrowUp') {
-                    e.preventDefault();
-                    navigateResults('up');
-                } else if (e.key === 'Enter') {
-                    e.preventDefault();
-                    selectResult();
-                }
-            }
-        });
-
-        // Search input
-        document.getElementById('searchModalInput')?.addEventListener('input', (e) => {
-            performSearch(e.target.value);
-        });
-
-        // Click outside to close
-        document.getElementById('searchModal')?.addEventListener('click', (e) => {
-            if (e.target.id === 'searchModal') {
-                closeSearchModal();
-            }
-        });
-    </script>
 </body>
 </html>
