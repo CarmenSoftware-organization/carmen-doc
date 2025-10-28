@@ -14,9 +14,10 @@ Department Management provides organizational structure configuration for Carmen
 
 1. **Department CRUD** - Create, edit, and manage departments
 2. **Head of Department** - Assign multiple department heads
-3. **Account Code Linking** - Link departments to default GL accounts
-4. **Active Status Management** - Enable/disable departments
-5. **Search & Filter** - Quick department lookup
+3. **User Assignment** - Assign users to departments with enhanced interface
+4. **Account Code Linking** - Link departments to default GL accounts
+5. **Active Status Management** - Enable/disable departments
+6. **Search & Filter** - Quick department lookup
 
 ---
 
@@ -36,6 +37,9 @@ interface Department {
 
   // Leadership
   heads: string[]; // Array of email addresses for department heads
+
+  // User Assignment
+  assignedUsers?: string[]; // Array of user IDs assigned to this department
 
   // Financial
   accountCode: string; // Default GL account code for department expenses
@@ -110,7 +114,7 @@ const departments: Department[] = [
 - Responsive table design
 - Badge styling for codes
 
-### 2. Department Creation/Edit Modal
+### 2. Department Creation/Edit Form
 
 **Form Fields:**
 
@@ -126,10 +130,75 @@ const departments: Department[] = [
 - Remove existing head (Remove button per entry)
 - Multiple heads supported
 
-**Modal Actions:**
+**User Assignment:**
+- Enhanced dual-panel interface for assigning users to department
+- Visual hierarchy showing user avatar, name, role, and current departments
+- Three-column layout with chevron buttons for assignment/removal
+- Search and filter capabilities
+- Select All functionality for bulk operations
+
+**Form Actions:**
 - Save: Create or update department
 - Cancel: Close without saving
-- X button: Close modal
+
+### 2.1. Enhanced User Assignment Interface
+
+**Overview:**
+The department edit form includes an enhanced user assignment component that provides a visual, intuitive way to manage which users are assigned to each department.
+
+**Interface Layout:**
+```
+┌────────────────────────────────────────────────────┐
+│  Assigned Users        [<] [>]    Available Users  │
+│  ┌─────────────────┐           ┌─────────────────┐│
+│  │ 🔵 John Smith   │           │ 🟢 Jane Doe     ││
+│  │ 📋 Manager      │           │ 📋 Staff        ││
+│  │ 🏢 Finance      │           │ 🏢 Operations   ││
+│  └─────────────────┘           └─────────────────┘│
+└────────────────────────────────────────────────────┘
+```
+
+**Key Features:**
+
+1. **Visual Hierarchy:**
+   - **Color-coded avatar**: Shows user initials on colored background (7 color variations)
+   - **Name**: Prominent display of user's full name
+   - **Role/Position**: Secondary display with briefcase icon
+   - **Department**: Current department assignment with building icon
+   - **Additional departments**: Badge display for users in multiple departments
+
+2. **Three-Column Layout:**
+   - **Left Panel**: "Assigned Users" - Users currently assigned to this department
+   - **Center**: Action buttons with chevron icons
+   - **Right Panel**: "Available Users" - Users not yet assigned to this department
+
+3. **Assignment Actions:**
+   - **ChevronLeft (←)**: Move selected users from Available to Assigned
+   - **ChevronRight (→)**: Remove selected users from Assigned to Available
+   - **Buttons disabled** when no users are selected
+
+4. **Search & Filter:**
+   - Search by user name or email in both panels
+   - Real-time filtering as you type
+   - Independent search for each panel
+
+5. **Bulk Selection:**
+   - **Select All checkbox** in each panel header
+   - Select individual users with checkboxes
+   - Visual feedback for selected users (blue highlight)
+
+6. **Panel Features:**
+   - Equal height panels (384px) with scrolling
+   - Empty state messages when no data
+   - User count display
+   - Hover states for better UX
+
+**User Experience:**
+1. Search for users in either panel
+2. Select one or more users using checkboxes
+3. Use Select All to select all visible users
+4. Click chevron button to assign/remove selected users
+5. Changes saved when form is submitted
 
 ### 3. Search Functionality
 
@@ -151,13 +220,15 @@ const departments: Department[] = [
 4. Add account code (optional)
 5. Set active status
 6. Add department head(s)
-7. Save
+7. Assign users (optional)
+8. Save
 
 **Edit Department:**
 1. Click Edit icon in Actions column
 2. Modify fields as needed
 3. Add/remove department heads
-4. Save changes
+4. Assign/remove users
+5. Save changes
 
 **Delete Department:**
 1. Click Delete icon in Actions column
@@ -289,7 +360,8 @@ GET /api/finance/departments/:code/budget-variance
    - Enter email in input field
    - Click "Add" button
    - Repeat for multiple heads
-8. Click "Save"
+8. (Optional) Assign users to department
+9. Click "Save"
 
 ### Editing an Existing Department
 
@@ -299,8 +371,12 @@ GET /api/finance/departments/:code/budget-variance
 4. To change heads:
    - Click "Remove" next to existing heads to delete
    - Add new heads using email input and "Add" button
-5. Click "Save" to apply changes
-6. Click "Cancel" to discard changes
+5. To assign/remove users:
+   - Use the enhanced user assignment interface
+   - Search for users
+   - Select users and use chevron buttons
+6. Click "Save" to apply changes
+7. Click "Cancel" to discard changes
 
 ### Deleting a Department
 
@@ -406,6 +482,62 @@ GET /api/finance/departments/:code/budget-variance
 
 ---
 
+## Technical Implementation
+
+### Components
+
+**User Assignment Component** (`user-assignment.tsx`):
+- Reusable component for department-user relationships
+- Props:
+  - `assignedUserIds: string[]` - Currently assigned user IDs
+  - `onAssignedUsersChange: (userIds: string[]) => void` - Callback for changes
+- Features:
+  - Dual-panel layout with independent search
+  - Visual user cards with avatar, role, and department
+  - Bulk selection and assignment
+  - Real-time filtering
+  - Dark mode support
+
+**Helper Functions**:
+```typescript
+getUserInitials(name: string): string // Returns user initials for avatar
+getAvatarColor(userId: string): string // Returns consistent color class
+getUserDepartments(userId: string): Department[] // Gets user's departments
+```
+
+**State Management**:
+- Local state for search queries and selections
+- useMemo hooks for filtering performance
+- Optimized re-rendering with proper dependency arrays
+
+### API Integration
+
+**Department User Assignment:**
+```http
+PUT /api/finance/departments/:code
+Body: {
+  code: string
+  name: string
+  assignedUsers: string[]
+  ...
+}
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "data": {
+    "code": "IT",
+    "name": "Information Technology",
+    "assignedUsers": ["user-001", "user-002"],
+    ...
+  }
+}
+```
+
+---
+
 ## Implementation Notes
 
 ### Dialog Fix
@@ -445,5 +577,31 @@ The component includes a comprehensive fix for the Radix UI Dialog pointer-event
 
 ---
 
-**Last Updated:** 2025-10-25
+## Changelog
+
+### Version 1.1.0 (2025-01-28)
+
+**Added:**
+- Enhanced user assignment interface with visual hierarchy
+- Color-coded user avatars with initials
+- Three-column layout with chevron button navigation
+- Role and department display for each user
+- Bulk selection with "Select All" functionality
+- Independent search for Assigned and Available users panels
+- Real-time filtering and empty state handling
+- Dark mode support throughout interface
+
+**Improved:**
+- User experience for assigning users to departments
+- Visual feedback for selected users
+- Performance optimization with useMemo hooks
+
+**Technical:**
+- Added `assignedUsers` field to Department data model
+- Created reusable UserAssignment component
+- Implemented helper functions for avatar colors and user data
+
+---
+
+**Last Updated:** 2025-01-28
 **Version:** 1.1.0
