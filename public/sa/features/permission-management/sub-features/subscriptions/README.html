@@ -1,0 +1,1982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscriptions Management - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: #f8fafc;
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 15% 70% 15%;
+            gap: 0;
+            width: 100%;
+            padding: 1rem 0 2rem 0;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 1rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 2rem);
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-right: 1px solid var(--border-color);
+            padding-right: 2rem;
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 0.75rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+        .nav-subgroup {
+            margin: 0.5rem 0 0.5rem 0.5rem;
+        }
+        .nav-subgroup-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-subgroup-header:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .nav-subitems {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+            margin-left: 0.75rem;
+            margin-top: 0.25rem;
+        }
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 1rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 2rem);
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-left: 1px solid var(--border-color);
+            padding-left: 2rem;
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header - Modern Compact Design */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 52px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+        }
+        .header-content {
+            height: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--foreground);
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+        .logo:hover {
+            opacity: 0.8;
+        }
+        .logo i {
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+        .header-search-container {
+            display: flex;
+            align-items: center;
+        }
+        .header-search-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.375rem 0.75rem;
+            background: var(--secondary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.8125rem;
+            color: var(--muted-foreground);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            min-width: 180px;
+            flex-shrink: 0;
+        }
+        .header-search-btn:hover {
+            background: var(--background);
+            border-color: var(--primary);
+        }
+        .header-search-btn i {
+            color: var(--muted-foreground);
+            font-size: 0.875rem;
+        }
+        .header-search-btn span {
+            flex: 1;
+            text-align: left;
+        }
+        .header-search-btn kbd {
+            padding: 0.125rem 0.375rem;
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.6875rem;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--muted-foreground);
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        .back-to-home {
+            display: none; /* Hidden - navigation is sufficient */
+        }
+
+        /* Responsive Header */
+        @media (max-width: 768px) {
+            .header-search-btn {
+                min-width: auto;
+            }
+            .header-search-btn span {
+                display: none;
+            }
+        }
+
+        /* Search Modal */
+        .search-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            padding: 2rem;
+        }
+        .search-modal.active {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 10vh;
+        }
+        .search-modal-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 640px;
+            max-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            animation: slideDown 0.2s ease-out;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .search-modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .search-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .search-input-wrapper i {
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+        }
+        .search-input-wrapper input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 1.125rem;
+            color: var(--text-primary);
+        }
+        .search-close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .search-close-btn:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .search-results {
+            overflow-y: auto;
+            max-height: calc(70vh - 150px);
+        }
+        .search-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 2rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+        .search-empty i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        .search-result {
+            display: block;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+        .search-result:hover,
+        .search-result.selected {
+            background: var(--bg-secondary);
+        }
+        .search-result.selected {
+            border-left: 3px solid var(--primary-color);
+        }
+        .result-header {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .result-category {
+            font-size: 0.75rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .result-title {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        .result-badge {
+            display: inline-block;
+            padding: 0.125rem 0.5rem;
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-radius: 4px;
+            font-size: 0.6875rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        .result-content {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        .result-content mark {
+            background: rgba(79, 70, 229, 0.2);
+            color: var(--primary-color);
+            font-weight: 600;
+            padding: 0.125rem 0.25rem;
+            border-radius: 2px;
+        }
+        .search-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            border-bottom-left-radius: var(--border-radius-xl);
+            border-bottom-right-radius: var(--border-radius-xl);
+        }
+        .search-shortcuts {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        .search-shortcuts kbd {
+            padding: 0.25rem 0.5rem;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        /* Content Area */
+        .doc-content {
+            padding: 0 2rem;
+            width: 100%;
+            max-width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 0.9375rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Image Styles */
+        .doc-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 1.5rem auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Limit screenshot width to 80% for better readability */
+        .doc-content p > img {
+            max-width: 80%;
+        }
+
+        /* Table Styles */
+        .doc-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.875rem;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .doc-content table thead {
+            background: #f8fafc;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .doc-content table th {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #0f172a;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        .doc-content table td {
+            padding: 0.75rem 1rem;
+            border-top: 1px solid #e2e8f0;
+            color: #334155;
+        }
+
+        .doc-content table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        /* Table responsive wrapper */
+        .doc-content table {
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .doc-content table thead,
+        .doc-content table tbody,
+        .doc-content table tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 18% 64% 18%;
+                gap: 0;
+                padding: 1rem 0 1.5rem 0;
+            }
+            .doc-nav {
+                padding-right: 1.5rem;
+            }
+            .doc-toc {
+                padding-left: 1.5rem;
+            }
+            .doc-content {
+                padding: 0 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 0;
+                padding: 1rem 0 1.5rem 0;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 0 2rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                gap: 0;
+                padding: 0.5rem 0 1rem 0;
+            }
+            .doc-nav {
+                display: none;
+                border-right: none;
+            }
+            .doc-content {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="../../../../../index.html" class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </a>
+            <div class="doc-header-actions">
+                <div class="header-search-container">
+                    <button class="header-search-btn" id="headerSearchBtn">
+                        <i class="fas fa-search"></i>
+                        <span>Search documentation...</span>
+                        <kbd>Ctrl+K</kbd>
+                    </button>
+                </div>
+                <a href="../../../../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../../../01-overview/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Index</span>
+                    </a>
+                    <a href="../../../../../01-overview/business-value.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value & ROI</span>
+                    </a>
+                    <a href="../../../../../01-overview/tech-stack.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Technology Stack</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../../../02-architecture/system-architecture.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-database"></i>
+                    <span>Data Model</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../../../03-data-model/data-dictionary.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Data Dictionary</span>
+                    </a>
+                    <a href="../../../../../03-data-model/schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-th-large"></i>
+                    <span>Application Modules</span>
+                </div>
+                <div class="nav-items">
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Procurement</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../../../04-modules/procurement/purchase-requests/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Purchase Requests</span>
+                            </a>
+                            <a href="../../../../../04-modules/procurement/purchase-orders/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Purchase Orders</span>
+                            </a>
+                            <a href="../../../../../04-modules/procurement/goods-received-notes/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Goods Received Notes</span>
+                            </a>
+                            <a href="../../../../../04-modules/procurement/credit-notes/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Credit Notes</span>
+                            </a>
+                            <a href="../../../../../04-modules/procurement/templates/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Templates</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-boxes"></i>
+                            <span>Inventory Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../../../04-modules/inventory/stock-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Stock Management</span>
+                            </a>
+                            <a href="../../../../../04-modules/inventory/physical-count/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Physical Count</span>
+                            </a>
+                            <a href="../../../../../04-modules/inventory/spot-check/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Spot Check</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span>Finance</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../../../04-modules/finance/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Finance Module</span>
+                            </a>
+                            <a href="../../../../../04-modules/finance/features/account-code-mapping/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Account Code Mapping</span>
+                            </a>
+                            <a href="../../../../../04-modules/finance/features/currency-and-rates/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Currency Management</span>
+                            </a>
+                            <a href="../../../../../04-modules/finance/features/departments/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Departments</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-handshake"></i>
+                            <span>Vendor Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../../../04-modules/vendor-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Management</span>
+                            </a>
+                            <a href="../../../../../04-modules/vendor-management/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Management Module</span>
+                            </a>
+                            <a href="../../../../../04-modules/vendor-management/MANAGE-VENDORS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Manage Vendors</span>
+                            </a>
+                            <a href="../../../../../04-modules/vendor-management/VENDOR-PORTAL.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Portal</span>
+                            </a>
+                            <a href="../../../../../04-modules/vendor-management/CAMPAIGNS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Campaigns</span>
+                            </a>
+                            <a href="../../../../../04-modules/vendor-management/PRICELISTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Pricelists</span>
+                            </a>
+                            <a href="../../../../../04-modules/vendor-management/TEMPLATES.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Templates</span>
+                            </a>
+                            <a href="../../../../../04-modules/vendor-management/sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Sitemap</span>
+                            </a>
+                            <a href="../../../../../04-modules/vendor-management/PAGES-AND-COMPONENTS-SPEC.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Pages & Components Spec</span>
+                            </a>
+                            <a href="../../../../../04-modules/vendor-management/SHARED-COMPONENTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Shared Components</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-box"></i>
+                            <span>Product Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../../../04-modules/product-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management</span>
+                            </a>
+                            <a href="../../../../../04-modules/product-management/product-management-specification.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management Specification</span>
+                            </a>
+                            <a href="../../../../../04-modules/product-management/product-management-sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management Sitemap</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-store"></i>
+                            <span>Store Operations</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../../../store-ops/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Operations</span>
+                            </a>
+                            <a href="../../../../../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Operations Module</span>
+                            </a>
+                            <a href="../../../../../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Requisitions</span>
+                            </a>
+                            <a href="../../../../../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Stock Replenishment</span>
+                            </a>
+                            <a href="../../../../../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Wastage Reporting</span>
+                            </a>
+                            <a href="../../../../../store-ops/SHARED-COMPONENTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Shared Components</span>
+                            </a>
+                            <a href="../../../../../store-ops/GLOSSARY.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Glossary</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-clipboard-list"></i>
+                            <span>Operational Planning</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../../../operational-planning/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Operational Planning</span>
+                            </a>
+                            <a href="../../../../../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Operational Planning Module</span>
+                            </a>
+                            <a href="../../../../../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Recipe Management</span>
+                            </a>
+                            <a href="../../../../../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Menu Engineering</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-cog"></i>
+                            <span>System Administration</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../../../sa/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>System Administration</span>
+                            </a>
+                            <a href="../../../../../sa/system-administration-sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>System Administration Sitemap</span>
+                            </a>
+                            <a href="../../../../../sa/features/permission-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Permission Management</span>
+                            </a>
+                            <a href="../../../../../sa/features/permission-management/specification.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Permission Specification</span>
+                            </a>
+                            <a href="../../../../../sa/features/location-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Location Management</span>
+                            </a>
+                            <a href="../../../../../sa/features/workflow/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Workflow</span>
+                            </a>
+                            <a href="../../../../../sa/features/pos-integration/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Reporting</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../../../04-modules/reporting/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Reporting & Analytics</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../../../dashboard/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard</span>
+                            </a>
+                            <a href="../../../../../dashboard/sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard Sitemap</span>
+                            </a>
+                            <a href="../../../../../dashboard/components/components-overview.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Components Overview</span>
+                            </a>
+                            <a href="../../../../../dashboard/api/api-specifications.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>API Specifications</span>
+                            </a>
+                            <a href="../../../../../dashboard/business-logic/dashboard-business-rules.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard Business Rules</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-industry"></i>
+                            <span>Production</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../../../04-modules/production/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Production</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-cash-register"></i>
+                            <span>POS Integration</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../../../pos-integration/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration</span>
+                            </a>
+                            <a href="../../../../../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration Module</span>
+                            </a>
+                            <a href="../../../../../pos-integration/MAPPING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Mapping</span>
+                            </a>
+                            <a href="../../../../../pos-integration/REPORTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Reports</span>
+                            </a>
+                            <a href="../../../../../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Transactions</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="subscriptions-management">Subscriptions Management</h1>
+<blockquote>
+<p><strong>Feature:</strong> Permission Management &gt; Subscriptions<br><strong>Pages:</strong> 2<br><strong>Status:</strong> ✅ Production Ready</p>
+</blockquote>
+<hr>
+<h2 id="overview">Overview</h2>
+<p>The Subscriptions Management sub-feature provides comprehensive control over Carmen ERP subscription packages, feature activation, resource limits, billing information, and usage analytics. This system enables organizations to manage their subscription tier, activate/deactivate specific features, monitor resource usage, and handle billing seamlessly.</p>
+<h3 id="key-features">Key Features</h3>
+<ol>
+<li><strong>Package Management</strong> - Compare and switch between subscription tiers</li>
+<li><strong>Resource Activation</strong> - Enable/disable individual features within subscription limits</li>
+<li><strong>Usage Monitoring</strong> - Real-time tracking of resource consumption</li>
+<li><strong>Billing Management</strong> - Payment methods, invoices, and billing information</li>
+<li><strong>Usage Analytics</strong> - Historical usage data and trend analysis</li>
+<li><strong>Limit Enforcement</strong> - Automatic feature gating based on subscription limits</li>
+</ol>
+<hr>
+<h2 id="page-structure">Page Structure</h2>
+<h3 id="1-subscription-management-main-page">1. Subscription Management Main Page</h3>
+<p><strong>Route:</strong> <code>/system-administration/permission-management/subscription</code></p>
+<h4>Layout</h4>
+<p>The page uses a tabbed interface with 4 main sections:</p>
+<ul>
+<li>Packages</li>
+<li>Resources</li>
+<li>Billing</li>
+<li>Analytics</li>
+</ul>
+<h4>Tab 1: Packages</h4>
+<p><strong>Purpose</strong>: Compare subscription tiers and manage package selection</p>
+<p><strong>Components</strong>:</p>
+<ul>
+<li><p><strong>Current Subscription Card</strong></p>
+<ul>
+<li>Package name and tier</li>
+<li>Billing cycle (monthly/annual)</li>
+<li>Renewal date</li>
+<li>Status badge</li>
+<li>Usage summary</li>
+</ul>
+</li>
+<li><p><strong>Package Comparison Grid</strong></p>
+<ul>
+<li>3-4 package cards (Starter, Professional, Enterprise, Custom)</li>
+<li>Feature comparison matrix</li>
+<li>Pricing information</li>
+<li>Highlight differences from current plan</li>
+</ul>
+</li>
+<li><p><strong>Package Selector</strong></p>
+<ul>
+<li>Interactive package cards</li>
+<li>Feature lists with checkmarks</li>
+<li>&quot;Upgrade&quot; / &quot;Downgrade&quot; buttons</li>
+<li>Custom package inquiry option</li>
+</ul>
+</li>
+</ul>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Side-by-side package comparison</li>
+<li>Upgrade/downgrade flows</li>
+<li>Proration calculation</li>
+<li>Trial period information</li>
+<li>Contact sales for custom plans</li>
+</ul>
+<p><strong>User Actions</strong>:</p>
+<ul>
+<li>View package details</li>
+<li>Compare features</li>
+<li>Upgrade to higher tier</li>
+<li>Downgrade to lower tier (with confirmation)</li>
+<li>Request custom quote</li>
+<li>View pricing details</li>
+</ul>
+<p><strong>Package Tiers</strong>:</p>
+<pre><code class="language-typescript">interface Package {
+  type: &#39;starter&#39; | &#39;professional&#39; | &#39;enterprise&#39; | &#39;custom&#39;;
+  name: string;
+  price: {
+    monthly: number;
+    annual: number;
+    currency: string;
+  };
+  limits: {
+    users: number;
+    locations: number;
+    storage: number; // GB
+    apiCalls: number; // per month
+    transactions: number; // per month
+  };
+  features: string[];
+  support: {
+    level: string;
+    responseTime: string;
+    channels: string[];
+  };
+  highlighted?: boolean; // Recommended
+}
+</code></pre>
+<p><strong>Example Packages</strong>:</p>
+<p><strong>Starter</strong>:</p>
+<ul>
+<li>Up to 10 users</li>
+<li>2 locations</li>
+<li>50 GB storage</li>
+<li>10,000 API calls/month</li>
+<li>Basic features</li>
+<li>Email support</li>
+<li>$99/month or $950/year</li>
+</ul>
+<p><strong>Professional</strong>:</p>
+<ul>
+<li>Up to 50 users</li>
+<li>10 locations</li>
+<li>500 GB storage</li>
+<li>100,000 API calls/month</li>
+<li>Advanced features</li>
+<li>Priority support</li>
+<li>$499/month or $4,800/year</li>
+</ul>
+<p><strong>Enterprise</strong>:</p>
+<ul>
+<li>Unlimited users</li>
+<li>Unlimited locations</li>
+<li>5 TB storage</li>
+<li>1M API calls/month</li>
+<li>All features</li>
+<li>24/7 dedicated support</li>
+<li>Custom pricing</li>
+</ul>
+<h4>Tab 2: Resources</h4>
+<p><strong>Purpose</strong>: Manage feature activation and resource limits</p>
+<p><strong>Components</strong>:</p>
+<ul>
+<li><p><strong>Resource Categories</strong></p>
+<ul>
+<li>Core Features</li>
+<li>Advanced Features</li>
+<li>Integrations</li>
+<li>Add-ons</li>
+</ul>
+</li>
+<li><p><strong>Resource Activation Cards</strong></p>
+<ul>
+<li>Feature name and description</li>
+<li>Toggle switch (enabled/disabled)</li>
+<li>Usage indicator</li>
+<li>Limit settings (if applicable)</li>
+<li>Availability in current package</li>
+</ul>
+</li>
+<li><p><strong>Resource Limits Configuration</strong></p>
+<ul>
+<li>User limit slider</li>
+<li>Storage limit slider</li>
+<li>API call limit input</li>
+<li>Transaction limit input</li>
+<li>Custom limits (if allowed)</li>
+</ul>
+</li>
+<li><p><strong>Usage Overview</strong></p>
+<ul>
+<li>Current usage vs. limits</li>
+<li>Progress bars for each resource</li>
+<li>Warning indicators (approaching limit)</li>
+<li>Upgrade prompts (if over limit)</li>
+</ul>
+</li>
+</ul>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Enable/disable individual features</li>
+<li>Adjust resource limits (within package constraints)</li>
+<li>View feature dependencies</li>
+<li>Monitor real-time usage</li>
+<li>Upgrade prompts for premium features</li>
+</ul>
+<p><strong>User Actions</strong>:</p>
+<ul>
+<li>Toggle feature on/off</li>
+<li>Adjust limits (if package allows)</li>
+<li>View feature documentation</li>
+<li>Check feature dependencies</li>
+<li>Request limit increase</li>
+</ul>
+<p><strong>Resource Types</strong>:</p>
+<pre><code class="language-typescript">interface Resource {
+  id: string;
+  name: string;
+  description: string;
+  category: &#39;core&#39; | &#39;advanced&#39; | &#39;integration&#39; | &#39;addon&#39;;
+  enabled: boolean;
+  availableIn: PackageType[];
+  limits?: {
+    type: &#39;users&#39; | &#39;storage&#39; | &#39;api_calls&#39; | &#39;custom&#39;;
+    current: number;
+    max: number;
+    unit: string;
+  };
+  dependencies?: string[]; // Other resource IDs
+}
+</code></pre>
+<p><strong>Example Resources</strong>:</p>
+<ul>
+<li><strong>Core</strong>: User Management, Inventory Management, Purchase Requests</li>
+<li><strong>Advanced</strong>: ABAC Policies, Workflow Automation, Advanced Analytics</li>
+<li><strong>Integrations</strong>: POS Integration, Accounting Software, Payment Gateways</li>
+<li><strong>Add-ons</strong>: Mobile App, API Access, Custom Reports</li>
+</ul>
+<h4>Tab 3: Billing</h4>
+<p><strong>Purpose</strong>: Manage payment methods and billing information</p>
+<p><strong>Sections</strong>:</p>
+<p><strong>Billing Information</strong></p>
+<ul>
+<li>Company name</li>
+<li>Billing email</li>
+<li>Billing address</li>
+<li>Tax ID / VAT number</li>
+<li>Currency preference</li>
+</ul>
+<p><strong>Payment Methods</strong></p>
+<ul>
+<li>Credit/debit card details<ul>
+<li>Card type (Visa, Mastercard, Amex)</li>
+<li>Last 4 digits</li>
+<li>Expiry date</li>
+<li>Set as default option</li>
+</ul>
+</li>
+<li>Bank transfer information</li>
+<li>Invoice payment option</li>
+</ul>
+<p><strong>Invoice Settings</strong></p>
+<ul>
+<li>Invoice frequency (monthly, annual)</li>
+<li>Invoice delivery (email, download)</li>
+<li>Invoice format (PDF, CSV)</li>
+<li>Auto-download enabled</li>
+</ul>
+<p><strong>Invoice History</strong></p>
+<ul>
+<li>Table of past invoices</li>
+<li>Columns: Invoice #, Date, Amount, Status, Actions</li>
+<li>Download PDF</li>
+<li>View details</li>
+<li>Payment status (Paid, Pending, Overdue)</li>
+</ul>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Add/edit payment methods</li>
+<li>Update billing address</li>
+<li>Set default payment method</li>
+<li>Manage invoice preferences</li>
+<li>View payment history</li>
+<li>Download invoices</li>
+<li>Set up auto-payment</li>
+</ul>
+<p><strong>User Actions</strong>:</p>
+<ul>
+<li>Update billing information</li>
+<li>Add new payment method</li>
+<li>Remove payment method</li>
+<li>Download invoice</li>
+<li>View invoice details</li>
+<li>Update invoice settings</li>
+<li>Contact billing support</li>
+</ul>
+<p><strong>Data Models</strong>:</p>
+<pre><code class="language-typescript">interface BillingInformation {
+  company: string;
+  email: string;
+  address: {
+    line1: string;
+    line2?: string;
+    city: string;
+    state: string;
+    postalCode: string;
+    country: string;
+  };
+  taxId?: string;
+  currency: string;
+}
+
+interface PaymentMethod {
+  id: string;
+  type: &#39;card&#39; | &#39;bank_transfer&#39; | &#39;invoice&#39;;
+  isDefault: boolean;
+  // Card specific
+  cardBrand?: string;
+  cardLast4?: string;
+  expiryMonth?: number;
+  expiryYear?: number;
+  // Bank transfer specific
+  accountNumber?: string;
+  routingNumber?: string;
+}
+
+interface Invoice {
+  id: string;
+  number: string;
+  date: Date;
+  dueDate: Date;
+  amount: number;
+  currency: string;
+  status: &#39;paid&#39; | &#39;pending&#39; | &#39;overdue&#39; | &#39;cancelled&#39;;
+  items: InvoiceItem[];
+  pdfUrl: string;
+}
+</code></pre>
+<h4>Tab 4: Analytics</h4>
+<p><strong>Purpose</strong>: Monitor resource usage and analyze trends</p>
+<p><strong>Components</strong>:</p>
+<p><strong>Usage Summary Cards</strong></p>
+<ul>
+<li>Users (active users vs. limit)</li>
+<li>Storage (used vs. total)</li>
+<li>API Calls (this month)</li>
+<li>Transactions (this month)</li>
+<li>Locations (active vs. limit)</li>
+</ul>
+<p><strong>Usage Charts</strong></p>
+<ul>
+<li><strong>User Growth</strong>: Line chart showing active users over time</li>
+<li><strong>Storage Consumption</strong>: Area chart of storage usage</li>
+<li><strong>API Usage</strong>: Bar chart of API calls per day/week</li>
+<li><strong>Feature Usage</strong>: Pie chart of most-used features</li>
+<li><strong>Location Activity</strong>: Bar chart of activity per location</li>
+</ul>
+<p><strong>Usage Breakdown</strong></p>
+<ul>
+<li>By module (which modules use most resources)</li>
+<li>By user (top resource consumers)</li>
+<li>By location (resource usage per location)</li>
+<li>By feature (most/least used features)</li>
+</ul>
+<p><strong>Export Options</strong></p>
+<ul>
+<li>Export data to CSV/Excel</li>
+<li>Generate PDF report</li>
+<li>Email report</li>
+<li>Schedule automated reports</li>
+</ul>
+<p><strong>Time Period Selector</strong></p>
+<ul>
+<li>Last 7 days</li>
+<li>Last 30 days</li>
+<li>Last 90 days</li>
+<li>Custom date range</li>
+</ul>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Real-time usage monitoring</li>
+<li>Historical usage trends</li>
+<li>Usage forecasting</li>
+<li>Anomaly detection</li>
+<li>Usage alerts</li>
+<li>Comparative analysis (period over period)</li>
+</ul>
+<p><strong>User Actions</strong>:</p>
+<ul>
+<li>Select time period</li>
+<li>Filter by resource type</li>
+<li>Export usage data</li>
+<li>Schedule reports</li>
+<li>Set usage alerts</li>
+<li>View detailed breakdowns</li>
+</ul>
+<p><strong>Data Models</strong>:</p>
+<pre><code class="language-typescript">interface UsageMetrics {
+  period: {
+    start: Date;
+    end: Date;
+  };
+  users: {
+    total: number;
+    active: number;
+    limit: number;
+  };
+  storage: {
+    used: number; // GB
+    limit: number; // GB
+  };
+  apiCalls: {
+    count: number;
+    limit: number;
+  };
+  transactions: {
+    count: number;
+    limit: number;
+  };
+  byModule: Record&lt;string, number&gt;;
+  byLocation: Record&lt;string, number&gt;;
+  byFeature: Record&lt;string, number&gt;;
+}
+</code></pre>
+<h3 id="2-multiple-subscriptions-page">2. Multiple Subscriptions Page</h3>
+<p><strong>Route:</strong> <code>/system-administration/permission-management/subscriptions</code></p>
+<h4>Purpose</h4>
+<p>For organizations managing multiple subscriptions (e.g., different divisions, subsidiaries)</p>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>List of all subscriptions</li>
+<li>Switch between subscriptions</li>
+<li>Compare subscriptions</li>
+<li>Consolidated billing</li>
+<li>Cross-subscription analytics</li>
+</ul>
+<p><strong>Layout</strong>:</p>
+<ul>
+<li>Subscription cards grid</li>
+<li>Quick filters (by status, package, division)</li>
+<li>Consolidated usage summary</li>
+<li>Bulk operations</li>
+</ul>
+<p><strong>Use Cases</strong>:</p>
+<ul>
+<li>Multi-division organizations</li>
+<li>Franchise management</li>
+<li>Holding companies</li>
+<li>Agency managing client subscriptions</li>
+</ul>
+<hr>
+<h2 id="component-architecture">Component Architecture</h2>
+<h3 id="packageselector-component">PackageSelector Component</h3>
+<p><strong>File:</strong> <code>components/permissions/subscription/package-selector.tsx</code></p>
+<p><strong>Props</strong>:</p>
+<ul>
+<li><code>packages</code>: Array of available packages</li>
+<li><code>currentSubscription</code>: Current subscription details</li>
+<li><code>onPackageSelect</code>: Callback when package selected</li>
+<li><code>onUpgrade</code>, <code>onDowngrade</code>: Callbacks for tier changes</li>
+</ul>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Package comparison grid</li>
+<li>Feature highlights</li>
+<li>Pricing display</li>
+<li>Upgrade/downgrade buttons</li>
+<li>Trial information</li>
+</ul>
+<h3 id="resourceactivation-component">ResourceActivation Component</h3>
+<p><strong>File:</strong> <code>components/permissions/subscription/resource-activation.tsx</code></p>
+<p><strong>Props</strong>:</p>
+<ul>
+<li><code>package</code>: Current package details</li>
+<li><code>subscription</code>: Current subscription</li>
+<li><code>showAnalytics</code>: Show usage analytics</li>
+<li><code>onResourceToggle</code>: Callback for feature toggle</li>
+<li><code>onLimitUpdate</code>: Callback for limit changes</li>
+</ul>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Resource category organization</li>
+<li>Toggle switches</li>
+<li>Limit sliders</li>
+<li>Usage progress bars</li>
+<li>Dependency warnings</li>
+</ul>
+<h3 id="billingpaymentinfo-component">BillingPaymentInfo Component</h3>
+<p><strong>File:</strong> <code>components/permissions/subscription/billing-payment-info.tsx</code></p>
+<p><strong>Props</strong>:</p>
+<ul>
+<li><code>subscription</code>: Current subscription</li>
+<li><code>onPaymentMethodUpdate</code>: Callback for payment updates</li>
+<li><code>onBillingAddressUpdate</code>: Callback for address updates</li>
+<li><code>onInvoiceSettingsUpdate</code>: Callback for invoice settings</li>
+<li><code>onDownloadInvoice</code>: Callback for invoice download</li>
+</ul>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Billing form</li>
+<li>Payment method management</li>
+<li>Invoice list</li>
+<li>Download functionality</li>
+</ul>
+<h3 id="usageanalytics-component">UsageAnalytics Component</h3>
+<p><strong>File:</strong> <code>components/permissions/subscription/usage-analytics.tsx</code></p>
+<p><strong>Props</strong>:</p>
+<ul>
+<li><code>subscription</code>: Current subscription</li>
+<li><code>onExportData</code>: Callback for data export</li>
+</ul>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Usage charts (Recharts library)</li>
+<li>Time period selector</li>
+<li>Export functionality</li>
+<li>Usage breakdown tables</li>
+</ul>
+<hr>
+<h2 id="state-management">State Management</h2>
+<h3 id="usesubscriptionstore-zustand">useSubscriptionStore (Zustand)</h3>
+<pre><code class="language-typescript">interface SubscriptionStore {
+  // State
+  subscription: Subscription | null;
+  packages: Package[];
+  usage: UsageMetrics | null;
+  isLoading: boolean;
+
+  // Actions
+  fetchSubscription: () =&gt; Promise&lt;void&gt;;
+  updatePackage: (packageType: PackageType) =&gt; Promise&lt;void&gt;;
+  toggleResource: (resourceId: string, enabled: boolean) =&gt; Promise&lt;void&gt;;
+  updateBilling: (billing: BillingInformation) =&gt; Promise&lt;void&gt;;
+  fetchUsage: (period: DateRange) =&gt; Promise&lt;void&gt;;
+
+  // Computed
+  getRemainingQuota: (resourceType: string) =&gt; number;
+  isFeatureAvailable: (featureId: string) =&gt; boolean;
+  isLimitExceeded: (resourceType: string) =&gt; boolean;
+}
+</code></pre>
+<hr>
+<h2 id="api-integration">API Integration</h2>
+<h3 id="get-apisubscriptions">GET /api/subscriptions</h3>
+<p>Get current subscription details</p>
+<p><strong>Response</strong>:</p>
+<pre><code class="language-json">{
+  &quot;subscription&quot;: Subscription,
+  &quot;availablePackages&quot;: Package[],
+  &quot;usage&quot;: UsageMetrics
+}
+</code></pre>
+<h3 id="put-apisubscriptionspackage">PUT /api/subscriptions/package</h3>
+<p>Update subscription package</p>
+<p><strong>Request</strong>:</p>
+<pre><code class="language-json">{
+  &quot;packageType&quot;: &quot;professional&quot;,
+  &quot;billingCycle&quot;: &quot;annual&quot;
+}
+</code></pre>
+<p><strong>Response</strong>:</p>
+<pre><code class="language-json">{
+  &quot;subscription&quot;: Subscription,
+  &quot;prorationAmount&quot;: 150.00,
+  &quot;effectiveDate&quot;: &quot;2025-02-01&quot;
+}
+</code></pre>
+<h3 id="post-apisubscriptionsresources">POST /api/subscriptions/resources</h3>
+<p>Toggle resource activation</p>
+<p><strong>Request</strong>:</p>
+<pre><code class="language-json">{
+  &quot;resourceId&quot;: &quot;pos-integration&quot;,
+  &quot;enabled&quot;: true
+}
+</code></pre>
+<h3 id="put-apisubscriptionsbilling">PUT /api/subscriptions/billing</h3>
+<p>Update billing information</p>
+<p><strong>Request</strong>: <code>BillingInformation</code></p>
+<h3 id="get-apisubscriptionsusage">GET /api/subscriptions/usage</h3>
+<p>Get usage metrics</p>
+<p><strong>Query</strong>: <code>period=last_30_days</code></p>
+<p><strong>Response</strong>: <code>UsageMetrics</code></p>
+<h3 id="get-apisubscriptionsinvoices">GET /api/subscriptions/invoices</h3>
+<p>List invoices</p>
+<p><strong>Response</strong>: <code>Invoice[]</code></p>
+<h3 id="get-apisubscriptionsinvoicesiddownload">GET /api/subscriptions/invoices/:id/download</h3>
+<p>Download invoice PDF</p>
+<hr>
+<h2 id="business-rules">Business Rules</h2>
+<h3 id="package-changes">Package Changes</h3>
+<ol>
+<li><strong>Upgrade Immediate</strong>: Upgrades take effect immediately with prorated charges</li>
+<li><strong>Downgrade Delayed</strong>: Downgrades take effect at next renewal date</li>
+<li><strong>Feature Retention</strong>: Downgrading disables features not in new package</li>
+<li><strong>Data Retention</strong>: All data preserved during downgrade (but may be inaccessible)</li>
+<li><strong>Trial Period</strong>: 14-day trial for Professional/Enterprise packages</li>
+</ol>
+<h3 id="resource-limits">Resource Limits</h3>
+<ol>
+<li><strong>Soft Limits</strong>: Warning at 80% usage</li>
+<li><strong>Hard Limits</strong>: Features disabled at 100% usage</li>
+<li><strong>Grace Period</strong>: 7-day grace period for billing failures</li>
+<li><strong>Overage Charges</strong>: Some resources allow overage with additional charges</li>
+<li><strong>Custom Limits</strong>: Enterprise plans can request custom limits</li>
+</ol>
+<h3 id="billing">Billing</h3>
+<ol>
+<li><strong>Auto-Renewal</strong>: Subscriptions auto-renew unless cancelled</li>
+<li><strong>Cancellation</strong>: 30-day notice required for annual plans</li>
+<li><strong>Refund Policy</strong>: Pro-rated refunds for annual plans</li>
+<li><strong>Payment Retry</strong>: 3 automatic retry attempts for failed payments</li>
+<li><strong>Suspension</strong>: Account suspended after 7 days of unpaid invoices</li>
+</ol>
+<hr>
+<h2 id="user-guide">User Guide</h2>
+<h3 id="upgrading-package">Upgrading Package</h3>
+<ol>
+<li>Navigate to Subscription → Packages</li>
+<li>Review available packages</li>
+<li>Click &quot;Upgrade&quot; on desired package</li>
+<li>Review changes and pricing</li>
+<li>Confirm upgrade</li>
+<li>Payment processed immediately</li>
+<li>New features activated</li>
+</ol>
+<h3 id="managing-resources">Managing Resources</h3>
+<ol>
+<li>Navigate to Subscription → Resources</li>
+<li>Browse resource categories</li>
+<li>Toggle features on/off</li>
+<li>Adjust limits (if allowed)</li>
+<li>Save changes</li>
+<li>Features activate immediately</li>
+</ol>
+<h3 id="updating-billing-information">Updating Billing Information</h3>
+<ol>
+<li>Navigate to Subscription → Billing</li>
+<li>Click &quot;Edit Billing Information&quot;</li>
+<li>Update company details</li>
+<li>Update billing address</li>
+<li>Save changes</li>
+<li>Confirmation email sent</li>
+</ol>
+<h3 id="viewing-usage-analytics">Viewing Usage Analytics</h3>
+<ol>
+<li>Navigate to Subscription → Analytics</li>
+<li>Select time period</li>
+<li>View usage charts</li>
+<li>Export data if needed</li>
+<li>Set up usage alerts</li>
+<li>Schedule automated reports</li>
+</ol>
+<hr>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="issue-feature-not-activating">Issue: Feature not activating</h3>
+<p><strong>Solutions</strong>:</p>
+<ul>
+<li>Check if feature available in current package</li>
+<li>Verify subscription status is active</li>
+<li>Check if limit has been reached</li>
+<li>Clear cache and retry</li>
+<li>Contact support if issue persists</li>
+</ul>
+<h3 id="issue-payment-failed">Issue: Payment failed</h3>
+<p><strong>Solutions</strong>:</p>
+<ul>
+<li>Verify payment method is valid</li>
+<li>Check card expiry date</li>
+<li>Ensure sufficient funds</li>
+<li>Update billing address</li>
+<li>Try alternative payment method</li>
+<li>Contact billing support</li>
+</ul>
+<h3 id="issue-usage-exceeds-limit">Issue: Usage exceeds limit</h3>
+<p><strong>Solutions</strong>:</p>
+<ul>
+<li>Review usage analytics</li>
+<li>Identify high-usage areas</li>
+<li>Optimize resource consumption</li>
+<li>Upgrade to higher tier</li>
+<li>Request temporary limit increase</li>
+<li>Enable overage charges</li>
+</ul>
+<hr>
+<h2 id="screenshots">Screenshots</h2>
+<p>See <a href="./screenshots/">screenshots directory</a> for visual examples.</p>
+<hr>
+<p><strong>Last Updated:</strong> 2025-01-17<br><strong>Version:</strong> 1.0.0</p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#subscriptions-management" class="level-1">Subscriptions Management</a>
+<a href="#overview" class="level-2">Overview</a>
+<a href="#key-features" class="level-3">Key Features</a>
+<a href="#page-structure" class="level-2">Page Structure</a>
+<a href="#1-subscription-management-main-page" class="level-3">1. Subscription Management Main Page</a>
+<a href="#2-multiple-subscriptions-page" class="level-3">2. Multiple Subscriptions Page</a>
+<a href="#component-architecture" class="level-2">Component Architecture</a>
+<a href="#packageselector-component" class="level-3">PackageSelector Component</a>
+<a href="#resourceactivation-component" class="level-3">ResourceActivation Component</a>
+<a href="#billingpaymentinfo-component" class="level-3">BillingPaymentInfo Component</a>
+<a href="#usageanalytics-component" class="level-3">UsageAnalytics Component</a>
+<a href="#state-management" class="level-2">State Management</a>
+<a href="#usesubscriptionstore-zustand" class="level-3">useSubscriptionStore (Zustand)</a>
+<a href="#api-integration" class="level-2">API Integration</a>
+<a href="#get-apisubscriptions" class="level-3">GET /api/subscriptions</a>
+<a href="#put-apisubscriptionspackage" class="level-3">PUT /api/subscriptions/package</a>
+<a href="#post-apisubscriptionsresources" class="level-3">POST /api/subscriptions/resources</a>
+<a href="#put-apisubscriptionsbilling" class="level-3">PUT /api/subscriptions/billing</a>
+<a href="#get-apisubscriptionsusage" class="level-3">GET /api/subscriptions/usage</a>
+<a href="#get-apisubscriptionsinvoices" class="level-3">GET /api/subscriptions/invoices</a>
+<a href="#get-apisubscriptionsinvoicesiddownload" class="level-3">GET /api/subscriptions/invoices/:id/download</a>
+<a href="#business-rules" class="level-2">Business Rules</a>
+<a href="#package-changes" class="level-3">Package Changes</a>
+<a href="#resource-limits" class="level-3">Resource Limits</a>
+<a href="#billing" class="level-3">Billing</a>
+<a href="#user-guide" class="level-2">User Guide</a>
+<a href="#upgrading-package" class="level-3">Upgrading Package</a>
+<a href="#managing-resources" class="level-3">Managing Resources</a>
+<a href="#updating-billing-information" class="level-3">Updating Billing Information</a>
+<a href="#viewing-usage-analytics" class="level-3">Viewing Usage Analytics</a>
+<a href="#troubleshooting" class="level-2">Troubleshooting</a>
+<a href="#issue-feature-not-activating" class="level-3">Issue: Feature not activating</a>
+<a href="#issue-payment-failed" class="level-3">Issue: Payment failed</a>
+<a href="#issue-usage-exceeds-limit" class="level-3">Issue: Usage exceeds limit</a>
+<a href="#screenshots" class="level-2">Screenshots</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Search Modal -->
+    <div class="search-modal" id="searchModal">
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchModalInput" placeholder="Search documentation..." autofocus>
+                    <button class="search-close-btn" id="searchCloseBtn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="search-results" id="searchResults">
+                <div class="search-empty">
+                    <i class="fas fa-search"></i>
+                    <p>Start typing to search...</p>
+                </div>
+            </div>
+            <div class="search-footer">
+                <div class="search-shortcuts">
+                    <kbd>↑↓</kbd> Navigate
+                    <kbd>Enter</kbd> Select
+                    <kbd>Esc</kbd> Close
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Search functionality
+        let searchIndex = [];
+        let selectedResultIndex = -1;
+
+        // Load search index
+        fetch('../../../../../search-index.json')
+            .then(res => res.json())
+            .then(data => {
+                searchIndex = data;
+                console.log('✓ Search index loaded:', searchIndex.length, 'entries');
+            })
+            .catch(err => console.error('❌ Failed to load search index:', err));
+
+        // Open search modal
+        function openSearchModal() {
+            console.log('🔍 Opening search modal...');
+            document.getElementById('searchModal').classList.add('active');
+            document.getElementById('searchModalInput').focus();
+            selectedResultIndex = -1;
+        }
+
+        // Close search modal
+        function closeSearchModal() {
+            document.getElementById('searchModal').classList.remove('active');
+            document.getElementById('searchModalInput').value = '';
+            document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-search"></i><p>Start typing to search...</p></div>';
+            selectedResultIndex = -1;
+        }
+
+        // Search function
+        function performSearch(query) {
+            console.log('🔎 Searching for:', query);
+
+            if (!query || query.length < 2) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-search"></i><p>Start typing to search...</p></div>';
+                return;
+            }
+
+            if (searchIndex.length === 0) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-exclamation-circle"></i><p>Search index not loaded</p></div>';
+                return;
+            }
+
+            const queryLower = query.toLowerCase();
+            const queryWords = queryLower.split(/s+/).filter(word => word.length > 1);
+
+            // Search and score results
+            const results = searchIndex
+                .map(entry => {
+                    let score = 0;
+
+                    // Title match (highest weight)
+                    if (entry.title.toLowerCase().includes(queryLower)) {
+                        score += 100;
+                    }
+                    queryWords.forEach(word => {
+                        if (entry.title.toLowerCase().includes(word)) score += 50;
+                    });
+
+                    // Content match
+                    if (entry.content.toLowerCase().includes(queryLower)) {
+                        score += 10;
+                    }
+                    queryWords.forEach(word => {
+                        if (entry.content.toLowerCase().includes(word)) score += 5;
+                    });
+
+                    return { ...entry, score };
+                })
+                .filter(result => result.score > 0)
+                .sort((a, b) => b.score - a.score)
+                .slice(0, 10); // Top 10 results
+
+            console.log('📊 Found', results.length, 'results');
+
+            // Display results
+            if (results.length === 0) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-times-circle"></i><p>No results found</p></div>';
+                return;
+            }
+
+            const resultsHtml = results.map((result, index) => {
+                const urlPath = '../../../../../' + result.url;
+                return '<a href="' + urlPath + '" class="search-result ' + (index === 0 ? 'selected' : '') + '" data-index="' + index + '">' +
+                    '<div class="result-title">' + result.title + '</div>' +
+                    '<div class="result-content">' + highlightMatch(result.content, query) + '</div>' +
+                    '</a>';
+            }).join('');
+
+            document.getElementById('searchResults').innerHTML = resultsHtml;
+            selectedResultIndex = 0;
+        }
+
+        // Highlight matching text
+        function highlightMatch(text, query) {
+            if (!text) return '';
+            const queryWords = query.split(/\s+/).join('|');
+            const regex = new RegExp('(' + queryWords + ')', 'gi');
+            return text.substring(0, 150).replace(regex, '<mark>$1</mark>') + '...';
+        }
+
+        // Navigate results with keyboard
+        function navigateResults(direction) {
+            const results = document.querySelectorAll('.search-result');
+            if (results.length === 0) return;
+
+            results[selectedResultIndex]?.classList.remove('selected');
+
+            if (direction === 'down') {
+                selectedResultIndex = (selectedResultIndex + 1) % results.length;
+            } else if (direction === 'up') {
+                selectedResultIndex = (selectedResultIndex - 1 + results.length) % results.length;
+            }
+
+            results[selectedResultIndex]?.classList.add('selected');
+            results[selectedResultIndex]?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+
+        // Select result
+        function selectResult() {
+            const selected = document.querySelector('.search-result.selected');
+            if (selected) {
+                window.location.href = selected.href;
+            }
+        }
+
+        // Event listeners
+        document.getElementById('headerSearchBtn')?.addEventListener('click', openSearchModal);
+        document.getElementById('searchCloseBtn')?.addEventListener('click', closeSearchModal);
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Ctrl+K or Cmd+K to open search
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                openSearchModal();
+            }
+
+            // Esc to close search
+            if (e.key === 'Escape' && document.getElementById('searchModal').classList.contains('active')) {
+                closeSearchModal();
+            }
+
+            // Navigate results
+            if (document.getElementById('searchModal').classList.contains('active')) {
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    navigateResults('down');
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    navigateResults('up');
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    selectResult();
+                }
+            }
+        });
+
+        // Search input
+        document.getElementById('searchModalInput')?.addEventListener('input', (e) => {
+            performSearch(e.target.value);
+        });
+
+        // Click outside to close
+        document.getElementById('searchModal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'searchModal') {
+                closeSearchModal();
+            }
+        });
+    </script>
+</body>
+</html>

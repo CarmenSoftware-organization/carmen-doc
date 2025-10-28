@@ -1,0 +1,2327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POS Integration - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: #f8fafc;
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 15% 70% 15%;
+            gap: 0;
+            width: 100%;
+            padding: 1rem 0 2rem 0;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 1rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 2rem);
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-right: 1px solid var(--border-color);
+            padding-right: 2rem;
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 0.75rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+        .nav-subgroup {
+            margin: 0.5rem 0 0.5rem 0.5rem;
+        }
+        .nav-subgroup-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-subgroup-header:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .nav-subitems {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+            margin-left: 0.75rem;
+            margin-top: 0.25rem;
+        }
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 1rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 2rem);
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-left: 1px solid var(--border-color);
+            padding-left: 2rem;
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header - Modern Compact Design */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 52px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+        }
+        .header-content {
+            height: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--foreground);
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+        .logo:hover {
+            opacity: 0.8;
+        }
+        .logo i {
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+        .header-search-container {
+            display: flex;
+            align-items: center;
+        }
+        .header-search-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.375rem 0.75rem;
+            background: var(--secondary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.8125rem;
+            color: var(--muted-foreground);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            min-width: 180px;
+            flex-shrink: 0;
+        }
+        .header-search-btn:hover {
+            background: var(--background);
+            border-color: var(--primary);
+        }
+        .header-search-btn i {
+            color: var(--muted-foreground);
+            font-size: 0.875rem;
+        }
+        .header-search-btn span {
+            flex: 1;
+            text-align: left;
+        }
+        .header-search-btn kbd {
+            padding: 0.125rem 0.375rem;
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.6875rem;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--muted-foreground);
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        .back-to-home {
+            display: none; /* Hidden - navigation is sufficient */
+        }
+
+        /* Responsive Header */
+        @media (max-width: 768px) {
+            .header-search-btn {
+                min-width: auto;
+            }
+            .header-search-btn span {
+                display: none;
+            }
+        }
+
+        /* Search Modal */
+        .search-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            padding: 2rem;
+        }
+        .search-modal.active {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 10vh;
+        }
+        .search-modal-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 640px;
+            max-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            animation: slideDown 0.2s ease-out;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .search-modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .search-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .search-input-wrapper i {
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+        }
+        .search-input-wrapper input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 1.125rem;
+            color: var(--text-primary);
+        }
+        .search-close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .search-close-btn:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .search-results {
+            overflow-y: auto;
+            max-height: calc(70vh - 150px);
+        }
+        .search-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 2rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+        .search-empty i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        .search-result {
+            display: block;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+        .search-result:hover,
+        .search-result.selected {
+            background: var(--bg-secondary);
+        }
+        .search-result.selected {
+            border-left: 3px solid var(--primary-color);
+        }
+        .result-header {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .result-category {
+            font-size: 0.75rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .result-title {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        .result-badge {
+            display: inline-block;
+            padding: 0.125rem 0.5rem;
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-radius: 4px;
+            font-size: 0.6875rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        .result-content {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        .result-content mark {
+            background: rgba(79, 70, 229, 0.2);
+            color: var(--primary-color);
+            font-weight: 600;
+            padding: 0.125rem 0.25rem;
+            border-radius: 2px;
+        }
+        .search-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            border-bottom-left-radius: var(--border-radius-xl);
+            border-bottom-right-radius: var(--border-radius-xl);
+        }
+        .search-shortcuts {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        .search-shortcuts kbd {
+            padding: 0.25rem 0.5rem;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        /* Content Area */
+        .doc-content {
+            padding: 0 2rem;
+            width: 100%;
+            max-width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 0.9375rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Image Styles */
+        .doc-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 1.5rem auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Limit screenshot width to 80% for better readability */
+        .doc-content p > img {
+            max-width: 80%;
+        }
+
+        /* Table Styles */
+        .doc-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.875rem;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .doc-content table thead {
+            background: #f8fafc;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .doc-content table th {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #0f172a;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        .doc-content table td {
+            padding: 0.75rem 1rem;
+            border-top: 1px solid #e2e8f0;
+            color: #334155;
+        }
+
+        .doc-content table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        /* Table responsive wrapper */
+        .doc-content table {
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .doc-content table thead,
+        .doc-content table tbody,
+        .doc-content table tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 18% 64% 18%;
+                gap: 0;
+                padding: 1rem 0 1.5rem 0;
+            }
+            .doc-nav {
+                padding-right: 1.5rem;
+            }
+            .doc-toc {
+                padding-left: 1.5rem;
+            }
+            .doc-content {
+                padding: 0 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 0;
+                padding: 1rem 0 1.5rem 0;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 0 2rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                gap: 0;
+                padding: 0.5rem 0 1rem 0;
+            }
+            .doc-nav {
+                display: none;
+                border-right: none;
+            }
+            .doc-content {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="../../../index.html" class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </a>
+            <div class="doc-header-actions">
+                <div class="header-search-container">
+                    <button class="header-search-btn" id="headerSearchBtn">
+                        <i class="fas fa-search"></i>
+                        <span>Search documentation...</span>
+                        <kbd>Ctrl+K</kbd>
+                    </button>
+                </div>
+                <a href="../../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../01-overview/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Index</span>
+                    </a>
+                    <a href="../../../01-overview/business-value.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value & ROI</span>
+                    </a>
+                    <a href="../../../01-overview/tech-stack.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Technology Stack</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../02-architecture/system-architecture.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-database"></i>
+                    <span>Data Model</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../03-data-model/data-dictionary.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Data Dictionary</span>
+                    </a>
+                    <a href="../../../03-data-model/schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-th-large"></i>
+                    <span>Application Modules</span>
+                </div>
+                <div class="nav-items">
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Procurement</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/procurement/purchase-requests/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Purchase Requests</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/purchase-orders/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Purchase Orders</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/goods-received-notes/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Goods Received Notes</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/credit-notes/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Credit Notes</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/templates/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Templates</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-boxes"></i>
+                            <span>Inventory Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/inventory/stock-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Stock Management</span>
+                            </a>
+                            <a href="../../../04-modules/inventory/physical-count/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Physical Count</span>
+                            </a>
+                            <a href="../../../04-modules/inventory/spot-check/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Spot Check</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span>Finance</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/finance/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Finance Module</span>
+                            </a>
+                            <a href="../../../04-modules/finance/features/account-code-mapping/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Account Code Mapping</span>
+                            </a>
+                            <a href="../../../04-modules/finance/features/currency-and-rates/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Currency Management</span>
+                            </a>
+                            <a href="../../../04-modules/finance/features/departments/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Departments</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-handshake"></i>
+                            <span>Vendor Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/vendor-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Management</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Management Module</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/MANAGE-VENDORS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Manage Vendors</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/VENDOR-PORTAL.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Portal</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/CAMPAIGNS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Campaigns</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/PRICELISTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Pricelists</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/TEMPLATES.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Templates</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Sitemap</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/PAGES-AND-COMPONENTS-SPEC.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Pages & Components Spec</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/SHARED-COMPONENTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Shared Components</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-box"></i>
+                            <span>Product Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/product-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management</span>
+                            </a>
+                            <a href="../../../04-modules/product-management/product-management-specification.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management Specification</span>
+                            </a>
+                            <a href="../../../04-modules/product-management/product-management-sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management Sitemap</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-store"></i>
+                            <span>Store Operations</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../store-ops/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Operations</span>
+                            </a>
+                            <a href="../../../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Operations Module</span>
+                            </a>
+                            <a href="../../../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Requisitions</span>
+                            </a>
+                            <a href="../../../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Stock Replenishment</span>
+                            </a>
+                            <a href="../../../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Wastage Reporting</span>
+                            </a>
+                            <a href="../../../store-ops/SHARED-COMPONENTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Shared Components</span>
+                            </a>
+                            <a href="../../../store-ops/GLOSSARY.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Glossary</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-clipboard-list"></i>
+                            <span>Operational Planning</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../operational-planning/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Operational Planning</span>
+                            </a>
+                            <a href="../../../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Operational Planning Module</span>
+                            </a>
+                            <a href="../../../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Recipe Management</span>
+                            </a>
+                            <a href="../../../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Menu Engineering</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-cog"></i>
+                            <span>System Administration</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../sa/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>System Administration</span>
+                            </a>
+                            <a href="../../../sa/system-administration-sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>System Administration Sitemap</span>
+                            </a>
+                            <a href="../../../sa/features/permission-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Permission Management</span>
+                            </a>
+                            <a href="../../../sa/features/permission-management/specification.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Permission Specification</span>
+                            </a>
+                            <a href="../../../sa/features/location-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Location Management</span>
+                            </a>
+                            <a href="../../../sa/features/workflow/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Workflow</span>
+                            </a>
+                            <a href="../../../sa/features/pos-integration/README.html" class="nav-item active">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Reporting</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/reporting/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Reporting & Analytics</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../dashboard/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard</span>
+                            </a>
+                            <a href="../../../dashboard/sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard Sitemap</span>
+                            </a>
+                            <a href="../../../dashboard/components/components-overview.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Components Overview</span>
+                            </a>
+                            <a href="../../../dashboard/api/api-specifications.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>API Specifications</span>
+                            </a>
+                            <a href="../../../dashboard/business-logic/dashboard-business-rules.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard Business Rules</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-industry"></i>
+                            <span>Production</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/production/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Production</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-cash-register"></i>
+                            <span>POS Integration</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../pos-integration/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration</span>
+                            </a>
+                            <a href="../../../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration Module</span>
+                            </a>
+                            <a href="../../../pos-integration/MAPPING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Mapping</span>
+                            </a>
+                            <a href="../../../pos-integration/REPORTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Reports</span>
+                            </a>
+                            <a href="../../../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Transactions</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="pos-integration">POS Integration</h1>
+<blockquote>
+<p><strong>Feature:</strong> System Administration &gt; POS Integration<br><strong>Pages:</strong> 15<br><strong>Status:</strong> ✅ Production Ready</p>
+</blockquote>
+<hr>
+<h2 id="overview">Overview</h2>
+<p>The POS Integration feature provides comprehensive connectivity between Carmen ERP and external Point-of-Sale (POS) systems. This integration enables automated synchronization of sales data, inventory deductions, mapping of POS items to system recipes, and detailed reporting on consumption and profitability.</p>
+<h3 id="key-capabilities">Key Capabilities</h3>
+<ol>
+<li><strong>Real-Time Synchronization</strong> - Automatic sync of sales transactions from POS to ERP</li>
+<li><strong>Intelligent Mapping</strong> - Map POS items to recipes, units, and locations</li>
+<li><strong>Fractional Sales Management</strong> - Handle pizza slices, cake portions, and multi-yield items</li>
+<li><strong>Consumption Tracking</strong> - Monitor actual vs. theoretical ingredient usage</li>
+<li><strong>Profitability Analysis</strong> - Calculate gross profit by category and item</li>
+<li><strong>Automated Inventory Deduction</strong> - Automatic stock-out based on POS sales</li>
+<li><strong>Stock-out Approval Workflow</strong> - Review and approve inventory deductions</li>
+</ol>
+<h3 id="supported-pos-systems">Supported POS Systems</h3>
+<ul>
+<li>Comanche POS (Primary integration)</li>
+<li>Square (via API connector)</li>
+<li>Toast (via API connector)</li>
+<li>Custom POS (via webhook integration)</li>
+</ul>
+<hr>
+<h2 id="feature-architecture">Feature Architecture</h2>
+<pre><code>POS Integration
+├── Setup (Configuration &amp; Settings)
+│   ├── POS Configuration
+│   ├── System Settings
+│   └── Connection Status
+├── Mapping (Data Synchronization)
+│   ├── Recipe Mapping
+│   ├── Fractional Variants Mapping
+│   ├── Unit Mapping
+│   └── Location Mapping
+├── Operations (Transaction Management)
+│   ├── Transaction View
+│   ├── Failed Transactions
+│   └── Stock-out Review
+└── Reporting (Analytics)
+    ├── Gross Profit Report
+    ├── Consumption Report
+    └── Sales Analytics
+</code></pre>
+<hr>
+<h2 id="page-structure">Page Structure</h2>
+<h3 id="1-pos-integration-dashboard">1. POS Integration Dashboard</h3>
+<p><strong>Route:</strong> <code>/system-administration/system-integrations/pos</code></p>
+<h4>Purpose</h4>
+<p>Central hub for POS integration management with real-time status and quick access to all features.</p>
+<h4>Sections:</h4>
+<p><strong>System Status Card</strong></p>
+<ul>
+<li>Connection status (Connected/Disconnected)</li>
+<li>Last sync timestamp</li>
+<li>Alert indicators:<ul>
+<li>Unmapped items count</li>
+<li>Failed transactions count</li>
+<li>Pending approvals count</li>
+<li>Unmapped fractional variants count</li>
+</ul>
+</li>
+<li>Quick action buttons to resolve issues</li>
+</ul>
+<p><strong>Setup Section</strong></p>
+<ul>
+<li>POS Configuration</li>
+<li>System Settings</li>
+<li>Connection status with refresh</li>
+<li>Quick setup access</li>
+</ul>
+<p><strong>Mapping Section</strong></p>
+<ul>
+<li>Recipe Mapping (with unmapped count)</li>
+<li>Unit Mapping</li>
+<li>Location Mapping</li>
+<li>Fractional Sales Management (pizza slices, cake portions)</li>
+<li>Quick mapping access</li>
+</ul>
+<p><strong>Operations Section</strong></p>
+<ul>
+<li>View Transactions</li>
+<li>Failed Transactions (with count)</li>
+<li>Stock-out Review (with pending count)</li>
+<li>Quick operations access</li>
+</ul>
+<p><strong>Reporting Section</strong></p>
+<ul>
+<li>Gross Profit Analysis</li>
+<li>Consumption Report</li>
+<li>Today&#39;s sales summary with progress bar</li>
+</ul>
+<p><strong>Recent Activity Table</strong></p>
+<ul>
+<li>Recent transactions</li>
+<li>Mapping updates</li>
+<li>Stock-out approvals</li>
+<li>Fractional sales activity</li>
+<li>Time, type, description, status, actions</li>
+</ul>
+<h3 id="2-pos-configuration">2. POS Configuration</h3>
+<p><strong>Route:</strong> <code>/system-administration/system-integrations/pos/settings/config</code></p>
+<h4>Form Sections:</h4>
+<p><strong>API Configuration</strong></p>
+<ul>
+<li>POS System Type (dropdown: Comanche, Square, Toast, Custom)</li>
+<li>API Endpoint URL</li>
+<li>API Key/Token (secured input)</li>
+<li>API Version</li>
+<li>Connection timeout settings</li>
+</ul>
+<p><strong>Sync Settings</strong></p>
+<ul>
+<li>Auto-sync enabled toggle</li>
+<li>Sync frequency (minutes)</li>
+<li>Sync time range (hours back to fetch)</li>
+<li>Retry attempts on failure</li>
+<li>Error notification recipients</li>
+</ul>
+<p><strong>Transaction Settings</strong></p>
+<ul>
+<li>Transaction batch size</li>
+<li>Include voided transactions toggle</li>
+<li>Include refunds toggle</li>
+<li>Minimum transaction amount filter</li>
+</ul>
+<p><strong>Advanced Settings</strong></p>
+<ul>
+<li>Debug mode toggle</li>
+<li>Webhook URL (for push updates)</li>
+<li>Custom headers (JSON editor)</li>
+<li>SSL certificate verification</li>
+</ul>
+<p><strong>Test Connection</strong></p>
+<ul>
+<li>Test button to validate configuration</li>
+<li>Connection status display</li>
+<li>Error messages with troubleshooting tips</li>
+</ul>
+<h3 id="3-system-settings">3. System Settings</h3>
+<p><strong>Route:</strong> <code>/system-administration/system-integrations/pos/settings/system</code></p>
+<h4>Workflow Settings:</h4>
+<p><strong>Stock-out Approval</strong></p>
+<ul>
+<li>Require approval for stock-outs toggle</li>
+<li>Auto-approve threshold amount</li>
+<li>Approval routing (user/role)</li>
+<li>Notification settings</li>
+</ul>
+<p><strong>Mapping Automation</strong></p>
+<ul>
+<li>Auto-create recipes for unmapped items toggle</li>
+<li>Default category for new items</li>
+<li>Require manual review toggle</li>
+</ul>
+<p><strong>Notifications</strong></p>
+<ul>
+<li>Email notifications for failed transactions</li>
+<li>Slack/Teams webhooks for alerts</li>
+<li>Notification frequency (immediate, daily digest)</li>
+</ul>
+<p><strong>Data Retention</strong></p>
+<ul>
+<li>Transaction history retention (days)</li>
+<li>Log retention (days)</li>
+<li>Auto-archive old data toggle</li>
+</ul>
+<h3 id="4-recipe-mapping">4. Recipe Mapping</h3>
+<p><strong>Route:</strong> <code>/system-administration/system-integrations/pos/mapping/recipes</code></p>
+<h4>Features:</h4>
+<p><strong>Mapping Table</strong></p>
+<ul>
+<li>Columns:<ul>
+<li>POS Item ID</li>
+<li>POS Item Name</li>
+<li>POS Category</li>
+<li>Mapped Recipe (dropdown)</li>
+<li>Mapping Status (badge)</li>
+<li>Portion Size</li>
+<li>Actions</li>
+</ul>
+</li>
+<li>Filters:<ul>
+<li>Status (Mapped, Unmapped, All)</li>
+<li>Category</li>
+<li>Search by name</li>
+</ul>
+</li>
+<li>Bulk actions:<ul>
+<li>Bulk map to recipe</li>
+<li>Export mappings</li>
+<li>Import mappings (CSV)</li>
+</ul>
+</li>
+</ul>
+<p><strong>Mapping Drawer</strong></p>
+<ul>
+<li>POS item details</li>
+<li>Recipe selector (searchable dropdown)</li>
+<li>Portion size input</li>
+<li>Unit selector</li>
+<li>Cost override (optional)</li>
+<li>Save mapping button</li>
+</ul>
+<p><strong>Auto-Mapping Suggestions</strong></p>
+<ul>
+<li>AI-suggested mappings based on name similarity</li>
+<li>Accept/reject suggestions</li>
+<li>Confidence score indicator</li>
+</ul>
+<h3 id="5-fractional-variants-mapping">5. Fractional Variants Mapping</h3>
+<p><strong>Route:</strong> <code>/system-administration/system-integrations/pos/mapping/recipes/fractional-variants</code></p>
+<h4>Purpose</h4>
+<p>Manage mapping for items sold in fractions (pizza slices, cake slices, etc.).</p>
+<h4>Features:</h4>
+<p><strong>Fractional Recipe Table</strong></p>
+<ul>
+<li>Base Recipe (e.g., &quot;Large Pepperoni Pizza&quot;)</li>
+<li>Total Yield (e.g., 8 slices)</li>
+<li>POS Variant Items (list of slice SKUs)</li>
+<li>Fractional Units (e.g., &quot;1/8 pizza&quot;)</li>
+<li>Inventory Deduction Logic</li>
+<li>Status</li>
+</ul>
+<p><strong>Variant Mapping Interface</strong></p>
+<ul>
+<li>Select base recipe</li>
+<li>Define total yield (portions)</li>
+<li>Map POS slice items</li>
+<li>Set fractional deduction (1/8, 1/6, etc.)</li>
+<li>Preview inventory impact</li>
+</ul>
+<p><strong>Supported Fractional Types</strong></p>
+<ul>
+<li>Pizza (by slice)</li>
+<li>Cakes (by slice/portion)</li>
+<li>Whole items with partial sales</li>
+<li>Multi-yield recipes (e.g., batch items)</li>
+</ul>
+<p><strong>Deduction Logic</strong></p>
+<ul>
+<li>Automatic fractional inventory deduction</li>
+<li>Rounding rules (nearest whole, ceiling, floor)</li>
+<li>Threshold for full unit deduction</li>
+<li>Audit trail of fractional deductions</li>
+</ul>
+<h3 id="6-unit-mapping">6. Unit Mapping</h3>
+<p><strong>Route:</strong> <code>/system-administration/system-integrations/pos/mapping/units</code></p>
+<h4>Purpose</h4>
+<p>Map POS measurement units to system units with conversion factors.</p>
+<h4>Mapping Table:</h4>
+<ul>
+<li>POS Unit (e.g., &quot;oz&quot;, &quot;lb&quot;, &quot;each&quot;)</li>
+<li>System Unit (dropdown)</li>
+<li>Conversion Factor</li>
+<li>Status</li>
+<li>Actions</li>
+</ul>
+<h4>Unit Converter:</h4>
+<ul>
+<li>Source unit</li>
+<li>Target unit</li>
+<li>Conversion factor calculation</li>
+<li>Test conversion</li>
+</ul>
+<h3 id="7-location-mapping">7. Location Mapping</h3>
+<p><strong>Route:</strong> <code>/system-administration/system-integrations/pos/mapping/locations</code></p>
+<h4>Purpose</h4>
+<p>Map POS store locations to Carmen ERP locations.</p>
+<h4>Mapping Table:</h4>
+<ul>
+<li>POS Location ID</li>
+<li>POS Location Name</li>
+<li>System Location (dropdown)</li>
+<li>Default Department</li>
+<li>Status</li>
+<li>Actions</li>
+</ul>
+<h4>Multi-Location Support:</h4>
+<ul>
+<li>Handle franchises</li>
+<li>Central kitchen mappings</li>
+<li>Transfer tracking between locations</li>
+</ul>
+<h3 id="8-transactions-view">8. Transactions View</h3>
+<p><strong>Route:</strong> <code>/system-administration/system-integrations/pos/transactions</code></p>
+<h4>Features:</h4>
+<p><strong>Transaction Table</strong></p>
+<ul>
+<li>Columns:<ul>
+<li>Transaction ID</li>
+<li>Date/Time</li>
+<li>POS Location</li>
+<li>Item Count</li>
+<li>Total Amount</li>
+<li>Status (Success, Failed, Pending)</li>
+<li>Actions</li>
+</ul>
+</li>
+<li>Filters:<ul>
+<li>Date range</li>
+<li>Location</li>
+<li>Status</li>
+<li>Amount range</li>
+</ul>
+</li>
+<li>Bulk actions:<ul>
+<li>Retry failed transactions</li>
+<li>Export to CSV</li>
+<li>Generate report</li>
+</ul>
+</li>
+</ul>
+<p><strong>Transaction Detail Drawer</strong></p>
+<ul>
+<li>Transaction header (ID, date, location, amount)</li>
+<li>Line items table</li>
+<li>Inventory deductions applied</li>
+<li>Error details (if failed)</li>
+<li>Retry/resolve buttons</li>
+<li>Audit log</li>
+</ul>
+<p><strong>Failed Transaction Handling</strong></p>
+<ul>
+<li>Error categorization</li>
+<li>Retry logic</li>
+<li>Manual resolution</li>
+<li>Error notifications</li>
+</ul>
+<h3 id="9-stock-out-review">9. Stock-out Review</h3>
+<p><strong>Route:</strong> <code>/system-administration/system-integrations/pos/transactions/stock-out-review</code></p>
+<h4>Purpose</h4>
+<p>Review and approve inventory deductions from POS sales before finalizing.</p>
+<h4>Approval Queue Table:</h4>
+<ul>
+<li>Transaction ID</li>
+<li>Date/Time</li>
+<li>Location</li>
+<li>Items Sold</li>
+<li>Inventory Impact</li>
+<li>Requester</li>
+<li>Status</li>
+<li>Actions (Approve, Reject, Review)</li>
+</ul>
+<h4>Approval Workflow:</h4>
+<ol>
+<li>POS transaction synced</li>
+<li>Inventory impact calculated</li>
+<li>Approval request generated</li>
+<li>Reviewer notified</li>
+<li>Review item details</li>
+<li>Approve/reject/request changes</li>
+<li>Inventory deducted (if approved)</li>
+</ol>
+<h4>Bulk Approval:</h4>
+<ul>
+<li>Select multiple transactions</li>
+<li>Review aggregate impact</li>
+<li>Bulk approve/reject</li>
+<li>Approval notes</li>
+</ul>
+<h3 id="10-reports-home">10. Reports Home</h3>
+<p><strong>Route:</strong> <code>/system-administration/system-integrations/pos/reports</code></p>
+<h4>Available Reports:</h4>
+<ul>
+<li>Gross Profit Analysis</li>
+<li>Consumption Report</li>
+<li>Sales Trends</li>
+<li>Top Selling Items</li>
+<li>Slow-Moving Items</li>
+<li>Variance Analysis</li>
+</ul>
+<h4>Quick Stats:</h4>
+<ul>
+<li>Today&#39;s sales</li>
+<li>This week&#39;s sales</li>
+<li>Top categories</li>
+<li>Average transaction value</li>
+</ul>
+<h3 id="11-gross-profit-report">11. Gross Profit Report</h3>
+<p><strong>Route:</strong> <code>/system-administration/system-integrations/pos/reports/gross-profit</code></p>
+<h4>Features:</h4>
+<p><strong>Report Filters</strong></p>
+<ul>
+<li>Date range</li>
+<li>Location</li>
+<li>Category</li>
+<li>Item</li>
+</ul>
+<p><strong>Report Sections</strong></p>
+<p><strong>Summary Cards</strong></p>
+<ul>
+<li>Total Sales Revenue</li>
+<li>Total Cost of Goods Sold (COGS)</li>
+<li>Gross Profit Amount</li>
+<li>Gross Profit Margin %</li>
+</ul>
+<p><strong>Profit by Category</strong></p>
+<ul>
+<li>Table with columns:<ul>
+<li>Category</li>
+<li>Revenue</li>
+<li>COGS</li>
+<li>Gross Profit</li>
+<li>Margin %</li>
+<li>Units Sold</li>
+</ul>
+</li>
+<li>Bar chart visualization</li>
+<li>Drill-down to items</li>
+</ul>
+<p><strong>Profit by Item</strong></p>
+<ul>
+<li>Item name</li>
+<li>Quantity sold</li>
+<li>Revenue</li>
+<li>Unit cost</li>
+<li>Total COGS</li>
+<li>Gross profit</li>
+<li>Margin %</li>
+<li>Sortable columns</li>
+</ul>
+<p><strong>Trend Analysis</strong></p>
+<ul>
+<li>Line chart: Profit over time</li>
+<li>Comparison to previous period</li>
+<li>Seasonal trends</li>
+</ul>
+<p><strong>Export Options</strong></p>
+<ul>
+<li>PDF report</li>
+<li>Excel spreadsheet</li>
+<li>CSV data</li>
+</ul>
+<h3 id="12-consumption-report">12. Consumption Report</h3>
+<p><strong>Route:</strong> <code>/system-administration/system-integrations/pos/reports/consumption</code></p>
+<h4>Purpose</h4>
+<p>Compare theoretical ingredient usage (based on recipes) vs. actual inventory deductions.</p>
+<h4>Report Sections:</h4>
+<p><strong>Variance Summary</strong></p>
+<ul>
+<li>Total Theoretical Usage</li>
+<li>Total Actual Usage</li>
+<li>Total Variance</li>
+<li>Variance %</li>
+</ul>
+<p><strong>Variance by Ingredient</strong></p>
+<ul>
+<li>Table columns:<ul>
+<li>Ingredient Name</li>
+<li>Theoretical Qty</li>
+<li>Actual Qty</li>
+<li>Variance Qty</li>
+<li>Variance %</li>
+<li>Value Impact</li>
+<li>Status (Over/Under/Normal)</li>
+</ul>
+</li>
+<li>Color-coded variance indicators</li>
+<li>Drill-down to transactions</li>
+</ul>
+<p><strong>Variance Analysis</strong></p>
+<ul>
+<li>Identify ingredients with high variance</li>
+<li>Possible causes (wastage, theft, recipe errors)</li>
+<li>Recommendations</li>
+</ul>
+<p><strong>Trend Charts</strong></p>
+<ul>
+<li>Variance trends over time</li>
+<li>By location</li>
+<li>By category</li>
+</ul>
+<p><strong>Investigation Tools</strong></p>
+<ul>
+<li>Filter by high variance threshold</li>
+<li>Analyze specific time periods</li>
+<li>Compare locations</li>
+<li>Export detailed transaction log</li>
+</ul>
+<hr>
+<h2 id="data-models">Data Models</h2>
+<h3 id="pos-transaction">POS Transaction</h3>
+<pre><code class="language-typescript">interface POSTransaction {
+  // Identity
+  id: string;
+  posTransactionId: string;
+  posSystemType: &#39;comanche&#39; | &#39;square&#39; | &#39;toast&#39; | &#39;custom&#39;;
+
+  // Transaction Details
+  transactionDate: Date;
+  locationId: string;
+  locationName: string;
+  terminalId?: string;
+  employeeId?: string;
+
+  // Items
+  items: POSTransactionItem[];
+
+  // Totals
+  subtotal: number;
+  tax: number;
+  discount: number;
+  total: number;
+  currency: string;
+
+  // Processing
+  status: &#39;success&#39; | &#39;failed&#39; | &#39;pending&#39; | &#39;processing&#39;;
+  syncedAt: Date;
+  errorMessage?: string;
+  retryCount: number;
+
+  // Inventory Impact
+  inventoryDeducted: boolean;
+  deductionApproved?: boolean;
+  approvedBy?: string;
+  approvedAt?: Date;
+
+  // Audit
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+interface POSTransactionItem {
+  id: string;
+  posItemId: string;
+  posItemName: string;
+  quantity: number;
+  unitPrice: number;
+  total: number;
+  modifiers?: POSModifier[];
+
+  // Mapping
+  recipeId?: string;
+  recipeName?: string;
+  isFractional: boolean;
+  fractionalDeduction?: {
+    baseRecipeId: string;
+    fractionalAmount: number; // e.g., 0.125 for 1/8
+    totalYield: number; // e.g., 8 slices
+  };
+
+  // Inventory
+  inventoryImpact?: IngredientDeduction[];
+}
+
+interface POSModifier {
+  id: string;
+  name: string;
+  price: number;
+  recipeId?: string; // If modifier has recipe
+}
+
+interface IngredientDeduction {
+  ingredientId: string;
+  ingredientName: string;
+  quantity: number;
+  unit: string;
+  cost: number;
+}
+</code></pre>
+<h3 id="pos-mapping">POS Mapping</h3>
+<pre><code class="language-typescript">interface RecipeMapping {
+  id: string;
+  posItemId: string;
+  posItemName: string;
+  posCategory?: string;
+
+  recipeId: string;
+  recipeName: string;
+
+  portionSize: number;
+  portionUnit: string;
+
+  isFractional: boolean;
+  fractionalConfig?: FractionalConfig;
+
+  costOverride?: number;
+
+  status: &#39;active&#39; | &#39;inactive&#39;;
+  autoMapped: boolean;
+  confidence?: number; // For AI suggestions
+
+  createdBy: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+interface FractionalConfig {
+  baseRecipeId: string;
+  totalYield: number;
+  fractionalUnit: string; // e.g., &quot;1/8 pizza&quot;
+  deductionLogic: &#39;fractional&#39; | &#39;threshold&#39; | &#39;batch&#39;;
+  roundingRule: &#39;nearest&#39; | &#39;ceiling&#39; | &#39;floor&#39;;
+  thresholdForFullUnit?: number; // e.g., 6 slices triggers full pizza deduction
+}
+
+interface UnitMapping {
+  id: string;
+  posUnit: string;
+  systemUnitId: string;
+  systemUnitName: string;
+  conversionFactor: number;
+  status: &#39;active&#39; | &#39;inactive&#39;;
+}
+
+interface LocationMapping {
+  id: string;
+  posLocationId: string;
+  posLocationName: string;
+  systemLocationId: string;
+  systemLocationName: string;
+  defaultDepartment?: string;
+  status: &#39;active&#39; | &#39;inactive&#39;;
+}
+</code></pre>
+<h3 id="pos-configuration">POS Configuration</h3>
+<pre><code class="language-typescript">interface POSConfiguration {
+  id: string;
+  organizationId: string;
+
+  // API Settings
+  posSystemType: &#39;comanche&#39; | &#39;square&#39; | &#39;toast&#39; | &#39;custom&#39;;
+  apiEndpoint: string;
+  apiKey: string; // Encrypted
+  apiVersion?: string;
+  connectionTimeout: number; // seconds
+
+  // Sync Settings
+  autoSyncEnabled: boolean;
+  syncFrequency: number; // minutes
+  syncTimeRange: number; // hours back
+  retryAttempts: number;
+  errorNotificationEmails: string[];
+
+  // Transaction Settings
+  batchSize: number;
+  includeVoidedTransactions: boolean;
+  includeRefunds: boolean;
+  minTransactionAmount?: number;
+
+  // Advanced
+  debugMode: boolean;
+  webhookUrl?: string;
+  customHeaders?: Record&lt;string, string&gt;;
+  verifySsl: boolean;
+
+  // Status
+  connectionStatus: &#39;connected&#39; | &#39;disconnected&#39; | &#39;error&#39;;
+  lastSync?: Date;
+  lastError?: string;
+
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+interface SystemSettings {
+  // Stock-out Approval
+  requireStockoutApproval: boolean;
+  autoApproveThreshold?: number;
+  approvalRoutingUserId?: string;
+  approvalRoutingRoleId?: string;
+
+  // Mapping Automation
+  autoCreateRecipes: boolean;
+  defaultCategory?: string;
+  requireManualReview: boolean;
+
+  // Notifications
+  emailNotificationsEnabled: boolean;
+  slackWebhookUrl?: string;
+  teamsWebhookUrl?: string;
+  notificationFrequency: &#39;immediate&#39; | &#39;daily_digest&#39;;
+
+  // Data Retention
+  transactionRetentionDays: number;
+  logRetentionDays: number;
+  autoArchive: boolean;
+}
+</code></pre>
+<hr>
+<h2 id="component-architecture">Component Architecture</h2>
+<h3 id="posintegrationdashboard">POSIntegrationDashboard</h3>
+<p><strong>File:</strong> <code>app/(main)/system-administration/system-integrations/pos/page.tsx</code></p>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>System status overview</li>
+<li>Quick action cards (Setup, Mapping, Operations, Reporting)</li>
+<li>Alert indicators</li>
+<li>Recent activity table</li>
+<li>Responsive grid layout</li>
+</ul>
+<h3 id="mappingdatatable">MappingDataTable</h3>
+<p><strong>File:</strong> <code>pos/mapping/components/data-table.tsx</code></p>
+<p><strong>Props</strong>:</p>
+<ul>
+<li><code>data</code>: Array of mapping items</li>
+<li><code>columns</code>: Column definitions</li>
+<li><code>filters</code>: Active filters</li>
+<li><code>onMapItem</code>: Mapping callback</li>
+<li><code>onBulkAction</code>: Bulk operation callback</li>
+</ul>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Sortable columns</li>
+<li>Advanced filtering</li>
+<li>Bulk selection</li>
+<li>Quick actions menu</li>
+<li>Export functionality</li>
+</ul>
+<h3 id="transactiondetaildrawer">TransactionDetailDrawer</h3>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Transaction header</li>
+<li>Line items table</li>
+<li>Inventory impact breakdown</li>
+<li>Error details</li>
+<li>Action buttons (retry, resolve)</li>
+<li>Audit trail</li>
+</ul>
+<h3 id="fractionalvariantmapper">FractionalVariantMapper</h3>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Base recipe selector</li>
+<li>Yield configuration</li>
+<li>POS variant mapping</li>
+<li>Deduction logic settings</li>
+<li>Preview calculations</li>
+</ul>
+<h3 id="grossprofitchart">GrossProfitChart</h3>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Recharts integration</li>
+<li>Category breakdown</li>
+<li>Trend visualization</li>
+<li>Interactive tooltips</li>
+<li>Export options</li>
+</ul>
+<hr>
+<h2 id="state-management">State Management</h2>
+<h3 id="useposstore-zustand">usePOSStore (Zustand)</h3>
+<pre><code class="language-typescript">interface POSStore {
+  // Configuration
+  configuration: POSConfiguration | null;
+  systemSettings: SystemSettings | null;
+
+  // Mappings
+  recipeMappings: RecipeMapping[];
+  unitMappings: UnitMapping[];
+  locationMappings: LocationMapping[];
+
+  // Transactions
+  transactions: POSTransaction[];
+  pendingApprovals: POSTransaction[];
+
+  // Status
+  connectionStatus: &#39;connected&#39; | &#39;disconnected&#39; | &#39;error&#39;;
+  lastSync: Date | null;
+  isLoading: boolean;
+
+  // Actions
+  fetchConfiguration: () =&gt; Promise&lt;void&gt;;
+  updateConfiguration: (config: Partial&lt;POSConfiguration&gt;) =&gt; Promise&lt;void&gt;;
+  testConnection: () =&gt; Promise&lt;boolean&gt;;
+
+  fetchMappings: (type: &#39;recipe&#39; | &#39;unit&#39; | &#39;location&#39;) =&gt; Promise&lt;void&gt;;
+  createMapping: (type: string, mapping: any) =&gt; Promise&lt;void&gt;;
+  updateMapping: (type: string, id: string, mapping: any) =&gt; Promise&lt;void&gt;;
+
+  fetchTransactions: (filters: any) =&gt; Promise&lt;void&gt;;
+  retryTransaction: (id: string) =&gt; Promise&lt;void&gt;;
+  approveStockout: (ids: string[], notes?: string) =&gt; Promise&lt;void&gt;;
+
+  triggerSync: () =&gt; Promise&lt;void&gt;;
+}
+</code></pre>
+<hr>
+<h2 id="api-integration">API Integration</h2>
+<h3 id="configuration-endpoints">Configuration Endpoints</h3>
+<pre><code class="language-http">GET /api/pos/configuration
+PUT /api/pos/configuration
+POST /api/pos/configuration/test-connection
+POST /api/pos/configuration/trigger-sync
+</code></pre>
+<h3 id="mapping-endpoints">Mapping Endpoints</h3>
+<pre><code class="language-http">GET /api/pos/mappings/recipes
+POST /api/pos/mappings/recipes
+PUT /api/pos/mappings/recipes/:id
+DELETE /api/pos/mappings/recipes/:id
+POST /api/pos/mappings/recipes/bulk
+POST /api/pos/mappings/recipes/import (CSV upload)
+GET /api/pos/mappings/recipes/export
+
+GET /api/pos/mappings/units
+POST /api/pos/mappings/units
+PUT /api/pos/mappings/units/:id
+
+GET /api/pos/mappings/locations
+POST /api/pos/mappings/locations
+PUT /api/pos/mappings/locations/:id
+</code></pre>
+<h3 id="transaction-endpoints">Transaction Endpoints</h3>
+<pre><code class="language-http">GET /api/pos/transactions
+GET /api/pos/transactions/:id
+POST /api/pos/transactions/:id/retry
+POST /api/pos/transactions/bulk-retry
+
+GET /api/pos/stockout-approvals
+POST /api/pos/stockout-approvals/approve
+POST /api/pos/stockout-approvals/reject
+</code></pre>
+<h3 id="reporting-endpoints">Reporting Endpoints</h3>
+<pre><code class="language-http">GET /api/pos/reports/gross-profit
+GET /api/pos/reports/consumption
+GET /api/pos/reports/sales-summary
+POST /api/pos/reports/export
+</code></pre>
+<hr>
+<h2 id="business-rules">Business Rules</h2>
+<h3 id="transaction-sync">Transaction Sync</h3>
+<ol>
+<li><strong>Sync Frequency</strong>: Configurable (default: every 15 minutes)</li>
+<li><strong>Batch Processing</strong>: Process in batches of 100 transactions</li>
+<li><strong>Retry Logic</strong>: 3 automatic retries with exponential backoff</li>
+<li><strong>Error Handling</strong>: Failed transactions logged and flagged for manual review</li>
+<li><strong>Duplicate Prevention</strong>: Transaction ID uniqueness check</li>
+</ol>
+<h3 id="inventory-deduction">Inventory Deduction</h3>
+<ol>
+<li><strong>Mapping Required</strong>: Only mapped items trigger inventory deduction</li>
+<li><strong>Approval Workflow</strong>: Optional approval for stock-outs above threshold</li>
+<li><strong>Fractional Handling</strong>: Automatic fractional deduction with rounding</li>
+<li><strong>Cost Calculation</strong>: Use recipe cost or cost override</li>
+<li><strong>Audit Trail</strong>: All deductions logged with transaction reference</li>
+</ol>
+<h3 id="fractional-sales">Fractional Sales</h3>
+<ol>
+<li><strong>Yield Validation</strong>: Total yield must be positive integer</li>
+<li><strong>Fractional Accuracy</strong>: Deductions accurate to 1/100th of unit</li>
+<li><strong>Threshold Deduction</strong>: Option to deduct full unit at threshold (e.g., 6/8 slices sold)</li>
+<li><strong>Rounding Rules</strong>: Configurable rounding (nearest, ceiling, floor)</li>
+<li><strong>Multi-Variant Support</strong>: Multiple POS items can map to same base recipe</li>
+</ol>
+<hr>
+<h2 id="user-guide">User Guide</h2>
+<h3 id="setting-up-pos-integration">Setting Up POS Integration</h3>
+<p><strong>Step 1: Configure API Connection</strong></p>
+<ol>
+<li>Navigate to Settings → POS Configuration</li>
+<li>Select POS system type</li>
+<li>Enter API endpoint and credentials</li>
+<li>Test connection</li>
+<li>Configure sync frequency</li>
+<li>Save configuration</li>
+</ol>
+<p><strong>Step 2: Map Locations</strong></p>
+<ol>
+<li>Navigate to Mapping → Locations</li>
+<li>View detected POS locations</li>
+<li>Map each POS location to system location</li>
+<li>Save mappings</li>
+</ol>
+<p><strong>Step 3: Map Units</strong></p>
+<ol>
+<li>Navigate to Mapping → Units</li>
+<li>Map POS units to system units</li>
+<li>Set conversion factors</li>
+<li>Test conversions</li>
+<li>Save mappings</li>
+</ol>
+<p><strong>Step 4: Map Recipes</strong></p>
+<ol>
+<li>Navigate to Mapping → Recipes</li>
+<li>Review unmapped POS items</li>
+<li>For each item:<ul>
+<li>Select matching recipe</li>
+<li>Set portion size</li>
+<li>Choose unit</li>
+</ul>
+</li>
+<li>Use auto-suggest for similar names</li>
+<li>Save mappings</li>
+</ol>
+<p><strong>Step 5: Configure Fractional Items</strong> (If applicable)</p>
+<ol>
+<li>Navigate to Mapping → Fractional Variants</li>
+<li>Select base recipe (e.g., Large Pizza)</li>
+<li>Set total yield (e.g., 8 slices)</li>
+<li>Map POS slice items</li>
+<li>Configure deduction logic</li>
+<li>Save variant configuration</li>
+</ol>
+<p><strong>Step 6: Enable Auto-Sync</strong></p>
+<ol>
+<li>Return to Settings → System Settings</li>
+<li>Enable auto-sync</li>
+<li>Set sync frequency</li>
+<li>Configure notifications</li>
+<li>Save settings</li>
+</ol>
+<h3 id="daily-operations">Daily Operations</h3>
+<p><strong>Reviewing Transactions</strong>:</p>
+<ol>
+<li>Navigate to Transactions</li>
+<li>Filter by date, location, status</li>
+<li>Review failed transactions</li>
+<li>Retry or resolve errors</li>
+</ol>
+<p><strong>Approving Stock-outs</strong>:</p>
+<ol>
+<li>Navigate to Stock-out Review</li>
+<li>Review pending approvals</li>
+<li>Check inventory impact</li>
+<li>Approve or reject</li>
+<li>Add approval notes</li>
+</ol>
+<p><strong>Monitoring Reports</strong>:</p>
+<ol>
+<li>Navigate to Reports</li>
+<li>Select report type</li>
+<li>Set date range and filters</li>
+<li>Review metrics</li>
+<li>Export data if needed</li>
+</ol>
+<hr>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="connection-issues">Connection Issues</h3>
+<p><strong>Issue</strong>: Cannot connect to POS system</p>
+<p><strong>Solutions</strong>:</p>
+<ul>
+<li>Verify API endpoint URL</li>
+<li>Check API credentials</li>
+<li>Ensure network connectivity</li>
+<li>Check firewall rules</li>
+<li>Verify SSL certificate (if applicable)</li>
+<li>Review error logs</li>
+</ul>
+<h3 id="mapping-issues">Mapping Issues</h3>
+<p><strong>Issue</strong>: POS items not appearing for mapping</p>
+<p><strong>Solutions</strong>:</p>
+<ul>
+<li>Trigger manual sync</li>
+<li>Check sync time range settings</li>
+<li>Verify POS API permissions</li>
+<li>Review sync logs for errors</li>
+</ul>
+<p><strong>Issue</strong>: Fractional deductions incorrect</p>
+<p><strong>Solutions</strong>:</p>
+<ul>
+<li>Verify total yield configuration</li>
+<li>Check fractional unit settings</li>
+<li>Review rounding rules</li>
+<li>Test with sample transactions</li>
+<li>Check audit trail</li>
+</ul>
+<h3 id="transaction-sync-issues">Transaction Sync Issues</h3>
+<p><strong>Issue</strong>: Transactions failing to sync</p>
+<p><strong>Solutions</strong>:</p>
+<ul>
+<li>Check transaction batch size</li>
+<li>Review error messages</li>
+<li>Verify mapping completeness</li>
+<li>Check for data format issues</li>
+<li>Retry failed transactions</li>
+<li>Contact support if persistent</li>
+</ul>
+<h3 id="inventory-deduction-issues">Inventory Deduction Issues</h3>
+<p><strong>Issue</strong>: Inventory not deducting</p>
+<p><strong>Solutions</strong>:</p>
+<ul>
+<li>Verify recipe mapping exists</li>
+<li>Check if approval required</li>
+<li>Review stock-out approval queue</li>
+<li>Ensure sufficient inventory</li>
+<li>Check inventory adjustment permissions</li>
+</ul>
+<hr>
+<h2 id="screenshots">Screenshots</h2>
+<p>See <a href="./screenshots/">screenshots directory</a> for visual examples.</p>
+<hr>
+<h2 id="related-documentation">Related Documentation</h2>
+<ul>
+<li><a href="./sub-features/settings/README.html">Settings Configuration</a></li>
+<li><a href="./sub-features/mapping/README.html">Mapping Management</a></li>
+<li><a href="./sub-features/reports/README.html">Reports &amp; Analytics</a></li>
+<li><a href="./sub-features/transactions/README.html">Transactions Management</a></li>
+<li><a href="../../api/pos-integration-api.html">POS Integration API</a></li>
+</ul>
+<hr>
+<p><strong>Last Updated:</strong> 2025-01-17<br><strong>Version:</strong> 1.0.0<br><strong>Status:</strong> Production Ready</p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#pos-integration" class="level-1">POS Integration</a>
+<a href="#overview" class="level-2">Overview</a>
+<a href="#key-capabilities" class="level-3">Key Capabilities</a>
+<a href="#supported-pos-systems" class="level-3">Supported POS Systems</a>
+<a href="#feature-architecture" class="level-2">Feature Architecture</a>
+<a href="#page-structure" class="level-2">Page Structure</a>
+<a href="#1-pos-integration-dashboard" class="level-3">1. POS Integration Dashboard</a>
+<a href="#2-pos-configuration" class="level-3">2. POS Configuration</a>
+<a href="#3-system-settings" class="level-3">3. System Settings</a>
+<a href="#4-recipe-mapping" class="level-3">4. Recipe Mapping</a>
+<a href="#5-fractional-variants-mapping" class="level-3">5. Fractional Variants Mapping</a>
+<a href="#6-unit-mapping" class="level-3">6. Unit Mapping</a>
+<a href="#7-location-mapping" class="level-3">7. Location Mapping</a>
+<a href="#8-transactions-view" class="level-3">8. Transactions View</a>
+<a href="#9-stock-out-review" class="level-3">9. Stock-out Review</a>
+<a href="#10-reports-home" class="level-3">10. Reports Home</a>
+<a href="#11-gross-profit-report" class="level-3">11. Gross Profit Report</a>
+<a href="#12-consumption-report" class="level-3">12. Consumption Report</a>
+<a href="#data-models" class="level-2">Data Models</a>
+<a href="#pos-transaction" class="level-3">POS Transaction</a>
+<a href="#pos-mapping" class="level-3">POS Mapping</a>
+<a href="#pos-configuration" class="level-3">POS Configuration</a>
+<a href="#component-architecture" class="level-2">Component Architecture</a>
+<a href="#posintegrationdashboard" class="level-3">POSIntegrationDashboard</a>
+<a href="#mappingdatatable" class="level-3">MappingDataTable</a>
+<a href="#transactiondetaildrawer" class="level-3">TransactionDetailDrawer</a>
+<a href="#fractionalvariantmapper" class="level-3">FractionalVariantMapper</a>
+<a href="#grossprofitchart" class="level-3">GrossProfitChart</a>
+<a href="#state-management" class="level-2">State Management</a>
+<a href="#useposstore-zustand" class="level-3">usePOSStore (Zustand)</a>
+<a href="#api-integration" class="level-2">API Integration</a>
+<a href="#configuration-endpoints" class="level-3">Configuration Endpoints</a>
+<a href="#mapping-endpoints" class="level-3">Mapping Endpoints</a>
+<a href="#transaction-endpoints" class="level-3">Transaction Endpoints</a>
+<a href="#reporting-endpoints" class="level-3">Reporting Endpoints</a>
+<a href="#business-rules" class="level-2">Business Rules</a>
+<a href="#transaction-sync" class="level-3">Transaction Sync</a>
+<a href="#inventory-deduction" class="level-3">Inventory Deduction</a>
+<a href="#fractional-sales" class="level-3">Fractional Sales</a>
+<a href="#user-guide" class="level-2">User Guide</a>
+<a href="#setting-up-pos-integration" class="level-3">Setting Up POS Integration</a>
+<a href="#daily-operations" class="level-3">Daily Operations</a>
+<a href="#troubleshooting" class="level-2">Troubleshooting</a>
+<a href="#connection-issues" class="level-3">Connection Issues</a>
+<a href="#mapping-issues" class="level-3">Mapping Issues</a>
+<a href="#transaction-sync-issues" class="level-3">Transaction Sync Issues</a>
+<a href="#inventory-deduction-issues" class="level-3">Inventory Deduction Issues</a>
+<a href="#screenshots" class="level-2">Screenshots</a>
+<a href="#related-documentation" class="level-2">Related Documentation</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Search Modal -->
+    <div class="search-modal" id="searchModal">
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchModalInput" placeholder="Search documentation..." autofocus>
+                    <button class="search-close-btn" id="searchCloseBtn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="search-results" id="searchResults">
+                <div class="search-empty">
+                    <i class="fas fa-search"></i>
+                    <p>Start typing to search...</p>
+                </div>
+            </div>
+            <div class="search-footer">
+                <div class="search-shortcuts">
+                    <kbd>↑↓</kbd> Navigate
+                    <kbd>Enter</kbd> Select
+                    <kbd>Esc</kbd> Close
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Search functionality
+        let searchIndex = [];
+        let selectedResultIndex = -1;
+
+        // Load search index
+        fetch('../../../search-index.json')
+            .then(res => res.json())
+            .then(data => {
+                searchIndex = data;
+                console.log('✓ Search index loaded:', searchIndex.length, 'entries');
+            })
+            .catch(err => console.error('❌ Failed to load search index:', err));
+
+        // Open search modal
+        function openSearchModal() {
+            console.log('🔍 Opening search modal...');
+            document.getElementById('searchModal').classList.add('active');
+            document.getElementById('searchModalInput').focus();
+            selectedResultIndex = -1;
+        }
+
+        // Close search modal
+        function closeSearchModal() {
+            document.getElementById('searchModal').classList.remove('active');
+            document.getElementById('searchModalInput').value = '';
+            document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-search"></i><p>Start typing to search...</p></div>';
+            selectedResultIndex = -1;
+        }
+
+        // Search function
+        function performSearch(query) {
+            console.log('🔎 Searching for:', query);
+
+            if (!query || query.length < 2) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-search"></i><p>Start typing to search...</p></div>';
+                return;
+            }
+
+            if (searchIndex.length === 0) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-exclamation-circle"></i><p>Search index not loaded</p></div>';
+                return;
+            }
+
+            const queryLower = query.toLowerCase();
+            const queryWords = queryLower.split(/s+/).filter(word => word.length > 1);
+
+            // Search and score results
+            const results = searchIndex
+                .map(entry => {
+                    let score = 0;
+
+                    // Title match (highest weight)
+                    if (entry.title.toLowerCase().includes(queryLower)) {
+                        score += 100;
+                    }
+                    queryWords.forEach(word => {
+                        if (entry.title.toLowerCase().includes(word)) score += 50;
+                    });
+
+                    // Content match
+                    if (entry.content.toLowerCase().includes(queryLower)) {
+                        score += 10;
+                    }
+                    queryWords.forEach(word => {
+                        if (entry.content.toLowerCase().includes(word)) score += 5;
+                    });
+
+                    return { ...entry, score };
+                })
+                .filter(result => result.score > 0)
+                .sort((a, b) => b.score - a.score)
+                .slice(0, 10); // Top 10 results
+
+            console.log('📊 Found', results.length, 'results');
+
+            // Display results
+            if (results.length === 0) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-times-circle"></i><p>No results found</p></div>';
+                return;
+            }
+
+            const resultsHtml = results.map((result, index) => {
+                const urlPath = '../../../' + result.url;
+                return '<a href="' + urlPath + '" class="search-result ' + (index === 0 ? 'selected' : '') + '" data-index="' + index + '">' +
+                    '<div class="result-title">' + result.title + '</div>' +
+                    '<div class="result-content">' + highlightMatch(result.content, query) + '</div>' +
+                    '</a>';
+            }).join('');
+
+            document.getElementById('searchResults').innerHTML = resultsHtml;
+            selectedResultIndex = 0;
+        }
+
+        // Highlight matching text
+        function highlightMatch(text, query) {
+            if (!text) return '';
+            const queryWords = query.split(/\s+/).join('|');
+            const regex = new RegExp('(' + queryWords + ')', 'gi');
+            return text.substring(0, 150).replace(regex, '<mark>$1</mark>') + '...';
+        }
+
+        // Navigate results with keyboard
+        function navigateResults(direction) {
+            const results = document.querySelectorAll('.search-result');
+            if (results.length === 0) return;
+
+            results[selectedResultIndex]?.classList.remove('selected');
+
+            if (direction === 'down') {
+                selectedResultIndex = (selectedResultIndex + 1) % results.length;
+            } else if (direction === 'up') {
+                selectedResultIndex = (selectedResultIndex - 1 + results.length) % results.length;
+            }
+
+            results[selectedResultIndex]?.classList.add('selected');
+            results[selectedResultIndex]?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+
+        // Select result
+        function selectResult() {
+            const selected = document.querySelector('.search-result.selected');
+            if (selected) {
+                window.location.href = selected.href;
+            }
+        }
+
+        // Event listeners
+        document.getElementById('headerSearchBtn')?.addEventListener('click', openSearchModal);
+        document.getElementById('searchCloseBtn')?.addEventListener('click', closeSearchModal);
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Ctrl+K or Cmd+K to open search
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                openSearchModal();
+            }
+
+            // Esc to close search
+            if (e.key === 'Escape' && document.getElementById('searchModal').classList.contains('active')) {
+                closeSearchModal();
+            }
+
+            // Navigate results
+            if (document.getElementById('searchModal').classList.contains('active')) {
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    navigateResults('down');
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    navigateResults('up');
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    selectResult();
+                }
+            }
+        });
+
+        // Search input
+        document.getElementById('searchModalInput')?.addEventListener('input', (e) => {
+            performSearch(e.target.value);
+        });
+
+        // Click outside to close
+        document.getElementById('searchModal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'searchModal') {
+                closeSearchModal();
+            }
+        });
+    </script>
+</body>
+</html>

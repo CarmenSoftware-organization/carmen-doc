@@ -1,0 +1,1863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goods Received Note Module - Detailed Component Documentation - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: #f8fafc;
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 15% 70% 15%;
+            gap: 0;
+            width: 100%;
+            padding: 1rem 0 2rem 0;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 1rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 2rem);
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-right: 1px solid var(--border-color);
+            padding-right: 2rem;
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 0.75rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+        .nav-subgroup {
+            margin: 0.5rem 0 0.5rem 0.5rem;
+        }
+        .nav-subgroup-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-subgroup-header:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .nav-subitems {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+            margin-left: 0.75rem;
+            margin-top: 0.25rem;
+        }
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 1rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 2rem);
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-left: 1px solid var(--border-color);
+            padding-left: 2rem;
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header - Modern Compact Design */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 52px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+        }
+        .header-content {
+            height: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--foreground);
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+        .logo:hover {
+            opacity: 0.8;
+        }
+        .logo i {
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+        .header-search-container {
+            display: flex;
+            align-items: center;
+        }
+        .header-search-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.375rem 0.75rem;
+            background: var(--secondary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.8125rem;
+            color: var(--muted-foreground);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            min-width: 180px;
+            flex-shrink: 0;
+        }
+        .header-search-btn:hover {
+            background: var(--background);
+            border-color: var(--primary);
+        }
+        .header-search-btn i {
+            color: var(--muted-foreground);
+            font-size: 0.875rem;
+        }
+        .header-search-btn span {
+            flex: 1;
+            text-align: left;
+        }
+        .header-search-btn kbd {
+            padding: 0.125rem 0.375rem;
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.6875rem;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--muted-foreground);
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        .back-to-home {
+            display: none; /* Hidden - navigation is sufficient */
+        }
+
+        /* Responsive Header */
+        @media (max-width: 768px) {
+            .header-search-btn {
+                min-width: auto;
+            }
+            .header-search-btn span {
+                display: none;
+            }
+        }
+
+        /* Search Modal */
+        .search-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            padding: 2rem;
+        }
+        .search-modal.active {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 10vh;
+        }
+        .search-modal-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 640px;
+            max-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            animation: slideDown 0.2s ease-out;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .search-modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .search-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .search-input-wrapper i {
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+        }
+        .search-input-wrapper input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 1.125rem;
+            color: var(--text-primary);
+        }
+        .search-close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .search-close-btn:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .search-results {
+            overflow-y: auto;
+            max-height: calc(70vh - 150px);
+        }
+        .search-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 2rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+        .search-empty i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        .search-result {
+            display: block;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+        .search-result:hover,
+        .search-result.selected {
+            background: var(--bg-secondary);
+        }
+        .search-result.selected {
+            border-left: 3px solid var(--primary-color);
+        }
+        .result-header {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .result-category {
+            font-size: 0.75rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .result-title {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        .result-badge {
+            display: inline-block;
+            padding: 0.125rem 0.5rem;
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-radius: 4px;
+            font-size: 0.6875rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        .result-content {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        .result-content mark {
+            background: rgba(79, 70, 229, 0.2);
+            color: var(--primary-color);
+            font-weight: 600;
+            padding: 0.125rem 0.25rem;
+            border-radius: 2px;
+        }
+        .search-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            border-bottom-left-radius: var(--border-radius-xl);
+            border-bottom-right-radius: var(--border-radius-xl);
+        }
+        .search-shortcuts {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        .search-shortcuts kbd {
+            padding: 0.25rem 0.5rem;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        /* Content Area */
+        .doc-content {
+            padding: 0 2rem;
+            width: 100%;
+            max-width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 0.9375rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Image Styles */
+        .doc-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 1.5rem auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Limit screenshot width to 80% for better readability */
+        .doc-content p > img {
+            max-width: 80%;
+        }
+
+        /* Table Styles */
+        .doc-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.875rem;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .doc-content table thead {
+            background: #f8fafc;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .doc-content table th {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #0f172a;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        .doc-content table td {
+            padding: 0.75rem 1rem;
+            border-top: 1px solid #e2e8f0;
+            color: #334155;
+        }
+
+        .doc-content table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        /* Table responsive wrapper */
+        .doc-content table {
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .doc-content table thead,
+        .doc-content table tbody,
+        .doc-content table tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 18% 64% 18%;
+                gap: 0;
+                padding: 1rem 0 1.5rem 0;
+            }
+            .doc-nav {
+                padding-right: 1.5rem;
+            }
+            .doc-toc {
+                padding-left: 1.5rem;
+            }
+            .doc-content {
+                padding: 0 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 0;
+                padding: 1rem 0 1.5rem 0;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 0 2rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                gap: 0;
+                padding: 0.5rem 0 1rem 0;
+            }
+            .doc-nav {
+                display: none;
+                border-right: none;
+            }
+            .doc-content {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="../../../index.html" class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </a>
+            <div class="doc-header-actions">
+                <div class="header-search-container">
+                    <button class="header-search-btn" id="headerSearchBtn">
+                        <i class="fas fa-search"></i>
+                        <span>Search documentation...</span>
+                        <kbd>Ctrl+K</kbd>
+                    </button>
+                </div>
+                <a href="../../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../01-overview/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Index</span>
+                    </a>
+                    <a href="../../../01-overview/business-value.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value & ROI</span>
+                    </a>
+                    <a href="../../../01-overview/tech-stack.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Technology Stack</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../02-architecture/system-architecture.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-database"></i>
+                    <span>Data Model</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../03-data-model/data-dictionary.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Data Dictionary</span>
+                    </a>
+                    <a href="../../../03-data-model/schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-th-large"></i>
+                    <span>Application Modules</span>
+                </div>
+                <div class="nav-items">
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Procurement</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/procurement/purchase-requests/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Purchase Requests</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/purchase-orders/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Purchase Orders</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/goods-received-notes/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Goods Received Notes</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/credit-notes/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Credit Notes</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/templates/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Templates</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-boxes"></i>
+                            <span>Inventory Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/inventory/stock-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Stock Management</span>
+                            </a>
+                            <a href="../../../04-modules/inventory/physical-count/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Physical Count</span>
+                            </a>
+                            <a href="../../../04-modules/inventory/spot-check/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Spot Check</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span>Finance</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/finance/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Finance Module</span>
+                            </a>
+                            <a href="../../../04-modules/finance/features/account-code-mapping/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Account Code Mapping</span>
+                            </a>
+                            <a href="../../../04-modules/finance/features/currency-and-rates/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Currency Management</span>
+                            </a>
+                            <a href="../../../04-modules/finance/features/departments/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Departments</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-handshake"></i>
+                            <span>Vendor Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/vendor-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Management</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Management Module</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/MANAGE-VENDORS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Manage Vendors</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/VENDOR-PORTAL.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Portal</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/CAMPAIGNS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Campaigns</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/PRICELISTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Pricelists</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/TEMPLATES.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Templates</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Sitemap</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/PAGES-AND-COMPONENTS-SPEC.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Pages & Components Spec</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/SHARED-COMPONENTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Shared Components</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-box"></i>
+                            <span>Product Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/product-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management</span>
+                            </a>
+                            <a href="../../../04-modules/product-management/product-management-specification.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management Specification</span>
+                            </a>
+                            <a href="../../../04-modules/product-management/product-management-sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management Sitemap</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-store"></i>
+                            <span>Store Operations</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../store-ops/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Operations</span>
+                            </a>
+                            <a href="../../../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Operations Module</span>
+                            </a>
+                            <a href="../../../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Requisitions</span>
+                            </a>
+                            <a href="../../../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Stock Replenishment</span>
+                            </a>
+                            <a href="../../../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Wastage Reporting</span>
+                            </a>
+                            <a href="../../../store-ops/SHARED-COMPONENTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Shared Components</span>
+                            </a>
+                            <a href="../../../store-ops/GLOSSARY.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Glossary</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-clipboard-list"></i>
+                            <span>Operational Planning</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../operational-planning/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Operational Planning</span>
+                            </a>
+                            <a href="../../../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Operational Planning Module</span>
+                            </a>
+                            <a href="../../../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Recipe Management</span>
+                            </a>
+                            <a href="../../../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Menu Engineering</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-cog"></i>
+                            <span>System Administration</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../sa/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>System Administration</span>
+                            </a>
+                            <a href="../../../sa/system-administration-sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>System Administration Sitemap</span>
+                            </a>
+                            <a href="../../../sa/features/permission-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Permission Management</span>
+                            </a>
+                            <a href="../../../sa/features/permission-management/specification.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Permission Specification</span>
+                            </a>
+                            <a href="../../../sa/features/location-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Location Management</span>
+                            </a>
+                            <a href="../../../sa/features/workflow/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Workflow</span>
+                            </a>
+                            <a href="../../../sa/features/pos-integration/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Reporting</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/reporting/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Reporting & Analytics</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../dashboard/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard</span>
+                            </a>
+                            <a href="../../../dashboard/sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard Sitemap</span>
+                            </a>
+                            <a href="../../../dashboard/components/components-overview.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Components Overview</span>
+                            </a>
+                            <a href="../../../dashboard/api/api-specifications.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>API Specifications</span>
+                            </a>
+                            <a href="../../../dashboard/business-logic/dashboard-business-rules.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard Business Rules</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-industry"></i>
+                            <span>Production</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/production/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Production</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-cash-register"></i>
+                            <span>POS Integration</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../pos-integration/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration</span>
+                            </a>
+                            <a href="../../../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration Module</span>
+                            </a>
+                            <a href="../../../pos-integration/MAPPING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Mapping</span>
+                            </a>
+                            <a href="../../../pos-integration/REPORTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Reports</span>
+                            </a>
+                            <a href="../../../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Transactions</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="goods-received-note-module-detailed-component-documentation">Goods Received Note Module - Detailed Component Documentation</h1>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#page-components">Page Components</a></li>
+<li><a href="#form-components">Form Components</a></li>
+<li><a href="#dialog-components">Dialog Components</a></li>
+<li><a href="#tab-components">Tab Components</a></li>
+<li><a href="#utility-components">Utility Components</a></li>
+<li><a href="#data-components">Data Components</a></li>
+<li><a href="#component-interactions">Component Interactions</a></li>
+</ol>
+<h2 id="page-components">Page Components</h2>
+<h3 id="1-goodsreceivednotepage">1. GoodsReceivedNotePage</h3>
+<p><strong>File:</strong> <code>app/(main)/procurement/goods-received-note/page.tsx</code></p>
+<p><strong>Purpose:</strong> Main landing page for GRN module with list management and creation workflows</p>
+<p><strong>Key Features:</strong></p>
+<ul>
+<li><strong>View Mode Toggle</strong>: Switch between table and card layouts</li>
+<li><strong>New GRN Dropdown</strong>: Dual creation paths (PO-based and manual)</li>
+<li><strong>Process Type Management</strong>: Handles creation workflow routing</li>
+<li><strong>Zustand Integration</strong>: Manages global GRN creation state</li>
+</ul>
+<p><strong>State Management:</strong></p>
+<pre><code class="language-typescript">const [processType, setProcessType] = useState&lt;&#39;po&#39; | &#39;manual&#39; | null&gt;(null)
+const [viewMode, setViewMode] = useState&lt;&#39;table&#39; | &#39;card&#39;&gt;(&#39;table&#39;)
+const { setNewlyCreatedGRNData } = useGRNCreationStore()
+</code></pre>
+<p><strong>Creation Flow Logic:</strong></p>
+<pre><code class="language-typescript">const handleProcessSelection = (type: &#39;po&#39; | &#39;manual&#39;) =&gt; {
+  setProcessType(type);
+  if (type === &#39;po&#39;) {
+    router.push(&#39;/procurement/goods-received-note/new/vendor-selection&#39;);
+  } else { // Manual creation
+    const tempId = `new-${uuidv4()}`;
+    const placeholderData: GoodsReceiveNote = {
+      id: tempId,
+      ref: &#39;NEW GRN&#39;,
+      // ... comprehensive placeholder structure
+    };
+    setNewlyCreatedGRNData(placeholderData);
+    router.push(`/procurement/goods-received-note/${tempId}?mode=confirm`);
+  }
+}
+</code></pre>
+<p><strong>Dropdown Menu Options:</strong></p>
+<ul>
+<li><strong>Create from Purchase Order</strong>: Initiates vendor selection workflow</li>
+<li><strong>Create Manually</strong>: Direct creation with placeholder data</li>
+</ul>
+<h3 id="2-vendorselectionpage">2. VendorSelectionPage</h3>
+<p><strong>File:</strong> <code>app/(main)/procurement/goods-received-note/new/vendor-selection/page.tsx</code></p>
+<p><strong>Purpose:</strong> Vendor selection interface for PO-based GRN creation</p>
+<p><strong>Key Features:</strong></p>
+<ul>
+<li><strong>Vendor Search</strong>: Real-time filtering by company name or registration number</li>
+<li><strong>Table Display</strong>: Business registration details and selection actions</li>
+<li><strong>Store Integration</strong>: Updates global creation state</li>
+</ul>
+<p><strong>State Management:</strong></p>
+<pre><code class="language-typescript">const [vendors, setVendors] = useState&lt;Vendor[]&gt;([])
+const [filteredVendors, setFilteredVendors] = useState&lt;Vendor[]&gt;([])
+const [searchTerm, setSearchTerm] = useState(&#39;&#39;)
+const [isLoading, setIsLoading] = useState(true)
+</code></pre>
+<p><strong>Search Implementation:</strong></p>
+<pre><code class="language-typescript">useEffect(() =&gt; {
+  const lowerCaseSearch = searchTerm.toLowerCase();
+  const results = vendors.filter(vendor =&gt;
+    (vendor.companyName?.toLowerCase() || &#39;&#39;).includes(lowerCaseSearch) ||
+    (vendor.businessRegistrationNumber?.toLowerCase() || &#39;&#39;).includes(lowerCaseSearch)
+  );
+  setFilteredVendors(results);
+}, [searchTerm, vendors]);
+</code></pre>
+<h3 id="3-poselectionpage">3. POSelectionPage</h3>
+<p><strong>File:</strong> <code>app/(main)/procurement/goods-received-note/new/po-selection/page.tsx</code></p>
+<p><strong>Purpose:</strong> Purchase Order selection for GRN item population</p>
+<p><strong>Key Features:</strong></p>
+<ul>
+<li><strong>Filtered PO Display</strong>: Shows only POs from selected vendor</li>
+<li><strong>Multi-selection Support</strong>: Choose multiple POs for consolidated GRN</li>
+<li><strong>Status Validation</strong>: Only available/partially received POs shown</li>
+<li><strong>Auto-calculation</strong>: Preview GRN totals from selected POs</li>
+</ul>
+<h3 id="4-grndetailpage">4. GRNDetailPage</h3>
+<p><strong>File:</strong> <code>app/(main)/procurement/goods-received-note/[id]/page.tsx</code></p>
+<p><strong>Purpose:</strong> Dynamic route handler for GRN detail operations</p>
+<p><strong>Responsibilities:</strong></p>
+<ul>
+<li>URL parameter parsing (<code>id</code> and <code>mode</code>)</li>
+<li>Data fetching based on GRN ID</li>
+<li>Mode determination and routing</li>
+<li>Error handling for invalid IDs</li>
+</ul>
+<p><strong>Route Patterns:</strong></p>
+<ul>
+<li><code>/goods-received-note/[id]</code> - View existing GRN</li>
+<li><code>/goods-received-note/[id]?mode=edit</code> - Edit mode</li>
+<li><code>/goods-received-note/new-[uuid]?mode=confirm</code> - Confirm new GRN</li>
+<li><code>/goods-received-note/[id]?mode=add</code> - Add mode</li>
+</ul>
+<h2 id="form-components">Form Components</h2>
+<h3 id="1-goodsreceivenotedetail-main-form-container">1. GoodsReceiveNoteDetail (Main Form Container)</h3>
+<p><strong>File:</strong> <code>components/GoodsReceiveNoteDetail.tsx</code></p>
+<p><strong>Purpose:</strong> Comprehensive GRN management interface with multi-mode support</p>
+<p><strong>Mode System:</strong></p>
+<pre><code class="language-typescript">export type GRNDetailMode = GoodsReceiveNoteMode | &#39;confirm&#39;;
+// Supports: &#39;view&#39; | &#39;edit&#39; | &#39;add&#39; | &#39;confirm&#39;
+</code></pre>
+<p><strong>Key State Management:</strong></p>
+<pre><code class="language-typescript">const [formData, setFormData] = useState&lt;GoodsReceiveNote&gt;(initialData)
+const [currentMode, setCurrentMode] = useState&lt;GRNDetailMode&gt;(mode)
+const [extraCosts, setExtraCosts] = useState&lt;ExtraCost[]&gt;([])
+const [selectedItems, setSelectedItems] = useState&lt;string[]&gt;([])
+const [expandedItems, setExpandedItems] = useState&lt;string[]&gt;([])
+const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
+const [isLoading, setIsLoading] = useState(false)
+</code></pre>
+<p><strong>Mode-Aware Behavior:</strong></p>
+<pre><code class="language-typescript">const isReadOnly = currentMode === &#39;view&#39; || currentMode === &#39;confirm&#39;;
+
+const handleModeChange = (newMode: GRNDetailMode) =&gt; {
+  setCurrentMode(newMode);
+  if (onModeChange) {
+    onModeChange(newMode);
+  }
+}
+</code></pre>
+<h3 id="2-header-information-form">2. Header Information Form</h3>
+<p><strong>Location:</strong> Within GoodsReceiveNoteDetail component</p>
+<p><strong>Field Structure:</strong></p>
+<pre><code class="language-typescript">// Grid Layout: 6 columns responsive
+&lt;div className=&quot;grid grid-cols-6 gap-6&quot;&gt;
+  {/* Row 1: Reference, Dates, Invoice Details */}
+  &lt;div className=&quot;space-y-2 col-span-1&quot;&gt;
+    &lt;Label htmlFor=&quot;ref&quot;&gt;Requisition&lt;/Label&gt;
+    &lt;Input id=&quot;ref&quot; readOnly value={formData.ref} /&gt;
+  &lt;/div&gt;
+
+  &lt;div className=&quot;space-y-2 col-span-1&quot;&gt;
+    &lt;Label htmlFor=&quot;date&quot;&gt;Date&lt;/Label&gt;
+    &lt;Input id=&quot;date&quot; type=&quot;date&quot; readOnly={isReadOnly}
+           value={formData.date ? format(new Date(formData.date), &#39;yyyy-MM-dd&#39;) : &#39;&#39;}
+           onChange={e =&gt; setFormData({...formData, date: new Date(e.target.value)})} /&gt;
+  &lt;/div&gt;
+
+  // ... additional fields
+&lt;/div&gt;
+</code></pre>
+<p><strong>Field Categories:</strong></p>
+<ul>
+<li><strong>Reference Fields</strong>: Requisition number (read-only)</li>
+<li><strong>Date Fields</strong>: GRN date, invoice date, tax invoice date</li>
+<li><strong>Invoice Fields</strong>: Invoice number, tax invoice number</li>
+<li><strong>Description</strong>: Multi-line text area</li>
+<li><strong>Selection Fields</strong>: Receiver, vendor, currency, cash book</li>
+<li><strong>Status Field</strong>: Current GRN status (read-only)</li>
+<li><strong>Flag Fields</strong>: Consignment, cash transaction checkboxes</li>
+</ul>
+<p><strong>Validation Rules:</strong></p>
+<ul>
+<li>Date fields use HTML5 date input with format validation</li>
+<li>Required fields: Date, vendor, receiver</li>
+<li>Conditional field enabling based on mode (isReadOnly)</li>
+<li>Real-time change tracking for unsaved changes indicator</li>
+</ul>
+<h3 id="3-item-detail-forms">3. Item Detail Forms</h3>
+<p><strong>File:</strong> <code>components/tabs/itemDetailForm.tsx</code></p>
+<p><strong>Purpose:</strong> Individual GRN item management</p>
+<p><strong>Field Structure:</strong></p>
+<ul>
+<li><strong>Product Information</strong>: Name, description, specifications</li>
+<li><strong>Quantity Management</strong>: Ordered, received, remaining quantities</li>
+<li><strong>Unit Handling</strong>: Order unit, base unit, conversion factors</li>
+<li><strong>Pricing</strong>: Unit price, subtotal, discounts, taxes</li>
+<li><strong>Status Tracking</strong>: Item status and PO reference</li>
+</ul>
+<p><strong>Calculation Logic:</strong></p>
+<pre><code class="language-typescript">// Auto-calculation of item totals
+const subTotalPrice = orderedQuantity * unitPrice;
+const discountAmount = subTotalPrice * (discountRate / 100);
+const netAmount = subTotalPrice - discountAmount;
+const taxAmount = netAmount * (taxRate / 100);
+const totalAmount = netAmount + taxAmount;
+</code></pre>
+<h2 id="dialog-components">Dialog Components</h2>
+<h3 id="1-new-grn-process-selection-dialog">1. New GRN Process Selection Dialog</h3>
+<p><strong>Purpose:</strong> Choose between PO-based and manual GRN creation</p>
+<p><strong>Interface Elements:</strong></p>
+<ul>
+<li><strong>Option Cards</strong>: Visual selection between creation methods</li>
+<li><strong>Process Type State</strong>: Tracks selected creation path</li>
+<li><strong>Routing Logic</strong>: Navigation to appropriate next step</li>
+</ul>
+<p><strong>User Flow:</strong></p>
+<ol>
+<li>Click &quot;New GRN&quot; button</li>
+<li>Dialog presents two options</li>
+<li>Selection triggers appropriate workflow</li>
+<li>Dialog closes and navigates to next step</li>
+</ol>
+<h3 id="2-item-addedit-dialogs">2. Item Add/Edit Dialogs</h3>
+<p><strong>Purpose:</strong> Manage individual GRN items</p>
+<p><strong>Add Item Dialog:</strong></p>
+<ul>
+<li><strong>Product Search</strong>: Searchable product catalog</li>
+<li><strong>Quantity Input</strong>: Ordered and received quantities</li>
+<li><strong>Pricing Setup</strong>: Unit price, discount, tax configuration</li>
+<li><strong>Validation</strong>: Required fields and business rules</li>
+</ul>
+<p><strong>Edit Item Dialog:</strong></p>
+<ul>
+<li><strong>Pre-populated Fields</strong>: Current item values</li>
+<li><strong>Change Tracking</strong>: Monitor modifications</li>
+<li><strong>Impact Calculation</strong>: Update totals on changes</li>
+</ul>
+<h3 id="3-bulk-actions-confirmation">3. Bulk Actions Confirmation</h3>
+<p><strong>Purpose:</strong> Confirm bulk operations on selected items</p>
+<p><strong>Actions Supported:</strong></p>
+<ul>
+<li><strong>Delete Items</strong>: Remove multiple items with confirmation</li>
+<li><strong>Mark as Received</strong>: Update quantities for multiple items</li>
+<li><strong>Update Pricing</strong>: Bulk price adjustments</li>
+<li><strong>Status Changes</strong>: Mass status updates</li>
+</ul>
+<h2 id="tab-components">Tab Components</h2>
+<h3 id="1-goodsreceivenoteitems">1. GoodsReceiveNoteItems</h3>
+<p><strong>File:</strong> <code>components/tabs/GoodsReceiveNoteItems.tsx</code></p>
+<p><strong>Purpose:</strong> Comprehensive item management interface</p>
+<p><strong>Key Features:</strong></p>
+<ul>
+<li><strong>Item Listing</strong>: Table view with sortable columns</li>
+<li><strong>Selection Management</strong>: Individual and bulk selection</li>
+<li><strong>Inline Editing</strong>: Direct item modification</li>
+<li><strong>Add Item Functionality</strong>: New item creation</li>
+<li><strong>Bulk Actions</strong>: Multi-item operations</li>
+</ul>
+<p><strong>State Integration:</strong></p>
+<pre><code class="language-typescript">interface GoodsReceiveNoteItemsProps {
+  mode: GRNDetailMode
+  items: GoodsReceiveNoteItem[]
+  onItemsChange: (items: GoodsReceiveNoteItem[]) =&gt; void
+  selectedItems: string[]
+  onItemSelect: (itemId: string, isSelected: boolean) =&gt; void
+  exchangeRate: number
+  baseCurrency: string
+  currency: string
+}
+</code></pre>
+<p><strong>Item Actions:</strong></p>
+<ul>
+<li><strong>Edit</strong>: Inline or popup editing</li>
+<li><strong>Delete</strong>: Individual item removal</li>
+<li><strong>Split</strong>: Divide quantities for partial receipts</li>
+<li><strong>Status Update</strong>: Change item status</li>
+</ul>
+<h3 id="2-extracoststab">2. ExtraCostsTab</h3>
+<p><strong>File:</strong> <code>components/tabs/ExtraCostsTab.tsx</code></p>
+<p><strong>Purpose:</strong> Additional cost management and allocation</p>
+<p><strong>Features:</strong></p>
+<ul>
+<li><strong>Cost Entry</strong>: Description, amount, currency</li>
+<li><strong>Allocation Methods</strong>: Even, weighted, manual distribution</li>
+<li><strong>Cost Preview</strong>: Impact on item costs</li>
+<li><strong>Real-time Updates</strong>: Automatic total recalculation</li>
+</ul>
+<p><strong>Allocation Types:</strong></p>
+<pre><code class="language-typescript">type AllocationType = &#39;even&#39; | &#39;weighted&#39; | &#39;manual&#39;
+
+interface ExtraCost {
+  id: string
+  description: string
+  amount: number
+  currency: string
+  allocationType: AllocationType
+  allocation: ExtraCostAllocation[]
+}
+</code></pre>
+<h3 id="3-stockmovementtab">3. StockMovementTab</h3>
+<p><strong>File:</strong> <code>components/tabs/StockMovementTab.tsx</code></p>
+<p><strong>Purpose:</strong> Inventory impact visualization and management</p>
+<p><strong>Components:</strong></p>
+<ul>
+<li><strong>Movement Summary</strong>: Overview of stock changes</li>
+<li><strong>Item Impact</strong>: Per-item inventory effects</li>
+<li><strong>Location Tracking</strong>: Stock movement between locations</li>
+<li><strong>Status Updates</strong>: Movement processing status</li>
+</ul>
+<p><strong>Stock Movement Display:</strong></p>
+<pre><code class="language-typescript">interface StockMovement {
+  id: string
+  itemId: string
+  productId: string
+  movementType: &#39;IN&#39; | &#39;OUT&#39; | &#39;TRANSFER&#39;
+  quantity: number
+  fromLocation?: string
+  toLocation: string
+  unitCost: number
+  totalCost: number
+  movementDate: Date
+  status: &#39;Pending&#39; | &#39;Processed&#39; | &#39;Cancelled&#39;
+}
+</code></pre>
+<h3 id="4-financialsummarytab">4. FinancialSummaryTab</h3>
+<p><strong>File:</strong> <code>components/tabs/FinancialSummaryTab.tsx</code></p>
+<p><strong>Purpose:</strong> Financial calculations and journal entry preview</p>
+<p><strong>Financial Display:</strong></p>
+<ul>
+<li><strong>Subtotals</strong>: Pre-tax amounts</li>
+<li><strong>Discounts</strong>: Total discount amounts</li>
+<li><strong>Tax Calculations</strong>: Tax breakdown by rate</li>
+<li><strong>Currency Conversion</strong>: Base currency equivalents</li>
+<li><strong>Journal Preview</strong>: Expected accounting entries</li>
+</ul>
+<p><strong>Calculation Engine:</strong></p>
+<pre><code class="language-typescript">const calculateFinancialSummary = (): FinancialSummary =&gt; {
+  const netAmount = formData.items.reduce((sum, item) =&gt; sum + item.netAmount, 0);
+  const taxAmount = formData.items.reduce((sum, item) =&gt; sum + item.taxAmount, 0);
+  const totalAmount = netAmount + taxAmount;
+  const exchangeRate = formData.exchangeRate || 1.2;
+
+  return {
+    id: formData.financialSummary?.id || &#39;temp-summary-1&#39;,
+    netAmount,
+    taxAmount,
+    totalAmount,
+    currency: formData.currency,
+    baseNetAmount: netAmount * exchangeRate,
+    baseTaxAmount: taxAmount * exchangeRate,
+    baseTotalAmount: totalAmount * exchangeRate,
+    baseCurrency: formData.baseCurrency || &#39;USD&#39;,
+    // ... journal entry details
+  };
+};
+</code></pre>
+<h2 id="utility-components">Utility Components</h2>
+<h3 id="1-goodsreceivenoteitemsbulkactions">1. GoodsReceiveNoteItemsBulkActions</h3>
+<p><strong>File:</strong> <code>components/tabs/GoodsReceiveNoteItemsBulkActions.tsx</code></p>
+<p><strong>Purpose:</strong> Bulk operations interface for selected items</p>
+<p><strong>Action Types:</strong></p>
+<ul>
+<li><strong>Delete Selected</strong>: Remove multiple items with confirmation</li>
+<li><strong>Mark as Received</strong>: Update received quantities</li>
+<li><strong>Apply Discount</strong>: Bulk discount application</li>
+<li><strong>Update Status</strong>: Mass status changes</li>
+</ul>
+<p><strong>Interface:</strong></p>
+<pre><code class="language-typescript">interface BulkActionsProps {
+  selectedItems: string[]
+  onBulkAction: (action: string) =&gt; void
+}
+</code></pre>
+<h3 id="2-summarytotal">2. SummaryTotal</h3>
+<p><strong>File:</strong> <code>components/SummaryTotal.tsx</code></p>
+<p><strong>Purpose:</strong> Financial summary display with real-time calculations</p>
+<p><strong>Features:</strong></p>
+<ul>
+<li><strong>Total Calculation</strong>: Sum of all items and extra costs</li>
+<li><strong>Currency Display</strong>: Primary and base currency amounts</li>
+<li><strong>Tax Breakdown</strong>: Detailed tax calculations</li>
+<li><strong>Exchange Rate Impact</strong>: Currency conversion effects</li>
+</ul>
+<p><strong>Display Format:</strong></p>
+<pre><code class="language-typescript">interface SummaryTotalProps {
+  poData: GoodsReceiveNote
+}
+
+// Displays:
+// - Subtotal (pre-discount)
+// - Discount Amount
+// - Net Amount
+// - Tax Amount
+// - Total Amount
+// - Base Currency Equivalents
+</code></pre>
+<h3 id="3-formfooter">3. FormFooter</h3>
+<p><strong>File:</strong> <code>@/components/ui/form-footer</code></p>
+<p><strong>Purpose:</strong> Consistent form action interface</p>
+<p><strong>Mode-Aware Actions:</strong></p>
+<ul>
+<li><strong>View Mode</strong>: Edit button</li>
+<li><strong>Edit Mode</strong>: Save, Cancel buttons</li>
+<li><strong>Confirm Mode</strong>: Custom action buttons</li>
+<li><strong>Loading States</strong>: Disabled buttons with spinners</li>
+</ul>
+<p><strong>Change Tracking:</strong></p>
+<pre><code class="language-typescript">&lt;FormFooter
+  mode={currentMode}
+  onSave={handleSave}
+  onCancel={handleCancelEdit}
+  onEdit={handleEditClick}
+  isLoading={isLoading}
+  hasChanges={hasUnsavedChanges}
+&gt;
+  {hasUnsavedChanges ? &#39;You have unsaved changes&#39; : &#39;No changes made&#39;}
+&lt;/FormFooter&gt;
+</code></pre>
+<h3 id="4-floatingactionmenu">4. FloatingActionMenu</h3>
+<p><strong>File:</strong> <code>@/components/ui/form-footer</code></p>
+<p><strong>Purpose:</strong> Context-specific floating action buttons</p>
+<p><strong>Visibility Rules:</strong></p>
+<pre><code class="language-typescript">&lt;FloatingActionMenu
+  visible={currentMode === &#39;confirm&#39; || (currentMode === &#39;view&#39; &amp;&amp; formData.status === &#39;Received&#39;)}
+  position=&quot;bottom-right&quot;
+  summary={{
+    title: currentMode === &#39;confirm&#39; ? &#39;Confirmation Required&#39; : &#39;GRN Status&#39;,
+    description: currentMode === &#39;confirm&#39;
+      ? &#39;Review all details before saving&#39;
+      : `Status: ${formData.status}`,
+    metadata: `${formData.items?.length || 0} items to process`
+  }}
+  actions={getFloatingActions()}
+/&gt;
+</code></pre>
+<p><strong>Context Actions:</strong></p>
+<ul>
+<li><strong>Confirm Mode</strong>: Edit Further, Confirm &amp; Save</li>
+<li><strong>View Mode</strong>: Delete, Send, Print, Export</li>
+</ul>
+<h2 id="data-components">Data Components</h2>
+<h3 id="1-grn-creation-store-zustand">1. GRN Creation Store (Zustand)</h3>
+<p><strong>File:</strong> <code>lib/store/grn-creation.store.ts</code></p>
+<p><strong>Purpose:</strong> Global state management for GRN creation workflow</p>
+<p><strong>Store Structure:</strong></p>
+<pre><code class="language-typescript">interface GRNCreationStore {
+  // State
+  selectedVendor: Vendor | null
+  selectedPOs: PurchaseOrder[]
+  currentStep: &#39;vendor-selection&#39; | &#39;po-selection&#39; | &#39;grn-creation&#39;
+  newlyCreatedGRNData: GoodsReceiveNote | null
+
+  // Actions
+  setSelectedVendor: (vendor: Vendor) =&gt; void
+  setSelectedPOs: (pos: PurchaseOrder[]) =&gt; void
+  setStep: (step: string) =&gt; void
+  setNewlyCreatedGRNData: (data: GoodsReceiveNote) =&gt; void
+  clearCreationData: () =&gt; void
+}
+</code></pre>
+<p><strong>Usage Pattern:</strong></p>
+<pre><code class="language-typescript">const {
+  selectedVendor,
+  setSelectedVendor,
+  setStep,
+  newlyCreatedGRNData,
+  setNewlyCreatedGRNData
+} = useGRNCreationStore()
+</code></pre>
+<h3 id="2-data-tables-and-lists">2. Data Tables and Lists</h3>
+<p><strong>Purpose:</strong> Display GRN and related data in structured formats</p>
+<p><strong>Table Components:</strong></p>
+<ul>
+<li><strong>GRN List Table</strong>: Main GRN listing with sorting and filtering</li>
+<li><strong>Vendor Selection Table</strong>: Vendor display with search</li>
+<li><strong>PO Selection Table</strong>: Purchase order selection interface</li>
+<li><strong>Item Management Table</strong>: GRN item listing and editing</li>
+</ul>
+<p><strong>Common Features:</strong></p>
+<ul>
+<li><strong>Sorting</strong>: Column-based sorting</li>
+<li><strong>Filtering</strong>: Search and filter capabilities</li>
+<li><strong>Pagination</strong>: Large dataset handling</li>
+<li><strong>Selection</strong>: Single and multi-select support</li>
+</ul>
+<h3 id="3-mock-data-integration">3. Mock Data Integration</h3>
+<p><strong>File:</strong> Various mock data files</p>
+<p><strong>Data Sources:</strong></p>
+<ul>
+<li><strong>Mock GRNs</strong>: Sample GRN data for development</li>
+<li><strong>Mock Vendors</strong>: Vendor information for selection</li>
+<li><strong>Mock Products</strong>: Product catalog for item creation</li>
+<li><strong>Mock Users</strong>: User data for receiver selection</li>
+</ul>
+<h2 id="component-interactions">Component Interactions</h2>
+<h3 id="data-flow-between-components">Data Flow Between Components</h3>
+<div class="mermaid">
+graph TD
+    A[GRN Landing Page] --> B[Creation Store]
+    A --> C[Vendor Selection]
+
+    C --> B
+    C --> D[PO Selection]
+
+    D --> B
+    D --> E[GRN Detail]
+
+    E --> F[Header Form]
+    E --> G[Items Tab]
+    E --> H[Extra Costs Tab]
+    E --> I[Stock Movement Tab]
+    E --> J[Financial Summary Tab]
+
+    G --> K[Item Detail Forms]
+    G --> L[Bulk Actions]
+
+    F --> M[Form Data State]
+    G --> M
+    H --> M
+
+    M --> N[Summary Total]
+    M --> O[Financial Calculations]
+
+    E --> P[Floating Actions]
+    E --> Q[Form Footer]
+
+    P --> R[Context Actions]
+    Q --> S[Standard Actions]
+
+</div>
+<h3 id="event-handling">Event Handling</h3>
+<p><strong>Parent-Child Communication:</strong></p>
+<ul>
+<li><strong>Props Drilling</strong>: Data and event handlers passed down</li>
+<li><strong>Callback Functions</strong>: Child components notify parents of changes</li>
+<li><strong>State Lifting</strong>: Shared state managed at appropriate levels</li>
+</ul>
+<p><strong>State Synchronization:</strong></p>
+<ul>
+<li><strong>Form Data Updates</strong>: Changes propagate through component tree</li>
+<li><strong>Financial Recalculation</strong>: Automatic totals update on item changes</li>
+<li><strong>Mode Changes</strong>: UI adaptation based on current mode</li>
+</ul>
+<p><strong>Navigation Events:</strong></p>
+<ul>
+<li><strong>Router Push</strong>: Programmatic navigation between pages</li>
+<li><strong>URL Parameters</strong>: Mode and state information in URL</li>
+<li><strong>Store Updates</strong>: Global state changes for cross-page data</li>
+</ul>
+<h3 id="error-handling">Error Handling</h3>
+<p><strong>Component-Level Errors:</strong></p>
+<ul>
+<li><strong>Form Validation</strong>: Field-level validation with error display</li>
+<li><strong>API Errors</strong>: Graceful handling of network failures</li>
+<li><strong>State Errors</strong>: Recovery from invalid state conditions</li>
+</ul>
+<p><strong>User Feedback:</strong></p>
+<ul>
+<li><strong>Loading States</strong>: Visual feedback during async operations</li>
+<li><strong>Success Messages</strong>: Confirmation of successful actions</li>
+<li><strong>Error Messages</strong>: Clear error communication and recovery options</li>
+</ul>
+<hr>
+<p><em>Generated on: Latest</em><br><em>Component Documentation Version: 1.0</em></p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#goods-received-note-module-detailed-component-documentation" class="level-1">Goods Received Note Module - Detailed Component Documentation</a>
+<a href="#table-of-contents" class="level-2">Table of Contents</a>
+<a href="#page-components" class="level-2">Page Components</a>
+<a href="#1-goodsreceivednotepage" class="level-3">1. GoodsReceivedNotePage</a>
+<a href="#2-vendorselectionpage" class="level-3">2. VendorSelectionPage</a>
+<a href="#3-poselectionpage" class="level-3">3. POSelectionPage</a>
+<a href="#4-grndetailpage" class="level-3">4. GRNDetailPage</a>
+<a href="#form-components" class="level-2">Form Components</a>
+<a href="#1-goodsreceivenotedetail-main-form-container" class="level-3">1. GoodsReceiveNoteDetail (Main Form Container)</a>
+<a href="#2-header-information-form" class="level-3">2. Header Information Form</a>
+<a href="#3-item-detail-forms" class="level-3">3. Item Detail Forms</a>
+<a href="#dialog-components" class="level-2">Dialog Components</a>
+<a href="#1-new-grn-process-selection-dialog" class="level-3">1. New GRN Process Selection Dialog</a>
+<a href="#2-item-addedit-dialogs" class="level-3">2. Item Add/Edit Dialogs</a>
+<a href="#3-bulk-actions-confirmation" class="level-3">3. Bulk Actions Confirmation</a>
+<a href="#tab-components" class="level-2">Tab Components</a>
+<a href="#1-goodsreceivenoteitems" class="level-3">1. GoodsReceiveNoteItems</a>
+<a href="#2-extracoststab" class="level-3">2. ExtraCostsTab</a>
+<a href="#3-stockmovementtab" class="level-3">3. StockMovementTab</a>
+<a href="#4-financialsummarytab" class="level-3">4. FinancialSummaryTab</a>
+<a href="#utility-components" class="level-2">Utility Components</a>
+<a href="#1-goodsreceivenoteitemsbulkactions" class="level-3">1. GoodsReceiveNoteItemsBulkActions</a>
+<a href="#2-summarytotal" class="level-3">2. SummaryTotal</a>
+<a href="#3-formfooter" class="level-3">3. FormFooter</a>
+<a href="#4-floatingactionmenu" class="level-3">4. FloatingActionMenu</a>
+<a href="#data-components" class="level-2">Data Components</a>
+<a href="#1-grn-creation-store-zustand" class="level-3">1. GRN Creation Store (Zustand)</a>
+<a href="#2-data-tables-and-lists" class="level-3">2. Data Tables and Lists</a>
+<a href="#3-mock-data-integration" class="level-3">3. Mock Data Integration</a>
+<a href="#component-interactions" class="level-2">Component Interactions</a>
+<a href="#data-flow-between-components" class="level-3">Data Flow Between Components</a>
+<a href="#event-handling" class="level-3">Event Handling</a>
+<a href="#error-handling" class="level-3">Error Handling</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Search Modal -->
+    <div class="search-modal" id="searchModal">
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchModalInput" placeholder="Search documentation..." autofocus>
+                    <button class="search-close-btn" id="searchCloseBtn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="search-results" id="searchResults">
+                <div class="search-empty">
+                    <i class="fas fa-search"></i>
+                    <p>Start typing to search...</p>
+                </div>
+            </div>
+            <div class="search-footer">
+                <div class="search-shortcuts">
+                    <kbd>↑↓</kbd> Navigate
+                    <kbd>Enter</kbd> Select
+                    <kbd>Esc</kbd> Close
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Search functionality
+        let searchIndex = [];
+        let selectedResultIndex = -1;
+
+        // Load search index
+        fetch('../../../search-index.json')
+            .then(res => res.json())
+            .then(data => {
+                searchIndex = data;
+                console.log('✓ Search index loaded:', searchIndex.length, 'entries');
+            })
+            .catch(err => console.error('❌ Failed to load search index:', err));
+
+        // Open search modal
+        function openSearchModal() {
+            console.log('🔍 Opening search modal...');
+            document.getElementById('searchModal').classList.add('active');
+            document.getElementById('searchModalInput').focus();
+            selectedResultIndex = -1;
+        }
+
+        // Close search modal
+        function closeSearchModal() {
+            document.getElementById('searchModal').classList.remove('active');
+            document.getElementById('searchModalInput').value = '';
+            document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-search"></i><p>Start typing to search...</p></div>';
+            selectedResultIndex = -1;
+        }
+
+        // Search function
+        function performSearch(query) {
+            console.log('🔎 Searching for:', query);
+
+            if (!query || query.length < 2) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-search"></i><p>Start typing to search...</p></div>';
+                return;
+            }
+
+            if (searchIndex.length === 0) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-exclamation-circle"></i><p>Search index not loaded</p></div>';
+                return;
+            }
+
+            const queryLower = query.toLowerCase();
+            const queryWords = queryLower.split(/s+/).filter(word => word.length > 1);
+
+            // Search and score results
+            const results = searchIndex
+                .map(entry => {
+                    let score = 0;
+
+                    // Title match (highest weight)
+                    if (entry.title.toLowerCase().includes(queryLower)) {
+                        score += 100;
+                    }
+                    queryWords.forEach(word => {
+                        if (entry.title.toLowerCase().includes(word)) score += 50;
+                    });
+
+                    // Content match
+                    if (entry.content.toLowerCase().includes(queryLower)) {
+                        score += 10;
+                    }
+                    queryWords.forEach(word => {
+                        if (entry.content.toLowerCase().includes(word)) score += 5;
+                    });
+
+                    return { ...entry, score };
+                })
+                .filter(result => result.score > 0)
+                .sort((a, b) => b.score - a.score)
+                .slice(0, 10); // Top 10 results
+
+            console.log('📊 Found', results.length, 'results');
+
+            // Display results
+            if (results.length === 0) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-times-circle"></i><p>No results found</p></div>';
+                return;
+            }
+
+            const resultsHtml = results.map((result, index) => {
+                const urlPath = '../../../' + result.url;
+                return '<a href="' + urlPath + '" class="search-result ' + (index === 0 ? 'selected' : '') + '" data-index="' + index + '">' +
+                    '<div class="result-title">' + result.title + '</div>' +
+                    '<div class="result-content">' + highlightMatch(result.content, query) + '</div>' +
+                    '</a>';
+            }).join('');
+
+            document.getElementById('searchResults').innerHTML = resultsHtml;
+            selectedResultIndex = 0;
+        }
+
+        // Highlight matching text
+        function highlightMatch(text, query) {
+            if (!text) return '';
+            const queryWords = query.split(/\s+/).join('|');
+            const regex = new RegExp('(' + queryWords + ')', 'gi');
+            return text.substring(0, 150).replace(regex, '<mark>$1</mark>') + '...';
+        }
+
+        // Navigate results with keyboard
+        function navigateResults(direction) {
+            const results = document.querySelectorAll('.search-result');
+            if (results.length === 0) return;
+
+            results[selectedResultIndex]?.classList.remove('selected');
+
+            if (direction === 'down') {
+                selectedResultIndex = (selectedResultIndex + 1) % results.length;
+            } else if (direction === 'up') {
+                selectedResultIndex = (selectedResultIndex - 1 + results.length) % results.length;
+            }
+
+            results[selectedResultIndex]?.classList.add('selected');
+            results[selectedResultIndex]?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+
+        // Select result
+        function selectResult() {
+            const selected = document.querySelector('.search-result.selected');
+            if (selected) {
+                window.location.href = selected.href;
+            }
+        }
+
+        // Event listeners
+        document.getElementById('headerSearchBtn')?.addEventListener('click', openSearchModal);
+        document.getElementById('searchCloseBtn')?.addEventListener('click', closeSearchModal);
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Ctrl+K or Cmd+K to open search
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                openSearchModal();
+            }
+
+            // Esc to close search
+            if (e.key === 'Escape' && document.getElementById('searchModal').classList.contains('active')) {
+                closeSearchModal();
+            }
+
+            // Navigate results
+            if (document.getElementById('searchModal').classList.contains('active')) {
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    navigateResults('down');
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    navigateResults('up');
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    selectResult();
+                }
+            }
+        });
+
+        // Search input
+        document.getElementById('searchModalInput')?.addEventListener('input', (e) => {
+            performSearch(e.target.value);
+        });
+
+        // Click outside to close
+        document.getElementById('searchModal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'searchModal') {
+                closeSearchModal();
+            }
+        });
+    </script>
+</body>
+</html>

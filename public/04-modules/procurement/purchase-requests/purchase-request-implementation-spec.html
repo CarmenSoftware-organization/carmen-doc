@@ -1,0 +1,1937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase Request Module - Implementation Specification - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: #f8fafc;
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 15% 70% 15%;
+            gap: 0;
+            width: 100%;
+            padding: 1rem 0 2rem 0;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 1rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 2rem);
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-right: 1px solid var(--border-color);
+            padding-right: 2rem;
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 0.75rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+        .nav-subgroup {
+            margin: 0.5rem 0 0.5rem 0.5rem;
+        }
+        .nav-subgroup-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-subgroup-header:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .nav-subitems {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+            margin-left: 0.75rem;
+            margin-top: 0.25rem;
+        }
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 1rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 2rem);
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-left: 1px solid var(--border-color);
+            padding-left: 2rem;
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header - Modern Compact Design */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 52px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+        }
+        .header-content {
+            height: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--foreground);
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+        .logo:hover {
+            opacity: 0.8;
+        }
+        .logo i {
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+        .header-search-container {
+            display: flex;
+            align-items: center;
+        }
+        .header-search-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.375rem 0.75rem;
+            background: var(--secondary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.8125rem;
+            color: var(--muted-foreground);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            min-width: 180px;
+            flex-shrink: 0;
+        }
+        .header-search-btn:hover {
+            background: var(--background);
+            border-color: var(--primary);
+        }
+        .header-search-btn i {
+            color: var(--muted-foreground);
+            font-size: 0.875rem;
+        }
+        .header-search-btn span {
+            flex: 1;
+            text-align: left;
+        }
+        .header-search-btn kbd {
+            padding: 0.125rem 0.375rem;
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.6875rem;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--muted-foreground);
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        .back-to-home {
+            display: none; /* Hidden - navigation is sufficient */
+        }
+
+        /* Responsive Header */
+        @media (max-width: 768px) {
+            .header-search-btn {
+                min-width: auto;
+            }
+            .header-search-btn span {
+                display: none;
+            }
+        }
+
+        /* Search Modal */
+        .search-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            padding: 2rem;
+        }
+        .search-modal.active {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 10vh;
+        }
+        .search-modal-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 640px;
+            max-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            animation: slideDown 0.2s ease-out;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .search-modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .search-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .search-input-wrapper i {
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+        }
+        .search-input-wrapper input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 1.125rem;
+            color: var(--text-primary);
+        }
+        .search-close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .search-close-btn:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .search-results {
+            overflow-y: auto;
+            max-height: calc(70vh - 150px);
+        }
+        .search-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 2rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+        .search-empty i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        .search-result {
+            display: block;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+        .search-result:hover,
+        .search-result.selected {
+            background: var(--bg-secondary);
+        }
+        .search-result.selected {
+            border-left: 3px solid var(--primary-color);
+        }
+        .result-header {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .result-category {
+            font-size: 0.75rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .result-title {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        .result-badge {
+            display: inline-block;
+            padding: 0.125rem 0.5rem;
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-radius: 4px;
+            font-size: 0.6875rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        .result-content {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        .result-content mark {
+            background: rgba(79, 70, 229, 0.2);
+            color: var(--primary-color);
+            font-weight: 600;
+            padding: 0.125rem 0.25rem;
+            border-radius: 2px;
+        }
+        .search-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            border-bottom-left-radius: var(--border-radius-xl);
+            border-bottom-right-radius: var(--border-radius-xl);
+        }
+        .search-shortcuts {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        .search-shortcuts kbd {
+            padding: 0.25rem 0.5rem;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        /* Content Area */
+        .doc-content {
+            padding: 0 2rem;
+            width: 100%;
+            max-width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 0.9375rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Image Styles */
+        .doc-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 1.5rem auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Limit screenshot width to 80% for better readability */
+        .doc-content p > img {
+            max-width: 80%;
+        }
+
+        /* Table Styles */
+        .doc-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.875rem;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .doc-content table thead {
+            background: #f8fafc;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .doc-content table th {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #0f172a;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        .doc-content table td {
+            padding: 0.75rem 1rem;
+            border-top: 1px solid #e2e8f0;
+            color: #334155;
+        }
+
+        .doc-content table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        /* Table responsive wrapper */
+        .doc-content table {
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .doc-content table thead,
+        .doc-content table tbody,
+        .doc-content table tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 18% 64% 18%;
+                gap: 0;
+                padding: 1rem 0 1.5rem 0;
+            }
+            .doc-nav {
+                padding-right: 1.5rem;
+            }
+            .doc-toc {
+                padding-left: 1.5rem;
+            }
+            .doc-content {
+                padding: 0 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 0;
+                padding: 1rem 0 1.5rem 0;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 0 2rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                gap: 0;
+                padding: 0.5rem 0 1rem 0;
+            }
+            .doc-nav {
+                display: none;
+                border-right: none;
+            }
+            .doc-content {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="../../../index.html" class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </a>
+            <div class="doc-header-actions">
+                <div class="header-search-container">
+                    <button class="header-search-btn" id="headerSearchBtn">
+                        <i class="fas fa-search"></i>
+                        <span>Search documentation...</span>
+                        <kbd>Ctrl+K</kbd>
+                    </button>
+                </div>
+                <a href="../../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../01-overview/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Index</span>
+                    </a>
+                    <a href="../../../01-overview/business-value.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value & ROI</span>
+                    </a>
+                    <a href="../../../01-overview/tech-stack.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Technology Stack</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../02-architecture/system-architecture.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-database"></i>
+                    <span>Data Model</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../03-data-model/data-dictionary.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Data Dictionary</span>
+                    </a>
+                    <a href="../../../03-data-model/schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-th-large"></i>
+                    <span>Application Modules</span>
+                </div>
+                <div class="nav-items">
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Procurement</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/procurement/purchase-requests/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Purchase Requests</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/purchase-orders/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Purchase Orders</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/goods-received-notes/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Goods Received Notes</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/credit-notes/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Credit Notes</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/templates/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Templates</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-boxes"></i>
+                            <span>Inventory Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/inventory/stock-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Stock Management</span>
+                            </a>
+                            <a href="../../../04-modules/inventory/physical-count/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Physical Count</span>
+                            </a>
+                            <a href="../../../04-modules/inventory/spot-check/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Spot Check</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span>Finance</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/finance/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Finance Module</span>
+                            </a>
+                            <a href="../../../04-modules/finance/features/account-code-mapping/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Account Code Mapping</span>
+                            </a>
+                            <a href="../../../04-modules/finance/features/currency-and-rates/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Currency Management</span>
+                            </a>
+                            <a href="../../../04-modules/finance/features/departments/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Departments</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-handshake"></i>
+                            <span>Vendor Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/vendor-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Management</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Management Module</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/MANAGE-VENDORS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Manage Vendors</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/VENDOR-PORTAL.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Portal</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/CAMPAIGNS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Campaigns</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/PRICELISTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Pricelists</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/TEMPLATES.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Templates</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Sitemap</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/PAGES-AND-COMPONENTS-SPEC.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Pages & Components Spec</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/SHARED-COMPONENTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Shared Components</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-box"></i>
+                            <span>Product Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/product-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management</span>
+                            </a>
+                            <a href="../../../04-modules/product-management/product-management-specification.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management Specification</span>
+                            </a>
+                            <a href="../../../04-modules/product-management/product-management-sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management Sitemap</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-store"></i>
+                            <span>Store Operations</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../store-ops/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Operations</span>
+                            </a>
+                            <a href="../../../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Operations Module</span>
+                            </a>
+                            <a href="../../../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Requisitions</span>
+                            </a>
+                            <a href="../../../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Stock Replenishment</span>
+                            </a>
+                            <a href="../../../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Wastage Reporting</span>
+                            </a>
+                            <a href="../../../store-ops/SHARED-COMPONENTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Shared Components</span>
+                            </a>
+                            <a href="../../../store-ops/GLOSSARY.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Glossary</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-clipboard-list"></i>
+                            <span>Operational Planning</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../operational-planning/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Operational Planning</span>
+                            </a>
+                            <a href="../../../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Operational Planning Module</span>
+                            </a>
+                            <a href="../../../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Recipe Management</span>
+                            </a>
+                            <a href="../../../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Menu Engineering</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-cog"></i>
+                            <span>System Administration</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../sa/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>System Administration</span>
+                            </a>
+                            <a href="../../../sa/system-administration-sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>System Administration Sitemap</span>
+                            </a>
+                            <a href="../../../sa/features/permission-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Permission Management</span>
+                            </a>
+                            <a href="../../../sa/features/permission-management/specification.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Permission Specification</span>
+                            </a>
+                            <a href="../../../sa/features/location-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Location Management</span>
+                            </a>
+                            <a href="../../../sa/features/workflow/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Workflow</span>
+                            </a>
+                            <a href="../../../sa/features/pos-integration/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Reporting</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/reporting/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Reporting & Analytics</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../dashboard/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard</span>
+                            </a>
+                            <a href="../../../dashboard/sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard Sitemap</span>
+                            </a>
+                            <a href="../../../dashboard/components/components-overview.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Components Overview</span>
+                            </a>
+                            <a href="../../../dashboard/api/api-specifications.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>API Specifications</span>
+                            </a>
+                            <a href="../../../dashboard/business-logic/dashboard-business-rules.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard Business Rules</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-industry"></i>
+                            <span>Production</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/production/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Production</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-cash-register"></i>
+                            <span>POS Integration</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../pos-integration/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration</span>
+                            </a>
+                            <a href="../../../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration Module</span>
+                            </a>
+                            <a href="../../../pos-integration/MAPPING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Mapping</span>
+                            </a>
+                            <a href="../../../pos-integration/REPORTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Reports</span>
+                            </a>
+                            <a href="../../../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Transactions</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="purchase-request-module-implementation-specification">Purchase Request Module - Implementation Specification</h1>
+<h2 id="implementation-overview">Implementation Overview</h2>
+<p><strong>Document Type</strong>: Technical Implementation Specification<br><strong>Module</strong>: Purchase Request Management System<br><strong>Implementation Phase</strong>: MVP Development<br><strong>Target Completion</strong>: Q1 2024</p>
+<p>This document provides detailed implementation guidance for developers building the Purchase Request module, focusing on architectural patterns, design decisions, implementation strategies, and best practices. Rather than providing specific code examples, this specification emphasizes the reasoning behind technical decisions, implementation patterns, and strategic approaches that ensure scalable, maintainable, and performant software delivery.</p>
+<h2 id="visual-system-reference">Visual System Reference</h2>
+<h3 id="purchase-request-list-implementation">Purchase Request List Implementation</h3>
+<p><img src="./purchase-request-list-view.png" alt="Purchase Request List View"></p>
+<p><em>Reference implementation showing data table patterns, filtering controls, status indicators, and responsive design principles used throughout the system.</em></p>
+<h3 id="purchase-request-detail-implementation">Purchase Request Detail Implementation</h3>
+<p><img src="./purchase-request-detail-view.png" alt="Purchase Request Detail View"></p>
+<p><em>Implementation example demonstrating tab-based navigation, workflow status indicators, data formatting, and interactive table components with expandable rows.</em></p>
+<h3 id="purchase-request-creation-form">Purchase Request Creation Form</h3>
+<p><img src="./purchase-request-creation-form.png" alt="Purchase Request Creation Form"></p>
+<p><em>Reference for form interfaces showing validation feedback, multi-step workflows, and user input patterns.</em></p>
+<h2 id="architecture-implementation">Architecture Implementation</h2>
+<h3 id="1-technology-stack-implementation">1. Technology Stack Implementation</h3>
+<h4>1.1 Frontend Architecture Strategy</h4>
+<p><strong>Framework Selection Rationale</strong></p>
+<ul>
+<li>Next.js 14 with App Router provides server-side rendering capabilities and optimal performance for large-scale applications</li>
+<li>React 18 enables concurrent features and improved user experience through progressive hydration</li>
+<li>TypeScript ensures type safety across the entire codebase and reduces runtime errors</li>
+</ul>
+<p><strong>Styling and Component Strategy</strong></p>
+<ul>
+<li>Tailwind CSS provides utility-first approach for consistent design implementation</li>
+<li>shadcn/ui components offer accessible, customizable building blocks that maintain design system consistency</li>
+<li>Component composition pattern ensures reusability and maintainability</li>
+</ul>
+<p><strong>Form Management Philosophy</strong></p>
+<ul>
+<li>React Hook Form minimizes re-renders and provides performant form handling</li>
+<li>Zod validation ensures runtime type safety and provides clear validation error messages</li>
+<li>Schema-driven approach enables sharing validation logic between frontend and backend</li>
+</ul>
+<p><strong>State Management Architecture</strong></p>
+<ul>
+<li>React Query handles server state with intelligent caching and background synchronization</li>
+<li>Zustand manages client-side UI state with minimal boilerplate</li>
+<li>Context API provides user authentication and permission state across components</li>
+</ul>
+<h4>1.2 Backend Integration Strategy</h4>
+<p><strong>API Communication Patterns</strong></p>
+<ul>
+<li>RESTful endpoints with consistent HTTP status codes and error handling</li>
+<li>Request/response interceptors for authentication token management and error processing</li>
+<li>Optimistic updates for immediate UI feedback with automatic rollback on failures</li>
+</ul>
+<p><strong>Authentication and Authorization Approach</strong></p>
+<ul>
+<li>JWT tokens for stateless authentication with automatic refresh mechanisms</li>
+<li>Role-based access control implemented at both route and component levels</li>
+<li>Permission checks integrated into UI components to hide/show functionality based on user roles</li>
+</ul>
+<p><strong>Data Validation Strategy</strong></p>
+<ul>
+<li>Shared validation schemas between frontend and backend ensure consistency</li>
+<li>Client-side validation provides immediate feedback while server-side validation ensures data integrity</li>
+<li>Progressive validation approach validates fields as users interact with forms</li>
+</ul>
+<p><strong>Error Handling Philosophy</strong></p>
+<ul>
+<li>Centralized error boundaries catch and handle unexpected errors gracefully</li>
+<li>User-friendly error messages with actionable recovery suggestions</li>
+<li>Automatic retry mechanisms for transient network errors</li>
+</ul>
+<p><strong>Real-time Communication</strong></p>
+<ul>
+<li>WebSocket integration for instant notifications and status updates</li>
+<li>Polling fallback for environments where WebSockets are not supported</li>
+<li>Event-driven architecture for workflow state changes and approvals</li>
+</ul>
+<h3 id="2-file-structure-implementation-strategy">2. File Structure Implementation Strategy</h3>
+<h4>2.1 Directory Organization Philosophy</h4>
+<p><strong>Route-Based Organization</strong></p>
+<ul>
+<li>Next.js App Router structure with nested routes for intuitive navigation</li>
+<li>Dynamic routes ([id]) for parameterized pages like detail views</li>
+<li>Co-located loading and error components for enhanced user experience</li>
+<li>Separate creation routes for dedicated purchase request creation workflows</li>
+</ul>
+<p><strong>Component Categorization Strategy</strong></p>
+<ul>
+<li>List components handle data display, filtering, and bulk operations</li>
+<li>Detail components manage individual purchase request viewing and editing</li>
+<li>Form components provide reusable input handling with validation</li>
+<li>Modal components offer overlay functionality for supplementary actions</li>
+<li>Tab components organize complex information into digestible sections</li>
+</ul>
+<p><strong>Business Logic Organization</strong></p>
+<ul>
+<li>Custom hooks encapsulate component logic and provide reusable functionality</li>
+<li>Service layer abstracts API communication and business operations</li>
+<li>Type definitions ensure consistency across the entire module</li>
+<li>Utility functions provide pure, testable business logic</li>
+</ul>
+<h4>2.2 Component Architecture Principles</h4>
+<p><strong>Separation of Concerns</strong></p>
+<ul>
+<li>Presentation components focus solely on UI rendering</li>
+<li>Container components handle state management and business logic</li>
+<li>Service components manage external API communication</li>
+<li>Utility components provide reusable helper functionality</li>
+</ul>
+<p><strong>Dependency Management</strong></p>
+<ul>
+<li>Clear import/export patterns with barrel exports for cleaner imports</li>
+<li>Dependency injection pattern for testability and flexibility</li>
+<li>Interface-driven development for loose coupling between components</li>
+<li>Props-based composition for maximum reusability</li>
+</ul>
+<p><strong>Performance Considerations</strong></p>
+<ul>
+<li>Lazy loading for heavy components and modals</li>
+<li>Code splitting at the route level for optimal bundle sizes</li>
+<li>Memoization strategies for expensive calculations and rendering</li>
+<li>Virtual scrolling for large data sets</li>
+</ul>
+<h3 id="3-component-implementation-patterns">3. Component Implementation Patterns</h3>
+<h4>3.1 Page Component Architecture</h4>
+<p><strong>Route Component Responsibilities</strong></p>
+<ul>
+<li>Parameter extraction from URL segments and query strings for dynamic routing</li>
+<li>Initial data fetching using custom hooks with proper loading and error states</li>
+<li>Permission checking based on user role and purchase request ownership</li>
+<li>Error boundary implementation for graceful error handling</li>
+<li>Mode detection for view/edit state management</li>
+</ul>
+<p><strong>State Management Strategy</strong></p>
+<ul>
+<li>URL-driven state for navigation and deep linking capabilities</li>
+<li>React Query for server state management with automatic caching</li>
+<li>Local state for UI interactions that don&#39;t require persistence</li>
+<li>Permission state derived from user context and data ownership</li>
+</ul>
+<p><strong>Error Handling Approach</strong></p>
+<ul>
+<li>Nested error boundaries to catch errors at different component levels</li>
+<li>Fallback UI components for various error states (network, permission, not found)</li>
+<li>User-friendly error messages with actionable recovery suggestions</li>
+<li>Automatic retry mechanisms for transient failures</li>
+</ul>
+<p><strong>Loading State Management</strong></p>
+<ul>
+<li>Skeleton components for content areas during data fetching</li>
+<li>Progressive loading for different sections of complex pages</li>
+<li>Optimistic updates for immediate user feedback during mutations</li>
+<li>Suspense integration for code-split components</li>
+</ul>
+<h4>3.2 Form Component Design Philosophy</h4>
+<p><strong>Form State Management Strategy</strong></p>
+<ul>
+<li>React Hook Form integration for performant form handling with minimal re-renders</li>
+<li>Zod schema validation for type-safe form validation with runtime checking</li>
+<li>Default value initialization based on templates or existing data for editing scenarios</li>
+<li>Real-time validation feedback with debounced field validation</li>
+</ul>
+<p><strong>Validation Implementation Approach</strong></p>
+<ul>
+<li>Progressive validation that validates fields as users interact with them</li>
+<li>Cross-field validation for complex business rules (budget allocation matching total amounts)</li>
+<li>Async validation for external dependencies (vendor verification, budget code validation)</li>
+<li>Client-side validation with server-side validation as backup for data integrity</li>
+</ul>
+<p><strong>User Experience Considerations</strong></p>
+<ul>
+<li>Auto-save functionality for draft purchase requests to prevent data loss</li>
+<li>Dynamic form sections that appear based on user selections or data requirements</li>
+<li>Intelligent field pre-population based on user history and preferences</li>
+<li>Clear visual feedback for validation errors with actionable correction guidance</li>
+</ul>
+<p><strong>Data Flow Management</strong></p>
+<ul>
+<li>Controlled components for form inputs with proper state synchronization</li>
+<li>Optimistic updates for immediate user feedback during form submission</li>
+<li>Rollback mechanisms for failed submissions with preserved user input</li>
+<li>Integration with global state for user preferences and default values</li>
+</ul>
+<p><strong>Accessibility Implementation</strong></p>
+<ul>
+<li>Proper ARIA labels and descriptions for screen reader compatibility</li>
+<li>Keyboard navigation support for all form elements</li>
+<li>Focus management for modal forms and multi-step workflows</li>
+<li>High contrast support and proper color coding for validation states</li>
+</ul>
+<h4>3.3 Custom Hook Architecture</h4>
+<p><strong>Data Fetching Hook Design</strong></p>
+<ul>
+<li>Query key standardization for consistent cache management across components</li>
+<li>Intelligent stale time configuration based on data volatility and user interaction patterns</li>
+<li>Conditional query execution based on required parameters and user permissions</li>
+<li>Background refetching strategies for keeping data fresh without disrupting user experience</li>
+</ul>
+<p><strong>Mutation Hook Strategy</strong></p>
+<ul>
+<li>Optimistic update patterns for immediate UI feedback during data modifications</li>
+<li>Cache invalidation strategies that maintain data consistency across related queries</li>
+<li>Error handling with automatic retry for transient failures and user notification for permanent errors</li>
+<li>Success callback integration for navigation and user feedback management</li>
+</ul>
+<p><strong>State Synchronization Approach</strong></p>
+<ul>
+<li>Manual cache updates for predictable data changes to avoid unnecessary network requests</li>
+<li>Intelligent query invalidation that only refetches affected data</li>
+<li>Relationship management between related data entities (purchase requests, vendors, items)</li>
+<li>Cache warming strategies for anticipated user navigation patterns</li>
+</ul>
+<p><strong>Performance Optimization Techniques</strong></p>
+<ul>
+<li>Debounced queries for search and filter operations to reduce API calls</li>
+<li>Pagination support with infinite scroll capabilities for large data sets</li>
+<li>Selective data fetching to minimize payload sizes and improve response times</li>
+<li>Background synchronization for offline-first functionality</li>
+</ul>
+<p><strong>Business Logic Integration</strong></p>
+<ul>
+<li>Permission checking integrated into data fetching hooks for security</li>
+<li>Role-based data filtering at the hook level for appropriate data access</li>
+<li>Workflow state management with automatic status polling for real-time updates</li>
+<li>Integration with notification systems for workflow events and status changes</li>
+</ul>
+<h3 id="4-state-management-implementation-strategy">4. State Management Implementation Strategy</h3>
+<h4>4.1 React Query Configuration Approach</h4>
+<p><strong>Cache Management Philosophy</strong></p>
+<ul>
+<li>Intelligent stale time configuration based on data volatility and business requirements</li>
+<li>Differentiated cache times for various data types (user data vs. transactional data)</li>
+<li>Strategic cache invalidation that balances data freshness with performance</li>
+<li>Background refetching to keep frequently accessed data current</li>
+</ul>
+<p><strong>Error Handling and Retry Logic</strong></p>
+<ul>
+<li>Conditional retry strategies based on error types and HTTP status codes</li>
+<li>Exponential backoff for transient network errors to avoid overwhelming servers</li>
+<li>Immediate failure for client errors (4xx) that won&#39;t resolve with retries</li>
+<li>User notification integration for permanent failures requiring manual intervention</li>
+</ul>
+<p><strong>Performance Optimization Strategies</strong></p>
+<ul>
+<li>Query deduplication to prevent multiple identical requests</li>
+<li>Selective query invalidation to minimize unnecessary network requests</li>
+<li>Intelligent prefetching for anticipated user navigation patterns</li>
+<li>Memory management for large data sets with appropriate garbage collection</li>
+</ul>
+<h4>4.2 UI State Management Architecture</h4>
+<p><strong>Client State Separation Strategy</strong></p>
+<ul>
+<li>Clear separation between server state (React Query) and client UI state (Zustand)</li>
+<li>Persistent UI preferences stored in local storage for user experience continuity</li>
+<li>Temporary UI state for modal management and user interactions</li>
+<li>Global UI state for cross-component communication and shared user preferences</li>
+</ul>
+<p><strong>State Structure Design Philosophy</strong></p>
+<ul>
+<li>Flat state structure for optimal performance and predictable updates</li>
+<li>Normalized state for complex nested data relationships</li>
+<li>Immutable update patterns to ensure proper re-rendering and state consistency</li>
+<li>Action-based state modifications for clear state transition tracking</li>
+</ul>
+<p><strong>Modal and Overlay Management</strong></p>
+<ul>
+<li>Centralized modal state management for consistent user experience</li>
+<li>Context-aware modal data passing for dynamic content rendering</li>
+<li>Stack-based modal management for nested overlay scenarios</li>
+<li>Focus management and keyboard navigation for accessibility compliance</li>
+</ul>
+<p><strong>Filter and Search State Management</strong></p>
+<ul>
+<li>URL synchronization for shareable filter states and deep linking</li>
+<li>Debounced filter application to balance responsiveness with performance</li>
+<li>Filter history for improved user experience and quick access to common filters</li>
+<li>Real-time filter feedback with loading states during data fetching</li>
+</ul>
+<p><strong>Selection and Bulk Operation State</strong></p>
+<ul>
+<li>Efficient selection state management for large data sets</li>
+<li>Cross-page selection persistence during pagination</li>
+<li>Bulk operation state with progress tracking and error handling</li>
+<li>Undo functionality for accidental bulk operations</li>
+</ul>
+<h3 id="5-service-layer-implementation-architecture">5. Service Layer Implementation Architecture</h3>
+<h4>5.1 API Service Design Patterns</h4>
+<p><strong>Service Abstraction Philosophy</strong></p>
+<ul>
+<li>Clean separation between API communication logic and business components</li>
+<li>Consistent interface patterns across all service modules for predictable usage</li>
+<li>Error handling abstraction that provides meaningful error messages to components</li>
+<li>Request/response transformation to normalize data formats between frontend and backend</li>
+</ul>
+<p><strong>HTTP Client Configuration</strong></p>
+<ul>
+<li>Centralized HTTP client with request/response interceptors for consistent handling</li>
+<li>Authentication token management with automatic refresh mechanisms</li>
+<li>Request timeout configuration appropriate for different operation types</li>
+<li>Response data normalization to ensure consistent data structures</li>
+</ul>
+<p><strong>Parameter Handling Strategy</strong></p>
+<ul>
+<li>URL parameter encoding for complex filter objects and search criteria</li>
+<li>Query string optimization to minimize URL length while maintaining functionality</li>
+<li>Type-safe parameter validation to prevent runtime errors</li>
+<li>Default parameter handling for common use cases and user preferences</li>
+</ul>
+<p><strong>CRUD Operation Patterns</strong></p>
+<ul>
+<li>Standardized method signatures across all entity services for consistency</li>
+<li>Partial update support for efficient data modification without full object replacement</li>
+<li>Bulk operation support with progress tracking and partial failure handling</li>
+<li>Optimistic locking for concurrent modification prevention</li>
+</ul>
+<p><strong>Workflow Integration Approach</strong></p>
+<ul>
+<li>Dedicated workflow methods that encapsulate business logic for state transitions</li>
+<li>Action validation to ensure only permitted transitions based on current state and user permissions</li>
+<li>Audit trail integration for compliance and tracking requirements</li>
+<li>Real-time notification triggers for workflow events and status changes</li>
+</ul>
+<h4>5.2 Workflow Engine Implementation Strategy</h4>
+<p><strong>Business Rule Engine Design</strong></p>
+<ul>
+<li>Configurable approval thresholds that can be modified without code changes</li>
+<li>Multi-criteria decision making based on amount, department, urgency, and item types</li>
+<li>Conditional routing logic that adapts to organizational structure changes</li>
+<li>Exception handling for special cases and emergency approvals</li>
+</ul>
+<p><strong>State Transition Management</strong></p>
+<ul>
+<li>Finite state machine implementation for predictable workflow progression</li>
+<li>Validation rules that prevent invalid state transitions and maintain data integrity</li>
+<li>Rollback capabilities for correcting workflow errors and handling disputes</li>
+<li>Audit logging for compliance and tracking of all workflow decisions</li>
+</ul>
+<p><strong>Permission-Based Action Filtering</strong></p>
+<ul>
+<li>Dynamic action availability based on user roles and current purchase request state</li>
+<li>Context-aware permissions that consider ownership, delegation, and temporary assignments</li>
+<li>Hierarchical approval chains with automatic escalation for time-sensitive requests</li>
+<li>Cross-departmental approval routing for complex organizational structures</li>
+</ul>
+<p><strong>Workflow Automation Features</strong></p>
+<ul>
+<li>Timer-based automatic escalation for requests that exceed approval timeframes</li>
+<li>Notification triggers for stakeholders at each workflow stage transition</li>
+<li>Batch approval capabilities for routine, low-value purchase requests</li>
+<li>Integration with external approval systems and document management platforms</li>
+</ul>
+<p><strong>Workflow Analytics and Monitoring</strong></p>
+<ul>
+<li>Performance metrics tracking for approval times and bottleneck identification</li>
+<li>Workflow efficiency analysis with recommendations for process improvement</li>
+<li>Exception reporting for requests that require manual intervention</li>
+<li>Historical workflow data for compliance auditing and process optimization</li>
+</ul>
+<h3 id="6-validation-implementation-strategy">6. Validation Implementation Strategy</h3>
+<h4>6.1 Schema-Driven Validation Architecture</h4>
+<p><strong>Type-Safe Validation Philosophy</strong></p>
+<ul>
+<li>Runtime type checking using Zod schemas to ensure data integrity across client and server</li>
+<li>Compile-time type generation from validation schemas for consistent TypeScript types</li>
+<li>Centralized validation rules that can be shared between frontend and backend systems</li>
+<li>Progressive validation that provides immediate feedback during user input</li>
+</ul>
+<p><strong>Field-Level Validation Rules</strong></p>
+<ul>
+<li>String field validation with appropriate length limits and format requirements</li>
+<li>Numeric field validation with business-appropriate ranges and precision constraints</li>
+<li>Date validation with business logic for required dates and deadline constraints</li>
+<li>Enum validation for controlled vocabularies and status fields</li>
+</ul>
+<p><strong>Cross-Field Validation Logic</strong></p>
+<ul>
+<li>Budget allocation validation ensuring totals match line item amounts</li>
+<li>Business rule validation for organizational policies and approval thresholds</li>
+<li>Dependency validation between related fields (vendor selection affects pricing)</li>
+<li>Conditional validation based on user roles and request characteristics</li>
+</ul>
+<p><strong>Custom Validation Rules</strong></p>
+<ul>
+<li>Regular expression patterns for reference number formats and identifiers</li>
+<li>Business logic validation for workflow transitions and state changes</li>
+<li>External validation for vendor codes, budget codes, and organizational references</li>
+<li>Asynchronous validation for duplicate checking and external system integration</li>
+</ul>
+<p><strong>Error Message Strategy</strong></p>
+<ul>
+<li>User-friendly error messages with clear guidance for correction</li>
+<li>Contextual validation messages that explain business rules and requirements</li>
+<li>Field-specific error highlighting with accessible color and icon indicators</li>
+<li>Summary validation messages for form-level errors and complex validation failures</li>
+</ul>
+<h3 id="7-testing-implementation-strategy">7. Testing Implementation Strategy</h3>
+<h4>7.1 Component Testing Philosophy</h4>
+<p><strong>Testing Library Integration Approach</strong></p>
+<ul>
+<li>User-centric testing that focuses on behavior rather than implementation details</li>
+<li>Accessibility-driven test queries using roles, labels, and text content</li>
+<li>Real user interaction simulation with proper event handling and timing</li>
+<li>Mock-free testing where possible to ensure realistic component behavior</li>
+</ul>
+<p><strong>Test Environment Setup Strategy</strong></p>
+<ul>
+<li>Provider wrapper patterns for context providers and query clients</li>
+<li>Test-specific configuration that disables retries and other production behaviors</li>
+<li>Mock data factories for consistent and maintainable test scenarios</li>
+<li>Cleanup utilities to ensure test isolation and prevent state leakage</li>
+</ul>
+<p><strong>Component Testing Patterns</strong></p>
+<ul>
+<li>Rendering tests that verify proper component structure and content display</li>
+<li>Interaction tests that simulate user workflows and verify expected outcomes</li>
+<li>Validation testing that confirms form validation rules and error handling</li>
+<li>State management testing that verifies proper state updates and side effects</li>
+</ul>
+<p><strong>Assertion Strategies</strong></p>
+<ul>
+<li>Behavior-focused assertions that verify user-visible outcomes</li>
+<li>Accessibility assertions using screen reader compatible queries</li>
+<li>Async assertion patterns with proper waiting for state changes</li>
+<li>Snapshot testing for complex component structures with careful maintenance</li>
+</ul>
+<p><strong>Mock Management Philosophy</strong></p>
+<ul>
+<li>Minimal mocking to preserve realistic component behavior and integration</li>
+<li>Service layer mocking to isolate component logic from external dependencies</li>
+<li>User event mocking that accurately simulates real user interactions</li>
+<li>Time-based mocking for testing time-sensitive features and workflows</li>
+</ul>
+<h4>7.2 Custom Hook Testing Strategy</h4>
+<p><strong>Hook Testing Methodology</strong></p>
+<ul>
+<li>Isolated hook testing that focuses on hook logic without component dependencies</li>
+<li>Provider pattern testing that ensures proper context integration</li>
+<li>State transition testing that verifies hook behavior across different states</li>
+<li>Side effect testing that confirms proper cleanup and dependency management</li>
+</ul>
+<p><strong>Mock Strategy for External Dependencies</strong></p>
+<ul>
+<li>Service layer mocking to control API responses and error conditions</li>
+<li>Timer mocking for testing debounced operations and time-based logic</li>
+<li>Browser API mocking for local storage, network status, and other web APIs</li>
+<li>React Query testing utilities for cache management and query state verification</li>
+</ul>
+<p><strong>Async Hook Testing Patterns</strong></p>
+<ul>
+<li>Loading state verification during asynchronous operations</li>
+<li>Success state testing with proper data transformation and caching</li>
+<li>Error state testing with various error types and recovery mechanisms</li>
+<li>Race condition testing for concurrent operations and request cancellation</li>
+</ul>
+<p><strong>Hook Integration Testing</strong></p>
+<ul>
+<li>Multi-hook interaction testing for complex state dependencies</li>
+<li>Context provider integration testing for global state management</li>
+<li>Custom hook composition testing for reusable hook patterns</li>
+<li>Performance testing for expensive operations and memoization effectiveness</li>
+</ul>
+<p><strong>Test Data Management</strong></p>
+<ul>
+<li>Mock data factories for consistent and varied test scenarios</li>
+<li>Edge case data generation for boundary testing and error conditions</li>
+<li>Realistic data patterns that reflect actual usage scenarios</li>
+<li>Test data versioning for maintaining consistency across test suites</li>
+</ul>
+<h4>7.3 End-to-End Testing Strategy</h4>
+<p><strong>User Journey Testing Philosophy</strong></p>
+<ul>
+<li>Complete workflow testing that simulates real user scenarios from start to finish</li>
+<li>Role-based testing that verifies different user permissions and access levels</li>
+<li>Cross-browser testing to ensure consistent functionality across different environments</li>
+<li>Mobile and responsive testing for optimal user experience on all devices</li>
+</ul>
+<p><strong>Test Environment Management</strong></p>
+<ul>
+<li>Isolated test databases with predictable data states for consistent test results</li>
+<li>User authentication setup with test accounts for different roles and permissions</li>
+<li>Mock external services to eliminate dependencies on third-party systems</li>
+<li>Test data seeding for complex scenarios and edge cases</li>
+</ul>
+<p><strong>Page Object Model Implementation</strong></p>
+<ul>
+<li>Reusable page objects that encapsulate UI interactions and element selectors</li>
+<li>Component-based page objects that match the application&#39;s component architecture</li>
+<li>Action-based methods that focus on user workflows rather than technical implementation</li>
+<li>Assertion helpers that provide meaningful error messages and debugging information</li>
+</ul>
+<p><strong>Workflow Testing Patterns</strong></p>
+<ul>
+<li>Purchase request creation workflows with various templates and configurations</li>
+<li>Approval workflow testing with different approval paths and decision points</li>
+<li>Bulk operation testing for efficiency and error handling verification</li>
+<li>Integration testing between related modules and external systems</li>
+</ul>
+<p><strong>Visual and Accessibility Testing</strong></p>
+<ul>
+<li>Screenshot comparison testing for visual regression detection</li>
+<li>Accessibility testing with automated tools and manual verification</li>
+<li>Performance testing for page load times and user interaction responsiveness</li>
+<li>Cross-device testing for responsive design and mobile functionality</li>
+</ul>
+<p><strong>Error Scenario Testing</strong></p>
+<ul>
+<li>Network failure simulation and recovery testing</li>
+<li>Validation error testing with various invalid input combinations</li>
+<li>Permission error testing for unauthorized access attempts</li>
+<li>System error testing for graceful degradation and error recovery</li>
+</ul>
+<h3 id="8-performance-implementation-strategy">8. Performance Implementation Strategy</h3>
+<h4>8.1 Code Splitting and Lazy Loading Architecture</h4>
+<p><strong>Dynamic Import Strategy</strong></p>
+<ul>
+<li>Route-level code splitting for optimal initial bundle size and faster page loads</li>
+<li>Component-level lazy loading for heavy components that are not immediately visible</li>
+<li>Modal and overlay lazy loading to defer loading until user interaction requires them</li>
+<li>Feature-based code splitting for optional functionality and advanced features</li>
+</ul>
+<p><strong>Suspense Integration Patterns</strong></p>
+<ul>
+<li>Loading fallback components that provide immediate visual feedback during module loading</li>
+<li>Error boundary integration for graceful handling of code splitting failures</li>
+<li>Progressive loading strategies that prioritize critical content over supplementary features</li>
+<li>Preloading strategies for anticipated user interactions and navigation patterns</li>
+</ul>
+<p><strong>Bundle Optimization Techniques</strong></p>
+<ul>
+<li>Tree shaking configuration to eliminate unused dependencies and reduce bundle size</li>
+<li>Dynamic imports with proper chunk naming for better caching and debugging</li>
+<li>Library splitting to leverage browser caching for stable third-party dependencies</li>
+<li>Critical path optimization to ensure essential functionality loads first</li>
+</ul>
+<h4>8.2 React Performance Optimization Strategy</h4>
+<p><strong>Component Memoization Philosophy</strong></p>
+<ul>
+<li>Strategic use of React.memo for components that receive stable props and render expensive content</li>
+<li>Careful consideration of memoization overhead versus actual performance benefits</li>
+<li>Props comparison strategies to ensure memoization effectiveness</li>
+<li>Component splitting to maximize memoization benefits for specific component sections</li>
+</ul>
+<p><strong>Hook Optimization Patterns</strong></p>
+<ul>
+<li>useMemo for expensive calculations that depend on specific dependencies</li>
+<li>useCallback for event handlers passed to child components to prevent unnecessary re-renders</li>
+<li>Custom hook memoization for complex business logic and derived state calculations</li>
+<li>Dependency array optimization to minimize unnecessary recalculations</li>
+</ul>
+<p><strong>Render Optimization Techniques</strong></p>
+<ul>
+<li>Stable key props for list rendering to optimize React&#39;s reconciliation process</li>
+<li>Component composition patterns that minimize prop drilling and context usage</li>
+<li>State co-location to prevent unnecessary parent component re-renders</li>
+<li>Virtualization for large lists and data tables to manage DOM node count</li>
+</ul>
+<p><strong>Memory Management Strategy</strong></p>
+<ul>
+<li>Cleanup functions for subscriptions, timers, and event listeners to prevent memory leaks</li>
+<li>Proper dependency management to avoid closure-related memory retention</li>
+<li>Image and asset optimization with appropriate sizing and format selection</li>
+<li>Cache management strategies that balance performance with memory usage</li>
+</ul>
+<h4>8.3 Large Data Set Optimization Strategy</h4>
+<p><strong>Virtualization Implementation Philosophy</strong></p>
+<ul>
+<li>Virtual scrolling for lists exceeding 100 items to maintain consistent DOM performance</li>
+<li>Dynamic item sizing for variable content heights while maintaining smooth scrolling</li>
+<li>Viewport-based rendering that only creates DOM nodes for visible items</li>
+<li>Buffer zone implementation to provide smooth scrolling experience with slight content preloading</li>
+</ul>
+<p><strong>Pagination and Infinite Loading Patterns</strong></p>
+<ul>
+<li>Server-side pagination with appropriate page sizes based on user interaction patterns</li>
+<li>Infinite scroll implementation with intersection observer for automatic data loading</li>
+<li>Search result pagination with proper state management and URL synchronization</li>
+<li>Load more patterns for user-controlled data fetching with clear progress indicators</li>
+</ul>
+<p><strong>Data Fetching Optimization</strong></p>
+<ul>
+<li>Background data prefetching for anticipated user navigation and interactions</li>
+<li>Incremental data loading that prioritizes essential information over supplementary details</li>
+<li>Query batching to reduce network requests and improve perceived performance</li>
+<li>Cache-first strategies that leverage previously fetched data for immediate display</li>
+</ul>
+<p><strong>Search and Filter Performance</strong></p>
+<ul>
+<li>Debounced search input to balance responsiveness with API request frequency</li>
+<li>Client-side filtering for small data sets with server-side filtering for large collections</li>
+<li>Filter state optimization that minimizes unnecessary data refetching</li>
+<li>Search result highlighting with efficient string matching algorithms</li>
+</ul>
+<h3 id="9-implementation-best-practices-summary">9. Implementation Best Practices Summary</h3>
+<h4>9.1 Development Workflow Guidelines</h4>
+<p><strong>Code Quality Standards</strong></p>
+<ul>
+<li>TypeScript strict mode enforcement for comprehensive type safety</li>
+<li>ESLint and Prettier integration for consistent code formatting and style</li>
+<li>Pre-commit hooks for automated testing and quality checks</li>
+<li>Code review processes that emphasize maintainability and performance</li>
+</ul>
+<p><strong>Testing Integration Strategy</strong></p>
+<ul>
+<li>Test-driven development approach for critical business logic and workflows</li>
+<li>Continuous integration testing with automated test execution on code changes</li>
+<li>Coverage requirements that ensure adequate testing without obsessing over arbitrary metrics</li>
+<li>Performance testing integration for regression detection and optimization verification</li>
+</ul>
+<p><strong>Documentation and Knowledge Sharing</strong></p>
+<ul>
+<li>Inline documentation for complex business logic and algorithmic decisions</li>
+<li>Component documentation with usage examples and prop specifications</li>
+<li>Architecture decision records for significant technical choices and trade-offs</li>
+<li>Regular knowledge sharing sessions for team alignment and continuous learning</li>
+</ul>
+<h4>9.2 Deployment and Monitoring Considerations</h4>
+<p><strong>Performance Monitoring Implementation</strong></p>
+<ul>
+<li>Real User Monitoring (RUM) integration for actual user experience measurement</li>
+<li>Core Web Vitals tracking for Google search performance optimization</li>
+<li>Error tracking and alerting for proactive issue identification and resolution</li>
+<li>Performance budgets with automated alerts for regression prevention</li>
+</ul>
+<p><strong>Scalability Planning</strong></p>
+<ul>
+<li>Database query optimization for efficient data retrieval at scale</li>
+<li>CDN integration for static asset delivery and global performance optimization</li>
+<li>Caching strategies at multiple levels (browser, CDN, application, database)</li>
+<li>Load balancing considerations for high-availability deployment scenarios</li>
+</ul>
+<p><strong>Security Implementation Guidelines</strong></p>
+<ul>
+<li>Input sanitization and validation at both client and server levels</li>
+<li>HTTPS enforcement for all data transmission and API communication</li>
+<li>Role-based access control implementation with principle of least privilege</li>
+<li>Regular security audits and dependency vulnerability scanning</li>
+</ul>
+<hr>
+<p>This implementation specification provides comprehensive guidance for developers to build the Purchase Request module according to established patterns and best practices, ensuring consistency, maintainability, performance, and scalability across the entire application. The focus on explanations rather than code examples allows developers to adapt these principles to their specific implementation needs while maintaining architectural integrity.</p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#purchase-request-module-implementation-specification" class="level-1">Purchase Request Module - Implementation Specification</a>
+<a href="#implementation-overview" class="level-2">Implementation Overview</a>
+<a href="#visual-system-reference" class="level-2">Visual System Reference</a>
+<a href="#purchase-request-list-implementation" class="level-3">Purchase Request List Implementation</a>
+<a href="#purchase-request-detail-implementation" class="level-3">Purchase Request Detail Implementation</a>
+<a href="#purchase-request-creation-form" class="level-3">Purchase Request Creation Form</a>
+<a href="#architecture-implementation" class="level-2">Architecture Implementation</a>
+<a href="#1-technology-stack-implementation" class="level-3">1. Technology Stack Implementation</a>
+<a href="#2-file-structure-implementation-strategy" class="level-3">2. File Structure Implementation Strategy</a>
+<a href="#3-component-implementation-patterns" class="level-3">3. Component Implementation Patterns</a>
+<a href="#4-state-management-implementation-strategy" class="level-3">4. State Management Implementation Strategy</a>
+<a href="#5-service-layer-implementation-architecture" class="level-3">5. Service Layer Implementation Architecture</a>
+<a href="#6-validation-implementation-strategy" class="level-3">6. Validation Implementation Strategy</a>
+<a href="#7-testing-implementation-strategy" class="level-3">7. Testing Implementation Strategy</a>
+<a href="#8-performance-implementation-strategy" class="level-3">8. Performance Implementation Strategy</a>
+<a href="#9-implementation-best-practices-summary" class="level-3">9. Implementation Best Practices Summary</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Search Modal -->
+    <div class="search-modal" id="searchModal">
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchModalInput" placeholder="Search documentation..." autofocus>
+                    <button class="search-close-btn" id="searchCloseBtn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="search-results" id="searchResults">
+                <div class="search-empty">
+                    <i class="fas fa-search"></i>
+                    <p>Start typing to search...</p>
+                </div>
+            </div>
+            <div class="search-footer">
+                <div class="search-shortcuts">
+                    <kbd>↑↓</kbd> Navigate
+                    <kbd>Enter</kbd> Select
+                    <kbd>Esc</kbd> Close
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Search functionality
+        let searchIndex = [];
+        let selectedResultIndex = -1;
+
+        // Load search index
+        fetch('../../../search-index.json')
+            .then(res => res.json())
+            .then(data => {
+                searchIndex = data;
+                console.log('✓ Search index loaded:', searchIndex.length, 'entries');
+            })
+            .catch(err => console.error('❌ Failed to load search index:', err));
+
+        // Open search modal
+        function openSearchModal() {
+            console.log('🔍 Opening search modal...');
+            document.getElementById('searchModal').classList.add('active');
+            document.getElementById('searchModalInput').focus();
+            selectedResultIndex = -1;
+        }
+
+        // Close search modal
+        function closeSearchModal() {
+            document.getElementById('searchModal').classList.remove('active');
+            document.getElementById('searchModalInput').value = '';
+            document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-search"></i><p>Start typing to search...</p></div>';
+            selectedResultIndex = -1;
+        }
+
+        // Search function
+        function performSearch(query) {
+            console.log('🔎 Searching for:', query);
+
+            if (!query || query.length < 2) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-search"></i><p>Start typing to search...</p></div>';
+                return;
+            }
+
+            if (searchIndex.length === 0) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-exclamation-circle"></i><p>Search index not loaded</p></div>';
+                return;
+            }
+
+            const queryLower = query.toLowerCase();
+            const queryWords = queryLower.split(/s+/).filter(word => word.length > 1);
+
+            // Search and score results
+            const results = searchIndex
+                .map(entry => {
+                    let score = 0;
+
+                    // Title match (highest weight)
+                    if (entry.title.toLowerCase().includes(queryLower)) {
+                        score += 100;
+                    }
+                    queryWords.forEach(word => {
+                        if (entry.title.toLowerCase().includes(word)) score += 50;
+                    });
+
+                    // Content match
+                    if (entry.content.toLowerCase().includes(queryLower)) {
+                        score += 10;
+                    }
+                    queryWords.forEach(word => {
+                        if (entry.content.toLowerCase().includes(word)) score += 5;
+                    });
+
+                    return { ...entry, score };
+                })
+                .filter(result => result.score > 0)
+                .sort((a, b) => b.score - a.score)
+                .slice(0, 10); // Top 10 results
+
+            console.log('📊 Found', results.length, 'results');
+
+            // Display results
+            if (results.length === 0) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-times-circle"></i><p>No results found</p></div>';
+                return;
+            }
+
+            const resultsHtml = results.map((result, index) => {
+                const urlPath = '../../../' + result.url;
+                return '<a href="' + urlPath + '" class="search-result ' + (index === 0 ? 'selected' : '') + '" data-index="' + index + '">' +
+                    '<div class="result-title">' + result.title + '</div>' +
+                    '<div class="result-content">' + highlightMatch(result.content, query) + '</div>' +
+                    '</a>';
+            }).join('');
+
+            document.getElementById('searchResults').innerHTML = resultsHtml;
+            selectedResultIndex = 0;
+        }
+
+        // Highlight matching text
+        function highlightMatch(text, query) {
+            if (!text) return '';
+            const queryWords = query.split(/\s+/).join('|');
+            const regex = new RegExp('(' + queryWords + ')', 'gi');
+            return text.substring(0, 150).replace(regex, '<mark>$1</mark>') + '...';
+        }
+
+        // Navigate results with keyboard
+        function navigateResults(direction) {
+            const results = document.querySelectorAll('.search-result');
+            if (results.length === 0) return;
+
+            results[selectedResultIndex]?.classList.remove('selected');
+
+            if (direction === 'down') {
+                selectedResultIndex = (selectedResultIndex + 1) % results.length;
+            } else if (direction === 'up') {
+                selectedResultIndex = (selectedResultIndex - 1 + results.length) % results.length;
+            }
+
+            results[selectedResultIndex]?.classList.add('selected');
+            results[selectedResultIndex]?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+
+        // Select result
+        function selectResult() {
+            const selected = document.querySelector('.search-result.selected');
+            if (selected) {
+                window.location.href = selected.href;
+            }
+        }
+
+        // Event listeners
+        document.getElementById('headerSearchBtn')?.addEventListener('click', openSearchModal);
+        document.getElementById('searchCloseBtn')?.addEventListener('click', closeSearchModal);
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Ctrl+K or Cmd+K to open search
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                openSearchModal();
+            }
+
+            // Esc to close search
+            if (e.key === 'Escape' && document.getElementById('searchModal').classList.contains('active')) {
+                closeSearchModal();
+            }
+
+            // Navigate results
+            if (document.getElementById('searchModal').classList.contains('active')) {
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    navigateResults('down');
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    navigateResults('up');
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    selectResult();
+                }
+            }
+        });
+
+        // Search input
+        document.getElementById('searchModalInput')?.addEventListener('input', (e) => {
+            performSearch(e.target.value);
+        });
+
+        // Click outside to close
+        document.getElementById('searchModal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'searchModal') {
+                closeSearchModal();
+            }
+        });
+    </script>
+</body>
+</html>

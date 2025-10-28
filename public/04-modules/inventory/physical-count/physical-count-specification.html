@@ -1,0 +1,1647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physical Count Module - Complete Specification - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: #f8fafc;
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 15% 70% 15%;
+            gap: 0;
+            width: 100%;
+            padding: 1rem 0 2rem 0;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 1rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 2rem);
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-right: 1px solid var(--border-color);
+            padding-right: 2rem;
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 0.75rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+        .nav-subgroup {
+            margin: 0.5rem 0 0.5rem 0.5rem;
+        }
+        .nav-subgroup-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-subgroup-header:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .nav-subitems {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+            margin-left: 0.75rem;
+            margin-top: 0.25rem;
+        }
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 1rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 2rem);
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-left: 1px solid var(--border-color);
+            padding-left: 2rem;
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header - Modern Compact Design */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 52px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+        }
+        .header-content {
+            height: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--foreground);
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+        .logo:hover {
+            opacity: 0.8;
+        }
+        .logo i {
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+        .header-search-container {
+            display: flex;
+            align-items: center;
+        }
+        .header-search-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.375rem 0.75rem;
+            background: var(--secondary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.8125rem;
+            color: var(--muted-foreground);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            min-width: 180px;
+            flex-shrink: 0;
+        }
+        .header-search-btn:hover {
+            background: var(--background);
+            border-color: var(--primary);
+        }
+        .header-search-btn i {
+            color: var(--muted-foreground);
+            font-size: 0.875rem;
+        }
+        .header-search-btn span {
+            flex: 1;
+            text-align: left;
+        }
+        .header-search-btn kbd {
+            padding: 0.125rem 0.375rem;
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.6875rem;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--muted-foreground);
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        .back-to-home {
+            display: none; /* Hidden - navigation is sufficient */
+        }
+
+        /* Responsive Header */
+        @media (max-width: 768px) {
+            .header-search-btn {
+                min-width: auto;
+            }
+            .header-search-btn span {
+                display: none;
+            }
+        }
+
+        /* Search Modal */
+        .search-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            padding: 2rem;
+        }
+        .search-modal.active {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 10vh;
+        }
+        .search-modal-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 640px;
+            max-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            animation: slideDown 0.2s ease-out;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .search-modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .search-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .search-input-wrapper i {
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+        }
+        .search-input-wrapper input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 1.125rem;
+            color: var(--text-primary);
+        }
+        .search-close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .search-close-btn:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .search-results {
+            overflow-y: auto;
+            max-height: calc(70vh - 150px);
+        }
+        .search-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 2rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+        .search-empty i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        .search-result {
+            display: block;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+        .search-result:hover,
+        .search-result.selected {
+            background: var(--bg-secondary);
+        }
+        .search-result.selected {
+            border-left: 3px solid var(--primary-color);
+        }
+        .result-header {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .result-category {
+            font-size: 0.75rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .result-title {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        .result-badge {
+            display: inline-block;
+            padding: 0.125rem 0.5rem;
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-radius: 4px;
+            font-size: 0.6875rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        .result-content {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        .result-content mark {
+            background: rgba(79, 70, 229, 0.2);
+            color: var(--primary-color);
+            font-weight: 600;
+            padding: 0.125rem 0.25rem;
+            border-radius: 2px;
+        }
+        .search-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            border-bottom-left-radius: var(--border-radius-xl);
+            border-bottom-right-radius: var(--border-radius-xl);
+        }
+        .search-shortcuts {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        .search-shortcuts kbd {
+            padding: 0.25rem 0.5rem;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        /* Content Area */
+        .doc-content {
+            padding: 0 2rem;
+            width: 100%;
+            max-width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 0.9375rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Image Styles */
+        .doc-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 1.5rem auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Limit screenshot width to 80% for better readability */
+        .doc-content p > img {
+            max-width: 80%;
+        }
+
+        /* Table Styles */
+        .doc-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.875rem;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .doc-content table thead {
+            background: #f8fafc;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .doc-content table th {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #0f172a;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        .doc-content table td {
+            padding: 0.75rem 1rem;
+            border-top: 1px solid #e2e8f0;
+            color: #334155;
+        }
+
+        .doc-content table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        /* Table responsive wrapper */
+        .doc-content table {
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .doc-content table thead,
+        .doc-content table tbody,
+        .doc-content table tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 18% 64% 18%;
+                gap: 0;
+                padding: 1rem 0 1.5rem 0;
+            }
+            .doc-nav {
+                padding-right: 1.5rem;
+            }
+            .doc-toc {
+                padding-left: 1.5rem;
+            }
+            .doc-content {
+                padding: 0 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 0;
+                padding: 1rem 0 1.5rem 0;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 0 2rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                gap: 0;
+                padding: 0.5rem 0 1rem 0;
+            }
+            .doc-nav {
+                display: none;
+                border-right: none;
+            }
+            .doc-content {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="../../../index.html" class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </a>
+            <div class="doc-header-actions">
+                <div class="header-search-container">
+                    <button class="header-search-btn" id="headerSearchBtn">
+                        <i class="fas fa-search"></i>
+                        <span>Search documentation...</span>
+                        <kbd>Ctrl+K</kbd>
+                    </button>
+                </div>
+                <a href="../../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../01-overview/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Index</span>
+                    </a>
+                    <a href="../../../01-overview/business-value.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value & ROI</span>
+                    </a>
+                    <a href="../../../01-overview/tech-stack.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Technology Stack</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../02-architecture/system-architecture.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-database"></i>
+                    <span>Data Model</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../03-data-model/data-dictionary.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Data Dictionary</span>
+                    </a>
+                    <a href="../../../03-data-model/schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-th-large"></i>
+                    <span>Application Modules</span>
+                </div>
+                <div class="nav-items">
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Procurement</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/procurement/purchase-requests/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Purchase Requests</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/purchase-orders/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Purchase Orders</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/goods-received-notes/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Goods Received Notes</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/credit-notes/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Credit Notes</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/templates/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Templates</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-boxes"></i>
+                            <span>Inventory Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/inventory/stock-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Stock Management</span>
+                            </a>
+                            <a href="../../../04-modules/inventory/physical-count/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Physical Count</span>
+                            </a>
+                            <a href="../../../04-modules/inventory/spot-check/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Spot Check</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span>Finance</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/finance/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Finance Module</span>
+                            </a>
+                            <a href="../../../04-modules/finance/features/account-code-mapping/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Account Code Mapping</span>
+                            </a>
+                            <a href="../../../04-modules/finance/features/currency-and-rates/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Currency Management</span>
+                            </a>
+                            <a href="../../../04-modules/finance/features/departments/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Departments</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-handshake"></i>
+                            <span>Vendor Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/vendor-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Management</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Management Module</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/MANAGE-VENDORS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Manage Vendors</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/VENDOR-PORTAL.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Portal</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/CAMPAIGNS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Campaigns</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/PRICELISTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Pricelists</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/TEMPLATES.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Templates</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Sitemap</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/PAGES-AND-COMPONENTS-SPEC.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Pages & Components Spec</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/SHARED-COMPONENTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Shared Components</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-box"></i>
+                            <span>Product Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/product-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management</span>
+                            </a>
+                            <a href="../../../04-modules/product-management/product-management-specification.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management Specification</span>
+                            </a>
+                            <a href="../../../04-modules/product-management/product-management-sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management Sitemap</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-store"></i>
+                            <span>Store Operations</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../store-ops/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Operations</span>
+                            </a>
+                            <a href="../../../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Operations Module</span>
+                            </a>
+                            <a href="../../../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Requisitions</span>
+                            </a>
+                            <a href="../../../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Stock Replenishment</span>
+                            </a>
+                            <a href="../../../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Wastage Reporting</span>
+                            </a>
+                            <a href="../../../store-ops/SHARED-COMPONENTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Shared Components</span>
+                            </a>
+                            <a href="../../../store-ops/GLOSSARY.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Glossary</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-clipboard-list"></i>
+                            <span>Operational Planning</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../operational-planning/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Operational Planning</span>
+                            </a>
+                            <a href="../../../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Operational Planning Module</span>
+                            </a>
+                            <a href="../../../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Recipe Management</span>
+                            </a>
+                            <a href="../../../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Menu Engineering</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-cog"></i>
+                            <span>System Administration</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../sa/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>System Administration</span>
+                            </a>
+                            <a href="../../../sa/system-administration-sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>System Administration Sitemap</span>
+                            </a>
+                            <a href="../../../sa/features/permission-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Permission Management</span>
+                            </a>
+                            <a href="../../../sa/features/permission-management/specification.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Permission Specification</span>
+                            </a>
+                            <a href="../../../sa/features/location-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Location Management</span>
+                            </a>
+                            <a href="../../../sa/features/workflow/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Workflow</span>
+                            </a>
+                            <a href="../../../sa/features/pos-integration/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Reporting</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/reporting/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Reporting & Analytics</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../dashboard/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard</span>
+                            </a>
+                            <a href="../../../dashboard/sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard Sitemap</span>
+                            </a>
+                            <a href="../../../dashboard/components/components-overview.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Components Overview</span>
+                            </a>
+                            <a href="../../../dashboard/api/api-specifications.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>API Specifications</span>
+                            </a>
+                            <a href="../../../dashboard/business-logic/dashboard-business-rules.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard Business Rules</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-industry"></i>
+                            <span>Production</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/production/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Production</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-cash-register"></i>
+                            <span>POS Integration</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../pos-integration/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration</span>
+                            </a>
+                            <a href="../../../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration Module</span>
+                            </a>
+                            <a href="../../../pos-integration/MAPPING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Mapping</span>
+                            </a>
+                            <a href="../../../pos-integration/REPORTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Reports</span>
+                            </a>
+                            <a href="../../../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Transactions</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="physical-count-module-complete-specification">Physical Count Module - Complete Specification</h1>
+<h2 id="overview">Overview</h2>
+<p>The Physical Count module is a comprehensive inventory management system designed for hospitality environments. It provides a structured workflow for conducting physical inventory counts with multi-step processes, location-based organization, and real-time progress tracking.</p>
+<h2 id="module-architecture">Module Architecture</h2>
+<h3 id="core-components">Core Components</h3>
+<ul>
+<li><strong>Physical Count Creation Wizard</strong> - Multi-step form for setting up new counts</li>
+<li><strong>Physical Count Dashboard</strong> - Overview and management interface</li>
+<li><strong>Active Count Interface</strong> - Real-time counting execution</li>
+<li><strong>Physical Count Management</strong> - Administrative management of counts</li>
+</ul>
+<h2 id="physical-count-creation-workflow">Physical Count Creation Workflow</h2>
+<h3 id="main-wizard-steps">Main Wizard Steps</h3>
+<p>The physical count creation follows a 4-step wizard pattern:</p>
+<ol>
+<li><strong>Setup</strong> - Basic information and configuration</li>
+<li><strong>Location</strong> - Select locations to include in count</li>
+<li><strong>Items</strong> - Review and configure items to count</li>
+<li><strong>Review</strong> - Final verification before starting count</li>
+</ol>
+<h3 id="step-1-setup-physical-count-setup-component">Step 1: Setup (<code>/physical-count</code> - Setup Component)</h3>
+<p><strong>Location</strong>: <code>app/(main)/inventory-management/physical-count/components/setup.tsx</code></p>
+<p><strong>Purpose</strong>: Capture basic information for the physical count</p>
+<p><strong>Fields</strong>:</p>
+<ul>
+<li><strong>Counter Name</strong> (auto-filled from user context)</li>
+<li><strong>Department</strong> (dropdown from mockDepartments)</li>
+<li><strong>Date &amp; Time</strong> (DateTimePicker component)</li>
+<li><strong>Notes</strong> (optional text area)</li>
+</ul>
+<p><strong>Validation</strong>: Requires department and dateTime to proceed</p>
+<p><strong>UI Elements</strong>:</p>
+<ul>
+<li>Card layout with title &quot;Physical Count Setup&quot;</li>
+<li>Form fields with labels</li>
+<li>Auto-population of counter name</li>
+<li>Navigation buttons (Back/Next)</li>
+</ul>
+<h3 id="step-2-location-selection-physical-count-location-component">Step 2: Location Selection (<code>/physical-count</code> - Location Component)</h3>
+<p><strong>Location</strong>: <code>app/(main)/inventory-management/physical-count/components/location-selection.tsx</code></p>
+<p><strong>Purpose</strong>: Allow users to select which locations to include in the physical count</p>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Multi-select location checkboxes</li>
+<li>Location details display</li>
+<li>Validation to ensure at least one location is selected</li>
+</ul>
+<p><strong>UI Elements</strong>:</p>
+<ul>
+<li>Checkbox list of available locations</li>
+<li>Location information cards</li>
+<li>Select all/none functionality</li>
+</ul>
+<h3 id="step-3-item-review-physical-count-items-component">Step 3: Item Review (<code>/physical-count</code> - Items Component)</h3>
+<p><strong>Location</strong>: <code>app/(main)/inventory-management/physical-count/components/item-review.tsx</code></p>
+<p><strong>Purpose</strong>: Review and configure items that will be included in the count</p>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Display items from selected locations</li>
+<li>Option to exclude specific items</li>
+<li>Item details and current stock levels</li>
+</ul>
+<h3 id="step-4-final-review-physical-count-review-component">Step 4: Final Review (<code>/physical-count</code> - Review Component)</h3>
+<p><strong>Location</strong>: <code>app/(main)/inventory-management/physical-count/components/final-review.tsx</code></p>
+<p><strong>Purpose</strong>: Final verification before starting the physical count</p>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Summary of all selections</li>
+<li>Confirmation before count creation</li>
+<li>Redirects to active count page upon completion</li>
+</ul>
+<p><strong>Navigation</strong>: Redirects to <code>/inventory-management/physical-count/active/${countId}</code></p>
+<h2 id="physical-count-dashboard">Physical Count Dashboard</h2>
+<p><strong>Location</strong>: <code>app/(main)/inventory-management/physical-count/dashboard/page.tsx</code></p>
+<p><strong>Purpose</strong>: Provides overview and management of all physical count activities</p>
+<h3 id="dashboard-components">Dashboard Components</h3>
+<h4>Statistics Cards</h4>
+<ul>
+<li><strong>Total Counts</strong> - Overall count statistics</li>
+<li><strong>In Progress</strong> - Currently active counts</li>
+<li><strong>Active Counters</strong> - Number of people currently counting</li>
+<li><strong>Pending Review</strong> - Counts requiring attention</li>
+</ul>
+<h4>Activity Chart</h4>
+<ul>
+<li>Bar chart showing count activity over time</li>
+<li>Filterable by time period (Week/Month/Quarter/Year)</li>
+<li>Uses Recharts library for visualization</li>
+</ul>
+<h4>Recent Counts Panel</h4>
+<ul>
+<li>List of recent counting activities</li>
+<li>Status indicators (In Progress/Completed)</li>
+<li>Variance information</li>
+<li>Counter assignments</li>
+</ul>
+<h4>All Counts Table</h4>
+<ul>
+<li>Comprehensive table of all physical counts</li>
+<li>Implemented via CountsTable component</li>
+<li>Action buttons for scheduling and creating new counts</li>
+</ul>
+<h3 id="navigation-options">Navigation Options</h3>
+<ul>
+<li><strong>New Count</strong> button → <code>/inventory-management/physical-count</code></li>
+<li><strong>Schedule Count</strong> button (placeholder functionality)</li>
+</ul>
+<h2 id="active-count-interface">Active Count Interface</h2>
+<p><strong>Location</strong>: <code>app/(main)/inventory-management/physical-count/active/[id]/page.tsx</code></p>
+<p><strong>Purpose</strong>: Real-time interface for conducting physical counts</p>
+<h3 id="interface-components">Interface Components</h3>
+<h4>Count Header (Sticky)</h4>
+<ul>
+<li>Count session information</li>
+<li>Start time and duration tracking</li>
+<li>Control buttons:<ul>
+<li><strong>Pause Count</strong> - Temporarily pause the counting process</li>
+<li><strong>Complete Count</strong> - Finish and submit the count</li>
+</ul>
+</li>
+</ul>
+<h4>Location Bar</h4>
+<ul>
+<li>Horizontal tabs for switching between count locations</li>
+<li>Item count badges for each location</li>
+<li>Visual indication of current active location</li>
+</ul>
+<h4>Count Interface (Main)</h4>
+<ul>
+<li><p><strong>Left Panel (2/3 width)</strong>: Current location items</p>
+<ul>
+<li>Item cards with system stock information</li>
+<li>Physical count input fields</li>
+<li>Status dropdown (Good/Damaged/Missing/Expired)</li>
+<li>Individual save buttons per item</li>
+</ul>
+</li>
+<li><p><strong>Right Panel (1/3 width)</strong>: Progress tracking</p>
+<ul>
+<li>Progress bar visualization</li>
+<li>Completed vs remaining items counter</li>
+<li>Count statistics</li>
+</ul>
+</li>
+</ul>
+<h3 id="count-data-management">Count Data Management</h3>
+<ul>
+<li>State management for count entries</li>
+<li>Real-time progress calculation</li>
+<li>Location-based item filtering</li>
+</ul>
+<h2 id="physical-count-management">Physical Count Management</h2>
+<p><strong>Location</strong>: <code>app/(main)/inventory-management/physical-count-management/page.tsx</code></p>
+<p><strong>Purpose</strong>: Administrative interface for managing physical counts</p>
+<h3 id="management-features">Management Features</h3>
+<h4>View Options</h4>
+<ul>
+<li><strong>List View</strong> - Detailed list with full information</li>
+<li><strong>Grid View</strong> - Card-based layout for quick overview</li>
+</ul>
+<h4>Filtering System</h4>
+<ul>
+<li><strong>Status Filter</strong>: All/Pending/In Progress/Completed</li>
+<li><strong>Department Filter</strong>: Dropdown from departments</li>
+<li><strong>Location Filter</strong>: Collapsible location selector with active filter display</li>
+</ul>
+<h4>Search Functionality</h4>
+<ul>
+<li>Text search input (placeholder functionality)</li>
+<li>Real-time filtering of displayed counts</li>
+</ul>
+<h4>Count Operations</h4>
+<ul>
+<li><strong>New Count</strong> creation via modal form</li>
+<li><strong>Delete</strong> functionality for count entries</li>
+<li><strong>Start Count</strong> action launching count detail form</li>
+</ul>
+<h3 id="data-structure">Data Structure</h3>
+<pre><code class="language-typescript">interface CountData {
+  storeName: string
+  department: string
+  userName: string
+  date: string
+  status: &quot;pending&quot; | &quot;completed&quot; | &quot;in-progress&quot;
+  itemCount: number
+  lastCountDate: string
+  variance: number
+  notes: string
+  completedCount: number
+}
+</code></pre>
+<h2 id="modal-components">Modal Components</h2>
+<h3 id="new-count-form-modal">New Count Form Modal</h3>
+<p><strong>Component</strong>: <code>NewCountForm</code><br><strong>Location</strong>: <code>app/(main)/inventory-management/physical-count-management/components/new-count-form.tsx</code></p>
+<p><strong>Purpose</strong>: Create new physical count entries</p>
+<p><strong>Fields</strong>:</p>
+<ul>
+<li>Store Name</li>
+<li>Department</li>
+<li>Counter assignment</li>
+<li>Scheduled date</li>
+<li>Notes</li>
+</ul>
+<h3 id="count-detail-form-modal">Count Detail Form Modal</h3>
+<p><strong>Component</strong>: <code>CountDetailForm</code><br><strong>Location</strong>: <code>app/(main)/inventory-management/physical-count-management/components/count-detail-form.tsx</code></p>
+<p><strong>Purpose</strong>: Manage detailed count execution and configuration</p>
+<h2 id="supporting-components">Supporting Components</h2>
+<h3 id="count-list-item">Count List Item</h3>
+<p><strong>Component</strong>: <code>CountListItem</code><br><strong>Location</strong>: <code>app/(main)/inventory-management/physical-count-management/components/count-list-item.tsx</code></p>
+<p><strong>Purpose</strong>: List view representation of count entries</p>
+<h3 id="count-detail-card">Count Detail Card</h3>
+<p><strong>Component</strong>: <code>CountDetailCard</code><br><strong>Location</strong>: <code>app/(main)/inventory-management/physical-count-management/components/count-detail-card.tsx</code></p>
+<p><strong>Purpose</strong>: Grid view card representation of count entries</p>
+<h3 id="counts-table">Counts Table</h3>
+<p><strong>Component</strong>: <code>CountsTable</code><br><strong>Location</strong>: <code>app/(main)/inventory-management/physical-count/dashboard/components/counts-table.tsx</code></p>
+<p><strong>Purpose</strong>: Tabular display of all counts in dashboard</p>
+<h2 id="api-integration">API Integration</h2>
+<h3 id="endpoints">Endpoints</h3>
+<ul>
+<li><code>GET /api/inventory/counts</code> - Retrieve physical counts with filtering</li>
+<li><code>POST /api/inventory/counts</code> - Create new physical count</li>
+<li><code>GET /api/inventory/counts/[id]</code> - Get specific count details</li>
+<li><code>POST /api/inventory/counts/[id]/start</code> - Start physical count execution</li>
+<li><code>POST /api/inventory/counts/advanced</code> - Advanced count operations</li>
+</ul>
+<h3 id="services">Services</h3>
+<ul>
+<li><code>physicalCountService</code> - Database service for physical count operations</li>
+<li>Located in <code>lib/services/db/physical-count-service</code></li>
+</ul>
+<h2 id="data-flow">Data Flow</h2>
+<h3 id="count-creation-flow">Count Creation Flow</h3>
+<ol>
+<li>User navigates to Physical Count creation wizard</li>
+<li>Completes 4-step setup process</li>
+<li>System validates and creates count session</li>
+<li>Redirects to active count interface</li>
+<li>User performs physical counting</li>
+<li>System tracks progress and saves count data</li>
+<li>Count completion triggers inventory adjustment workflows</li>
+</ol>
+<h3 id="count-management-flow">Count Management Flow</h3>
+<ol>
+<li>Administrative users access management interface</li>
+<li>Filter and search existing counts</li>
+<li>Create new counts via modal forms</li>
+<li>Monitor count progress and status</li>
+<li>Handle count completion and variance resolution</li>
+</ol>
+<h2 id="state-management">State Management</h2>
+<h3 id="local-state-usestate">Local State (useState)</h3>
+<ul>
+<li>Form data for wizard steps</li>
+<li>Current step tracking</li>
+<li>Modal visibility states</li>
+<li>Filter selections</li>
+<li>View preferences (list/grid)</li>
+</ul>
+<h3 id="data-state">Data State</h3>
+<ul>
+<li>Mock data integration for counts, locations, departments</li>
+<li>Real-time count updates</li>
+<li>Progress calculations</li>
+</ul>
+<h2 id="integration-points">Integration Points</h2>
+<h3 id="user-context">User Context</h3>
+<ul>
+<li>Auto-population of counter names</li>
+<li>Department access based on user roles</li>
+<li>Permission-based feature access</li>
+</ul>
+<h3 id="inventory-system">Inventory System</h3>
+<ul>
+<li>Integration with inventory items and locations</li>
+<li>Stock level verification</li>
+<li>Variance calculation and reporting</li>
+</ul>
+<h3 id="reporting-system">Reporting System</h3>
+<ul>
+<li>Count completion data feeding into reports</li>
+<li>Variance analysis and trending</li>
+<li>Performance metrics and KPIs</li>
+</ul>
+<h2 id="navigation-structure">Navigation Structure</h2>
+<pre><code>/inventory-management/
+├── physical-count/                    # Count creation wizard
+│   ├── dashboard/                    # Dashboard overview
+│   └── active/[id]/                  # Active count interface
+└── physical-count-management/        # Administrative management
+    └── components/                   # Management components
+</code></pre>
+<h2 id="technical-implementation">Technical Implementation</h2>
+<h3 id="framework-integration">Framework Integration</h3>
+<ul>
+<li><strong>Next.js 14</strong> App Router structure</li>
+<li><strong>TypeScript</strong> for type safety</li>
+<li><strong>Shadcn/ui</strong> component library</li>
+<li><strong>Tailwind CSS</strong> for styling</li>
+<li><strong>Recharts</strong> for data visualization</li>
+</ul>
+<h3 id="component-patterns">Component Patterns</h3>
+<ul>
+<li>Function-based React components</li>
+<li>Props interface definitions</li>
+<li>Controlled form components</li>
+<li>Modal overlay patterns</li>
+<li>Progressive wizard interfaces</li>
+</ul>
+<h3 id="data-validation">Data Validation</h3>
+<ul>
+<li>Form validation at each wizard step</li>
+<li>Required field enforcement</li>
+<li>Data type validation</li>
+<li>Business rule validation</li>
+</ul>
+<p>This specification provides a complete overview of the Physical Count module&#39;s functionality, components, and integration points within the larger inventory management system.</p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#physical-count-module-complete-specification" class="level-1">Physical Count Module - Complete Specification</a>
+<a href="#overview" class="level-2">Overview</a>
+<a href="#module-architecture" class="level-2">Module Architecture</a>
+<a href="#core-components" class="level-3">Core Components</a>
+<a href="#physical-count-creation-workflow" class="level-2">Physical Count Creation Workflow</a>
+<a href="#main-wizard-steps" class="level-3">Main Wizard Steps</a>
+<a href="#step-1-setup-physical-count-setup-component" class="level-3">Step 1: Setup (/physical-count - Setup Component)</a>
+<a href="#step-2-location-selection-physical-count-location-component" class="level-3">Step 2: Location Selection (/physical-count - Location Component)</a>
+<a href="#step-3-item-review-physical-count-items-component" class="level-3">Step 3: Item Review (/physical-count - Items Component)</a>
+<a href="#step-4-final-review-physical-count-review-component" class="level-3">Step 4: Final Review (/physical-count - Review Component)</a>
+<a href="#physical-count-dashboard" class="level-2">Physical Count Dashboard</a>
+<a href="#dashboard-components" class="level-3">Dashboard Components</a>
+<a href="#navigation-options" class="level-3">Navigation Options</a>
+<a href="#active-count-interface" class="level-2">Active Count Interface</a>
+<a href="#interface-components" class="level-3">Interface Components</a>
+<a href="#count-data-management" class="level-3">Count Data Management</a>
+<a href="#physical-count-management" class="level-2">Physical Count Management</a>
+<a href="#management-features" class="level-3">Management Features</a>
+<a href="#data-structure" class="level-3">Data Structure</a>
+<a href="#modal-components" class="level-2">Modal Components</a>
+<a href="#new-count-form-modal" class="level-3">New Count Form Modal</a>
+<a href="#count-detail-form-modal" class="level-3">Count Detail Form Modal</a>
+<a href="#supporting-components" class="level-2">Supporting Components</a>
+<a href="#count-list-item" class="level-3">Count List Item</a>
+<a href="#count-detail-card" class="level-3">Count Detail Card</a>
+<a href="#counts-table" class="level-3">Counts Table</a>
+<a href="#api-integration" class="level-2">API Integration</a>
+<a href="#endpoints" class="level-3">Endpoints</a>
+<a href="#services" class="level-3">Services</a>
+<a href="#data-flow" class="level-2">Data Flow</a>
+<a href="#count-creation-flow" class="level-3">Count Creation Flow</a>
+<a href="#count-management-flow" class="level-3">Count Management Flow</a>
+<a href="#state-management" class="level-2">State Management</a>
+<a href="#local-state-usestate" class="level-3">Local State (useState)</a>
+<a href="#data-state" class="level-3">Data State</a>
+<a href="#integration-points" class="level-2">Integration Points</a>
+<a href="#user-context" class="level-3">User Context</a>
+<a href="#inventory-system" class="level-3">Inventory System</a>
+<a href="#reporting-system" class="level-3">Reporting System</a>
+<a href="#navigation-structure" class="level-2">Navigation Structure</a>
+<a href="#technical-implementation" class="level-2">Technical Implementation</a>
+<a href="#framework-integration" class="level-3">Framework Integration</a>
+<a href="#component-patterns" class="level-3">Component Patterns</a>
+<a href="#data-validation" class="level-3">Data Validation</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Search Modal -->
+    <div class="search-modal" id="searchModal">
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchModalInput" placeholder="Search documentation..." autofocus>
+                    <button class="search-close-btn" id="searchCloseBtn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="search-results" id="searchResults">
+                <div class="search-empty">
+                    <i class="fas fa-search"></i>
+                    <p>Start typing to search...</p>
+                </div>
+            </div>
+            <div class="search-footer">
+                <div class="search-shortcuts">
+                    <kbd>↑↓</kbd> Navigate
+                    <kbd>Enter</kbd> Select
+                    <kbd>Esc</kbd> Close
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Search functionality
+        let searchIndex = [];
+        let selectedResultIndex = -1;
+
+        // Load search index
+        fetch('../../../search-index.json')
+            .then(res => res.json())
+            .then(data => {
+                searchIndex = data;
+                console.log('✓ Search index loaded:', searchIndex.length, 'entries');
+            })
+            .catch(err => console.error('❌ Failed to load search index:', err));
+
+        // Open search modal
+        function openSearchModal() {
+            console.log('🔍 Opening search modal...');
+            document.getElementById('searchModal').classList.add('active');
+            document.getElementById('searchModalInput').focus();
+            selectedResultIndex = -1;
+        }
+
+        // Close search modal
+        function closeSearchModal() {
+            document.getElementById('searchModal').classList.remove('active');
+            document.getElementById('searchModalInput').value = '';
+            document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-search"></i><p>Start typing to search...</p></div>';
+            selectedResultIndex = -1;
+        }
+
+        // Search function
+        function performSearch(query) {
+            console.log('🔎 Searching for:', query);
+
+            if (!query || query.length < 2) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-search"></i><p>Start typing to search...</p></div>';
+                return;
+            }
+
+            if (searchIndex.length === 0) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-exclamation-circle"></i><p>Search index not loaded</p></div>';
+                return;
+            }
+
+            const queryLower = query.toLowerCase();
+            const queryWords = queryLower.split(/s+/).filter(word => word.length > 1);
+
+            // Search and score results
+            const results = searchIndex
+                .map(entry => {
+                    let score = 0;
+
+                    // Title match (highest weight)
+                    if (entry.title.toLowerCase().includes(queryLower)) {
+                        score += 100;
+                    }
+                    queryWords.forEach(word => {
+                        if (entry.title.toLowerCase().includes(word)) score += 50;
+                    });
+
+                    // Content match
+                    if (entry.content.toLowerCase().includes(queryLower)) {
+                        score += 10;
+                    }
+                    queryWords.forEach(word => {
+                        if (entry.content.toLowerCase().includes(word)) score += 5;
+                    });
+
+                    return { ...entry, score };
+                })
+                .filter(result => result.score > 0)
+                .sort((a, b) => b.score - a.score)
+                .slice(0, 10); // Top 10 results
+
+            console.log('📊 Found', results.length, 'results');
+
+            // Display results
+            if (results.length === 0) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-times-circle"></i><p>No results found</p></div>';
+                return;
+            }
+
+            const resultsHtml = results.map((result, index) => {
+                const urlPath = '../../../' + result.url;
+                return '<a href="' + urlPath + '" class="search-result ' + (index === 0 ? 'selected' : '') + '" data-index="' + index + '">' +
+                    '<div class="result-title">' + result.title + '</div>' +
+                    '<div class="result-content">' + highlightMatch(result.content, query) + '</div>' +
+                    '</a>';
+            }).join('');
+
+            document.getElementById('searchResults').innerHTML = resultsHtml;
+            selectedResultIndex = 0;
+        }
+
+        // Highlight matching text
+        function highlightMatch(text, query) {
+            if (!text) return '';
+            const queryWords = query.split(/\s+/).join('|');
+            const regex = new RegExp('(' + queryWords + ')', 'gi');
+            return text.substring(0, 150).replace(regex, '<mark>$1</mark>') + '...';
+        }
+
+        // Navigate results with keyboard
+        function navigateResults(direction) {
+            const results = document.querySelectorAll('.search-result');
+            if (results.length === 0) return;
+
+            results[selectedResultIndex]?.classList.remove('selected');
+
+            if (direction === 'down') {
+                selectedResultIndex = (selectedResultIndex + 1) % results.length;
+            } else if (direction === 'up') {
+                selectedResultIndex = (selectedResultIndex - 1 + results.length) % results.length;
+            }
+
+            results[selectedResultIndex]?.classList.add('selected');
+            results[selectedResultIndex]?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+
+        // Select result
+        function selectResult() {
+            const selected = document.querySelector('.search-result.selected');
+            if (selected) {
+                window.location.href = selected.href;
+            }
+        }
+
+        // Event listeners
+        document.getElementById('headerSearchBtn')?.addEventListener('click', openSearchModal);
+        document.getElementById('searchCloseBtn')?.addEventListener('click', closeSearchModal);
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Ctrl+K or Cmd+K to open search
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                openSearchModal();
+            }
+
+            // Esc to close search
+            if (e.key === 'Escape' && document.getElementById('searchModal').classList.contains('active')) {
+                closeSearchModal();
+            }
+
+            // Navigate results
+            if (document.getElementById('searchModal').classList.contains('active')) {
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    navigateResults('down');
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    navigateResults('up');
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    selectResult();
+                }
+            }
+        });
+
+        // Search input
+        document.getElementById('searchModalInput')?.addEventListener('input', (e) => {
+            performSearch(e.target.value);
+        });
+
+        // Click outside to close
+        document.getElementById('searchModal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'searchModal') {
+                closeSearchModal();
+            }
+        });
+    </script>
+</body>
+</html>

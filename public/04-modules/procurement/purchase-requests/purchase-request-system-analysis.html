@@ -1,0 +1,2169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase Request System - Comprehensive Analysis - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: #f8fafc;
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 15% 70% 15%;
+            gap: 0;
+            width: 100%;
+            padding: 1rem 0 2rem 0;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 1rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 2rem);
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-right: 1px solid var(--border-color);
+            padding-right: 2rem;
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 0.75rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+        .nav-subgroup {
+            margin: 0.5rem 0 0.5rem 0.5rem;
+        }
+        .nav-subgroup-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-subgroup-header:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .nav-subitems {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+            margin-left: 0.75rem;
+            margin-top: 0.25rem;
+        }
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 1rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 2rem);
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-left: 1px solid var(--border-color);
+            padding-left: 2rem;
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header - Modern Compact Design */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 52px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+        }
+        .header-content {
+            height: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--foreground);
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+        .logo:hover {
+            opacity: 0.8;
+        }
+        .logo i {
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+        .header-search-container {
+            display: flex;
+            align-items: center;
+        }
+        .header-search-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.375rem 0.75rem;
+            background: var(--secondary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.8125rem;
+            color: var(--muted-foreground);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            min-width: 180px;
+            flex-shrink: 0;
+        }
+        .header-search-btn:hover {
+            background: var(--background);
+            border-color: var(--primary);
+        }
+        .header-search-btn i {
+            color: var(--muted-foreground);
+            font-size: 0.875rem;
+        }
+        .header-search-btn span {
+            flex: 1;
+            text-align: left;
+        }
+        .header-search-btn kbd {
+            padding: 0.125rem 0.375rem;
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.6875rem;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--muted-foreground);
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        .back-to-home {
+            display: none; /* Hidden - navigation is sufficient */
+        }
+
+        /* Responsive Header */
+        @media (max-width: 768px) {
+            .header-search-btn {
+                min-width: auto;
+            }
+            .header-search-btn span {
+                display: none;
+            }
+        }
+
+        /* Search Modal */
+        .search-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            padding: 2rem;
+        }
+        .search-modal.active {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 10vh;
+        }
+        .search-modal-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 640px;
+            max-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            animation: slideDown 0.2s ease-out;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .search-modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .search-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .search-input-wrapper i {
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+        }
+        .search-input-wrapper input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 1.125rem;
+            color: var(--text-primary);
+        }
+        .search-close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .search-close-btn:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .search-results {
+            overflow-y: auto;
+            max-height: calc(70vh - 150px);
+        }
+        .search-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 2rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+        .search-empty i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        .search-result {
+            display: block;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+        .search-result:hover,
+        .search-result.selected {
+            background: var(--bg-secondary);
+        }
+        .search-result.selected {
+            border-left: 3px solid var(--primary-color);
+        }
+        .result-header {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .result-category {
+            font-size: 0.75rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .result-title {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        .result-badge {
+            display: inline-block;
+            padding: 0.125rem 0.5rem;
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-radius: 4px;
+            font-size: 0.6875rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        .result-content {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        .result-content mark {
+            background: rgba(79, 70, 229, 0.2);
+            color: var(--primary-color);
+            font-weight: 600;
+            padding: 0.125rem 0.25rem;
+            border-radius: 2px;
+        }
+        .search-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            border-bottom-left-radius: var(--border-radius-xl);
+            border-bottom-right-radius: var(--border-radius-xl);
+        }
+        .search-shortcuts {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        .search-shortcuts kbd {
+            padding: 0.25rem 0.5rem;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        /* Content Area */
+        .doc-content {
+            padding: 0 2rem;
+            width: 100%;
+            max-width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 0.9375rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Image Styles */
+        .doc-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 1.5rem auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Limit screenshot width to 80% for better readability */
+        .doc-content p > img {
+            max-width: 80%;
+        }
+
+        /* Table Styles */
+        .doc-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.875rem;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .doc-content table thead {
+            background: #f8fafc;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .doc-content table th {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #0f172a;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        .doc-content table td {
+            padding: 0.75rem 1rem;
+            border-top: 1px solid #e2e8f0;
+            color: #334155;
+        }
+
+        .doc-content table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        /* Table responsive wrapper */
+        .doc-content table {
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .doc-content table thead,
+        .doc-content table tbody,
+        .doc-content table tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 18% 64% 18%;
+                gap: 0;
+                padding: 1rem 0 1.5rem 0;
+            }
+            .doc-nav {
+                padding-right: 1.5rem;
+            }
+            .doc-toc {
+                padding-left: 1.5rem;
+            }
+            .doc-content {
+                padding: 0 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 0;
+                padding: 1rem 0 1.5rem 0;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 0 2rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                gap: 0;
+                padding: 0.5rem 0 1rem 0;
+            }
+            .doc-nav {
+                display: none;
+                border-right: none;
+            }
+            .doc-content {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="../../../index.html" class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </a>
+            <div class="doc-header-actions">
+                <div class="header-search-container">
+                    <button class="header-search-btn" id="headerSearchBtn">
+                        <i class="fas fa-search"></i>
+                        <span>Search documentation...</span>
+                        <kbd>Ctrl+K</kbd>
+                    </button>
+                </div>
+                <a href="../../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../01-overview/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Index</span>
+                    </a>
+                    <a href="../../../01-overview/business-value.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value & ROI</span>
+                    </a>
+                    <a href="../../../01-overview/tech-stack.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Technology Stack</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../02-architecture/system-architecture.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-database"></i>
+                    <span>Data Model</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../03-data-model/data-dictionary.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Data Dictionary</span>
+                    </a>
+                    <a href="../../../03-data-model/schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-th-large"></i>
+                    <span>Application Modules</span>
+                </div>
+                <div class="nav-items">
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Procurement</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/procurement/purchase-requests/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Purchase Requests</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/purchase-orders/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Purchase Orders</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/goods-received-notes/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Goods Received Notes</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/credit-notes/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Credit Notes</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/templates/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Templates</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-boxes"></i>
+                            <span>Inventory Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/inventory/stock-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Stock Management</span>
+                            </a>
+                            <a href="../../../04-modules/inventory/physical-count/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Physical Count</span>
+                            </a>
+                            <a href="../../../04-modules/inventory/spot-check/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Spot Check</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span>Finance</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/finance/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Finance Module</span>
+                            </a>
+                            <a href="../../../04-modules/finance/features/account-code-mapping/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Account Code Mapping</span>
+                            </a>
+                            <a href="../../../04-modules/finance/features/currency-and-rates/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Currency Management</span>
+                            </a>
+                            <a href="../../../04-modules/finance/features/departments/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Departments</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-handshake"></i>
+                            <span>Vendor Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/vendor-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Management</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Management Module</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/MANAGE-VENDORS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Manage Vendors</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/VENDOR-PORTAL.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Portal</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/CAMPAIGNS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Campaigns</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/PRICELISTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Pricelists</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/TEMPLATES.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Templates</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Sitemap</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/PAGES-AND-COMPONENTS-SPEC.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Pages & Components Spec</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/SHARED-COMPONENTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Shared Components</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-box"></i>
+                            <span>Product Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/product-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management</span>
+                            </a>
+                            <a href="../../../04-modules/product-management/product-management-specification.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management Specification</span>
+                            </a>
+                            <a href="../../../04-modules/product-management/product-management-sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management Sitemap</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-store"></i>
+                            <span>Store Operations</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../store-ops/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Operations</span>
+                            </a>
+                            <a href="../../../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Operations Module</span>
+                            </a>
+                            <a href="../../../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Requisitions</span>
+                            </a>
+                            <a href="../../../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Stock Replenishment</span>
+                            </a>
+                            <a href="../../../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Wastage Reporting</span>
+                            </a>
+                            <a href="../../../store-ops/SHARED-COMPONENTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Shared Components</span>
+                            </a>
+                            <a href="../../../store-ops/GLOSSARY.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Glossary</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-clipboard-list"></i>
+                            <span>Operational Planning</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../operational-planning/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Operational Planning</span>
+                            </a>
+                            <a href="../../../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Operational Planning Module</span>
+                            </a>
+                            <a href="../../../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Recipe Management</span>
+                            </a>
+                            <a href="../../../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Menu Engineering</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-cog"></i>
+                            <span>System Administration</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../sa/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>System Administration</span>
+                            </a>
+                            <a href="../../../sa/system-administration-sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>System Administration Sitemap</span>
+                            </a>
+                            <a href="../../../sa/features/permission-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Permission Management</span>
+                            </a>
+                            <a href="../../../sa/features/permission-management/specification.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Permission Specification</span>
+                            </a>
+                            <a href="../../../sa/features/location-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Location Management</span>
+                            </a>
+                            <a href="../../../sa/features/workflow/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Workflow</span>
+                            </a>
+                            <a href="../../../sa/features/pos-integration/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Reporting</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/reporting/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Reporting & Analytics</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../dashboard/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard</span>
+                            </a>
+                            <a href="../../../dashboard/sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard Sitemap</span>
+                            </a>
+                            <a href="../../../dashboard/components/components-overview.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Components Overview</span>
+                            </a>
+                            <a href="../../../dashboard/api/api-specifications.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>API Specifications</span>
+                            </a>
+                            <a href="../../../dashboard/business-logic/dashboard-business-rules.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard Business Rules</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-industry"></i>
+                            <span>Production</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/production/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Production</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-cash-register"></i>
+                            <span>POS Integration</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../pos-integration/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration</span>
+                            </a>
+                            <a href="../../../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration Module</span>
+                            </a>
+                            <a href="../../../pos-integration/MAPPING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Mapping</span>
+                            </a>
+                            <a href="../../../pos-integration/REPORTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Reports</span>
+                            </a>
+                            <a href="../../../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Transactions</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="purchase-request-system-comprehensive-analysis">Purchase Request System - Comprehensive Analysis</h1>
+<p>This document provides a complete analysis of the Carmen ERP Purchase Request system, including system architecture, component hierarchy, user flows, and technical implementation details.</p>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#system-overview">System Overview</a></li>
+<li><a href="#component-architecture">Component Architecture</a></li>
+<li><a href="#user-journey-flows">User Journey Flows</a></li>
+<li><a href="#user-interface-screenshots">User Interface Screenshots</a></li>
+<li><a href="#modal-and-dialog-system">Modal and Dialog System</a></li>
+<li><a href="#data-flow-and-state-management">Data Flow and State Management</a></li>
+<li><a href="#workflow-engine">Workflow Engine</a></li>
+<li><a href="#rbac-and-permissions">RBAC and Permissions</a></li>
+<li><a href="#api-integration">API Integration</a></li>
+</ol>
+<h2 id="system-overview">System Overview</h2>
+<div class="mermaid">
+graph TB
+    subgraph "Purchase Request System"
+        A[Purchase Request List] --> B[PR Detail View]
+        A --> C[Create New PR]
+        B --> D[Edit Mode]
+        B --> E[Workflow Actions]
+
+        subgraph "Core Components"
+            F[ModernPurchaseRequestList]
+            G[PRDetailPage]
+            H[PRForm]
+            I[Workflow Engine]
+        end
+
+        subgraph "Supporting Systems"
+            J[RBAC Service]
+            K[Notification System]
+            L[Modal System]
+            M[Data Management]
+        end
+    end
+
+</div>
+<h2 id="component-architecture">Component Architecture</h2>
+<div class="mermaid">
+graph TD
+    subgraph "Main Pages"
+        A["/procurement/purchase-requests<br/>page.tsx"] --> B[ModernPurchaseRequestList]
+        C["/procurement/purchase-requests/[id]<br/>page.tsx"] --> D[PRDetailPage]
+        E["/procurement/purchase-requests/new-pr<br/>page.tsx"] --> F[PRForm]
+    end
+
+    subgraph "List View Components"
+        B --> G[PurchaseRequestsDataTable]
+        B --> H[PurchaseRequestsCardView]
+        B --> I[BulkOperations]
+        B --> J[FilterControls]
+    end
+
+    subgraph "Detail View Components"
+        D --> K[PRHeader]
+        D --> L[CompactWorkflowIndicator]
+        D --> M[TabSystem]
+        D --> N[SummaryTotal]
+        D --> O[FloatingActionMenu]
+
+        M --> P[ItemsTab]
+        M --> Q[BudgetsTab]
+        M --> R[WorkflowTab]
+        M --> S[PRCommentsAttachmentsTab]
+        M --> T[ActivityTab]
+    end
+
+    subgraph "Modal Components"
+        U[VendorComparisonModal]
+        V[PriceHistoryModal]
+        W[ReturnStepSelector]
+        X[ItemDetailsModal]
+        Y[BulkOperationDialog]
+    end
+
+    subgraph "Form Components"
+        F --> Z[ItemForm]
+        F --> AA[VendorSelection]
+        F --> BB[BudgetAllocation]
+        F --> CC[WorkflowSubmission]
+    end
+
+</div>
+<h2 id="user-journey-flows">User Journey Flows</h2>
+<h3 id="main-purchase-request-flow">Main Purchase Request Flow</h3>
+<div class="mermaid">
+flowchart TD
+    A[User Logs In] --> B{User Role?}
+
+    B -->|Requestor| C[View My PRs]
+    B -->|Manager| D[View Department PRs]
+    B -->|Finance| E[View All PRs - Financial]
+    B -->|Purchasing| F[View All PRs - Procurement]
+
+    C --> G[Create New PR]
+    D --> H[Review PRs for Approval]
+    E --> I[Financial Review]
+    F --> J[Procurement Processing]
+
+    G --> K[Select Template]
+    K --> L[Fill PR Form]
+    L --> M[Add Items]
+    M --> N[Submit for Approval]
+
+    H --> O{Approve/Reject?}
+    O -->|Approve| P[Send to Next Stage]
+    O -->|Reject| Q[Return with Comments]
+    O -->|Send Back| R[Select Return Stage]
+
+    I --> S[Budget Validation]
+    S --> T{Within Budget?}
+    T -->|Yes| U[Approve]
+    T -->|No| V[Request Additional Approval]
+
+    J --> W[Vendor Assignment]
+    W --> X[Price Negotiation]
+    X --> Y[Create Purchase Order]
+
+</div>
+<h3 id="create-purchase-request-flow">Create Purchase Request Flow</h3>
+<div class="mermaid">
+flowchart TD
+    A[Click Create PR] --> B[Template Selection Dialog]
+
+    B --> C{Select Template}
+    C -->|Office Supplies| D[Office Template]
+    C -->|IT Equipment| E[IT Template]
+    C -->|Kitchen/F&B| F[Kitchen Template]
+    C -->|Maintenance| G[Maintenance Template]
+    C -->|Custom| H[Blank Form]
+
+    D --> I[Pre-filled Office Items]
+    E --> I
+    F --> I
+    G --> I
+    H --> I
+
+    I[PR Form] --> J[Basic Information]
+    J --> K[Add Items]
+    K --> L{More Items?}
+    L -->|Yes| M[Item Form Modal]
+    M --> N[Save Item]
+    N --> L
+    L -->|No| O[Review Summary]
+
+    O --> P{Valid?}
+    P -->|No| Q[Show Validation Errors]
+    Q --> J
+    P -->|Yes| R[Save as Draft or Submit]
+
+    R --> S{Save Option}
+    S -->|Draft| T[Save Draft]
+    S -->|Submit| U[Submit for Approval]
+
+    U --> V[Workflow Engine]
+    V --> W[Determine Next Stage]
+    W --> X[Send Notifications]
+    X --> Y[Redirect to PR Detail]
+
+</div>
+<h3 id="approval-workflow">Approval Workflow</h3>
+<div class="mermaid">
+stateDiagram-v2
+    [*] --> Draft
+
+    Draft --> Submitted : Submit for Approval
+
+    Submitted --> DeptApproval : Workflow Engine Route
+    Submitted --> FinApproval : High Value Items
+    Submitted --> Purchasing : Low Value / Auto-approve
+
+    DeptApproval --> FinApproval : Manager Approve
+    DeptApproval --> Rejected : Manager Reject
+    DeptApproval --> Draft : Send Back to Requester
+
+    FinApproval --> GMApproval : High Value (>$10k)
+    FinApproval --> Purchasing : Standard Approval
+    FinApproval --> Rejected : Finance Reject
+    FinApproval --> DeptApproval : Send Back to Manager
+
+    GMApproval --> Purchasing : GM Approve
+    GMApproval --> Rejected : GM Reject
+    GMApproval --> FinApproval : Send Back to Finance
+
+    Purchasing --> Completed : Process Complete
+    Purchasing --> OnHold : Vendor Issues
+    Purchasing --> FinApproval : Send Back for Budget Review
+
+    OnHold --> Purchasing : Issues Resolved
+
+    Rejected --> [*]
+    Completed --> [*]
+
+</div>
+<h2 id="modal-and-dialog-system">Modal and Dialog System</h2>
+<div class="mermaid">
+graph TD
+    subgraph "Modal System Architecture"
+        A[Component Trigger] --> B{Modal Type}
+
+        B -->|Vendor Comparison| C[VendorComparisonModal]
+        B -->|Price History| D[PriceHistoryModal]
+        B -->|Return Workflow| E[ReturnStepSelector]
+        B -->|Item Details| F[ItemDetailsModal]
+        B -->|Bulk Operations| G[BulkOperationDialog]
+        B -->|Confirmations| H[ConfirmationDialog]
+
+        C --> I[Vendor Data Fetch]
+        I --> J[Price Comparison Table]
+        J --> K[Vendor Selection]
+        K --> L[Update PR Item]
+
+        D --> M[Historical Price Fetch]
+        M --> N[Price Trend Chart]
+        N --> O[Price Analytics]
+
+        E --> P[Workflow Stage Selection]
+        P --> Q[Return Comments]
+        Q --> R[Workflow Engine Update]
+
+        F --> S[Inventory Check]
+        S --> T[On-hand Quantities]
+        T --> U[Alternative Suggestions]
+
+        G --> V[Selected Items Validation]
+        V --> W[Bulk Action Confirmation]
+        W --> X[Batch Processing]
+    end
+
+</div>
+<h3 id="modal-interaction-flow">Modal Interaction Flow</h3>
+<div class="mermaid">
+sequenceDiagram
+    participant User
+    participant Component
+    participant Modal
+    participant API
+    participant State
+
+    User->>Component: Click Action Button
+    Component->>Modal: Open Modal
+    Modal->>API: Fetch Required Data
+    API-->>Modal: Return Data
+    Modal->>User: Display Modal Content
+
+    User->>Modal: Interact (Select/Input)
+    Modal->>Modal: Validate Input
+
+    alt Valid Input
+        User->>Modal: Confirm Action
+        Modal->>API: Submit Changes
+        API-->>Modal: Confirm Success
+        Modal->>State: Update Component State
+        Modal->>Component: Close Modal
+        Component->>User: Show Success Notification
+    else Invalid Input
+        Modal->>User: Show Validation Errors
+    end
+
+</div>
+<h2 id="data-flow-and-state-management">Data Flow and State Management</h2>
+<div class="mermaid">
+graph TB
+    subgraph "Data Layer"
+        A[Mock Data Store] --> B[API Service Layer]
+        C[TypeScript Types] --> B
+        D[Zod Validation] --> B
+    end
+
+    subgraph "State Management"
+        E[React Query Cache] --> F[Component State]
+        G[User Context] --> F
+        H[Workflow Context] --> F
+        I[Form State] --> F
+    end
+
+    subgraph "Component Layer"
+        F --> J[List Components]
+        F --> K[Detail Components]
+        F --> L[Form Components]
+        F --> M[Modal Components]
+    end
+
+    subgraph "User Interface"
+        J --> N[PR List View]
+        K --> O[PR Detail View]
+        L --> P[PR Create/Edit]
+        M --> Q[Dialogs & Modals]
+    end
+
+    B --> E
+    E --> R[Optimistic Updates]
+    R --> S[Background Sync]
+
+</div>
+<h3 id="state-update-flow">State Update Flow</h3>
+<div class="mermaid">
+flowchart LR
+    A[User Action] --> B[Component Handler]
+    B --> C{Action Type}
+
+    C -->|Create/Update| D[Form Validation]
+    C -->|Delete| E[Confirmation Dialog]
+    C -->|Workflow| F[RBAC Check]
+
+    D --> G[API Call]
+    E --> G
+    F --> G
+
+    G --> H[Optimistic Update]
+    H --> I[Background Sync]
+
+    I --> J{Success?}
+    J -->|Yes| K[Update Cache]
+    J -->|No| L[Rollback State]
+
+    K --> M[Refresh UI]
+    L --> N[Show Error]
+
+    M --> O[Success Notification]
+    N --> P[Error Notification]
+
+</div>
+<h2 id="workflow-engine">Workflow Engine</h2>
+<div class="mermaid">
+graph TD
+    subgraph "Workflow Decision Engine"
+        A[PR Submission] --> B[Analyze Items]
+        B --> C[Calculate Total Value]
+        C --> D[Check Budget Requirements]
+        D --> E[Determine Approval Path]
+
+        E --> F{Value Threshold}
+        F -->|< $1000| G[Auto-Approve to Purchasing]
+        F -->|$1000-$5000| H[Department Manager]
+        F -->|$5000-$10000| I[Finance Manager]
+        F -->|> $10000| J[GM Approval]
+
+        G --> K[Purchasing Queue]
+        H --> L{Manager Decision}
+        I --> M{Finance Decision}
+        J --> N{GM Decision}
+
+        L -->|Approve| O[Next Stage Routing]
+        L -->|Reject| P[Rejected State]
+        L -->|Return| Q[Previous Stage]
+
+        M -->|Approve| O
+        M -->|Reject| P
+        M -->|Return| Q
+
+        N -->|Approve| O
+        N -->|Reject| P
+        N -->|Return| Q
+
+        O --> R[Notification System]
+        P --> S[Rejection Notifications]
+        Q --> T[Return Notifications]
+    end
+
+</div>
+<h3 id="workflow-rules-engine">Workflow Rules Engine</h3>
+<div class="mermaid">
+flowchart TD
+    A[Workflow Action Request] --> B[Load PR Data]
+    B --> C[Get User Permissions]
+    C --> D[Apply Business Rules]
+
+    D --> E{Budget Check}
+    E -->|Over Budget| F[Require Additional Approval]
+    E -->|Within Budget| G[Standard Process]
+
+    F --> H[Escalate to Finance]
+    G --> I[Check Item Categories]
+
+    I --> J{Special Categories?}
+    J -->|IT Equipment| K[IT Manager Approval]
+    J -->|Controlled Items| L[Additional Compliance]
+    J -->|Standard Items| M[Normal Flow]
+
+    K --> N[Route to IT Department]
+    L --> O[Compliance Check]
+    M --> P[Standard Approval Path]
+
+    N --> Q[Update Workflow State]
+    O --> Q
+    P --> Q
+
+    Q --> R[Send Notifications]
+    R --> S[Log Activity]
+    S --> T[Update UI State]
+
+</div>
+<h2 id="rbac-and-permissions">RBAC and Permissions</h2>
+<div class="mermaid">
+graph TD
+    subgraph "Role-Based Access Control"
+        A[User Login] --> B[Load User Profile]
+        B --> C[Determine Roles]
+        C --> D[Load Permissions]
+
+        D --> E{User Role}
+        E -->|Requestor| F[Requestor Permissions]
+        E -->|Department Manager| G[Manager Permissions]
+        E -->|Finance Manager| H[Finance Permissions]
+        E -->|Purchasing Staff| I[Purchasing Permissions]
+        E -->|GM| J[Executive Permissions]
+
+        F --> K[Create, Edit Own PRs]
+        G --> L[Approve Department PRs]
+        H --> M[Financial Oversight]
+        I --> N[Procurement Actions]
+        J --> O[All System Access]
+
+        K --> P[Component Rendering]
+        L --> P
+        M --> P
+        N --> P
+        O --> P
+
+        P --> Q[Dynamic UI Elements]
+        Q --> R[Action Buttons]
+        Q --> S[Field Editing]
+        Q --> T[Data Visibility]
+    end
+
+</div>
+<h3 id="permission-matrix">Permission Matrix</h3>
+<div class="mermaid">
+graph LR
+    subgraph "Actions vs Roles"
+        A[Create PR] --> B{Role Check}
+        B -->|All Roles| C[✓ Allowed]
+
+        D[Edit PR] --> E{Ownership + Status}
+        E -->|Owner + Draft| F[✓ Allowed]
+        E -->|Manager + Pending| F
+        E -->|Other| G[✗ Denied]
+
+        H[Approve PR] --> I{Role + Stage}
+        I -->|Manager + Dept Stage| J[✓ Allowed]
+        I -->|Finance + Finance Stage| J
+        I -->|Other| K[✗ Denied]
+
+        L[Delete PR] --> M{Owner + Status}
+        M -->|Owner + Draft| N[✓ Allowed]
+        M -->|Other| O[✗ Denied]
+    end
+
+</div>
+<h2 id="api-integration">API Integration</h2>
+<div class="mermaid">
+graph TB
+    subgraph "API Architecture"
+        A[Frontend Components] --> B[React Query Hooks]
+        B --> C[API Service Layer]
+        C --> D[HTTP Client]
+        D --> E[Backend Services]
+
+        E --> F[Mock Data Store]
+        E --> G[Business Logic]
+        E --> H[Validation Layer]
+
+        subgraph "API Endpoints"
+            I[GET /api/purchase-requests]
+            J[GET /api/purchase-requests/*id*]
+            K[POST /api/purchase-requests]
+            L[PUT /api/purchase-requests/*id*]
+            M[DELETE /api/purchase-requests/*id*]
+            N[POST /api/purchase-requests/*id/workflow]
+        end
+
+        C --> I
+        C --> J
+        C --> K
+        C --> L
+        C --> M
+        C --> N
+    end
+
+</div>
+<h3 id="api-flow-sequence">API Flow Sequence</h3>
+<div class="mermaid">
+sequenceDiagram
+    participant UI as UI Component
+    participant RQ as React Query
+    participant API as API Service
+    participant BE as Backend
+    participant DS as Data Store
+
+    UI->>RQ: Request Data
+    RQ->>API: HTTP Request
+    API->>BE: Service Call
+    BE->>DS: Data Query
+    DS-->>BE: Return Data
+    BE-->>API: Processed Data
+    API-->>RQ: JSON Response
+    RQ-->>UI: Cached Data
+
+    Note over UI,RQ: Optimistic Updates
+    UI->>RQ: Update Request
+    RQ->>UI: Immediate UI Update
+    RQ->>API: Background Sync
+
+    alt Success
+        API-->>RQ: Confirm Success
+        RQ->>UI: Maintain Update
+    else Failure
+        API-->>RQ: Error Response
+        RQ->>UI: Rollback Update
+        RQ->>UI: Show Error
+    end
+
+</div>
+<h2 id="notification-and-message-system">Notification and Message System</h2>
+<div class="mermaid">
+graph TD
+    subgraph "Notification System"
+        A[User Action] --> B[Action Handler]
+        B --> C{Action Result}
+
+        C -->|Success| D[Success Toast]
+        C -->|Error| E[Error Toast]
+        C -->|Warning| F[Warning Alert]
+        C -->|Info| G[Info Banner]
+
+        D --> H[Auto-dismiss Timer]
+        E --> I[Manual Dismiss]
+        F --> J[Action Required]
+        G --> K[Persistent Display]
+
+        subgraph "Message Types"
+            L[Form Validation]
+            M[Workflow Updates]
+            N[System Alerts]
+            O[Business Rules]
+        end
+
+        L --> P[Field-level Errors]
+        M --> Q[Status Changes]
+        N --> R[System Maintenance]
+        O --> S[Budget Warnings]
+
+        P --> T[Form Component]
+        Q --> U[Status Badge]
+        R --> V[Global Banner]
+        S --> W[Alert Component]
+    end
+
+</div>
+<h2 id="user-interface-screenshots">User Interface Screenshots</h2>
+<p>This section provides visual documentation of the key user interface screens in the Carmen ERP Purchase Request system. Screenshots were captured from the running application to show the actual implementation of the designs and workflows described in this document.</p>
+<h3 id="purchase-request-list-view">Purchase Request List View</h3>
+<p><em>Screenshot captured: Purchase Request main list interface</em></p>
+<p><img src="./purchase-request-list-view.png" alt="Purchase Request List View"></p>
+<p>The main Purchase Request list view shows:</p>
+<ul>
+<li><strong>Navigation sidebar</strong> with procurement module expanded</li>
+<li><strong>Filter controls</strong> including &quot;My Pending&quot;, &quot;All Documents&quot;, stage filters, and saved filters</li>
+<li><strong>Action buttons</strong> for Export, Print, and New PR creation</li>
+<li><strong>Data table</strong> with sortable columns: PR Number, Date, Type, Stage, Status, Requestor, Department, Amount, Currency</li>
+<li><strong>Status indicators</strong> with color coding (Completed in green, InProgress in blue, Submitted in blue, Rejected in red, Draft in yellow)</li>
+<li><strong>Pagination controls</strong> at the bottom</li>
+<li><strong>View toggle</strong> between list and card views</li>
+<li><strong>Bulk selection</strong> capability with checkboxes</li>
+</ul>
+<h3 id="purchase-request-detail-view">Purchase Request Detail View</h3>
+<p><em>Screenshot captured: Purchase Request detail interface (PR-2024-002)</em></p>
+<p><img src="./purchase-request-detail-view.png" alt="Purchase Request Detail View"></p>
+<p>The Purchase Request detail view displays:</p>
+<ul>
+<li><strong>Header section</strong> with PR number, status badge, and action buttons (Print, Export, Share)</li>
+<li><strong>Basic information</strong> including Date, PR Type, Requestor, and Department</li>
+<li><strong>Description field</strong> with full PR details</li>
+<li><strong>Workflow progress indicator</strong> showing current stage in the approval process</li>
+<li><strong>Tabbed interface</strong> with Items, Budgets, and Workflow tabs</li>
+<li><strong>Items table</strong> with expandable rows showing:<ul>
+<li>Item numbers and location/status</li>
+<li>Product details with descriptions</li>
+<li>Requested vs Approved quantities</li>
+<li>Date required and delivery points</li>
+<li>Pricing information</li>
+</ul>
+</li>
+<li><strong>Auto-expand on hover</strong> functionality for better UX</li>
+<li><strong>Status badges</strong> for individual items (Pending, Approved, etc.)</li>
+<li><strong>Comments &amp; Attachments</strong> section with file upload and download capabilities</li>
+<li><strong>Activity Log</strong> showing complete history of all actions performed on the PR</li>
+</ul>
+<h3 id="purchase-request-creation-form">Purchase Request Creation Form</h3>
+<p><em>Screenshot captured: Purchase Request creation/editing interface (PR-2023-001 Draft)</em></p>
+<p><img src="./purchase-request-creation-form.png" alt="Purchase Request Creation Form"></p>
+<p>The Purchase Request creation form includes:</p>
+<ul>
+<li><strong>Form header</strong> with PR number and draft status</li>
+<li><strong>Basic details</strong> including Date, PR Type, Requestor, and Department</li>
+<li><strong>Description field</strong> for PR purpose</li>
+<li><strong>Workflow progress</strong> showing submission stage</li>
+<li><strong>Items management</strong> with detailed table including:<ul>
+<li>Item numbering and location selection</li>
+<li>Product details with full descriptions</li>
+<li>Quantity requested vs approved tracking</li>
+<li>Date requirements and delivery points</li>
+<li>Pricing calculations</li>
+</ul>
+</li>
+<li><strong>Item status indicators</strong> (Approved, Review, Pending, etc.)</li>
+<li><strong>Auto-expand functionality</strong> for better data visibility</li>
+<li><strong>Comments &amp; Attachments</strong> section for collaboration</li>
+<li><strong>Activity Log</strong> for tracking all changes and actions</li>
+<li><strong>Validation and submission</strong> controls</li>
+</ul>
+<h3 id="dynamic-ui-elements-and-interactions">Dynamic UI Elements and Interactions</h3>
+<p><em>Screenshots captured: Interactive menus, dropdowns, and popup elements</em></p>
+<h4>Action Menu (Three-dot Menu)</h4>
+<p><img src="./action-menu-popup.png" alt="Action Menu Popup"></p>
+<p>The row-level action menu provides context-specific actions for each Purchase Request:</p>
+<ul>
+<li><strong>Approve</strong> option with green checkmark icon for pending requests</li>
+<li><strong>Reject</strong> option with red X icon for declining requests</li>
+<li><strong>Delete</strong> option with red trash icon for removing requests</li>
+<li><strong>Visual separator</strong> between approval/rejection actions and destructive delete action</li>
+<li><strong>Contextual availability</strong> - options appear based on current PR status and user permissions</li>
+</ul>
+<h4>Filter Dropdown Menus</h4>
+<h5>Stage Filter Dropdown</h5>
+<p><img src="./filter-dropdown-all-stage.png" alt="Stage Filter Dropdown"></p>
+<p>The Stage filter dropdown allows filtering by approval workflow stages:</p>
+<ul>
+<li><strong>All Stage</strong> (default selection showing all requests)</li>
+<li><strong>Request Creation</strong> for newly created PRs</li>
+<li><strong>Department Approval</strong> for requests pending department head approval</li>
+<li><strong>Purchasing Review</strong> for requests under purchasing team review</li>
+<li><strong>Finance Review</strong> for requests requiring financial approval</li>
+<li><strong>Final Approval</strong> for requests pending final sign-off</li>
+<li><strong>Completed</strong> for fully processed requests</li>
+</ul>
+<h5>Requester Filter Dropdown</h5>
+<p><img src="./filter-dropdown-all-requester.png" alt="Requester Filter Dropdown"></p>
+<p>The Requester filter dropdown enables filtering by the person who created the PR:</p>
+<ul>
+<li><strong>All Requester</strong> (default selection showing all requesters)</li>
+<li><strong>Individual staff members</strong> including:<ul>
+<li>Somchai</li>
+<li>Somsri</li>
+<li>John</li>
+<li>Mary</li>
+</ul>
+</li>
+<li><strong>Dynamic population</strong> based on users who have created Purchase Requests</li>
+</ul>
+<h4>Bulk Operations Menu (In PR Detail Form)</h4>
+<p><img src="./bulk-operations-menu-pr-detail.png" alt="Bulk Operations Menu"></p>
+<p>The bulk operations functionality is located within the Purchase Request detail form, specifically in the Items tab:</p>
+<p><strong>Selection Interface:</strong></p>
+<ul>
+<li><strong>Item checkboxes</strong> on each row for individual selection</li>
+<li><strong>Select all checkbox</strong> in the table header for bulk selection</li>
+<li><strong>Selection counter</strong> displays &quot;X items selected: Y Approved&quot; showing total and status breakdown</li>
+<li><strong>Auto-expand on hover</strong> toggle for better visibility during bulk operations</li>
+</ul>
+<p><strong>Bulk Action Buttons:</strong></p>
+<ul>
+<li><strong>Approve Selected</strong> (green checkmark icon) - Approve multiple items simultaneously</li>
+<li><strong>Reject Selected</strong> (red X icon) - Reject multiple items at once</li>
+<li><strong>Return Selected</strong> (orange return icon) - Return selected items for revision</li>
+<li><strong>Split</strong> (blue split icon) - Split selected items into separate requests</li>
+<li><strong>Set Date Required</strong> (purple calendar icon) - Update delivery dates for multiple items</li>
+</ul>
+<p><strong>Context-Aware Functionality:</strong></p>
+<ul>
+<li>Button availability changes based on current item status and user permissions</li>
+<li>Visual feedback shows the impact of bulk operations before execution</li>
+<li>Actions apply only to currently selected items, maintaining granular control</li>
+</ul>
+<h4>Auto-Expand Item Details on Hover</h4>
+<p><img src="./item-detail-hover-expanded.png" alt="Item Detail Hover Expanded"></p>
+<p>The auto-expand functionality provides detailed information when hovering over item rows:</p>
+<p><strong>Inventory Information Panel:</strong></p>
+<ul>
+<li><strong>On Hand</strong>: Current stock quantity with piece/unit indicators</li>
+<li><strong>On Order</strong>: Pending incoming stock quantities</li>
+<li><strong>Reorder</strong>: Minimum threshold for reordering</li>
+<li><strong>Restock</strong>: Target quantity for restocking</li>
+<li><strong>Stock Level</strong>: Percentage indicator with visual status bar</li>
+<li><strong>Needs Reorder</strong> alert when stock falls below threshold</li>
+</ul>
+<p><strong>Business Dimensions Panel:</strong></p>
+<ul>
+<li><strong>Job Number</strong>: Project/job reference (e.g., FB-2024-Q1-001)</li>
+<li><strong>Event</strong>: Associated event name (e.g., CONF2024)</li>
+<li><strong>Project</strong>: Project code (e.g., PROJ001)</li>
+<li><strong>Market Segment</strong>: Business classification (e.g., ENTERPRISE)</li>
+</ul>
+<h4>Role-Based UI Differences</h4>
+<p><img src="./role-based-purchasing-staff-view.png" alt="Role-Based Purchasing Staff View"></p>
+<p>The system displays different information based on user roles:</p>
+<p><strong>Chef/Requestor Role (Original View):</strong></p>
+<ul>
+<li>Comment section shows user initials &quot;CMR&quot; (Chef Maria Rodriguez)</li>
+<li>Standard approval quantities without additional procurement details</li>
+<li>Focus on operational requirements and item specifications</li>
+</ul>
+<p><strong>Purchasing Staff Role:</strong></p>
+<ul>
+<li>Comment section shows &quot;DPS&quot; (Demo Purchasing Staff)</li>
+<li><strong>Additional FOC (Free of Charge) information</strong> displayed in Approved column:<ul>
+<li>&quot;FOC: 0.000 piece&quot; for each item showing free quantities</li>
+<li>Critical for procurement cost calculations and vendor negotiations</li>
+</ul>
+</li>
+<li><strong>Submit &amp; Approve button</strong> appears at bottom for procurement workflow actions</li>
+<li>User profile shows &quot;Demo Purchasing Staff&quot; with &quot;<a href="mailto:purchasing@example.com">purchasing@example.com</a>&quot;</li>
+<li>Department context switches from &quot;Kitchen Operations&quot; to &quot;Administration&quot;</li>
+</ul>
+<p><strong>Dynamic Panel Visibility:</strong></p>
+<ul>
+<li><strong>Inventory panels</strong> may show/hide based on role permissions</li>
+<li><strong>Business dimensions</strong> visibility controlled by departmental access</li>
+<li><strong>Pricing details</strong> and FOC information restricted to procurement roles</li>
+<li><strong>Auto-expand behavior</strong> may differ based on user&#39;s data access level</li>
+</ul>
+<h4>UI Interaction Patterns</h4>
+<ul>
+<li><strong>Hover states</strong> provide visual feedback for interactive elements</li>
+<li><strong>Dropdown menus</strong> close when clicking outside or pressing Escape</li>
+<li><strong>Status color coding</strong> maintains consistency across all views:<ul>
+<li>Green for Completed/Approved states</li>
+<li>Blue for InProgress/Submitted states</li>
+<li>Red for Rejected states</li>
+<li>Yellow for Draft states</li>
+</ul>
+</li>
+<li><strong>Progressive disclosure</strong> with expandable rows and hover details</li>
+<li><strong>Contextual actions</strong> that adapt based on item status and user permissions</li>
+<li><strong>Role-based information display</strong> with procurement-specific details for purchasing staff</li>
+</ul>
+<h2 id="workflow-action-buttons">Workflow Action Buttons</h2>
+<p>The system implements workflow action buttons for approval processes through a dedicated approval interface rather than on individual purchase request detail pages.</p>
+<h3 id="approval-workflow-interface">Approval Workflow Interface</h3>
+<p>The workflow actions are primarily handled through the <strong>My Approvals</strong> page (<code>/procurement/my-approvals</code>) which provides:</p>
+<h4>1. Two-Tab Approval System</h4>
+<p><strong>Pending Approval Tab:</strong></p>
+<ul>
+<li>Items ready for immediate approval</li>
+<li>Direct &quot;Approve&quot; buttons for straightforward requests</li>
+<li>Standard approval workflow for routine procurement</li>
+</ul>
+<p><img src="./my-approvals-workflow-buttons.png" alt="My Approvals Workflow Buttons"></p>
+<p><strong>Flagged for Review Tab:</strong></p>
+<ul>
+<li>High-value or exceptional requests requiring detailed review</li>
+<li>&quot;Review&quot; buttons for complex approval scenarios</li>
+<li>Additional scrutiny for requests exceeding normal parameters</li>
+</ul>
+<p><img src="./flagged-review-workflow-buttons.png" alt="Flagged Review Workflow Buttons"></p>
+<h4>2. Purchase Request Detail Page Behavior</h4>
+<p>On individual PR detail pages, the workflow action appears as:</p>
+<ul>
+<li><strong>&quot;Review Required&quot; button</strong> (typically disabled until specific conditions are met)</li>
+<li>Located at the bottom-right of the page interface</li>
+<li>Serves as an indicator rather than primary action interface</li>
+</ul>
+<p><img src="./workflow-review-required-button.png" alt="Workflow Review Required Button"></p>
+<h4>3. Workflow Action Patterns</h4>
+<p><strong>Approve Actions:</strong></p>
+<ul>
+<li>Single-click approval for standard requests</li>
+<li>Immediate state change with visual feedback</li>
+<li>Auto-navigation or list update upon completion</li>
+</ul>
+<p><strong>Review Actions:</strong></p>
+<ul>
+<li>Opens detailed review interface for complex items</li>
+<li>Allows for additional scrutiny and documentation</li>
+<li>May provide multiple action options (approve, reject, request changes)</li>
+</ul>
+<p><strong>Role-Based Access:</strong></p>
+<ul>
+<li>Actions only visible to users with appropriate approval permissions</li>
+<li>Department Manager role enables approval capabilities</li>
+<li>Context-sensitive button activation based on workflow stage</li>
+</ul>
+<h4>4. Workflow States and Button Behavior</h4>
+<ul>
+<li><strong>Disabled State</strong>: &quot;Review Required&quot; button appears disabled when user lacks permissions or item isn&#39;t ready for approval</li>
+<li><strong>Active State</strong>: Buttons become interactive when approval criteria are met</li>
+<li><strong>Processing State</strong>: Visual feedback during approval processing</li>
+<li><strong>Completion State</strong>: State updates and potential navigation after action completion</li>
+</ul>
+<h3 id="implementation-notes">Implementation Notes</h3>
+<p>The workflow system prioritizes:</p>
+<ul>
+<li><strong>Separation of concerns</strong>: Dedicated approval interface separate from viewing interface</li>
+<li><strong>Role-based access control</strong>: Buttons only appear for authorized users</li>
+<li><strong>Two-tier approval process</strong>: Standard vs. flagged items require different approval paths</li>
+<li><strong>Visual state management</strong>: Clear indication of approval status and available actions</li>
+</ul>
+<h2 id="technical-implementation-details">Technical Implementation Details</h2>
+<h3 id="component-communication">Component Communication</h3>
+<div class="mermaid">
+graph LR
+    subgraph "Component Communication Patterns"
+        A[Parent Component] --> B[Props Down]
+        B --> C[Child Component]
+        C --> D[Events Up]
+        D --> A
+
+        E[Sibling A] --> F[Shared State]
+        F --> G[Sibling B]
+
+        H[Deep Child] --> I[Context Provider]
+        I --> J[Any Consumer]
+
+        K[Component] --> L[Custom Hook]
+        L --> M[API Service]
+        M --> N[React Query]
+        N --> K
+    end
+
+</div>
+<h3 id="performance-optimizations">Performance Optimizations</h3>
+<div class="mermaid">
+flowchart TD
+    A[Performance Strategy] --> B[Code Splitting]
+    A --> C[Lazy Loading]
+    A --> D[Memoization]
+    A --> E[Virtual Scrolling]
+
+    B --> F[Dynamic Imports]
+    F --> G[Route-based Chunks]
+
+    C --> H[Modal Components]
+    C --> I[Tab Content]
+
+    D --> J[React.memo]
+    D --> K[useMemo]
+    D --> L[useCallback]
+
+    E --> M[Large Lists]
+    E --> N[Data Tables]
+
+    O[Caching Strategy] --> P[React Query]
+    P --> Q[Background Refetch]
+    P --> R[Stale While Revalidate]
+    P --> S[Optimistic Updates]
+
+</div>
+<hr>
+<p>This comprehensive analysis provides a complete technical overview of the Carmen ERP Purchase Request system, covering all aspects from high-level architecture to detailed implementation patterns. The Mermaid diagrams illustrate the relationships between components, data flow, user interactions, and system behavior.</p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#purchase-request-system-comprehensive-analysis" class="level-1">Purchase Request System - Comprehensive Analysis</a>
+<a href="#table-of-contents" class="level-2">Table of Contents</a>
+<a href="#system-overview" class="level-2">System Overview</a>
+<a href="#component-architecture" class="level-2">Component Architecture</a>
+<a href="#user-journey-flows" class="level-2">User Journey Flows</a>
+<a href="#main-purchase-request-flow" class="level-3">Main Purchase Request Flow</a>
+<a href="#create-purchase-request-flow" class="level-3">Create Purchase Request Flow</a>
+<a href="#approval-workflow" class="level-3">Approval Workflow</a>
+<a href="#modal-and-dialog-system" class="level-2">Modal and Dialog System</a>
+<a href="#modal-interaction-flow" class="level-3">Modal Interaction Flow</a>
+<a href="#data-flow-and-state-management" class="level-2">Data Flow and State Management</a>
+<a href="#state-update-flow" class="level-3">State Update Flow</a>
+<a href="#workflow-engine" class="level-2">Workflow Engine</a>
+<a href="#workflow-rules-engine" class="level-3">Workflow Rules Engine</a>
+<a href="#rbac-and-permissions" class="level-2">RBAC and Permissions</a>
+<a href="#permission-matrix" class="level-3">Permission Matrix</a>
+<a href="#api-integration" class="level-2">API Integration</a>
+<a href="#api-flow-sequence" class="level-3">API Flow Sequence</a>
+<a href="#notification-and-message-system" class="level-2">Notification and Message System</a>
+<a href="#user-interface-screenshots" class="level-2">User Interface Screenshots</a>
+<a href="#purchase-request-list-view" class="level-3">Purchase Request List View</a>
+<a href="#purchase-request-detail-view" class="level-3">Purchase Request Detail View</a>
+<a href="#purchase-request-creation-form" class="level-3">Purchase Request Creation Form</a>
+<a href="#dynamic-ui-elements-and-interactions" class="level-3">Dynamic UI Elements and Interactions</a>
+<a href="#workflow-action-buttons" class="level-2">Workflow Action Buttons</a>
+<a href="#approval-workflow-interface" class="level-3">Approval Workflow Interface</a>
+<a href="#implementation-notes" class="level-3">Implementation Notes</a>
+<a href="#technical-implementation-details" class="level-2">Technical Implementation Details</a>
+<a href="#component-communication" class="level-3">Component Communication</a>
+<a href="#performance-optimizations" class="level-3">Performance Optimizations</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Search Modal -->
+    <div class="search-modal" id="searchModal">
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchModalInput" placeholder="Search documentation..." autofocus>
+                    <button class="search-close-btn" id="searchCloseBtn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="search-results" id="searchResults">
+                <div class="search-empty">
+                    <i class="fas fa-search"></i>
+                    <p>Start typing to search...</p>
+                </div>
+            </div>
+            <div class="search-footer">
+                <div class="search-shortcuts">
+                    <kbd>↑↓</kbd> Navigate
+                    <kbd>Enter</kbd> Select
+                    <kbd>Esc</kbd> Close
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Search functionality
+        let searchIndex = [];
+        let selectedResultIndex = -1;
+
+        // Load search index
+        fetch('../../../search-index.json')
+            .then(res => res.json())
+            .then(data => {
+                searchIndex = data;
+                console.log('✓ Search index loaded:', searchIndex.length, 'entries');
+            })
+            .catch(err => console.error('❌ Failed to load search index:', err));
+
+        // Open search modal
+        function openSearchModal() {
+            console.log('🔍 Opening search modal...');
+            document.getElementById('searchModal').classList.add('active');
+            document.getElementById('searchModalInput').focus();
+            selectedResultIndex = -1;
+        }
+
+        // Close search modal
+        function closeSearchModal() {
+            document.getElementById('searchModal').classList.remove('active');
+            document.getElementById('searchModalInput').value = '';
+            document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-search"></i><p>Start typing to search...</p></div>';
+            selectedResultIndex = -1;
+        }
+
+        // Search function
+        function performSearch(query) {
+            console.log('🔎 Searching for:', query);
+
+            if (!query || query.length < 2) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-search"></i><p>Start typing to search...</p></div>';
+                return;
+            }
+
+            if (searchIndex.length === 0) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-exclamation-circle"></i><p>Search index not loaded</p></div>';
+                return;
+            }
+
+            const queryLower = query.toLowerCase();
+            const queryWords = queryLower.split(/s+/).filter(word => word.length > 1);
+
+            // Search and score results
+            const results = searchIndex
+                .map(entry => {
+                    let score = 0;
+
+                    // Title match (highest weight)
+                    if (entry.title.toLowerCase().includes(queryLower)) {
+                        score += 100;
+                    }
+                    queryWords.forEach(word => {
+                        if (entry.title.toLowerCase().includes(word)) score += 50;
+                    });
+
+                    // Content match
+                    if (entry.content.toLowerCase().includes(queryLower)) {
+                        score += 10;
+                    }
+                    queryWords.forEach(word => {
+                        if (entry.content.toLowerCase().includes(word)) score += 5;
+                    });
+
+                    return { ...entry, score };
+                })
+                .filter(result => result.score > 0)
+                .sort((a, b) => b.score - a.score)
+                .slice(0, 10); // Top 10 results
+
+            console.log('📊 Found', results.length, 'results');
+
+            // Display results
+            if (results.length === 0) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-times-circle"></i><p>No results found</p></div>';
+                return;
+            }
+
+            const resultsHtml = results.map((result, index) => {
+                const urlPath = '../../../' + result.url;
+                return '<a href="' + urlPath + '" class="search-result ' + (index === 0 ? 'selected' : '') + '" data-index="' + index + '">' +
+                    '<div class="result-title">' + result.title + '</div>' +
+                    '<div class="result-content">' + highlightMatch(result.content, query) + '</div>' +
+                    '</a>';
+            }).join('');
+
+            document.getElementById('searchResults').innerHTML = resultsHtml;
+            selectedResultIndex = 0;
+        }
+
+        // Highlight matching text
+        function highlightMatch(text, query) {
+            if (!text) return '';
+            const queryWords = query.split(/\s+/).join('|');
+            const regex = new RegExp('(' + queryWords + ')', 'gi');
+            return text.substring(0, 150).replace(regex, '<mark>$1</mark>') + '...';
+        }
+
+        // Navigate results with keyboard
+        function navigateResults(direction) {
+            const results = document.querySelectorAll('.search-result');
+            if (results.length === 0) return;
+
+            results[selectedResultIndex]?.classList.remove('selected');
+
+            if (direction === 'down') {
+                selectedResultIndex = (selectedResultIndex + 1) % results.length;
+            } else if (direction === 'up') {
+                selectedResultIndex = (selectedResultIndex - 1 + results.length) % results.length;
+            }
+
+            results[selectedResultIndex]?.classList.add('selected');
+            results[selectedResultIndex]?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+
+        // Select result
+        function selectResult() {
+            const selected = document.querySelector('.search-result.selected');
+            if (selected) {
+                window.location.href = selected.href;
+            }
+        }
+
+        // Event listeners
+        document.getElementById('headerSearchBtn')?.addEventListener('click', openSearchModal);
+        document.getElementById('searchCloseBtn')?.addEventListener('click', closeSearchModal);
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Ctrl+K or Cmd+K to open search
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                openSearchModal();
+            }
+
+            // Esc to close search
+            if (e.key === 'Escape' && document.getElementById('searchModal').classList.contains('active')) {
+                closeSearchModal();
+            }
+
+            // Navigate results
+            if (document.getElementById('searchModal').classList.contains('active')) {
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    navigateResults('down');
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    navigateResults('up');
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    selectResult();
+                }
+            }
+        });
+
+        // Search input
+        document.getElementById('searchModalInput')?.addEventListener('input', (e) => {
+            performSearch(e.target.value);
+        });
+
+        // Click outside to close
+        document.getElementById('searchModal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'searchModal') {
+                closeSearchModal();
+            }
+        });
+    </script>
+</body>
+</html>

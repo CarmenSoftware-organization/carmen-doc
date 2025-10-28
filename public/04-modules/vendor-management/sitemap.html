@@ -1,0 +1,2022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Management Module - Sitemap & Navigation - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: #f8fafc;
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 15% 70% 15%;
+            gap: 0;
+            width: 100%;
+            padding: 1rem 0 2rem 0;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 1rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 2rem);
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-right: 1px solid var(--border-color);
+            padding-right: 2rem;
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 0.75rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+        .nav-subgroup {
+            margin: 0.5rem 0 0.5rem 0.5rem;
+        }
+        .nav-subgroup-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-subgroup-header:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .nav-subitems {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+            margin-left: 0.75rem;
+            margin-top: 0.25rem;
+        }
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 1rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 2rem);
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-left: 1px solid var(--border-color);
+            padding-left: 2rem;
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header - Modern Compact Design */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 52px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+        }
+        .header-content {
+            height: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--foreground);
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+        .logo:hover {
+            opacity: 0.8;
+        }
+        .logo i {
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+        .header-search-container {
+            display: flex;
+            align-items: center;
+        }
+        .header-search-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.375rem 0.75rem;
+            background: var(--secondary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.8125rem;
+            color: var(--muted-foreground);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            min-width: 180px;
+            flex-shrink: 0;
+        }
+        .header-search-btn:hover {
+            background: var(--background);
+            border-color: var(--primary);
+        }
+        .header-search-btn i {
+            color: var(--muted-foreground);
+            font-size: 0.875rem;
+        }
+        .header-search-btn span {
+            flex: 1;
+            text-align: left;
+        }
+        .header-search-btn kbd {
+            padding: 0.125rem 0.375rem;
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.6875rem;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--muted-foreground);
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        .back-to-home {
+            display: none; /* Hidden - navigation is sufficient */
+        }
+
+        /* Responsive Header */
+        @media (max-width: 768px) {
+            .header-search-btn {
+                min-width: auto;
+            }
+            .header-search-btn span {
+                display: none;
+            }
+        }
+
+        /* Search Modal */
+        .search-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            padding: 2rem;
+        }
+        .search-modal.active {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 10vh;
+        }
+        .search-modal-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 640px;
+            max-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            animation: slideDown 0.2s ease-out;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .search-modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .search-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .search-input-wrapper i {
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+        }
+        .search-input-wrapper input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 1.125rem;
+            color: var(--text-primary);
+        }
+        .search-close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .search-close-btn:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .search-results {
+            overflow-y: auto;
+            max-height: calc(70vh - 150px);
+        }
+        .search-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 2rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+        .search-empty i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        .search-result {
+            display: block;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+        .search-result:hover,
+        .search-result.selected {
+            background: var(--bg-secondary);
+        }
+        .search-result.selected {
+            border-left: 3px solid var(--primary-color);
+        }
+        .result-header {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .result-category {
+            font-size: 0.75rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .result-title {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        .result-badge {
+            display: inline-block;
+            padding: 0.125rem 0.5rem;
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-radius: 4px;
+            font-size: 0.6875rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        .result-content {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        .result-content mark {
+            background: rgba(79, 70, 229, 0.2);
+            color: var(--primary-color);
+            font-weight: 600;
+            padding: 0.125rem 0.25rem;
+            border-radius: 2px;
+        }
+        .search-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            border-bottom-left-radius: var(--border-radius-xl);
+            border-bottom-right-radius: var(--border-radius-xl);
+        }
+        .search-shortcuts {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        .search-shortcuts kbd {
+            padding: 0.25rem 0.5rem;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        /* Content Area */
+        .doc-content {
+            padding: 0 2rem;
+            width: 100%;
+            max-width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 0.9375rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Image Styles */
+        .doc-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 1.5rem auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Limit screenshot width to 80% for better readability */
+        .doc-content p > img {
+            max-width: 80%;
+        }
+
+        /* Table Styles */
+        .doc-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.875rem;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .doc-content table thead {
+            background: #f8fafc;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .doc-content table th {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #0f172a;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        .doc-content table td {
+            padding: 0.75rem 1rem;
+            border-top: 1px solid #e2e8f0;
+            color: #334155;
+        }
+
+        .doc-content table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        /* Table responsive wrapper */
+        .doc-content table {
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .doc-content table thead,
+        .doc-content table tbody,
+        .doc-content table tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 18% 64% 18%;
+                gap: 0;
+                padding: 1rem 0 1.5rem 0;
+            }
+            .doc-nav {
+                padding-right: 1.5rem;
+            }
+            .doc-toc {
+                padding-left: 1.5rem;
+            }
+            .doc-content {
+                padding: 0 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 0;
+                padding: 1rem 0 1.5rem 0;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 0 2rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                gap: 0;
+                padding: 0.5rem 0 1rem 0;
+            }
+            .doc-nav {
+                display: none;
+                border-right: none;
+            }
+            .doc-content {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="../../index.html" class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </a>
+            <div class="doc-header-actions">
+                <div class="header-search-container">
+                    <button class="header-search-btn" id="headerSearchBtn">
+                        <i class="fas fa-search"></i>
+                        <span>Search documentation...</span>
+                        <kbd>Ctrl+K</kbd>
+                    </button>
+                </div>
+                <a href="../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../01-overview/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Index</span>
+                    </a>
+                    <a href="../../01-overview/business-value.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value & ROI</span>
+                    </a>
+                    <a href="../../01-overview/tech-stack.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Technology Stack</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../02-architecture/system-architecture.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-database"></i>
+                    <span>Data Model</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../03-data-model/data-dictionary.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Data Dictionary</span>
+                    </a>
+                    <a href="../../03-data-model/schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-th-large"></i>
+                    <span>Application Modules</span>
+                </div>
+                <div class="nav-items">
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Procurement</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../04-modules/procurement/purchase-requests/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Purchase Requests</span>
+                            </a>
+                            <a href="../../04-modules/procurement/purchase-orders/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Purchase Orders</span>
+                            </a>
+                            <a href="../../04-modules/procurement/goods-received-notes/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Goods Received Notes</span>
+                            </a>
+                            <a href="../../04-modules/procurement/credit-notes/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Credit Notes</span>
+                            </a>
+                            <a href="../../04-modules/procurement/templates/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Templates</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-boxes"></i>
+                            <span>Inventory Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../04-modules/inventory/stock-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Stock Management</span>
+                            </a>
+                            <a href="../../04-modules/inventory/physical-count/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Physical Count</span>
+                            </a>
+                            <a href="../../04-modules/inventory/spot-check/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Spot Check</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span>Finance</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../04-modules/finance/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Finance Module</span>
+                            </a>
+                            <a href="../../04-modules/finance/features/account-code-mapping/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Account Code Mapping</span>
+                            </a>
+                            <a href="../../04-modules/finance/features/currency-and-rates/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Currency Management</span>
+                            </a>
+                            <a href="../../04-modules/finance/features/departments/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Departments</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-handshake"></i>
+                            <span>Vendor Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../04-modules/vendor-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Management</span>
+                            </a>
+                            <a href="../../04-modules/vendor-management/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Management Module</span>
+                            </a>
+                            <a href="../../04-modules/vendor-management/MANAGE-VENDORS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Manage Vendors</span>
+                            </a>
+                            <a href="../../04-modules/vendor-management/VENDOR-PORTAL.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Portal</span>
+                            </a>
+                            <a href="../../04-modules/vendor-management/CAMPAIGNS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Campaigns</span>
+                            </a>
+                            <a href="../../04-modules/vendor-management/PRICELISTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Pricelists</span>
+                            </a>
+                            <a href="../../04-modules/vendor-management/TEMPLATES.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Templates</span>
+                            </a>
+                            <a href="../../04-modules/vendor-management/sitemap.html" class="nav-item active">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Sitemap</span>
+                            </a>
+                            <a href="../../04-modules/vendor-management/PAGES-AND-COMPONENTS-SPEC.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Pages & Components Spec</span>
+                            </a>
+                            <a href="../../04-modules/vendor-management/SHARED-COMPONENTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Shared Components</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-box"></i>
+                            <span>Product Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../04-modules/product-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management</span>
+                            </a>
+                            <a href="../../04-modules/product-management/product-management-specification.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management Specification</span>
+                            </a>
+                            <a href="../../04-modules/product-management/product-management-sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management Sitemap</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-store"></i>
+                            <span>Store Operations</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../store-ops/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Operations</span>
+                            </a>
+                            <a href="../../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Operations Module</span>
+                            </a>
+                            <a href="../../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Requisitions</span>
+                            </a>
+                            <a href="../../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Stock Replenishment</span>
+                            </a>
+                            <a href="../../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Wastage Reporting</span>
+                            </a>
+                            <a href="../../store-ops/SHARED-COMPONENTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Shared Components</span>
+                            </a>
+                            <a href="../../store-ops/GLOSSARY.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Glossary</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-clipboard-list"></i>
+                            <span>Operational Planning</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../operational-planning/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Operational Planning</span>
+                            </a>
+                            <a href="../../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Operational Planning Module</span>
+                            </a>
+                            <a href="../../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Recipe Management</span>
+                            </a>
+                            <a href="../../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Menu Engineering</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-cog"></i>
+                            <span>System Administration</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../sa/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>System Administration</span>
+                            </a>
+                            <a href="../../sa/system-administration-sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>System Administration Sitemap</span>
+                            </a>
+                            <a href="../../sa/features/permission-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Permission Management</span>
+                            </a>
+                            <a href="../../sa/features/permission-management/specification.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Permission Specification</span>
+                            </a>
+                            <a href="../../sa/features/location-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Location Management</span>
+                            </a>
+                            <a href="../../sa/features/workflow/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Workflow</span>
+                            </a>
+                            <a href="../../sa/features/pos-integration/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Reporting</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../04-modules/reporting/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Reporting & Analytics</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../dashboard/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard</span>
+                            </a>
+                            <a href="../../dashboard/sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard Sitemap</span>
+                            </a>
+                            <a href="../../dashboard/components/components-overview.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Components Overview</span>
+                            </a>
+                            <a href="../../dashboard/api/api-specifications.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>API Specifications</span>
+                            </a>
+                            <a href="../../dashboard/business-logic/dashboard-business-rules.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard Business Rules</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-industry"></i>
+                            <span>Production</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../04-modules/production/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Production</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-cash-register"></i>
+                            <span>POS Integration</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../pos-integration/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration</span>
+                            </a>
+                            <a href="../../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration Module</span>
+                            </a>
+                            <a href="../../pos-integration/MAPPING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Mapping</span>
+                            </a>
+                            <a href="../../pos-integration/REPORTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Reports</span>
+                            </a>
+                            <a href="../../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Transactions</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="vendor-management-module-sitemap-amp-navigation">Vendor Management Module - Sitemap &amp; Navigation</h1>
+<h2 id="navigation-structure">Navigation Structure</h2>
+<h3 id="module-hierarchy">Module Hierarchy</h3>
+<div class="mermaid">
+graph TD
+    A[Vendor Management<br>/vendor-management] --> B[Manage Vendors<br>/manage-vendors]
+    A --> C[Vendors Alt<br>/vendors]
+    A --> D[Templates<br>/templates<br>🚧 Prototype]
+    A --> E[Campaigns<br>/campaigns<br>🚧 Prototype]
+    A --> F[Pricelists<br>/pricelists<br>🚧 Prototype]
+    A --> G[Vendor Portal<br>/vendor-portal/sample<br>🚧 Prototype]
+
+    B --> B1[Vendor List<br>/manage-vendors]
+    B --> B2[New Vendor<br>/manage-vendors/new]
+    B --> B3["Vendor Detail<br>/manage-vendors/:id"]
+
+    C --> C1[Vendor List<br>/vendors]
+    C --> C2[New Vendor<br>/vendors/new]
+    C --> C3["Vendor Detail<br>/vendors/:id"]
+    C --> C4["Edit Vendor<br>/vendors/:id/edit"]
+    C --> C5["Pricelist Settings<br>/vendors/:id/pricelist-settings"]
+
+    D --> D1[Template List<br>/templates]
+    D --> D2[New Template<br>/templates/new]
+    D --> D3["Template Detail<br>/templates/:id"]
+    D --> D4["Edit Template<br>/templates/:id/edit"]
+
+    E --> E1[Campaign List<br>/campaigns]
+    E --> E2[New Campaign<br>/campaigns/new]
+    E --> E3["Campaign Detail<br>/campaigns/:id"]
+
+    F --> F1[Pricelist List<br>/pricelists]
+    F --> F2[New Pricelist<br>/pricelists/new]
+    F --> F3[Add Pricelist<br>/pricelists/add]
+    F --> F4["Pricelist Detail<br>/pricelists/:id"]
+    F --> F5["Edit Pricelist<br>/pricelists/:id/edit"]
+    F --> F6["Edit Pricelist New<br>/pricelists/:id/edit-new"]
+
+</div>
+<h2 id="user-workflows">User Workflows</h2>
+<h3 id="1-vendor-management-workflow">1. Vendor Management Workflow</h3>
+<div class="mermaid">
+flowchart TD
+    Start([User Opens<br>Vendor Management]) --> Landing[Landing Page<br>Dashboard]
+    Landing --> Choice{Choose Action}
+
+    Choice -->|View Vendors| List[Vendor List Page]
+    Choice -->|Create Vendor| NewForm[New Vendor Form]
+    Choice -->|Templates| Templates[Template Management]
+    Choice -->|Campaigns| Campaigns[Campaign Management]
+    Choice -->|Pricelists| Pricelists[Pricelist Management]
+
+    List --> ListAction{Action}
+    ListAction -->|Search| Search[Search & Filter]
+    ListAction -->|View Details| Detail[Vendor Detail Page]
+    ListAction -->|Edit| Edit[Edit Mode]
+    ListAction -->|Delete| Delete[Delete Dialog]
+    ListAction -->|Export| Export[Export Data]
+
+    Search --> List
+
+    Detail --> DetailTab{Select Tab}
+    DetailTab -->|Overview| Overview[Basic Info & Summary]
+    DetailTab -->|Pricelists| PL[Price Lists]
+    DetailTab -->|Contacts| Contacts[Contacts & Addresses]
+    DetailTab -->|Certs| Certs[Certifications]
+
+    Edit --> Save{Save Changes?}
+    Save -->|Yes| Update[Update Vendor]
+    Save -->|No| Cancel[Cancel & Revert]
+    Update --> Detail
+    Cancel --> Detail
+
+    Delete --> Confirm{Confirm Delete?}
+    Confirm -->|Yes| CheckDep[Check Dependencies]
+    Confirm -->|No| Detail
+    CheckDep --> HasDep{Has Dependencies?}
+    HasDep -->|Yes| Warning[Show Warning]
+    HasDep -->|No| DoDelete[Delete Vendor]
+    Warning --> ForceDelete{Force Delete?}
+    ForceDelete -->|Yes| DoDelete
+    ForceDelete -->|No| Detail
+    DoDelete --> List
+
+    NewForm --> FillForm[Fill Form Fields]
+    FillForm --> Validate{Valid?}
+    Validate -->|No| ShowErrors[Show Errors]
+    Validate -->|Yes| Create[Create Vendor]
+    ShowErrors --> FillForm
+    Create --> Success{Success?}
+    Success -->|Yes| Detail
+    Success -->|No| ShowErrors
+
+</div>
+<h3 id="2-price-management-workflow-prototype">2. Price Management Workflow (Prototype)</h3>
+<div class="mermaid">
+flowchart TD
+    Start([Price Management<br>Workflow]) --> Template[Create Template]
+
+    Template --> SelectProd[Select Products]
+    SelectProd --> CustomFields[Configure Custom Fields]
+    CustomFields --> MOQ[Setup MOQ Pricing]
+    MOQ --> SaveTemplate[Save Template]
+
+    SaveTemplate --> Campaign[Create Campaign]
+    Campaign --> SelectVendors[Select Vendors]
+    SelectVendors --> Schedule[Set Schedule]
+    Schedule --> SendInvite[Send Invitations]
+
+    SendInvite --> VendorAccess[Vendors Access Portal]
+    VendorAccess --> VendorSubmit{Vendor Actions}
+
+    VendorSubmit -->|Enter Prices| EnterPrice[Price Entry Form]
+    VendorSubmit -->|Save Draft| AutoSave[Auto-save Draft]
+    VendorSubmit -->|Submit| Submit[Submit Pricelist]
+
+    EnterPrice --> Validate[Real-time Validation]
+    Validate --> Valid{Valid?}
+    Valid -->|No| ShowError[Show Errors]
+    Valid -->|Yes| AutoSave
+    ShowError --> EnterPrice
+
+    AutoSave --> Continue{Continue?}
+    Continue -->|Yes| EnterPrice
+    Continue -->|No| VendorAccess
+
+    Submit --> FinalValidate[Final Validation]
+    FinalValidate --> FinalValid{Valid?}
+    FinalValid -->|No| ShowError
+    FinalValid -->|Yes| SubmitSuccess[Submit Success]
+
+    SubmitSuccess --> StaffReview[Staff Review]
+    StaffReview --> ReviewAction{Review Decision}
+
+    ReviewAction -->|Approve| Approve[Approve Pricelist]
+    ReviewAction -->|Reject| Reject[Reject with Reason]
+    ReviewAction -->|Request Changes| RequestChange[Request Modifications]
+
+    Approve --> Publish[Publish Pricelist]
+    Reject --> Notify[Notify Vendor]
+    RequestChange --> VendorAccess
+
+    Publish --> Active[Active in System]
+    Notify --> End([End])
+    Active --> End
+
+</div>
+<h3 id="3-vendor-search-amp-filter-workflow">3. Vendor Search &amp; Filter Workflow</h3>
+<div class="mermaid">
+flowchart TD
+    Start([Search & Filter]) --> Input{Input Type}
+
+    Input -->|Text Search| GlobalSearch[Global Search]
+    Input -->|Quick Filter| QuickFilter[Status Dropdown]
+    Input -->|Advanced| AdvFilter[Advanced Filter Dialog]
+    Input -->|Saved| LoadSaved[Load Saved Filter]
+
+    GlobalSearch --> SearchFields[Search in:<br>- Company Name<br>- Business Type<br>- Address<br>- Contact Name<br>- Contact Phone]
+    SearchFields --> ApplySearch[Apply Search]
+
+    QuickFilter --> StatusOptions[Select Status:<br>- All<br>- Active<br>- Inactive]
+    StatusOptions --> ApplyQuick[Apply Quick Filter]
+
+    AdvFilter --> SelectField[Select Field]
+    SelectField --> SelectOp[Select Operator:<br>- Equals<br>- Contains<br>- Starts With<br>- Ends With<br>- Greater Than<br>- Less Than]
+    SelectOp --> EnterValue[Enter Value]
+    EnterValue --> AddMore{Add More Criteria?}
+    AddMore -->|Yes| SelectField
+    AddMore -->|No| SaveOpt{Save Filter?}
+
+    SaveOpt -->|Yes| SaveFilter[Save Filter Config]
+    SaveOpt -->|No| ApplyAdv[Apply Advanced Filter]
+    SaveFilter --> ApplyAdv
+
+    LoadSaved --> ChooseSaved[Choose Saved Filter]
+    ChooseSaved --> ApplyAdv
+
+    ApplySearch --> Results[Display Filtered Results]
+    ApplyQuick --> Results
+    ApplyAdv --> Results
+
+    Results --> ResultAction{Result Action}
+    ResultAction -->|View| DetailPage[Vendor Detail]
+    ResultAction -->|Clear| ClearFilter[Clear Filters]
+    ResultAction -->|Export| ExportResults[Export Filtered Data]
+
+    ClearFilter --> Start
+    DetailPage --> End([End])
+    ExportResults --> End
+
+</div>
+<h2 id="data-flow-diagrams">Data Flow Diagrams</h2>
+<h3 id="1-vendor-crud-data-flow">1. Vendor CRUD Data Flow</h3>
+<div class="mermaid">
+flowchart LR
+    subgraph Client
+        UI[User Interface]
+        Form[Vendor Form]
+        List[Vendor List]
+    end
+
+    subgraph Server Actions
+        CreateAction[createVendor]
+        UpdateAction[updateVendor]
+        DeleteAction[deleteVendor]
+        GetAction[getVendor]
+    end
+
+    subgraph Services
+        VendorService[Vendor Service]
+        ValidationService[Validation Service]
+        DependencyChecker[Dependency Checker]
+    end
+
+    subgraph Database
+        VendorTable[(Vendors)]
+        AddressTable[(Addresses)]
+        ContactTable[(Contacts)]
+        CertTable[(Certifications)]
+    end
+
+    UI -->|Create Request| Form
+    Form -->|Submit| CreateAction
+    CreateAction -->|Validate| ValidationService
+    ValidationService -->|Valid| VendorService
+    VendorService -->|Insert| VendorTable
+    VendorService -->|Insert| AddressTable
+    VendorService -->|Insert| ContactTable
+    VendorService -->|Insert| CertTable
+    VendorTable -->|Success| VendorService
+    VendorService -->|Response| CreateAction
+    CreateAction -->|Result| UI
+
+    UI -->|View Request| GetAction
+    GetAction -->|Fetch| VendorService
+    VendorService -->|Query| VendorTable
+    VendorTable -->|Join| AddressTable
+    AddressTable -->|Join| ContactTable
+    ContactTable -->|Join| CertTable
+    CertTable -->|Data| VendorService
+    VendorService -->|Response| GetAction
+    GetAction -->|Display| List
+
+    List -->|Edit Request| UpdateAction
+    UpdateAction -->|Validate| ValidationService
+    ValidationService -->|Valid| VendorService
+    VendorService -->|Update| VendorTable
+    VendorTable -->|Success| VendorService
+    VendorService -->|Response| UpdateAction
+    UpdateAction -->|Result| UI
+
+    List -->|Delete Request| DeleteAction
+    DeleteAction -->|Check| DependencyChecker
+    DependencyChecker -->|Has Dependencies?| DeleteAction
+    DeleteAction -->|Confirmed| VendorService
+    VendorService -->|Delete| VendorTable
+    VendorService -->|Delete| AddressTable
+    VendorService -->|Delete| ContactTable
+    VendorService -->|Delete| CertTable
+    VendorTable -->|Success| VendorService
+    VendorService -->|Response| DeleteAction
+    DeleteAction -->|Result| UI
+
+</div>
+<h3 id="2-price-management-data-flow-prototype">2. Price Management Data Flow (Prototype)</h3>
+<div class="mermaid">
+flowchart TD
+    subgraph Staff Interface
+        TemplateForm[Template Form]
+        CampaignForm[Campaign Form]
+        ReviewDash[Review Dashboard]
+    end
+
+    subgraph Vendor Portal
+        VendorAuth[Token Authentication]
+        PriceForm[Price Entry Form]
+        VendorSubmit[Submit Pricelist]
+    end
+
+    subgraph Services
+        TemplateService[Template Service]
+        CampaignService[Campaign Service]
+        InvitationService[Invitation Service]
+        PricelistService[Pricelist Service]
+        ValidationService[Price Validation Service]
+        EmailService[Email Service]
+    end
+
+    subgraph Database
+        Templates[(Templates)]
+        Campaigns[(Campaigns)]
+        Invitations[(Invitations)]
+        Pricelists[(Pricelists)]
+        PriceItems[(Pricelist Items)]
+        Sessions[(Portal Sessions)]
+    end
+
+    TemplateForm -->|Create| TemplateService
+    TemplateService -->|Save| Templates
+    Templates -->|ID| TemplateService
+
+    CampaignForm -->|Create| CampaignService
+    CampaignService -->|Link Template| Templates
+    CampaignService -->|Save| Campaigns
+    Campaigns -->|ID| InvitationService
+
+    InvitationService -->|Generate Tokens| Invitations
+    InvitationService -->|Send Emails| EmailService
+    EmailService -->|Email Links| VendorPortal[Vendor Email]
+
+    VendorPortal -->|Click Link| VendorAuth
+    VendorAuth -->|Validate Token| Invitations
+    Invitations -->|Valid| Sessions
+    Sessions -->|Create Session| VendorAuth
+    VendorAuth -->|Access Granted| PriceForm
+
+    PriceForm -->|Load Template| Templates
+    Templates -->|Product List| PriceForm
+
+    PriceForm -->|Enter Prices| ValidationService
+    ValidationService -->|Validate Rules| PriceForm
+    PriceForm -->|Auto-save| Pricelists
+
+    VendorSubmit -->|Final Validation| ValidationService
+    ValidationService -->|Valid| PricelistService
+    PricelistService -->|Update Status| Pricelists
+    PricelistService -->|Save Items| PriceItems
+    PriceItems -->|Success| PricelistService
+    PricelistService -->|Notify Staff| EmailService
+
+    EmailService -->|Alert| ReviewDash
+    ReviewDash -->|Load Pricelists| Pricelists
+    Pricelists -->|Load Items| PriceItems
+    PriceItems -->|Display| ReviewDash
+
+    ReviewDash -->|Approve/Reject| PricelistService
+    PricelistService -->|Update Status| Pricelists
+    PricelistService -->|Notify Vendor| EmailService
+
+</div>
+<h3 id="3-integration-data-flow">3. Integration Data Flow</h3>
+<div class="mermaid">
+flowchart TD
+    subgraph Vendor Management
+        VendorProfile[Vendor Profile]
+        VendorPricelist[Vendor Pricelist]
+        VendorMetrics[Vendor Metrics]
+    end
+
+    subgraph Procurement
+        PR[Purchase Request]
+        PO[Purchase Order]
+        VendorSelection[Vendor Selection]
+    end
+
+    subgraph Finance
+        TaxCalc[Tax Calculation]
+        PaymentTerms[Payment Terms]
+        Invoice[Invoice Processing]
+    end
+
+    subgraph Inventory
+        GRN[Goods Received Note]
+        StockIn[Stock In]
+        QualityCheck[Quality Inspection]
+    end
+
+    subgraph Reporting
+        SpendAnalysis[Spend Analysis]
+        PerformanceReport[Performance Report]
+        PriceTrend[Price Trends]
+    end
+
+    VendorProfile -->|Provide Vendors| VendorSelection
+    VendorSelection -->|Selected Vendor| PR
+    PR -->|Create from PR| PO
+
+    VendorProfile -->|Tax Profile| TaxCalc
+    VendorProfile -->|Payment Terms| PaymentTerms
+    TaxCalc -->|Tax Amount| Invoice
+    PaymentTerms -->|Terms| Invoice
+
+    VendorPricelist -->|Validate Price| PR
+    VendorPricelist -->|Validate Price| PO
+
+    PO -->|Create GRN| GRN
+    GRN -->|Link Vendor| VendorProfile
+    GRN -->|Stock In| StockIn
+    GRN -->|Quality Check| QualityCheck
+
+    QualityCheck -->|Update Metrics| VendorMetrics
+    GRN -->|Delivery Performance| VendorMetrics
+    Invoice -->|Invoice Accuracy| VendorMetrics
+
+    VendorMetrics -->|Metrics Data| PerformanceReport
+    PO -->|Spend Data| SpendAnalysis
+    VendorPricelist -->|Price History| PriceTrend
+
+    PerformanceReport -->|Update Rating| VendorProfile
+    SpendAnalysis -->|Volume Data| VendorMetrics
+
+</div>
+<h2 id="page-navigation-map">Page Navigation Map</h2>
+<h3 id="landing-page-actions">Landing Page Actions</h3>
+<div class="mermaid">
+graph LR
+    Landing[Landing Page] --> A[Manage Vendors Card]
+    Landing --> B[Price Lists Card]
+    Landing --> C[Templates Card]
+    Landing --> D[Campaigns Card]
+    Landing --> E[Try Demo Button]
+
+    A -->|Click| VendorList["Vendor List<br>manage-vendors"]
+    B -->|Click| PriceList["Price List<br>pricelists"]
+    C -->|Click| Templates["Templates<br>templates"]
+    D -->|Click| Campaigns["Campaigns<br>campaigns"]
+    E -->|Click| Portal["Vendor Portal<br>vendor-portal"]
+
+</div>
+<h3 id="vendor-list-page-actions">Vendor List Page Actions</h3>
+<div class="mermaid">
+graph TD
+    List[Vendor List Page] --> Search[Search Box]
+    List --> Filter[Status Filter]
+    List --> AdvFilter[Advanced Filter]
+    List --> SavedFilter[Saved Filters]
+    List --> Export[Export Button]
+    List --> AddNew[Add Vendor Button]
+    List --> ViewToggle[View Toggle]
+    List --> Row[Vendor Row/Card]
+
+    Search -->|Enter Text| FilterResults[Filter Results]
+    Filter -->|Select Status| FilterResults
+    AdvFilter -->|Click| FilterDialog[Advanced Filter Dialog]
+    SavedFilter -->|Click| SavedDialog[Saved Filters Dialog]
+    Export -->|Click| ExportFile[Download File]
+    AddNew -->|Click| NewPage["New Vendor Form"]
+    ViewToggle -->|Toggle| SwitchView["Table or Card View"]
+
+    Row --> RowActions[Action Menu]
+    RowActions -->|View Details| DetailPage["Vendor Detail Page"]
+    RowActions -->|Edit| EditMode[Edit Mode]
+    RowActions -->|Duplicate| DuplicateDialog[Duplicate Dialog]
+    RowActions -->|Export| ExportSingle[Export Single]
+    RowActions -->|Delete| DeleteDialog[Delete Dialog]
+
+</div>
+<h3 id="vendor-detail-page-navigation">Vendor Detail Page Navigation</h3>
+<div class="mermaid">
+graph TD
+    Detail[Vendor Detail Page] --> Back[Back Button]
+    Detail --> Print[Print Button]
+    Detail --> Edit[Edit Button]
+    Detail --> Delete[Delete Button]
+    Detail --> Tabs[Tab Navigation]
+
+    Back -->|Click| ListPage["Vendor List Page"]
+    Print -->|Click| PrintView[Print Dialog]
+    Edit -->|Click| EditMode[Edit Mode]
+    Delete -->|Click| DeleteDialog[Delete Confirmation]
+
+    Tabs --> Tab1[Overview Tab]
+    Tabs --> Tab2[Pricelists Tab]
+    Tabs --> Tab3[Contacts Tab]
+    Tabs --> Tab4[Certifications Tab]
+
+    Tab1 --> BasicInfo[Basic Information Card]
+    Tab1 --> TaxConfig[Tax Configuration Card]
+    Tab1 --> Address[Primary Address Card]
+    Tab1 --> Contact[Primary Contact Card]
+
+    Tab2 --> PricelistList[Pricelist List]
+    Tab2 --> AddPricelist[Add Pricelist Button]
+
+    Tab3 --> AddressList[Address List]
+    Tab3 --> ContactList[Contact List]
+    Tab3 --> AddAddress[Add Address Button]
+    Tab3 --> AddContact[Add Contact Button]
+
+    Tab4 --> CertList[Certification List]
+    Tab4 --> AddCert[Add Certification Button]
+
+</div>
+<h2 id="url-structure">URL Structure</h2>
+<h3 id="main-routes">Main Routes</h3>
+<table>
+<thead>
+<tr>
+<th>Route Pattern</th>
+<th>Description</th>
+<th>Page File</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>/vendor-management</code></td>
+<td>Landing page</td>
+<td><code>page.tsx</code></td>
+</tr>
+<tr>
+<td><code>/vendor-management/manage-vendors</code></td>
+<td>Vendor list</td>
+<td><code>manage-vendors/page.tsx</code></td>
+</tr>
+<tr>
+<td><code>/vendor-management/manage-vendors/new</code></td>
+<td>New vendor form</td>
+<td><code>manage-vendors/new/page.tsx</code></td>
+</tr>
+<tr>
+<td><code>/vendor-management/manage-vendors/:id</code></td>
+<td>Vendor detail</td>
+<td><code>manage-vendors/[id]/page.tsx</code></td>
+</tr>
+<tr>
+<td><code>/vendor-management/vendors</code></td>
+<td>Alt vendor list</td>
+<td><code>vendors/page.tsx</code></td>
+</tr>
+<tr>
+<td><code>/vendor-management/vendors/new</code></td>
+<td>Alt new vendor</td>
+<td><code>vendors/new/page.tsx</code></td>
+</tr>
+<tr>
+<td><code>/vendor-management/vendors/:id</code></td>
+<td>Alt vendor detail</td>
+<td><code>vendors/[id]/page.tsx</code></td>
+</tr>
+<tr>
+<td><code>/vendor-management/vendors/:id/edit</code></td>
+<td>Edit vendor</td>
+<td><code>vendors/[id]/edit/page.tsx</code></td>
+</tr>
+<tr>
+<td><code>/vendor-management/vendors/:id/pricelist-settings</code></td>
+<td>Pricelist settings</td>
+<td><code>vendors/[id]/pricelist-settings/page.tsx</code></td>
+</tr>
+</tbody></table>
+<h3 id="price-management-routes-prototype">Price Management Routes (Prototype)</h3>
+<table>
+<thead>
+<tr>
+<th>Route Pattern</th>
+<th>Description</th>
+<th>Page File</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>/vendor-management/templates</code></td>
+<td>Template list</td>
+<td><code>templates/page.tsx</code></td>
+</tr>
+<tr>
+<td><code>/vendor-management/templates/new</code></td>
+<td>New template</td>
+<td><code>templates/new/page.tsx</code></td>
+</tr>
+<tr>
+<td><code>/vendor-management/templates/:id</code></td>
+<td>Template detail</td>
+<td><code>templates/[id]/page.tsx</code></td>
+</tr>
+<tr>
+<td><code>/vendor-management/templates/:id/edit</code></td>
+<td>Edit template</td>
+<td><code>templates/[id]/edit/page.tsx</code></td>
+</tr>
+<tr>
+<td><code>/vendor-management/campaigns</code></td>
+<td>Campaign list</td>
+<td><code>campaigns/page.tsx</code></td>
+</tr>
+<tr>
+<td><code>/vendor-management/campaigns/new</code></td>
+<td>New campaign</td>
+<td><code>campaigns/new/page.tsx</code></td>
+</tr>
+<tr>
+<td><code>/vendor-management/campaigns/:id</code></td>
+<td>Campaign detail</td>
+<td><code>campaigns/[id]/page.tsx</code></td>
+</tr>
+<tr>
+<td><code>/vendor-management/pricelists</code></td>
+<td>Pricelist list</td>
+<td><code>pricelists/page.tsx</code></td>
+</tr>
+<tr>
+<td><code>/vendor-management/pricelists/new</code></td>
+<td>New pricelist</td>
+<td><code>pricelists/new/page.tsx</code></td>
+</tr>
+<tr>
+<td><code>/vendor-management/pricelists/add</code></td>
+<td>Add pricelist</td>
+<td><code>pricelists/add/page.tsx</code></td>
+</tr>
+<tr>
+<td><code>/vendor-management/pricelists/:id</code></td>
+<td>Pricelist detail</td>
+<td><code>pricelists/[id]/page.tsx</code></td>
+</tr>
+<tr>
+<td><code>/vendor-management/pricelists/:id/edit</code></td>
+<td>Edit pricelist</td>
+<td><code>pricelists/[id]/edit/page.tsx</code></td>
+</tr>
+<tr>
+<td><code>/vendor-management/pricelists/:id/edit-new</code></td>
+<td>New edit UI</td>
+<td><code>pricelists/[id]/edit-new/page.tsx</code></td>
+</tr>
+<tr>
+<td><code>/vendor-management/vendor-portal/sample</code></td>
+<td>Vendor portal demo</td>
+<td><code>vendor-portal/sample/page.tsx</code></td>
+</tr>
+</tbody></table>
+<h2 id="query-parameters">Query Parameters</h2>
+<h3 id="list-page-parameters">List Page Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>search</code></td>
+<td>string</td>
+<td>Global search query</td>
+<td><code>?search=acme</code></td>
+</tr>
+<tr>
+<td><code>status</code></td>
+<td>string</td>
+<td>Filter by status</td>
+<td><code>?status=active</code></td>
+</tr>
+<tr>
+<td><code>view</code></td>
+<td>string</td>
+<td>View mode</td>
+<td><code>?view=card</code></td>
+</tr>
+<tr>
+<td><code>page</code></td>
+<td>number</td>
+<td>Pagination page</td>
+<td><code>?page=2</code></td>
+</tr>
+<tr>
+<td><code>limit</code></td>
+<td>number</td>
+<td>Items per page</td>
+<td><code>?limit=50</code></td>
+</tr>
+</tbody></table>
+<h3 id="detail-page-parameters">Detail Page Parameters</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>edit</code></td>
+<td>boolean</td>
+<td>Enable edit mode</td>
+<td><code>?edit=1</code></td>
+</tr>
+<tr>
+<td><code>tab</code></td>
+<td>string</td>
+<td>Active tab</td>
+<td><code>?tab=pricelists</code></td>
+</tr>
+</tbody></table>
+<h3 id="filter-parameters">Filter Parameters</h3>
+<p>Advanced filters are encoded as URL parameters:</p>
+<pre><code>?filter[0][field]=companyName
+&amp;filter[0][operator]=contains
+&amp;filter[0][value]=tech
+&amp;filter[1][field]=status
+&amp;filter[1][operator]=equals
+&amp;filter[1][value]=active
+</code></pre>
+<h2 id="breadcrumb-navigation">Breadcrumb Navigation</h2>
+<h3 id="vendor-management-pages">Vendor Management Pages</h3>
+<pre><code>Home &gt; Vendor Management
+Home &gt; Vendor Management &gt; Manage Vendors
+Home &gt; Vendor Management &gt; Manage Vendors &gt; New Vendor
+Home &gt; Vendor Management &gt; Manage Vendors &gt; {Vendor Name}
+Home &gt; Vendor Management &gt; Manage Vendors &gt; {Vendor Name} &gt; Edit
+Home &gt; Vendor Management &gt; Templates
+Home &gt; Vendor Management &gt; Templates &gt; New Template
+Home &gt; Vendor Management &gt; Templates &gt; {Template Name}
+Home &gt; Vendor Management &gt; Campaigns
+Home &gt; Vendor Management &gt; Campaigns &gt; New Campaign
+Home &gt; Vendor Management &gt; Campaigns &gt; {Campaign Name}
+Home &gt; Vendor Management &gt; Pricelists
+Home &gt; Vendor Management &gt; Pricelists &gt; {Pricelist Number}
+</code></pre>
+<hr>
+<p><strong>Last Updated</strong>: 2025-10-02<br><strong>Version</strong>: 1.0.0</p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#vendor-management-module-sitemap-amp-navigation" class="level-1">Vendor Management Module - Sitemap &amp; Navigation</a>
+<a href="#navigation-structure" class="level-2">Navigation Structure</a>
+<a href="#module-hierarchy" class="level-3">Module Hierarchy</a>
+<a href="#user-workflows" class="level-2">User Workflows</a>
+<a href="#1-vendor-management-workflow" class="level-3">1. Vendor Management Workflow</a>
+<a href="#2-price-management-workflow-prototype" class="level-3">2. Price Management Workflow (Prototype)</a>
+<a href="#3-vendor-search-amp-filter-workflow" class="level-3">3. Vendor Search &amp; Filter Workflow</a>
+<a href="#data-flow-diagrams" class="level-2">Data Flow Diagrams</a>
+<a href="#1-vendor-crud-data-flow" class="level-3">1. Vendor CRUD Data Flow</a>
+<a href="#2-price-management-data-flow-prototype" class="level-3">2. Price Management Data Flow (Prototype)</a>
+<a href="#3-integration-data-flow" class="level-3">3. Integration Data Flow</a>
+<a href="#page-navigation-map" class="level-2">Page Navigation Map</a>
+<a href="#landing-page-actions" class="level-3">Landing Page Actions</a>
+<a href="#vendor-list-page-actions" class="level-3">Vendor List Page Actions</a>
+<a href="#vendor-detail-page-navigation" class="level-3">Vendor Detail Page Navigation</a>
+<a href="#url-structure" class="level-2">URL Structure</a>
+<a href="#main-routes" class="level-3">Main Routes</a>
+<a href="#price-management-routes-prototype" class="level-3">Price Management Routes (Prototype)</a>
+<a href="#query-parameters" class="level-2">Query Parameters</a>
+<a href="#list-page-parameters" class="level-3">List Page Parameters</a>
+<a href="#detail-page-parameters" class="level-3">Detail Page Parameters</a>
+<a href="#filter-parameters" class="level-3">Filter Parameters</a>
+<a href="#breadcrumb-navigation" class="level-2">Breadcrumb Navigation</a>
+<a href="#vendor-management-pages" class="level-3">Vendor Management Pages</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Search Modal -->
+    <div class="search-modal" id="searchModal">
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchModalInput" placeholder="Search documentation..." autofocus>
+                    <button class="search-close-btn" id="searchCloseBtn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="search-results" id="searchResults">
+                <div class="search-empty">
+                    <i class="fas fa-search"></i>
+                    <p>Start typing to search...</p>
+                </div>
+            </div>
+            <div class="search-footer">
+                <div class="search-shortcuts">
+                    <kbd>↑↓</kbd> Navigate
+                    <kbd>Enter</kbd> Select
+                    <kbd>Esc</kbd> Close
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Search functionality
+        let searchIndex = [];
+        let selectedResultIndex = -1;
+
+        // Load search index
+        fetch('../../search-index.json')
+            .then(res => res.json())
+            .then(data => {
+                searchIndex = data;
+                console.log('✓ Search index loaded:', searchIndex.length, 'entries');
+            })
+            .catch(err => console.error('❌ Failed to load search index:', err));
+
+        // Open search modal
+        function openSearchModal() {
+            console.log('🔍 Opening search modal...');
+            document.getElementById('searchModal').classList.add('active');
+            document.getElementById('searchModalInput').focus();
+            selectedResultIndex = -1;
+        }
+
+        // Close search modal
+        function closeSearchModal() {
+            document.getElementById('searchModal').classList.remove('active');
+            document.getElementById('searchModalInput').value = '';
+            document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-search"></i><p>Start typing to search...</p></div>';
+            selectedResultIndex = -1;
+        }
+
+        // Search function
+        function performSearch(query) {
+            console.log('🔎 Searching for:', query);
+
+            if (!query || query.length < 2) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-search"></i><p>Start typing to search...</p></div>';
+                return;
+            }
+
+            if (searchIndex.length === 0) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-exclamation-circle"></i><p>Search index not loaded</p></div>';
+                return;
+            }
+
+            const queryLower = query.toLowerCase();
+            const queryWords = queryLower.split(/s+/).filter(word => word.length > 1);
+
+            // Search and score results
+            const results = searchIndex
+                .map(entry => {
+                    let score = 0;
+
+                    // Title match (highest weight)
+                    if (entry.title.toLowerCase().includes(queryLower)) {
+                        score += 100;
+                    }
+                    queryWords.forEach(word => {
+                        if (entry.title.toLowerCase().includes(word)) score += 50;
+                    });
+
+                    // Content match
+                    if (entry.content.toLowerCase().includes(queryLower)) {
+                        score += 10;
+                    }
+                    queryWords.forEach(word => {
+                        if (entry.content.toLowerCase().includes(word)) score += 5;
+                    });
+
+                    return { ...entry, score };
+                })
+                .filter(result => result.score > 0)
+                .sort((a, b) => b.score - a.score)
+                .slice(0, 10); // Top 10 results
+
+            console.log('📊 Found', results.length, 'results');
+
+            // Display results
+            if (results.length === 0) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-times-circle"></i><p>No results found</p></div>';
+                return;
+            }
+
+            const resultsHtml = results.map((result, index) => {
+                const urlPath = '../../' + result.url;
+                return '<a href="' + urlPath + '" class="search-result ' + (index === 0 ? 'selected' : '') + '" data-index="' + index + '">' +
+                    '<div class="result-title">' + result.title + '</div>' +
+                    '<div class="result-content">' + highlightMatch(result.content, query) + '</div>' +
+                    '</a>';
+            }).join('');
+
+            document.getElementById('searchResults').innerHTML = resultsHtml;
+            selectedResultIndex = 0;
+        }
+
+        // Highlight matching text
+        function highlightMatch(text, query) {
+            if (!text) return '';
+            const queryWords = query.split(/\s+/).join('|');
+            const regex = new RegExp('(' + queryWords + ')', 'gi');
+            return text.substring(0, 150).replace(regex, '<mark>$1</mark>') + '...';
+        }
+
+        // Navigate results with keyboard
+        function navigateResults(direction) {
+            const results = document.querySelectorAll('.search-result');
+            if (results.length === 0) return;
+
+            results[selectedResultIndex]?.classList.remove('selected');
+
+            if (direction === 'down') {
+                selectedResultIndex = (selectedResultIndex + 1) % results.length;
+            } else if (direction === 'up') {
+                selectedResultIndex = (selectedResultIndex - 1 + results.length) % results.length;
+            }
+
+            results[selectedResultIndex]?.classList.add('selected');
+            results[selectedResultIndex]?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+
+        // Select result
+        function selectResult() {
+            const selected = document.querySelector('.search-result.selected');
+            if (selected) {
+                window.location.href = selected.href;
+            }
+        }
+
+        // Event listeners
+        document.getElementById('headerSearchBtn')?.addEventListener('click', openSearchModal);
+        document.getElementById('searchCloseBtn')?.addEventListener('click', closeSearchModal);
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Ctrl+K or Cmd+K to open search
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                openSearchModal();
+            }
+
+            // Esc to close search
+            if (e.key === 'Escape' && document.getElementById('searchModal').classList.contains('active')) {
+                closeSearchModal();
+            }
+
+            // Navigate results
+            if (document.getElementById('searchModal').classList.contains('active')) {
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    navigateResults('down');
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    navigateResults('up');
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    selectResult();
+                }
+            }
+        });
+
+        // Search input
+        document.getElementById('searchModalInput')?.addEventListener('input', (e) => {
+            performSearch(e.target.value);
+        });
+
+        // Click outside to close
+        document.getElementById('searchModal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'searchModal') {
+                closeSearchModal();
+            }
+        });
+    </script>
+</body>
+</html>

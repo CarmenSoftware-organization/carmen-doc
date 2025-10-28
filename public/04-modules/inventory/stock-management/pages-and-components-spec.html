@@ -1,0 +1,3195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management - Pages and Components Specification - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: #f8fafc;
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 15% 70% 15%;
+            gap: 0;
+            width: 100%;
+            padding: 1rem 0 2rem 0;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 1rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 2rem);
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-right: 1px solid var(--border-color);
+            padding-right: 2rem;
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 0.75rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+        .nav-subgroup {
+            margin: 0.5rem 0 0.5rem 0.5rem;
+        }
+        .nav-subgroup-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-subgroup-header:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .nav-subitems {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+            margin-left: 0.75rem;
+            margin-top: 0.25rem;
+        }
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 1rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 2rem);
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-left: 1px solid var(--border-color);
+            padding-left: 2rem;
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header - Modern Compact Design */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 52px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+        }
+        .header-content {
+            height: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--foreground);
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+        .logo:hover {
+            opacity: 0.8;
+        }
+        .logo i {
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+        .header-search-container {
+            display: flex;
+            align-items: center;
+        }
+        .header-search-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.375rem 0.75rem;
+            background: var(--secondary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.8125rem;
+            color: var(--muted-foreground);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            min-width: 180px;
+            flex-shrink: 0;
+        }
+        .header-search-btn:hover {
+            background: var(--background);
+            border-color: var(--primary);
+        }
+        .header-search-btn i {
+            color: var(--muted-foreground);
+            font-size: 0.875rem;
+        }
+        .header-search-btn span {
+            flex: 1;
+            text-align: left;
+        }
+        .header-search-btn kbd {
+            padding: 0.125rem 0.375rem;
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.6875rem;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--muted-foreground);
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        .back-to-home {
+            display: none; /* Hidden - navigation is sufficient */
+        }
+
+        /* Responsive Header */
+        @media (max-width: 768px) {
+            .header-search-btn {
+                min-width: auto;
+            }
+            .header-search-btn span {
+                display: none;
+            }
+        }
+
+        /* Search Modal */
+        .search-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            padding: 2rem;
+        }
+        .search-modal.active {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 10vh;
+        }
+        .search-modal-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 640px;
+            max-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            animation: slideDown 0.2s ease-out;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .search-modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .search-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .search-input-wrapper i {
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+        }
+        .search-input-wrapper input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 1.125rem;
+            color: var(--text-primary);
+        }
+        .search-close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .search-close-btn:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .search-results {
+            overflow-y: auto;
+            max-height: calc(70vh - 150px);
+        }
+        .search-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 2rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+        .search-empty i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        .search-result {
+            display: block;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+        .search-result:hover,
+        .search-result.selected {
+            background: var(--bg-secondary);
+        }
+        .search-result.selected {
+            border-left: 3px solid var(--primary-color);
+        }
+        .result-header {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .result-category {
+            font-size: 0.75rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .result-title {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        .result-badge {
+            display: inline-block;
+            padding: 0.125rem 0.5rem;
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-radius: 4px;
+            font-size: 0.6875rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        .result-content {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        .result-content mark {
+            background: rgba(79, 70, 229, 0.2);
+            color: var(--primary-color);
+            font-weight: 600;
+            padding: 0.125rem 0.25rem;
+            border-radius: 2px;
+        }
+        .search-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            border-bottom-left-radius: var(--border-radius-xl);
+            border-bottom-right-radius: var(--border-radius-xl);
+        }
+        .search-shortcuts {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        .search-shortcuts kbd {
+            padding: 0.25rem 0.5rem;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        /* Content Area */
+        .doc-content {
+            padding: 0 2rem;
+            width: 100%;
+            max-width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 0.9375rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Image Styles */
+        .doc-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 1.5rem auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Limit screenshot width to 80% for better readability */
+        .doc-content p > img {
+            max-width: 80%;
+        }
+
+        /* Table Styles */
+        .doc-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.875rem;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .doc-content table thead {
+            background: #f8fafc;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .doc-content table th {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #0f172a;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        .doc-content table td {
+            padding: 0.75rem 1rem;
+            border-top: 1px solid #e2e8f0;
+            color: #334155;
+        }
+
+        .doc-content table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        /* Table responsive wrapper */
+        .doc-content table {
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .doc-content table thead,
+        .doc-content table tbody,
+        .doc-content table tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 18% 64% 18%;
+                gap: 0;
+                padding: 1rem 0 1.5rem 0;
+            }
+            .doc-nav {
+                padding-right: 1.5rem;
+            }
+            .doc-toc {
+                padding-left: 1.5rem;
+            }
+            .doc-content {
+                padding: 0 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 0;
+                padding: 1rem 0 1.5rem 0;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 0 2rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                gap: 0;
+                padding: 0.5rem 0 1rem 0;
+            }
+            .doc-nav {
+                display: none;
+                border-right: none;
+            }
+            .doc-content {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="../../../index.html" class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </a>
+            <div class="doc-header-actions">
+                <div class="header-search-container">
+                    <button class="header-search-btn" id="headerSearchBtn">
+                        <i class="fas fa-search"></i>
+                        <span>Search documentation...</span>
+                        <kbd>Ctrl+K</kbd>
+                    </button>
+                </div>
+                <a href="../../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../01-overview/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Index</span>
+                    </a>
+                    <a href="../../../01-overview/business-value.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value & ROI</span>
+                    </a>
+                    <a href="../../../01-overview/tech-stack.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Technology Stack</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../02-architecture/system-architecture.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-database"></i>
+                    <span>Data Model</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../03-data-model/data-dictionary.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Data Dictionary</span>
+                    </a>
+                    <a href="../../../03-data-model/schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-th-large"></i>
+                    <span>Application Modules</span>
+                </div>
+                <div class="nav-items">
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Procurement</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/procurement/purchase-requests/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Purchase Requests</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/purchase-orders/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Purchase Orders</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/goods-received-notes/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Goods Received Notes</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/credit-notes/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Credit Notes</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/templates/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Templates</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-boxes"></i>
+                            <span>Inventory Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/inventory/stock-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Stock Management</span>
+                            </a>
+                            <a href="../../../04-modules/inventory/physical-count/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Physical Count</span>
+                            </a>
+                            <a href="../../../04-modules/inventory/spot-check/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Spot Check</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span>Finance</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/finance/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Finance Module</span>
+                            </a>
+                            <a href="../../../04-modules/finance/features/account-code-mapping/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Account Code Mapping</span>
+                            </a>
+                            <a href="../../../04-modules/finance/features/currency-and-rates/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Currency Management</span>
+                            </a>
+                            <a href="../../../04-modules/finance/features/departments/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Departments</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-handshake"></i>
+                            <span>Vendor Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/vendor-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Management</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Management Module</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/MANAGE-VENDORS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Manage Vendors</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/VENDOR-PORTAL.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Portal</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/CAMPAIGNS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Campaigns</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/PRICELISTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Pricelists</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/TEMPLATES.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Templates</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Sitemap</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/PAGES-AND-COMPONENTS-SPEC.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Pages & Components Spec</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/SHARED-COMPONENTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Shared Components</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-box"></i>
+                            <span>Product Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/product-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management</span>
+                            </a>
+                            <a href="../../../04-modules/product-management/product-management-specification.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management Specification</span>
+                            </a>
+                            <a href="../../../04-modules/product-management/product-management-sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management Sitemap</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-store"></i>
+                            <span>Store Operations</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../store-ops/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Operations</span>
+                            </a>
+                            <a href="../../../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Operations Module</span>
+                            </a>
+                            <a href="../../../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Requisitions</span>
+                            </a>
+                            <a href="../../../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Stock Replenishment</span>
+                            </a>
+                            <a href="../../../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Wastage Reporting</span>
+                            </a>
+                            <a href="../../../store-ops/SHARED-COMPONENTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Shared Components</span>
+                            </a>
+                            <a href="../../../store-ops/GLOSSARY.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Glossary</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-clipboard-list"></i>
+                            <span>Operational Planning</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../operational-planning/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Operational Planning</span>
+                            </a>
+                            <a href="../../../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Operational Planning Module</span>
+                            </a>
+                            <a href="../../../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Recipe Management</span>
+                            </a>
+                            <a href="../../../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Menu Engineering</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-cog"></i>
+                            <span>System Administration</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../sa/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>System Administration</span>
+                            </a>
+                            <a href="../../../sa/system-administration-sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>System Administration Sitemap</span>
+                            </a>
+                            <a href="../../../sa/features/permission-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Permission Management</span>
+                            </a>
+                            <a href="../../../sa/features/permission-management/specification.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Permission Specification</span>
+                            </a>
+                            <a href="../../../sa/features/location-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Location Management</span>
+                            </a>
+                            <a href="../../../sa/features/workflow/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Workflow</span>
+                            </a>
+                            <a href="../../../sa/features/pos-integration/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Reporting</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/reporting/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Reporting & Analytics</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../dashboard/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard</span>
+                            </a>
+                            <a href="../../../dashboard/sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard Sitemap</span>
+                            </a>
+                            <a href="../../../dashboard/components/components-overview.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Components Overview</span>
+                            </a>
+                            <a href="../../../dashboard/api/api-specifications.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>API Specifications</span>
+                            </a>
+                            <a href="../../../dashboard/business-logic/dashboard-business-rules.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard Business Rules</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-industry"></i>
+                            <span>Production</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/production/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Production</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-cash-register"></i>
+                            <span>POS Integration</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../pos-integration/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration</span>
+                            </a>
+                            <a href="../../../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration Module</span>
+                            </a>
+                            <a href="../../../pos-integration/MAPPING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Mapping</span>
+                            </a>
+                            <a href="../../../pos-integration/REPORTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Reports</span>
+                            </a>
+                            <a href="../../../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Transactions</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="inventory-management-pages-and-components-specification">Inventory Management - Pages and Components Specification</h1>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#1-dashboard">Dashboard</a></li>
+<li><a href="#2-stock-overview">Stock Overview</a></li>
+<li><a href="#3-stock-in">Stock In</a></li>
+<li><a href="#4-inventory-adjustments">Inventory Adjustments</a></li>
+<li><a href="#5-physical-count">Physical Count</a></li>
+<li><a href="#6-spot-check">Spot Check</a></li>
+<li><a href="#7-fractional-inventory">Fractional Inventory</a></li>
+<li><a href="#8-period-end">Period End</a></li>
+<li><a href="#9-physical-count-management">Physical Count Management</a></li>
+<li><a href="#10-common-components">Common Components</a></li>
+</ol>
+<hr>
+<h2 id="1-dashboard">1. Dashboard</h2>
+<p><strong>Route:</strong> <code>/inventory-management</code></p>
+<h3 id="purpose">Purpose</h3>
+<p>Main dashboard providing overview of inventory management with customizable widgets.</p>
+<h3 id="components">Components</h3>
+<h4>Main Layout</h4>
+<ul>
+<li><strong>Header Section</strong><ul>
+<li>Page title: &quot;Inventory Management Dashboard&quot;</li>
+<li>Actions: None</li>
+</ul>
+</li>
+</ul>
+<h4>Dashboard Grid</h4>
+<ul>
+<li><strong>Layout</strong>: Drag-and-drop enabled grid (3 columns on desktop, 2 on tablet, 1 on mobile)</li>
+<li><strong>Widget System</strong>: React Beautiful DnD for reordering</li>
+</ul>
+<h3 id="widgets">Widgets</h3>
+<h4>1.1 Inventory Levels Widget</h4>
+<p><strong>Type:</strong> Bar Chart<br><strong>Data Source:</strong> <code>inventoryLevelsData</code><br><strong>Fields:</strong></p>
+<ul>
+<li>Category (X-axis)</li>
+<li>Current Level (Blue bar)</li>
+<li>Reorder Point (Green bar)</li>
+</ul>
+<p><strong>Categories:</strong></p>
+<ul>
+<li>Food</li>
+<li>Beverages</li>
+<li>Cleaning</li>
+<li>Linen</li>
+<li>Amenities</li>
+</ul>
+<h4>1.2 Inventory Value Trend Widget</h4>
+<p><strong>Type:</strong> Line Chart<br><strong>Data Source:</strong> <code>inventoryValueData</code><br><strong>Fields:</strong></p>
+<ul>
+<li>Month (X-axis)</li>
+<li>Value (Y-axis)</li>
+<li>Time Range: 6 months</li>
+</ul>
+<h4>1.3 Inventory Turnover Widget</h4>
+<p><strong>Type:</strong> Pie Chart<br><strong>Data Source:</strong> <code>inventoryTurnoverData</code><br><strong>Fields:</strong></p>
+<ul>
+<li>Category Name</li>
+<li>Turnover Rate</li>
+</ul>
+<h4>1.4 Low Stock Alerts Widget</h4>
+<p><strong>Type:</strong> Text Card<br><strong>Display:</strong></p>
+<ul>
+<li>Number of items below reorder point</li>
+<li>Icon: AlertTriangle</li>
+<li>Color: Red accent</li>
+</ul>
+<h4>1.5 Upcoming Stock Takes Widget</h4>
+<p><strong>Type:</strong> Text Card<br><strong>Display:</strong></p>
+<ul>
+<li>Count of scheduled stock takes</li>
+<li>Time frame: Next week</li>
+<li>Icon: Calendar</li>
+</ul>
+<h4>1.6 Recent Transfers Widget</h4>
+<p><strong>Type:</strong> Text Card<br><strong>Display:</strong></p>
+<ul>
+<li>Number of inter-location transfers</li>
+<li>Time frame: Last 24 hours</li>
+<li>Icon: ArrowRightLeft</li>
+</ul>
+<h3 id="actions">Actions</h3>
+<ul>
+<li><strong>Drag and Drop:</strong> Reorder widgets</li>
+<li><strong>Widget Interaction:</strong> Click widgets to drill down (future enhancement)</li>
+</ul>
+<h3 id="page-flow">Page Flow</h3>
+<div class="mermaid">
+graph LR
+    A[Load Dashboard] --> B[Render Widget Grid]
+    B --> C[Display Charts]
+    B --> D[Display Metrics]
+    C --> E[Enable Drag & Drop]
+    D --> E
+
+</div>
+<hr>
+<h2 id="2-stock-overview">2. Stock Overview</h2>
+<p><strong>Route:</strong> <code>/inventory-management/stock-overview</code></p>
+<h3 id="purpose">Purpose</h3>
+<p>Comprehensive view of stock levels across all locations with performance analytics and transfer suggestions.</p>
+<h3 id="layout-sections">Layout Sections</h3>
+<h4>2.1 Header Section</h4>
+<p><strong>Components:</strong></p>
+<ul>
+<li>Page title: &quot;Stock Overview&quot;</li>
+<li>Subtitle: &quot;Monitor inventory levels across all locations&quot;</li>
+<li><strong>Location Selector Dropdown</strong><ul>
+<li>Options: &quot;All Locations&quot; + individual locations</li>
+<li>Icon: MapPin</li>
+<li>Updates all metrics when changed</li>
+</ul>
+</li>
+</ul>
+<h4>2.2 Summary Cards (4 Cards)</h4>
+<p><strong>Card 1: Total Items</strong></p>
+<ul>
+<li>Icon: Package</li>
+<li>Value: Total item count (formatted number)</li>
+<li>Subtitle: &quot;Across X locations&quot;</li>
+<li>Updates based on location filter</li>
+</ul>
+<p><strong>Card 2: Total Value</strong></p>
+<ul>
+<li>Icon: TrendingUp</li>
+<li>Value: Currency formatted total value</li>
+<li>Subtitle: &quot;Current inventory value&quot;</li>
+</ul>
+<p><strong>Card 3: Low Stock</strong></p>
+<ul>
+<li>Icon: AlertTriangle</li>
+<li>Value: Count (red text)</li>
+<li>Subtitle: &quot;Items below reorder point&quot;</li>
+</ul>
+<p><strong>Card 4: Expiring Soon</strong></p>
+<ul>
+<li>Icon: Clock</li>
+<li>Value: Count (orange text)</li>
+<li>Subtitle: &quot;Items expiring this week&quot;</li>
+</ul>
+<h4>2.3 Tabbed Content</h4>
+<p><strong>Tab 1: Overview</strong></p>
+<p><strong>Stock Distribution Chart</strong></p>
+<ul>
+<li>Type: Bar Chart</li>
+<li>X-axis: Category name</li>
+<li>Y-axis: Quantity</li>
+<li>Tooltip: Shows quantity and value</li>
+<li>Responsive container (300px height)</li>
+</ul>
+<p><strong>Value Distribution Chart</strong></p>
+<ul>
+<li>Type: Pie Chart</li>
+<li>Shows: Category value percentages</li>
+<li>Labels: Category name + percentage</li>
+<li>Colors: Cycling color array (6 colors)</li>
+</ul>
+<p><strong>Quick Actions Grid</strong></p>
+<ul>
+<li>4 buttons in grid (2x2 on mobile, 4x1 on desktop)</li>
+<li>Buttons:<ol>
+<li>Inventory Balance (BarChart3 icon)</li>
+<li>Stock Cards (Package icon)</li>
+<li>Slow Moving (Clock icon)</li>
+<li>Inventory Aging (AlertTriangle icon)</li>
+</ol>
+</li>
+</ul>
+<p><strong>Tab 2: Performance</strong></p>
+<p><strong>Location Performance Chart</strong></p>
+<ul>
+<li>Type: Bar Chart (Grouped)</li>
+<li>Metrics:<ul>
+<li>Stock Efficiency %</li>
+<li>Turnover Rate</li>
+<li>Fill Rate %</li>
+</ul>
+</li>
+<li>Height: 400px</li>
+</ul>
+<p><strong>Performance Details Table</strong></p>
+<ul>
+<li>Columns:<ul>
+<li>Location name</li>
+<li>Performance badge (excellent/good/average/poor)</li>
+<li>Efficiency %</li>
+<li>Turnover rate</li>
+<li>Fill rate %</li>
+</ul>
+</li>
+<li>Card layout with icons</li>
+</ul>
+<p><strong>Tab 3: Transfer Suggestions</strong></p>
+<p><strong>Suggestion Cards</strong></p>
+<ul>
+<li>Display:<ul>
+<li>Item name</li>
+<li>From location → To location</li>
+<li>Suggested quantity</li>
+<li>Reason (low_stock/expiring/balancing)</li>
+<li>Priority badge (high/medium/low)</li>
+<li>Potential savings (currency)</li>
+<li>&quot;Create Transfer&quot; button</li>
+</ul>
+</li>
+</ul>
+<h3 id="dropdowns-and-filters">Dropdowns and Filters</h3>
+<p><strong>Location Dropdown</strong></p>
+<ul>
+<li>Type: Select component</li>
+<li>Options: All Locations + filtered by user permissions</li>
+<li>Width: 48 (Tailwind unit)</li>
+</ul>
+<h3 id="actions">Actions</h3>
+<ul>
+<li>Change location filter</li>
+<li>Navigate to sub-pages (Quick Actions)</li>
+<li>Create transfer from suggestion</li>
+</ul>
+<h3 id="data-types">Data Types</h3>
+<pre><code class="language-typescript">interface LocationStockData {
+  locationId: string
+  locationName: string
+  categories: CategoryStock[]
+  metrics: LocationMetrics
+}
+
+interface LocationMetrics {
+  totalItems: number
+  totalValue: { amount: number, currency: string }
+  lowStockCount: number
+  expiringCount: number
+}
+
+interface TransferSuggestion {
+  itemName: string
+  fromLocation: string
+  toLocation: string
+  suggestedQuantity: number
+  reason: &#39;low_stock&#39; | &#39;expiring&#39; | &#39;balancing&#39;
+  priority: &#39;high&#39; | &#39;medium&#39; | &#39;low&#39;
+  potentialSavings: { amount: number, currency: string }
+}
+</code></pre>
+<h3 id="page-flow">Page Flow</h3>
+<div class="mermaid">
+graph TD
+    A[Load Page] --> B[Fetch Location Data]
+    B --> C[Apply User Permissions]
+    C --> D[Render Summary Cards]
+    D --> E[Render Charts]
+    E --> F{User Action?}
+    F -->|Change Location| G[Filter Data]
+    F -->|Click Quick Action| H[Navigate to Sub-page]
+    F -->|Create Transfer| I[Open Transfer Form]
+    G --> D
+
+</div>
+<hr>
+<h2 id="21-inventory-balance">2.1 Inventory Balance</h2>
+<p><strong>Route:</strong> <code>/inventory-management/stock-overview/inventory-balance</code></p>
+<h3 id="purpose">Purpose</h3>
+<p>Detailed inventory balance report with lot tracking and movement history.</p>
+<h3 id="components">Components</h3>
+<h4>Header Section</h4>
+<ul>
+<li><strong>Report Title:</strong> &quot;Inventory Balance Report&quot;</li>
+<li><strong>Filters Panel (Collapsible)</strong><ul>
+<li>As of Date picker</li>
+<li>Location range (From/To dropdowns)</li>
+<li>Category range (From/To dropdowns)</li>
+<li>Product range (From/To dropdowns)</li>
+<li>View Type radio buttons: Category / Product / Lot</li>
+<li>Show Lots checkbox</li>
+</ul>
+</li>
+</ul>
+<h4>Balance Table</h4>
+<p><strong>Type:</strong> Hierarchical grouped table</p>
+<p><strong>Structure:</strong></p>
+<pre><code>Location
+  └─ Category
+      └─ Product
+          └─ Lot (if enabled)
+</code></pre>
+<p><strong>Columns:</strong></p>
+<ul>
+<li>Code</li>
+<li>Description</li>
+<li>Unit</li>
+<li>Quantity</li>
+<li>Average Cost</li>
+<li>Total Value</li>
+<li>Min/Max Thresholds (product level)</li>
+<li>Expiry Date (lot level)</li>
+</ul>
+<p><strong>Features:</strong></p>
+<ul>
+<li>Expandable/collapsible rows</li>
+<li>Subtotals at each level</li>
+<li>Grand total row</li>
+<li>Sort by any column</li>
+<li>Export to Excel/PDF</li>
+</ul>
+<h4>Movement History Panel</h4>
+<p><strong>Trigger:</strong> Click on product row<br><strong>Display:</strong> Right-side panel or modal</p>
+<p><strong>Columns:</strong></p>
+<ul>
+<li>Date</li>
+<li>Transaction Type</li>
+<li>Reference</li>
+<li>Quantity In</li>
+<li>Quantity Out</li>
+<li>Balance</li>
+<li>Notes</li>
+</ul>
+<h3 id="data-types">Data Types</h3>
+<pre><code class="language-typescript">interface BalanceReportParams {
+  asOfDate: string // YYYY-MM-DD
+  locationRange: { from: string; to: string }
+  categoryRange: { from: string; to: string }
+  productRange: { from: string; to: string }
+  viewType: &#39;CATEGORY&#39; | &#39;PRODUCT&#39; | &#39;LOT&#39;
+  showLots: boolean
+}
+
+interface ProductBalance {
+  id: string
+  code: string
+  name: string
+  unit: string
+  tracking: { batch: boolean }
+  thresholds: { minimum: number; maximum: number }
+  totals: { quantity: number; averageCost: number; value: number }
+  lots: LotBalance[]
+}
+
+interface LotBalance {
+  lotNumber: string
+  expiryDate?: string
+  quantity: number
+  unitCost: number
+  value: number
+}
+</code></pre>
+<h3 id="actions">Actions</h3>
+<ul>
+<li>Apply filters</li>
+<li>Change view type</li>
+<li>Toggle lot visibility</li>
+<li>View movement history</li>
+<li>Export report</li>
+<li>Print report</li>
+</ul>
+<hr>
+<h2 id="22-stock-cards">2.2 Stock Cards</h2>
+<p><strong>Route:</strong> <code>/inventory-management/stock-overview/stock-cards</code></p>
+<h3 id="purpose">Purpose</h3>
+<p>Browse all stock cards with filtering and quick access.</p>
+<h3 id="components">Components</h3>
+<h4>Header</h4>
+<ul>
+<li>Title: &quot;Stock Cards&quot;</li>
+<li>Search box</li>
+<li>Filter button</li>
+</ul>
+<h4>Filter Panel (Collapsible)</h4>
+<ul>
+<li>Location dropdown</li>
+<li>Category dropdown</li>
+<li>Product type checkboxes</li>
+<li>Stock status filter (In Stock / Low Stock / Out of Stock)</li>
+</ul>
+<h4>Cards Grid</h4>
+<p><strong>Layout:</strong> 3 columns on desktop, 2 on tablet, 1 on mobile</p>
+<p><strong>Card Content:</strong></p>
+<ul>
+<li>Product image/icon</li>
+<li>Product code</li>
+<li>Product name</li>
+<li>Current quantity + unit</li>
+<li>Status badge</li>
+<li>&quot;View Details&quot; button</li>
+</ul>
+<h3 id="actions">Actions</h3>
+<ul>
+<li>Search products</li>
+<li>Filter by criteria</li>
+<li>Click card → Navigate to Stock Card Detail</li>
+</ul>
+<hr>
+<h2 id="23-stock-card-detail">2.3 Stock Card Detail</h2>
+<p><strong>Route:</strong> <code>/inventory-management/stock-overview/stock-card</code></p>
+<h3 id="purpose">Purpose</h3>
+<p>Detailed view of individual stock card with full movement history and lot information.</p>
+<h3 id="sections">Sections</h3>
+<h4>2.3.1 General Information Panel</h4>
+<p><strong>Fields:</strong></p>
+<ul>
+<li>Product Code</li>
+<li>Product Name</li>
+<li>Category</li>
+<li>Unit of Measure</li>
+<li>Current Stock Level</li>
+<li>Reorder Level</li>
+<li>Maximum Level</li>
+<li>Lead Time (days)</li>
+<li>Last Purchase Date</li>
+<li>Last Purchase Price</li>
+<li>Average Cost</li>
+</ul>
+<h4>2.3.2 Lot Information Panel (if batch tracked)</h4>
+<p><strong>Table Columns:</strong></p>
+<ul>
+<li>Lot Number</li>
+<li>Receipt Date</li>
+<li>Expiry Date</li>
+<li>Quantity</li>
+<li>Unit Cost</li>
+<li>Total Value</li>
+<li>Status (Good/Damaged/Expired)</li>
+</ul>
+<h4>2.3.3 Movement History Table</h4>
+<p><strong>Columns:</strong></p>
+<ul>
+<li>Date/Time</li>
+<li>Transaction Type (Receipt/Issue/Adjustment/Transfer In/Transfer Out)</li>
+<li>Reference Number</li>
+<li>Lot Number (if applicable)</li>
+<li>Quantity In</li>
+<li>Quantity Out</li>
+<li>Balance</li>
+<li>Unit Cost</li>
+<li>Value</li>
+<li>Location (for transfers)</li>
+<li>User</li>
+<li>Notes</li>
+</ul>
+<p><strong>Pagination:</strong> 25 items per page</p>
+<h4>2.3.4 Valuation Panel</h4>
+<p><strong>Displays:</strong></p>
+<ul>
+<li>Valuation Method (FIFO/LIFO/Average)</li>
+<li>Current Total Value</li>
+<li>Average Unit Cost</li>
+<li>Last Purchase Cost</li>
+<li>Cost Variance</li>
+</ul>
+<h3 id="quick-filters">Quick Filters</h3>
+<p><strong>Buttons:</strong></p>
+<ul>
+<li>All Transactions</li>
+<li>Receipts Only</li>
+<li>Issues Only</li>
+<li>Adjustments Only</li>
+<li>Transfers Only</li>
+<li>Date range picker</li>
+</ul>
+<h3 id="actions">Actions</h3>
+<ul>
+<li>Filter movements by type</li>
+<li>Filter by date range</li>
+<li>Export to Excel</li>
+<li>Print stock card</li>
+<li>View lot details</li>
+<li>Create adjustment</li>
+</ul>
+<h3 id="page-flow">Page Flow</h3>
+<div class="mermaid">
+graph TD
+    A[Select Product] --> B[Load General Info]
+    B --> C[Load Lot Info]
+    B --> D[Load Movement History]
+    C --> E[Display Stock Card]
+    D --> E
+    E --> F{User Action?}
+    F -->|Filter| G[Apply Filter]
+    F -->|Export| H[Generate Export]
+    F -->|Create Adjustment| I[Open Adjustment Form]
+    G --> D
+
+</div>
+<hr>
+<h2 id="24-slow-moving-items">2.4 Slow Moving Items</h2>
+<p><strong>Route:</strong> <code>/inventory-management/stock-overview/slow-moving</code></p>
+<h3 id="purpose">Purpose</h3>
+<p>Identify slow-moving inventory for action.</p>
+<h3 id="components">Components</h3>
+<h4>Filter Section</h4>
+<ul>
+<li>Time period dropdown (30/60/90/180 days)</li>
+<li>Category filter</li>
+<li>Location filter</li>
+<li>Minimum value filter</li>
+</ul>
+<h4>Slow Moving Table</h4>
+<p><strong>Columns:</strong></p>
+<ul>
+<li>Product Code</li>
+<li>Product Name</li>
+<li>Category</li>
+<li>Location</li>
+<li>Current Quantity</li>
+<li>Last Movement Date</li>
+<li>Days Since Movement</li>
+<li>Current Value</li>
+<li>Turnover Rate</li>
+<li>Recommended Action</li>
+</ul>
+<p><strong>Actions Column:</strong></p>
+<ul>
+<li>Mark for clearance</li>
+<li>Create transfer</li>
+<li>Adjust reorder level</li>
+</ul>
+<h3 id="features">Features</h3>
+<ul>
+<li>Sort by days since movement</li>
+<li>Color coding (yellow &gt; 60 days, red &gt; 90 days)</li>
+<li>Export to Excel</li>
+</ul>
+<hr>
+<h2 id="25-inventory-aging">2.5 Inventory Aging</h2>
+<p><strong>Route:</strong> <code>/inventory-management/stock-overview/inventory-aging</code></p>
+<h3 id="purpose">Purpose</h3>
+<p>Track inventory age and identify expiring items.</p>
+<h3 id="components">Components</h3>
+<h4>Aging Buckets Table</h4>
+<p><strong>Columns:</strong></p>
+<ul>
+<li>Product Code/Name</li>
+<li>Location</li>
+<li>Total Quantity</li>
+<li>0-30 days qty</li>
+<li>31-60 days qty</li>
+<li>61-90 days qty</li>
+<li>90+ days qty</li>
+<li>Expiring Soon (&lt; 7 days)</li>
+<li>Total Value</li>
+</ul>
+<h4>Aging Summary Cards</h4>
+<ul>
+<li>Total Expiring in 7 days (red)</li>
+<li>Total Expiring in 30 days (orange)</li>
+<li>Average Age (days)</li>
+<li>Total Aged Stock Value</li>
+</ul>
+<h3 id="actions">Actions</h3>
+<ul>
+<li>Filter by location</li>
+<li>Filter by aging bucket</li>
+<li>Export report</li>
+<li>Create disposal request</li>
+</ul>
+<hr>
+<h2 id="3-stock-in">3. Stock In</h2>
+<p><strong>Route:</strong> <code>/inventory-management/stock-in</code></p>
+<h3 id="purpose">Purpose</h3>
+<p>Manage stock receipts from purchase orders and other sources.</p>
+<h3 id="components">Components</h3>
+<h4>3.1 Stock In List</h4>
+<p><strong>Type:</strong> Data table with filters</p>
+<p><strong>Filter Bar:</strong></p>
+<ul>
+<li>Date range picker</li>
+<li>Status filter (All/Pending/Completed)</li>
+<li>Location filter</li>
+<li>Search by reference</li>
+</ul>
+<p><strong>Table Columns:</strong></p>
+<ul>
+<li>Receipt Number</li>
+<li>Receipt Date</li>
+<li>Source (PO/Transfer/Production)</li>
+<li>Source Reference</li>
+<li>Location</li>
+<li>Total Items</li>
+<li>Total Quantity</li>
+<li>Total Value</li>
+<li>Status</li>
+<li>Actions (View/Edit/Post)</li>
+</ul>
+<p><strong>Status Badge Colors:</strong></p>
+<ul>
+<li>Pending: Yellow</li>
+<li>Completed: Green</li>
+<li>Posted: Blue</li>
+</ul>
+<h4>3.2 Stock In Detail</h4>
+<p><strong>Sections:</strong></p>
+<p><strong>Header Information</strong></p>
+<ul>
+<li>Receipt Number (auto-generated)</li>
+<li>Receipt Date</li>
+<li>Location dropdown</li>
+<li>Source type selector (Purchase Order/Transfer/Production/Other)</li>
+<li>Source reference field</li>
+<li>Supplier (if from PO)</li>
+<li>Notes textarea</li>
+</ul>
+<p><strong>Items Table</strong></p>
+<ul>
+<li>Columns:<ul>
+<li>Item Code/Name</li>
+<li>Description</li>
+<li>Ordered Qty (from source)</li>
+<li>Received Qty (editable)</li>
+<li>Unit</li>
+<li>Unit Cost</li>
+<li>Total Cost</li>
+<li>Lot Number (if batch tracked)</li>
+<li>Expiry Date (if applicable)</li>
+<li>Actions (Remove)</li>
+</ul>
+</li>
+</ul>
+<p><strong>Actions:</strong></p>
+<ul>
+<li>Add item button</li>
+<li>Item lookup modal</li>
+</ul>
+<p><strong>Footer:</strong></p>
+<ul>
+<li>Total items count</li>
+<li>Total quantity</li>
+<li>Total value</li>
+<li>Save draft button</li>
+<li>Post receipt button (final)</li>
+</ul>
+<h3 id="stock-in-journal-entry">Stock In Journal Entry</h3>
+<p><strong>Auto-generated when posted:</strong></p>
+<pre><code>Debit: Inventory Account
+Credit: GRN Clearing Account (if from PO)
+       or Source Location (if transfer)
+</code></pre>
+<h3 id="actions">Actions</h3>
+<ul>
+<li>Create new stock in</li>
+<li>Edit draft receipt</li>
+<li>Post receipt → Update inventory</li>
+<li>View posted receipt</li>
+<li>Print receipt</li>
+<li>Cancel receipt</li>
+</ul>
+<h3 id="page-flow">Page Flow</h3>
+<div class="mermaid">
+graph TD
+    A[New Stock In] --> B[Select Source Type]
+    B --> C{Source?}
+    C -->|PO| D[Select PO]
+    C -->|Transfer| E[Select Transfer]
+    C -->|Other| F[Manual Entry]
+    D --> G[Load PO Items]
+    E --> H[Load Transfer Items]
+    F --> I[Add Items Manually]
+    G --> J[Edit Quantities]
+    H --> J
+    I --> J
+    J --> K[Enter Lot/Expiry]
+    K --> L[Review Total]
+    L --> M{Save or Post?}
+    M -->|Save| N[Save as Draft]
+    M -->|Post| O[Post to Inventory]
+    O --> P[Generate Journal Entry]
+
+</div>
+<hr>
+<h2 id="4-inventory-adjustments">4. Inventory Adjustments</h2>
+<p><strong>Route:</strong> <code>/inventory-management/inventory-adjustments</code></p>
+<h3 id="purpose">Purpose</h3>
+<p>Record inventory adjustments with reasons and automatic journal entry generation.</p>
+<h3 id="components">Components</h3>
+<h4>4.1 Adjustments List</h4>
+<p><strong>Filter Bar:</strong></p>
+<ul>
+<li>Date range picker</li>
+<li>Status filter (Draft/Posted)</li>
+<li>Adjustment type filter (Positive/Negative/Transfer)</li>
+<li>Location filter</li>
+<li>Department filter</li>
+</ul>
+<p><strong>Table Columns:</strong></p>
+<ul>
+<li>Adjustment ID</li>
+<li>Date</li>
+<li>Type badge (In/Out)</li>
+<li>Status</li>
+<li>Location</li>
+<li>Department</li>
+<li>Reason</li>
+<li>Items count</li>
+<li>Total value</li>
+<li>Actions (View/Edit/Post/Delete)</li>
+</ul>
+<h4>4.2 Adjustment Detail Page</h4>
+<p><strong>Route:</strong> <code>/inventory-management/inventory-adjustments/[id]</code></p>
+<p><strong>Header Section:</strong></p>
+<ul>
+<li>Adjustment ID (auto-generated)</li>
+<li>Status badge</li>
+<li>Action buttons (Edit/Post/Delete)</li>
+</ul>
+<p><strong>Information Panel:</strong></p>
+<ul>
+<li>Date picker</li>
+<li>Adjustment type dropdown:<ul>
+<li>Positive Adjustment (Stock In)</li>
+<li>Negative Adjustment (Stock Out)</li>
+<li>Transfer</li>
+<li>Write-off</li>
+<li>Found Stock</li>
+<li>Damage</li>
+<li>Theft</li>
+<li>Expiry</li>
+</ul>
+</li>
+<li>Location dropdown</li>
+<li>Department dropdown</li>
+<li>Reason dropdown (predefined + custom)</li>
+<li>Description textarea</li>
+<li>Reference field</li>
+</ul>
+<p><strong>Stock Movement Table</strong></p>
+<ul>
+<li>Columns:<ul>
+<li>Product Code/Name</li>
+<li>SKU</li>
+<li>Location</li>
+<li>Lot Numbers (expandable)</li>
+<li>Quantity</li>
+<li>UOM</li>
+<li>Unit Cost</li>
+<li>Total Cost</li>
+<li>Actions (Remove)</li>
+</ul>
+</li>
+</ul>
+<p><strong>Lot Details (per item if batch tracked):</strong></p>
+<ul>
+<li>Lot Number</li>
+<li>Quantity</li>
+<li>Unit</li>
+</ul>
+<p><strong>Summary Panel:</strong></p>
+<ul>
+<li>Total In Quantity</li>
+<li>Total Out Quantity</li>
+<li>Total Cost (currency formatted)</li>
+</ul>
+<h4>4.3 Right Panel</h4>
+<p><strong>Tabs:</strong></p>
+<p><strong>Tab 1: Journal Entries</strong></p>
+<p><strong>Journal Header:</strong></p>
+<ul>
+<li>Status</li>
+<li>Journal Number</li>
+<li>Posting Date</li>
+<li>Posting Period</li>
+<li>Description</li>
+<li>Reference</li>
+<li>Created by/at</li>
+<li>Posted by/at</li>
+</ul>
+<p><strong>Journal Table:</strong></p>
+<ul>
+<li>Account Code</li>
+<li>Account Name</li>
+<li>Debit amount</li>
+<li>Credit amount</li>
+<li>Department</li>
+<li>Reference</li>
+</ul>
+<p><strong>Tab 2: Stock Movement Details</strong></p>
+<ul>
+<li>Same as main table but read-only</li>
+<li>Shows complete transaction details</li>
+</ul>
+<h3 id="actions">Actions</h3>
+<ul>
+<li>Create new adjustment</li>
+<li>Add items to adjustment</li>
+<li>Edit quantities/lots</li>
+<li>Save as draft</li>
+<li>Post adjustment</li>
+<li>View journal entry</li>
+<li>Print adjustment voucher</li>
+<li>Delete draft adjustment</li>
+</ul>
+<h3 id="adjustment-flow">Adjustment Flow</h3>
+<div class="mermaid">
+graph TD
+    A[Create Adjustment] --> B[Select Type & Location]
+    B --> C[Add Items]
+    C --> D{Batch Tracked?}
+    D -->|Yes| E[Enter Lot Details]
+    D -->|No| F[Enter Quantity]
+    E --> G[Review Total]
+    F --> G
+    G --> H{Save or Post?}
+    H -->|Save| I[Save as Draft]
+    H -->|Post| J[Post to Inventory]
+    J --> K[Generate Journal Entry]
+    K --> L[Update Stock Levels]
+
+</div>
+<h3 id="journal-entry-auto-generation">Journal Entry Auto-Generation</h3>
+<p><strong>Positive Adjustment:</strong></p>
+<pre><code>Debit: Inventory Account (Location/Category)
+Credit: Inventory Adjustment Income
+</code></pre>
+<p><strong>Negative Adjustment:</strong></p>
+<pre><code>Debit: Cost of Goods Sold / Adjustment Expense
+Credit: Inventory Account (Location/Category)
+</code></pre>
+<hr>
+<h2 id="5-physical-count">5. Physical Count</h2>
+<p><strong>Route:</strong> <code>/inventory-management/physical-count</code></p>
+<h3 id="purpose">Purpose</h3>
+<p>Comprehensive physical count process with multi-step wizard for full location counts.</p>
+<h3 id="51-physical-count-wizard">5.1 Physical Count Wizard</h3>
+<p><strong>Multi-step Process:</strong></p>
+<h4>Step 1: Setup</h4>
+<p><strong>Component:</strong> <code>PhysicalCountSetup</code></p>
+<p><strong>Fields:</strong></p>
+<ul>
+<li>Counter Name (auto-filled from user)</li>
+<li>Department dropdown</li>
+<li>Date &amp; Time picker</li>
+<li>Count Type (Full/Partial)</li>
+<li>Notes textarea</li>
+</ul>
+<p><strong>Validation:</strong></p>
+<ul>
+<li>Department required</li>
+<li>Date cannot be future</li>
+</ul>
+<h4>Step 2: Location Selection</h4>
+<p><strong>Component:</strong> <code>LocationSelection</code></p>
+<p><strong>Display:</strong></p>
+<ul>
+<li>Checkbox tree of all locations</li>
+<li>Location hierarchy:<ul>
+<li>Building → Floor → Room → Sub-location</li>
+</ul>
+</li>
+<li>Select all/none buttons</li>
+<li>Search locations</li>
+</ul>
+<p><strong>Features:</strong></p>
+<ul>
+<li>Parent selection selects all children</li>
+<li>Show item count per location</li>
+<li>Disable locations with active counts</li>
+</ul>
+<h4>Step 3: Item Review</h4>
+<p><strong>Component:</strong> <code>ItemReview</code></p>
+<p><strong>Display:</strong></p>
+<ul>
+<li>Items table based on selected locations</li>
+<li>Columns:<ul>
+<li>Item Code</li>
+<li>Item Name</li>
+<li>Category</li>
+<li>Location</li>
+<li>Expected Quantity</li>
+<li>Unit</li>
+<li>Last Count Date</li>
+<li>Checkbox (to exclude)</li>
+</ul>
+</li>
+</ul>
+<p><strong>Features:</strong></p>
+<ul>
+<li>Auto-populated from inventory</li>
+<li>Exclude items checkbox</li>
+<li>Filter by category</li>
+<li>Sort by any column</li>
+<li>Total items count</li>
+</ul>
+<h4>Step 4: Final Review</h4>
+<p><strong>Component:</strong> <code>FinalReview</code></p>
+<p><strong>Display:</strong></p>
+<ul>
+<li>Summary of selections:<ul>
+<li>Counter name</li>
+<li>Department</li>
+<li>Date/Time</li>
+<li>Locations count</li>
+<li>Items count</li>
+<li>Estimated duration</li>
+</ul>
+</li>
+<li>Full list review</li>
+<li>Edit buttons to go back to any step</li>
+</ul>
+<p><strong>Actions:</strong></p>
+<ul>
+<li>Back to edit</li>
+<li>Save as draft</li>
+<li>Start count</li>
+</ul>
+<h3 id="52-active-count">5.2 Active Count</h3>
+<p><strong>Route:</strong> <code>/inventory-management/physical-count/active/[id]</code></p>
+<p><strong>Display:</strong></p>
+<ul>
+<li>Count reference at top</li>
+<li>Progress indicator (X/Y items counted)</li>
+<li>Filter by location</li>
+<li>Search items</li>
+</ul>
+<p><strong>Item Entry Table:</strong></p>
+<ul>
+<li>Item Code/Name</li>
+<li>Expected Quantity</li>
+<li>Actual Count (input field)</li>
+<li>Variance (auto-calculated)</li>
+<li>Variance %</li>
+<li>Status indicator (good/variance)</li>
+<li>Notes field</li>
+<li>Checkbox &quot;Counted&quot;</li>
+</ul>
+<p><strong>Features:</strong></p>
+<ul>
+<li>Save progress frequently (auto-save)</li>
+<li>Mark items as counted</li>
+<li>Flag discrepancies</li>
+<li>Add notes per item</li>
+<li>Barcode scanning support (future)</li>
+</ul>
+<p><strong>Actions:</strong></p>
+<ul>
+<li>Save progress</li>
+<li>Submit count (when all items counted)</li>
+<li>Cancel count</li>
+</ul>
+<h3 id="53-physical-count-dashboard">5.3 Physical Count Dashboard</h3>
+<p><strong>Route:</strong> <code>/inventory-management/physical-count/dashboard</code></p>
+<p><strong>Displays:</strong></p>
+<p><strong>Summary Cards:</strong></p>
+<ul>
+<li>Active Counts</li>
+<li>Completed Today</li>
+<li>Pending Review</li>
+<li>Average Variance %</li>
+</ul>
+<p><strong>Counts Table:</strong></p>
+<ul>
+<li>Count ID</li>
+<li>Date</li>
+<li>Location(s)</li>
+<li>Items Count</li>
+<li>Completed Items</li>
+<li>Progress %</li>
+<li>Status</li>
+<li>Variance %</li>
+<li>Actions (Resume/Review/Export)</li>
+</ul>
+<p><strong>Charts:</strong></p>
+<ul>
+<li>Count completion trend (line chart)</li>
+<li>Variance by location (bar chart)</li>
+<li>Variance by category (pie chart)</li>
+</ul>
+<h3 id="physical-count-flow">Physical Count Flow</h3>
+<div class="mermaid">
+graph TD
+    A[Start Count] --> B[Setup: Enter Details]
+    B --> C[Select Locations]
+    C --> D[Review Items]
+    D --> E[Final Review]
+    E --> F{Save or Start?}
+    F -->|Save| G[Save as Draft]
+    F -->|Start| H[Begin Counting]
+    H --> I[Enter Actual Counts]
+    I --> J{All Counted?}
+    J -->|No| K[Save Progress]
+    J -->|Yes| L[Submit Count]
+    K --> I
+    L --> M[Review Variances]
+    M --> N{Approve?}
+    N -->|Yes| O[Post Adjustment]
+    N -->|No| P[Recount Items]
+    O --> Q[Update Inventory]
+    P --> I
+
+</div>
+<hr>
+<h2 id="6-spot-check">6. Spot Check</h2>
+<p><strong>Route:</strong> <code>/inventory-management/spot-check</code></p>
+<h3 id="purpose">Purpose</h3>
+<p>Quick random spot checks of specific items for accuracy verification.</p>
+<h3 id="61-spot-check-main-page">6.1 Spot Check Main Page</h3>
+<p><strong>Views:</strong> List or Grid toggle</p>
+<p><strong>Filter Bar:</strong></p>
+<ul>
+<li>Search box</li>
+<li>Status dropdown (All/Pending/In Progress/Completed)</li>
+<li>Department dropdown</li>
+<li>Location filter button (toggles panel)</li>
+</ul>
+<p><strong>Location Filter Panel (Collapsible):</strong></p>
+<ul>
+<li>Location dropdown</li>
+<li>Active filter tag with X to clear</li>
+</ul>
+<h4>List View</h4>
+<p><strong>Component:</strong> <code>CountListItem</code></p>
+<p><strong>Displays per item:</strong></p>
+<ul>
+<li>Store Name</li>
+<li>Department badge</li>
+<li>Counter name</li>
+<li>Date</li>
+<li>Status badge</li>
+<li>Item count (e.g., &quot;10 items&quot;)</li>
+<li>Last count date</li>
+<li>Variance % (if completed)</li>
+<li>Progress (e.g., &quot;5/10 completed&quot;)</li>
+<li>Notes preview</li>
+<li>Actions: Start Count / Delete</li>
+</ul>
+<h4>Grid View</h4>
+<p><strong>Component:</strong> <code>CountDetailCard</code></p>
+<p><strong>Card displays:</strong></p>
+<ul>
+<li>Count ID</li>
+<li>Counter name</li>
+<li>Department</li>
+<li>Store</li>
+<li>Date</li>
+<li>Selected items count</li>
+<li>Action buttons: Start Count / Delete</li>
+</ul>
+<h3 id="62-new-spot-check">6.2 New Spot Check</h3>
+<p><strong>Route:</strong> <code>/inventory-management/spot-check/new</code></p>
+<p><strong>Multi-step form:</strong></p>
+<h4>Step 1: Setup</h4>
+<p><strong>Component:</strong> <code>Setup</code></p>
+<p><strong>Fields:</strong></p>
+<ul>
+<li>Department dropdown</li>
+<li>Store/Location dropdown</li>
+<li>Date/Time picker</li>
+<li>Notes</li>
+</ul>
+<h4>Step 2: Item Selection</h4>
+<p><strong>Component:</strong> <code>ItemSelection</code></p>
+<p><strong>Features:</strong></p>
+<ul>
+<li>Random item picker (click to auto-select X items)</li>
+<li>Manual item search and add</li>
+<li>Selected items list</li>
+<li>Remove items</li>
+</ul>
+<p><strong>Selected Items Table:</strong></p>
+<ul>
+<li>Item Code</li>
+<li>Item Name</li>
+<li>Expected Qty</li>
+<li>Unit</li>
+<li>Remove button</li>
+</ul>
+<h4>Step 3: Review</h4>
+<p><strong>Component:</strong> <code>Review</code></p>
+<p><strong>Display:</strong></p>
+<ul>
+<li>Summary of setup</li>
+<li>List of selected items</li>
+<li>Total items count</li>
+</ul>
+<p><strong>Actions:</strong></p>
+<ul>
+<li>Back to edit</li>
+<li>Save as draft</li>
+<li>Start spot check</li>
+</ul>
+<h3 id="63-active-spot-check">6.3 Active Spot Check</h3>
+<p><strong>Route:</strong> <code>/inventory-management/spot-check/active/[id]</code></p>
+<p><strong>Component:</strong> <code>CountItems</code></p>
+<p><strong>Display:</strong></p>
+<ul>
+<li>Spot check reference</li>
+<li>Progress (X/Y items)</li>
+<li>Item entry form:<ul>
+<li>Item name/code</li>
+<li>Expected quantity</li>
+<li>Actual count input</li>
+<li>Variance (auto-calculated)</li>
+<li>Status dropdown (Good/Damaged/Missing/Expired)</li>
+<li>Notes</li>
+<li>Checkbox &quot;Submit item&quot;</li>
+</ul>
+</li>
+</ul>
+<p><strong>Features:</strong></p>
+<ul>
+<li>One item at a time or table view</li>
+<li>Submit per item</li>
+<li>Flag issues immediately</li>
+<li>Photo upload for discrepancies</li>
+</ul>
+<p><strong>Actions:</strong></p>
+<ul>
+<li>Submit item count</li>
+<li>Complete spot check</li>
+<li>Cancel</li>
+</ul>
+<h3 id="64-completed-spot-checks">6.4 Completed Spot Checks</h3>
+<p><strong>Route:</strong> <code>/inventory-management/spot-check/completed</code></p>
+<p><strong>Display:</strong> Similar to main page but filtered to completed status</p>
+<p><strong>Additional columns:</strong></p>
+<ul>
+<li>Variance %</li>
+<li>Completion date</li>
+<li>Actions: View Details / Export</li>
+</ul>
+<h3 id="65-spot-check-dashboard">6.5 Spot Check Dashboard</h3>
+<p><strong>Route:</strong> <code>/inventory-management/spot-check/dashboard</code></p>
+<p><strong>Summary Cards:</strong></p>
+<ul>
+<li>Total Spot Checks This Week</li>
+<li>Average Accuracy %</li>
+<li>Items Flagged</li>
+<li>Pending Actions</li>
+</ul>
+<p><strong>Charts:</strong></p>
+<ul>
+<li>Accuracy trend (line)</li>
+<li>Variance by location (bar)</li>
+<li>Issue types distribution (pie)</li>
+</ul>
+<p><strong>Recent Spot Checks Table:</strong></p>
+<ul>
+<li>Date</li>
+<li>Location</li>
+<li>Items</li>
+<li>Accuracy %</li>
+<li>Issues found</li>
+<li>Status</li>
+</ul>
+<h3 id="spot-check-flow">Spot Check Flow</h3>
+<div class="mermaid">
+graph TD
+    A[New Spot Check] --> B[Select Department & Location]
+    B --> C[Choose Items]
+    C --> D{Random or Manual?}
+    D -->|Random| E[Auto-select N items]
+    D -->|Manual| F[Search and add items]
+    E --> G[Review Selection]
+    F --> G
+    G --> H[Start Spot Check]
+    H --> I[Count Each Item]
+    I --> J[Enter Actual Count]
+    J --> K{Match?}
+    K -->|Yes| L[Mark as Good]
+    K -->|No| M[Flag Variance]
+    L --> N{More Items?}
+    M --> O[Add Notes/Photo]
+    O --> N
+    N -->|Yes| I
+    N -->|No| P[Complete Check]
+    P --> Q[Generate Report]
+
+</div>
+<hr>
+<h2 id="7-fractional-inventory">7. Fractional Inventory</h2>
+<p><strong>Route:</strong> <code>/inventory-management/fractional-inventory</code></p>
+<h3 id="purpose">Purpose</h3>
+<p>Manage portion-based inventory for items that can be split or combined (e.g., pizzas into slices).</p>
+<h3 id="layout">Layout</h3>
+<p><strong>Tabs:</strong></p>
+<ol>
+<li>Inventory Dashboard</li>
+<li>Conversion Tracking</li>
+</ol>
+<h3 id="71-inventory-dashboard-tab">7.1 Inventory Dashboard Tab</h3>
+<p><strong>Component:</strong> <code>FractionalInventoryDashboard</code></p>
+<p><strong>Summary Cards:</strong></p>
+<ul>
+<li>Total Fractional Items</li>
+<li>Active Portions</li>
+<li>Pending Conversions</li>
+<li>Waste Generated Today</li>
+</ul>
+<p><strong>Fractional Stock Table:</strong></p>
+<ul>
+<li>Item Code/Name</li>
+<li>Current State (WHOLE/PARTIAL/PREPARED)</li>
+<li>Whole Units Available</li>
+<li>Partial Quantity Available</li>
+<li>Total Portions Available</li>
+<li>Reserved Portions</li>
+<li>Quality Grade (EXCELLENT/GOOD/FAIR/POOR)</li>
+<li>Expires At (countdown)</li>
+<li>Actions:<ul>
+<li>Split (convert whole to portions)</li>
+<li>Combine (combine portions to whole)</li>
+<li>View Details</li>
+</ul>
+</li>
+</ul>
+<p><strong>Filters:</strong></p>
+<ul>
+<li>Location</li>
+<li>State (Whole/Partial/Prepared)</li>
+<li>Quality Grade</li>
+<li>Expiring Soon (&lt; 4 hours)</li>
+</ul>
+<h3 id="72-conversion-operations-modal">7.2 Conversion Operations Modal</h3>
+<p><strong>Component:</strong> <code>ConversionOperationsModal</code></p>
+<p><strong>Triggered by:</strong> Click Split or Combine action</p>
+<p><strong>Split Operation Form:</strong></p>
+<ul>
+<li>Stock ID (read-only)</li>
+<li>Item Name (read-only)</li>
+<li>Available Whole Units (read-only)</li>
+<li>Split Quantity (input)</li>
+<li>Target Portion Size (dropdown):<ul>
+<li>e.g., &quot;Slice (8 per whole)&quot;</li>
+<li>&quot;Half (2 per whole)&quot;</li>
+</ul>
+</li>
+<li>Resulting Portions (calculated)</li>
+<li>Conversion Cost (calculated)</li>
+<li>Reason (dropdown: Sales Preparation / Buffet Service / Portion Control / Other)</li>
+<li>Notes</li>
+</ul>
+<p><strong>Combine Operation Form:</strong></p>
+<ul>
+<li>Stock ID (read-only)</li>
+<li>Item Name (read-only)</li>
+<li>Available Portions (read-only)</li>
+<li>Combine Quantity (input - in portions)</li>
+<li>Target: Whole Unit</li>
+<li>Waste % (calculated)</li>
+<li>Reason (dropdown: Consolidation / Quality Control / Inventory Optimization / Other)</li>
+<li>Notes</li>
+</ul>
+<p><strong>Actions:</strong></p>
+<ul>
+<li>Cancel</li>
+<li>Confirm Conversion</li>
+</ul>
+<h3 id="73-conversion-tracking-tab">7.3 Conversion Tracking Tab</h3>
+<p><strong>Component:</strong> <code>ConversionTrackingPanel</code></p>
+<p><strong>Displays:</strong></p>
+<p><strong>Recent Conversions Table:</strong></p>
+<ul>
+<li>Date/Time</li>
+<li>Item Name</li>
+<li>Operation Type (Split/Combine)</li>
+<li>From State → To State</li>
+<li>Quantity Converted</li>
+<li>Resulting Units/Portions</li>
+<li>Waste Generated</li>
+<li>Performed By</li>
+<li>Reason</li>
+<li>Notes</li>
+</ul>
+<p><strong>Filters:</strong></p>
+<ul>
+<li>Date range</li>
+<li>Operation type</li>
+<li>Item</li>
+<li>Performed by</li>
+</ul>
+<p><strong>Charts:</strong></p>
+<ul>
+<li>Conversions over time (line)</li>
+<li>Waste by item (bar)</li>
+<li>Operation type distribution (pie)</li>
+</ul>
+<h3 id="data-types">Data Types</h3>
+<pre><code class="language-typescript">interface FractionalItem {
+  id: string
+  itemCode: string
+  itemName: string
+  category: string
+  baseUnit: string // &quot;Whole Pizza&quot;
+  supportsFractional: boolean
+  allowPartialSales: boolean
+  trackPortions: boolean
+  availablePortions: PortionSize[]
+  defaultPortionId: string
+  shelfLifeHours: number
+  maxQualityHours: number
+  allowAutoConversion: boolean
+  wastePercentage: number
+  baseCostPerUnit: number
+  conversionCostPerUnit: number
+}
+
+interface PortionSize {
+  id: string
+  name: string // &quot;Slice&quot;
+  portionsPerWhole: number // 8
+  isActive: boolean
+}
+
+interface FractionalStock {
+  id: string
+  itemId: string
+  locationId: string
+  currentState: &#39;WHOLE&#39; | &#39;PARTIAL&#39; | &#39;PREPARED&#39;
+  stateTransitionDate: string
+  qualityGrade: &#39;EXCELLENT&#39; | &#39;GOOD&#39; | &#39;FAIR&#39; | &#39;POOR&#39;
+  wholeUnitsAvailable: number
+  partialQuantityAvailable: number
+  totalPortionsAvailable: number
+  reservedPortions: number
+  originalWholeUnits: number
+  originalTotalPortions: number
+  conversionsApplied: ConversionRecord[]
+  totalWasteGenerated: number
+  preparedAt: string
+  expiresAt: string
+}
+
+interface ConversionRecord {
+  id: string
+  timestamp: string
+  operationType: &#39;SPLIT&#39; | &#39;COMBINE&#39;
+  fromState: string
+  toState: string
+  quantityBefore: number
+  quantityAfter: number
+  portionsCreated?: number
+  wasteGenerated: number
+  performedBy: string
+  reason: string
+  notes: string
+}
+</code></pre>
+<h3 id="fractional-inventory-flow">Fractional Inventory Flow</h3>
+<div class="mermaid">
+graph TD
+    A[View Fractional Stock] --> B{Action?}
+    B -->|Split| C[Select Split Quantity]
+    B -->|Combine| D[Select Combine Quantity]
+    C --> E[Select Portion Size]
+    D --> F[Specify Whole Units]
+    E --> G[Calculate Result]
+    F --> H[Calculate Waste]
+    G --> I[Enter Reason]
+    H --> I
+    I --> J[Confirm Operation]
+    J --> K[Update Stock]
+    K --> L[Record Conversion]
+    L --> M[Calculate New Quality]
+    M --> N[Update Expiry Time]
+
+</div>
+<hr>
+<h2 id="8-period-end">8. Period End</h2>
+<p><strong>Route:</strong> <code>/inventory-management/period-end</code></p>
+<h3 id="purpose">Purpose</h3>
+<p>Manage month-end inventory closing procedures.</p>
+<h3 id="components">Components</h3>
+<h4>Header Section</h4>
+<ul>
+<li>Title: &quot;Period End&quot;</li>
+<li>Subtitle: &quot;Manage your inventory period end closings&quot;</li>
+<li>Date picker (to select period)</li>
+<li>&quot;Start New Period&quot; button</li>
+</ul>
+<h4>Period End Records Table</h4>
+<p><strong>Columns:</strong></p>
+<ul>
+<li>Period ID (e.g., &quot;PE-2024-01&quot;)</li>
+<li>Period (e.g., &quot;January 2024&quot;)</li>
+<li>Start Date</li>
+<li>End Date</li>
+<li>Status badge (Open/In Progress/Closed)</li>
+<li>Completed By</li>
+<li>Completed At</li>
+<li>Notes</li>
+</ul>
+<p><strong>Row Actions:</strong></p>
+<ul>
+<li>Click row → Navigate to period detail</li>
+</ul>
+<p><strong>Status Badges:</strong></p>
+<ul>
+<li>Open: Blue</li>
+<li>In Progress: Yellow</li>
+<li>Closed: Green</li>
+</ul>
+<h3 id="81-period-end-detail">8.1 Period End Detail</h3>
+<p><strong>Route:</strong> <code>/inventory-management/period-end/[id]</code></p>
+<p><strong>Sections:</strong></p>
+<p><strong>Header:</strong></p>
+<ul>
+<li>Period ID</li>
+<li>Status badge</li>
+<li>Close Period button (if in progress)</li>
+</ul>
+<p><strong>Summary Panel:</strong></p>
+<ul>
+<li>Period range</li>
+<li>Opening stock value</li>
+<li>Closing stock value</li>
+<li>Variance</li>
+<li>Physical count status</li>
+<li>Adjustment count</li>
+<li>Status</li>
+</ul>
+<p><strong>Checklist:</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> All stock receipts posted</li>
+<li><input disabled="" type="checkbox"> All stock issues posted</li>
+<li><input disabled="" type="checkbox"> Physical count completed</li>
+<li><input disabled="" type="checkbox"> Variances reconciled</li>
+<li><input disabled="" type="checkbox"> Adjustments posted</li>
+<li><input disabled="" type="checkbox"> Reports generated</li>
+<li><input disabled="" type="checkbox"> Finance reviewed</li>
+</ul>
+<p><strong>Reports Section:</strong></p>
+<ul>
+<li>Inventory valuation report</li>
+<li>Movement summary</li>
+<li>Variance analysis</li>
+<li>Period-end snapshot</li>
+</ul>
+<h3 id="period-end-flow">Period End Flow</h3>
+<div class="mermaid">
+graph TD
+    A[Start Period End] --> B[Run Pre-checks]
+    B --> C{All Transactions Posted?}
+    C -->|No| D[Complete Pending]
+    C -->|Yes| E[Perform Physical Count]
+    D --> B
+    E --> F[Reconcile Variances]
+    F --> G[Post Adjustments]
+    G --> H[Generate Reports]
+    H --> I[Finance Review]
+    I --> J{Approve?}
+    J -->|No| K[Make Corrections]
+    J -->|Yes| L[Close Period]
+    K --> F
+    L --> M[Lock Transactions]
+    M --> N[Archive Reports]
+
+</div>
+<hr>
+<h2 id="9-physical-count-management">9. Physical Count Management</h2>
+<p><strong>Route:</strong> <code>/inventory-management/physical-count-management</code></p>
+<h3 id="purpose">Purpose</h3>
+<p>Schedule and manage physical counts across multiple locations.</p>
+<h3 id="components">Components</h3>
+<p><strong>Header:</strong></p>
+<ul>
+<li>Title: &quot;Physical Count Management&quot;</li>
+<li>&quot;New Count&quot; button</li>
+</ul>
+<h4>Scheduled Counts List</h4>
+<p><strong>Filter Bar:</strong></p>
+<ul>
+<li>Status filter</li>
+<li>Location filter</li>
+<li>Date range</li>
+</ul>
+<p><strong>Cards/List Items:</strong><br><strong>Component:</strong> <code>CountListItem</code></p>
+<p><strong>Display:</strong></p>
+<ul>
+<li>Store Name</li>
+<li>Department</li>
+<li>Counter assigned</li>
+<li>Scheduled Date</li>
+<li>Status (Scheduled/In Progress/Completed)</li>
+<li>Item count</li>
+<li>Completed count (progress)</li>
+<li>Variance %</li>
+<li>Actions: Start / Edit / Delete</li>
+</ul>
+<h4>Count Detail Form</h4>
+<p><strong>Component:</strong> <code>CountDetailForm</code></p>
+<p><strong>For creating/editing counts:</strong></p>
+<p><strong>Fields:</strong></p>
+<ul>
+<li>Location dropdown</li>
+<li>Counter assignment</li>
+<li>Scheduled date/time</li>
+<li>Count type (Full/Partial/Spot)</li>
+<li>Items selection (if partial)</li>
+<li>Notes</li>
+<li>Recurrence (One-time / Weekly / Monthly)</li>
+</ul>
+<p><strong>Actions:</strong></p>
+<ul>
+<li>Save</li>
+<li>Schedule</li>
+<li>Cancel</li>
+</ul>
+<h3 id="count-progress-tracking">Count Progress Tracking</h3>
+<p><strong>Component:</strong> <code>CountProgress</code></p>
+<p><strong>Display:</strong></p>
+<ul>
+<li>Overall progress %</li>
+<li>Items counted / Total items</li>
+<li>Variance summary</li>
+<li>Issues flagged</li>
+<li>Estimated completion time</li>
+</ul>
+<hr>
+<h2 id="10-common-components">10. Common Components</h2>
+<h3 id="101-grouped-table">10.1 Grouped Table</h3>
+<p><strong>Component:</strong> <code>GroupedTable</code><br><strong>Location:</strong> <code>components/inventory/GroupedTable.tsx</code></p>
+<p><strong>Purpose:</strong> Hierarchical data display with expand/collapse</p>
+<p><strong>Features:</strong></p>
+<ul>
+<li>Multiple grouping levels</li>
+<li>Subtotals per group</li>
+<li>Expand all / Collapse all</li>
+<li>Custom row rendering</li>
+<li>Sort within groups</li>
+</ul>
+<p><strong>Props:</strong></p>
+<pre><code class="language-typescript">interface GroupedTableProps {
+  data: any[]
+  groupBy: string[]
+  columns: ColumnDef[]
+  renderSubtotal?: (group: any) =&gt; ReactNode
+  expandAll?: boolean
+}
+</code></pre>
+<h3 id="102-export-button">10.2 Export Button</h3>
+<p><strong>Component:</strong> <code>ExportButton</code><br><strong>Location:</strong> <code>components/inventory/ExportButton.tsx</code></p>
+<p><strong>Purpose:</strong> Export data to various formats</p>
+<p><strong>Formats:</strong></p>
+<ul>
+<li>Excel (.xlsx)</li>
+<li>PDF</li>
+<li>CSV</li>
+</ul>
+<p><strong>Props:</strong></p>
+<pre><code class="language-typescript">interface ExportButtonProps {
+  data: any[]
+  filename: string
+  format: &#39;excel&#39; | &#39;pdf&#39; | &#39;csv&#39;
+  columns?: string[]
+}
+</code></pre>
+<h3 id="103-step-indicator">10.3 Step Indicator</h3>
+<p><strong>Component:</strong> <code>StepIndicator</code><br><strong>Location:</strong> <code>components/ui/step-indicator.tsx</code></p>
+<p><strong>Purpose:</strong> Show progress in multi-step wizards</p>
+<p><strong>Display:</strong></p>
+<ul>
+<li>Step number circles</li>
+<li>Step titles</li>
+<li>Step descriptions</li>
+<li>Progress line</li>
+<li>Current step highlight</li>
+</ul>
+<p><strong>Props:</strong></p>
+<pre><code class="language-typescript">interface StepIndicatorProps {
+  steps: Array&lt;{
+    title: string
+    description: string
+  }&gt;
+  currentStep: number
+}
+</code></pre>
+<h3 id="104-count-detail-form">10.4 Count Detail Form</h3>
+<p><strong>Component:</strong> <code>CountDetailForm</code><br><strong>Used in:</strong> Spot Check, Physical Count Management</p>
+<p><strong>Purpose:</strong> Reusable form for entering count details</p>
+<p><strong>Fields:</strong></p>
+<ul>
+<li>Items table with actual count inputs</li>
+<li>Location name (display)</li>
+<li>User name (display)</li>
+<li>Date (display)</li>
+<li>Reference (display)</li>
+<li>Item entry fields:<ul>
+<li>Expected quantity</li>
+<li>Actual count</li>
+<li>Variance (calculated)</li>
+<li>Status</li>
+<li>Notes</li>
+</ul>
+</li>
+</ul>
+<p><strong>Actions:</strong></p>
+<ul>
+<li>Close modal</li>
+<li>Submit counts</li>
+</ul>
+<h3 id="105-count-list-item">10.5 Count List Item</h3>
+<p><strong>Component:</strong> <code>CountListItem</code><br><strong>Used in:</strong> Spot Check, Physical Count Management</p>
+<p><strong>Purpose:</strong> Display count summary in list view</p>
+<p><strong>Shows:</strong></p>
+<ul>
+<li>Location/Store name</li>
+<li>Department</li>
+<li>User</li>
+<li>Date</li>
+<li>Status badge</li>
+<li>Item count</li>
+<li>Progress</li>
+<li>Variance</li>
+<li>Notes preview</li>
+</ul>
+<p><strong>Actions:</strong></p>
+<ul>
+<li>Start count</li>
+<li>Delete</li>
+</ul>
+<h3 id="106-count-detail-card">10.6 Count Detail Card</h3>
+<p><strong>Component:</strong> <code>CountDetailCard</code><br><strong>Used in:</strong> Spot Check grid view</p>
+<p><strong>Purpose:</strong> Card display of count</p>
+<p><strong>Shows:</strong></p>
+<ul>
+<li>Count ID</li>
+<li>Counter</li>
+<li>Department</li>
+<li>Store</li>
+<li>Date</li>
+<li>Selected items count</li>
+</ul>
+<p><strong>Actions:</strong></p>
+<ul>
+<li>Start count</li>
+<li>Delete</li>
+</ul>
+<h3 id="107-stock-in-journal-entry">10.7 Stock In Journal Entry</h3>
+<p><strong>Component:</strong> <code>stock-in-jv-entry.tsx</code></p>
+<p><strong>Purpose:</strong> Display auto-generated journal entries for stock receipts</p>
+<p><strong>Shows:</strong></p>
+<ul>
+<li>Journal header</li>
+<li>Entry lines (debit/credit)</li>
+<li>Account codes</li>
+<li>Amounts</li>
+<li>Department allocation</li>
+</ul>
+<hr>
+<h2 id="modal-components">Modal Components</h2>
+<h3 id="location-selection-modal">Location Selection Modal</h3>
+<p><strong>Used in:</strong> Physical Count, Spot Check</p>
+<p><strong>Features:</strong></p>
+<ul>
+<li>Hierarchical location tree</li>
+<li>Multi-select checkboxes</li>
+<li>Search locations</li>
+<li>Filter by type</li>
+</ul>
+<h3 id="item-lookup-modal">Item Lookup Modal</h3>
+<p><strong>Used in:</strong> Stock In, Adjustments, Counts</p>
+<p><strong>Features:</strong></p>
+<ul>
+<li>Search items</li>
+<li>Filter by category</li>
+<li>Show stock levels</li>
+<li>Multi-select</li>
+<li>Add to document</li>
+</ul>
+<h3 id="lot-entry-modal">Lot Entry Modal</h3>
+<p><strong>Used in:</strong> Stock In, Adjustments</p>
+<p><strong>For batch-tracked items:</strong></p>
+<ul>
+<li>Lot number input</li>
+<li>Expiry date picker</li>
+<li>Quantity allocation</li>
+<li>Multiple lots per item</li>
+</ul>
+<hr>
+<h2 id="common-dropdown-fields">Common Dropdown Fields</h2>
+<h3 id="department-dropdown">Department Dropdown</h3>
+<p><strong>Options:</strong> From centralized mock data<br><strong>Used in:</strong> Most forms</p>
+<h3 id="location-dropdown">Location Dropdown</h3>
+<p><strong>Options:</strong> Filtered by user permissions<br><strong>Hierarchy:</strong> Building &gt; Floor &gt; Room &gt; Storage<br><strong>Used in:</strong> All inventory transactions</p>
+<h3 id="reason-dropdown-adjustments">Reason Dropdown (Adjustments)</h3>
+<p><strong>Options:</strong></p>
+<ul>
+<li>Physical count variance</li>
+<li>Damage</li>
+<li>Theft</li>
+<li>Expiry</li>
+<li>Found stock</li>
+<li>Transfer</li>
+<li>Production</li>
+<li>Quality control</li>
+<li>System correction</li>
+<li>Other (with notes field)</li>
+</ul>
+<h3 id="status-filters">Status Filters</h3>
+<p><strong>Common statuses across modules:</strong></p>
+<ul>
+<li>Draft</li>
+<li>Pending</li>
+<li>In Progress</li>
+<li>Completed</li>
+<li>Posted</li>
+<li>Cancelled</li>
+</ul>
+<hr>
+<h2 id="common-actions">Common Actions</h2>
+<h3 id="save-as-draft">Save as Draft</h3>
+<ul>
+<li>Saves form data</li>
+<li>Does not update inventory</li>
+<li>Can be edited later</li>
+<li>No journal entry created</li>
+</ul>
+<h3 id="post-submit">Post / Submit</h3>
+<ul>
+<li>Finalizes transaction</li>
+<li>Updates inventory levels</li>
+<li>Generates journal entry</li>
+<li>Locks transaction</li>
+<li>Sends notifications</li>
+</ul>
+<h3 id="cancel">Cancel</h3>
+<ul>
+<li>Discards changes</li>
+<li>Confirms with user</li>
+<li>Returns to list view</li>
+</ul>
+<h3 id="export">Export</h3>
+<ul>
+<li>Generates file in selected format</li>
+<li>Downloads to user device</li>
+<li>Options: Excel, PDF, CSV</li>
+</ul>
+<h3 id="print">Print</h3>
+<ul>
+<li>Opens print dialog</li>
+<li>Formatted for paper</li>
+<li>Includes company header/footer</li>
+</ul>
+<hr>
+<h2 id="validation-rules">Validation Rules</h2>
+<h3 id="common-validations">Common Validations</h3>
+<ul>
+<li>Required fields marked with *</li>
+<li>Date validations (no future dates for receipts)</li>
+<li>Quantity &gt; 0</li>
+<li>Cost &gt;= 0</li>
+<li>Location permissions check</li>
+<li>Batch/lot required if item is batch-tracked</li>
+<li>Expiry date required for perishables</li>
+</ul>
+<h3 id="permissions">Permissions</h3>
+<ul>
+<li>View: Can see data</li>
+<li>Create: Can create new records</li>
+<li>Edit: Can modify drafts</li>
+<li>Post: Can finalize transactions</li>
+<li>Delete: Can remove drafts</li>
+<li>Void: Can cancel posted transactions</li>
+</ul>
+<hr>
+<h2 id="screen-responsiveness">Screen Responsiveness</h2>
+<h3 id="breakpoints">Breakpoints</h3>
+<ul>
+<li>Mobile: &lt; 640px</li>
+<li>Tablet: 640px - 1024px</li>
+<li>Desktop: &gt; 1024px</li>
+</ul>
+<h3 id="mobile-adaptations">Mobile Adaptations</h3>
+<ul>
+<li>Tables convert to cards</li>
+<li>Multi-column grids become single column</li>
+<li>Filters collapse to dropdown</li>
+<li>Actions move to slide-out menu</li>
+<li>Charts resize responsively</li>
+</ul>
+<h3 id="tablet-adaptations">Tablet Adaptations</h3>
+<ul>
+<li>2-column grids</li>
+<li>Horizontal scrolling tables</li>
+<li>Bottom sheet for filters</li>
+<li>Collapsible sidebars</li>
+</ul>
+<hr>
+<h2 id="error-states">Error States</h2>
+<h3 id="common-error-patterns">Common Error Patterns</h3>
+<ul>
+<li>Empty state with illustration</li>
+<li>Error message with retry button</li>
+<li>Validation errors inline</li>
+<li>Toast notifications for actions</li>
+<li>Modal confirmations for destructive actions</li>
+</ul>
+<h3 id="empty-states">Empty States</h3>
+<ul>
+<li>&quot;No records found&quot;</li>
+<li>&quot;Start by creating your first...&quot;</li>
+<li>Helpful tips/documentation links</li>
+<li>Create new button prominent</li>
+</ul>
+<hr>
+<p>This comprehensive specification covers all major pages, components, modals, flows, and features of the Inventory Management module. Each section can be used as a reference for development, testing, or documentation purposes.</p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#inventory-management-pages-and-components-specification" class="level-1">Inventory Management - Pages and Components Specification</a>
+<a href="#table-of-contents" class="level-2">Table of Contents</a>
+<a href="#1-dashboard" class="level-2">1. Dashboard</a>
+<a href="#purpose" class="level-3">Purpose</a>
+<a href="#components" class="level-3">Components</a>
+<a href="#widgets" class="level-3">Widgets</a>
+<a href="#actions" class="level-3">Actions</a>
+<a href="#page-flow" class="level-3">Page Flow</a>
+<a href="#2-stock-overview" class="level-2">2. Stock Overview</a>
+<a href="#purpose" class="level-3">Purpose</a>
+<a href="#layout-sections" class="level-3">Layout Sections</a>
+<a href="#dropdowns-and-filters" class="level-3">Dropdowns and Filters</a>
+<a href="#actions" class="level-3">Actions</a>
+<a href="#data-types" class="level-3">Data Types</a>
+<a href="#page-flow" class="level-3">Page Flow</a>
+<a href="#21-inventory-balance" class="level-2">2.1 Inventory Balance</a>
+<a href="#purpose" class="level-3">Purpose</a>
+<a href="#components" class="level-3">Components</a>
+<a href="#data-types" class="level-3">Data Types</a>
+<a href="#actions" class="level-3">Actions</a>
+<a href="#22-stock-cards" class="level-2">2.2 Stock Cards</a>
+<a href="#purpose" class="level-3">Purpose</a>
+<a href="#components" class="level-3">Components</a>
+<a href="#actions" class="level-3">Actions</a>
+<a href="#23-stock-card-detail" class="level-2">2.3 Stock Card Detail</a>
+<a href="#purpose" class="level-3">Purpose</a>
+<a href="#sections" class="level-3">Sections</a>
+<a href="#quick-filters" class="level-3">Quick Filters</a>
+<a href="#actions" class="level-3">Actions</a>
+<a href="#page-flow" class="level-3">Page Flow</a>
+<a href="#24-slow-moving-items" class="level-2">2.4 Slow Moving Items</a>
+<a href="#purpose" class="level-3">Purpose</a>
+<a href="#components" class="level-3">Components</a>
+<a href="#features" class="level-3">Features</a>
+<a href="#25-inventory-aging" class="level-2">2.5 Inventory Aging</a>
+<a href="#purpose" class="level-3">Purpose</a>
+<a href="#components" class="level-3">Components</a>
+<a href="#actions" class="level-3">Actions</a>
+<a href="#3-stock-in" class="level-2">3. Stock In</a>
+<a href="#purpose" class="level-3">Purpose</a>
+<a href="#components" class="level-3">Components</a>
+<a href="#stock-in-journal-entry" class="level-3">Stock In Journal Entry</a>
+<a href="#actions" class="level-3">Actions</a>
+<a href="#page-flow" class="level-3">Page Flow</a>
+<a href="#4-inventory-adjustments" class="level-2">4. Inventory Adjustments</a>
+<a href="#purpose" class="level-3">Purpose</a>
+<a href="#components" class="level-3">Components</a>
+<a href="#actions" class="level-3">Actions</a>
+<a href="#adjustment-flow" class="level-3">Adjustment Flow</a>
+<a href="#journal-entry-auto-generation" class="level-3">Journal Entry Auto-Generation</a>
+<a href="#5-physical-count" class="level-2">5. Physical Count</a>
+<a href="#purpose" class="level-3">Purpose</a>
+<a href="#51-physical-count-wizard" class="level-3">5.1 Physical Count Wizard</a>
+<a href="#52-active-count" class="level-3">5.2 Active Count</a>
+<a href="#53-physical-count-dashboard" class="level-3">5.3 Physical Count Dashboard</a>
+<a href="#physical-count-flow" class="level-3">Physical Count Flow</a>
+<a href="#6-spot-check" class="level-2">6. Spot Check</a>
+<a href="#purpose" class="level-3">Purpose</a>
+<a href="#61-spot-check-main-page" class="level-3">6.1 Spot Check Main Page</a>
+<a href="#62-new-spot-check" class="level-3">6.2 New Spot Check</a>
+<a href="#63-active-spot-check" class="level-3">6.3 Active Spot Check</a>
+<a href="#64-completed-spot-checks" class="level-3">6.4 Completed Spot Checks</a>
+<a href="#65-spot-check-dashboard" class="level-3">6.5 Spot Check Dashboard</a>
+<a href="#spot-check-flow" class="level-3">Spot Check Flow</a>
+<a href="#7-fractional-inventory" class="level-2">7. Fractional Inventory</a>
+<a href="#purpose" class="level-3">Purpose</a>
+<a href="#layout" class="level-3">Layout</a>
+<a href="#71-inventory-dashboard-tab" class="level-3">7.1 Inventory Dashboard Tab</a>
+<a href="#72-conversion-operations-modal" class="level-3">7.2 Conversion Operations Modal</a>
+<a href="#73-conversion-tracking-tab" class="level-3">7.3 Conversion Tracking Tab</a>
+<a href="#data-types" class="level-3">Data Types</a>
+<a href="#fractional-inventory-flow" class="level-3">Fractional Inventory Flow</a>
+<a href="#8-period-end" class="level-2">8. Period End</a>
+<a href="#purpose" class="level-3">Purpose</a>
+<a href="#components" class="level-3">Components</a>
+<a href="#81-period-end-detail" class="level-3">8.1 Period End Detail</a>
+<a href="#period-end-flow" class="level-3">Period End Flow</a>
+<a href="#9-physical-count-management" class="level-2">9. Physical Count Management</a>
+<a href="#purpose" class="level-3">Purpose</a>
+<a href="#components" class="level-3">Components</a>
+<a href="#count-progress-tracking" class="level-3">Count Progress Tracking</a>
+<a href="#10-common-components" class="level-2">10. Common Components</a>
+<a href="#101-grouped-table" class="level-3">10.1 Grouped Table</a>
+<a href="#102-export-button" class="level-3">10.2 Export Button</a>
+<a href="#103-step-indicator" class="level-3">10.3 Step Indicator</a>
+<a href="#104-count-detail-form" class="level-3">10.4 Count Detail Form</a>
+<a href="#105-count-list-item" class="level-3">10.5 Count List Item</a>
+<a href="#106-count-detail-card" class="level-3">10.6 Count Detail Card</a>
+<a href="#107-stock-in-journal-entry" class="level-3">10.7 Stock In Journal Entry</a>
+<a href="#modal-components" class="level-2">Modal Components</a>
+<a href="#location-selection-modal" class="level-3">Location Selection Modal</a>
+<a href="#item-lookup-modal" class="level-3">Item Lookup Modal</a>
+<a href="#lot-entry-modal" class="level-3">Lot Entry Modal</a>
+<a href="#common-dropdown-fields" class="level-2">Common Dropdown Fields</a>
+<a href="#department-dropdown" class="level-3">Department Dropdown</a>
+<a href="#location-dropdown" class="level-3">Location Dropdown</a>
+<a href="#reason-dropdown-adjustments" class="level-3">Reason Dropdown (Adjustments)</a>
+<a href="#status-filters" class="level-3">Status Filters</a>
+<a href="#common-actions" class="level-2">Common Actions</a>
+<a href="#save-as-draft" class="level-3">Save as Draft</a>
+<a href="#post-submit" class="level-3">Post / Submit</a>
+<a href="#cancel" class="level-3">Cancel</a>
+<a href="#export" class="level-3">Export</a>
+<a href="#print" class="level-3">Print</a>
+<a href="#validation-rules" class="level-2">Validation Rules</a>
+<a href="#common-validations" class="level-3">Common Validations</a>
+<a href="#permissions" class="level-3">Permissions</a>
+<a href="#screen-responsiveness" class="level-2">Screen Responsiveness</a>
+<a href="#breakpoints" class="level-3">Breakpoints</a>
+<a href="#mobile-adaptations" class="level-3">Mobile Adaptations</a>
+<a href="#tablet-adaptations" class="level-3">Tablet Adaptations</a>
+<a href="#error-states" class="level-2">Error States</a>
+<a href="#common-error-patterns" class="level-3">Common Error Patterns</a>
+<a href="#empty-states" class="level-3">Empty States</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Search Modal -->
+    <div class="search-modal" id="searchModal">
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchModalInput" placeholder="Search documentation..." autofocus>
+                    <button class="search-close-btn" id="searchCloseBtn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="search-results" id="searchResults">
+                <div class="search-empty">
+                    <i class="fas fa-search"></i>
+                    <p>Start typing to search...</p>
+                </div>
+            </div>
+            <div class="search-footer">
+                <div class="search-shortcuts">
+                    <kbd>↑↓</kbd> Navigate
+                    <kbd>Enter</kbd> Select
+                    <kbd>Esc</kbd> Close
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Search functionality
+        let searchIndex = [];
+        let selectedResultIndex = -1;
+
+        // Load search index
+        fetch('../../../search-index.json')
+            .then(res => res.json())
+            .then(data => {
+                searchIndex = data;
+                console.log('✓ Search index loaded:', searchIndex.length, 'entries');
+            })
+            .catch(err => console.error('❌ Failed to load search index:', err));
+
+        // Open search modal
+        function openSearchModal() {
+            console.log('🔍 Opening search modal...');
+            document.getElementById('searchModal').classList.add('active');
+            document.getElementById('searchModalInput').focus();
+            selectedResultIndex = -1;
+        }
+
+        // Close search modal
+        function closeSearchModal() {
+            document.getElementById('searchModal').classList.remove('active');
+            document.getElementById('searchModalInput').value = '';
+            document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-search"></i><p>Start typing to search...</p></div>';
+            selectedResultIndex = -1;
+        }
+
+        // Search function
+        function performSearch(query) {
+            console.log('🔎 Searching for:', query);
+
+            if (!query || query.length < 2) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-search"></i><p>Start typing to search...</p></div>';
+                return;
+            }
+
+            if (searchIndex.length === 0) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-exclamation-circle"></i><p>Search index not loaded</p></div>';
+                return;
+            }
+
+            const queryLower = query.toLowerCase();
+            const queryWords = queryLower.split(/s+/).filter(word => word.length > 1);
+
+            // Search and score results
+            const results = searchIndex
+                .map(entry => {
+                    let score = 0;
+
+                    // Title match (highest weight)
+                    if (entry.title.toLowerCase().includes(queryLower)) {
+                        score += 100;
+                    }
+                    queryWords.forEach(word => {
+                        if (entry.title.toLowerCase().includes(word)) score += 50;
+                    });
+
+                    // Content match
+                    if (entry.content.toLowerCase().includes(queryLower)) {
+                        score += 10;
+                    }
+                    queryWords.forEach(word => {
+                        if (entry.content.toLowerCase().includes(word)) score += 5;
+                    });
+
+                    return { ...entry, score };
+                })
+                .filter(result => result.score > 0)
+                .sort((a, b) => b.score - a.score)
+                .slice(0, 10); // Top 10 results
+
+            console.log('📊 Found', results.length, 'results');
+
+            // Display results
+            if (results.length === 0) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-times-circle"></i><p>No results found</p></div>';
+                return;
+            }
+
+            const resultsHtml = results.map((result, index) => {
+                const urlPath = '../../../' + result.url;
+                return '<a href="' + urlPath + '" class="search-result ' + (index === 0 ? 'selected' : '') + '" data-index="' + index + '">' +
+                    '<div class="result-title">' + result.title + '</div>' +
+                    '<div class="result-content">' + highlightMatch(result.content, query) + '</div>' +
+                    '</a>';
+            }).join('');
+
+            document.getElementById('searchResults').innerHTML = resultsHtml;
+            selectedResultIndex = 0;
+        }
+
+        // Highlight matching text
+        function highlightMatch(text, query) {
+            if (!text) return '';
+            const queryWords = query.split(/\s+/).join('|');
+            const regex = new RegExp('(' + queryWords + ')', 'gi');
+            return text.substring(0, 150).replace(regex, '<mark>$1</mark>') + '...';
+        }
+
+        // Navigate results with keyboard
+        function navigateResults(direction) {
+            const results = document.querySelectorAll('.search-result');
+            if (results.length === 0) return;
+
+            results[selectedResultIndex]?.classList.remove('selected');
+
+            if (direction === 'down') {
+                selectedResultIndex = (selectedResultIndex + 1) % results.length;
+            } else if (direction === 'up') {
+                selectedResultIndex = (selectedResultIndex - 1 + results.length) % results.length;
+            }
+
+            results[selectedResultIndex]?.classList.add('selected');
+            results[selectedResultIndex]?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+
+        // Select result
+        function selectResult() {
+            const selected = document.querySelector('.search-result.selected');
+            if (selected) {
+                window.location.href = selected.href;
+            }
+        }
+
+        // Event listeners
+        document.getElementById('headerSearchBtn')?.addEventListener('click', openSearchModal);
+        document.getElementById('searchCloseBtn')?.addEventListener('click', closeSearchModal);
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Ctrl+K or Cmd+K to open search
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                openSearchModal();
+            }
+
+            // Esc to close search
+            if (e.key === 'Escape' && document.getElementById('searchModal').classList.contains('active')) {
+                closeSearchModal();
+            }
+
+            // Navigate results
+            if (document.getElementById('searchModal').classList.contains('active')) {
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    navigateResults('down');
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    navigateResults('up');
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    selectResult();
+                }
+            }
+        });
+
+        // Search input
+        document.getElementById('searchModalInput')?.addEventListener('input', (e) => {
+            performSearch(e.target.value);
+        });
+
+        // Click outside to close
+        document.getElementById('searchModal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'searchModal') {
+                closeSearchModal();
+            }
+        });
+    </script>
+</body>
+</html>

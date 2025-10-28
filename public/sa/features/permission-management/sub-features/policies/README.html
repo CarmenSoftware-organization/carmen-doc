@@ -1,0 +1,2198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Policies Management (ABAC) - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: #f8fafc;
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 15% 70% 15%;
+            gap: 0;
+            width: 100%;
+            padding: 1rem 0 2rem 0;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 1rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 2rem);
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-right: 1px solid var(--border-color);
+            padding-right: 2rem;
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 0.75rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+        .nav-subgroup {
+            margin: 0.5rem 0 0.5rem 0.5rem;
+        }
+        .nav-subgroup-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-subgroup-header:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .nav-subitems {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+            margin-left: 0.75rem;
+            margin-top: 0.25rem;
+        }
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 1rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 2rem);
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-left: 1px solid var(--border-color);
+            padding-left: 2rem;
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header - Modern Compact Design */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 52px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+        }
+        .header-content {
+            height: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--foreground);
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+        .logo:hover {
+            opacity: 0.8;
+        }
+        .logo i {
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+        .header-search-container {
+            display: flex;
+            align-items: center;
+        }
+        .header-search-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.375rem 0.75rem;
+            background: var(--secondary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.8125rem;
+            color: var(--muted-foreground);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            min-width: 180px;
+            flex-shrink: 0;
+        }
+        .header-search-btn:hover {
+            background: var(--background);
+            border-color: var(--primary);
+        }
+        .header-search-btn i {
+            color: var(--muted-foreground);
+            font-size: 0.875rem;
+        }
+        .header-search-btn span {
+            flex: 1;
+            text-align: left;
+        }
+        .header-search-btn kbd {
+            padding: 0.125rem 0.375rem;
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.6875rem;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--muted-foreground);
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        .back-to-home {
+            display: none; /* Hidden - navigation is sufficient */
+        }
+
+        /* Responsive Header */
+        @media (max-width: 768px) {
+            .header-search-btn {
+                min-width: auto;
+            }
+            .header-search-btn span {
+                display: none;
+            }
+        }
+
+        /* Search Modal */
+        .search-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            padding: 2rem;
+        }
+        .search-modal.active {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 10vh;
+        }
+        .search-modal-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 640px;
+            max-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            animation: slideDown 0.2s ease-out;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .search-modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .search-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .search-input-wrapper i {
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+        }
+        .search-input-wrapper input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 1.125rem;
+            color: var(--text-primary);
+        }
+        .search-close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .search-close-btn:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .search-results {
+            overflow-y: auto;
+            max-height: calc(70vh - 150px);
+        }
+        .search-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 2rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+        .search-empty i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        .search-result {
+            display: block;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+        .search-result:hover,
+        .search-result.selected {
+            background: var(--bg-secondary);
+        }
+        .search-result.selected {
+            border-left: 3px solid var(--primary-color);
+        }
+        .result-header {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .result-category {
+            font-size: 0.75rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .result-title {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        .result-badge {
+            display: inline-block;
+            padding: 0.125rem 0.5rem;
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-radius: 4px;
+            font-size: 0.6875rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        .result-content {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        .result-content mark {
+            background: rgba(79, 70, 229, 0.2);
+            color: var(--primary-color);
+            font-weight: 600;
+            padding: 0.125rem 0.25rem;
+            border-radius: 2px;
+        }
+        .search-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            border-bottom-left-radius: var(--border-radius-xl);
+            border-bottom-right-radius: var(--border-radius-xl);
+        }
+        .search-shortcuts {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        .search-shortcuts kbd {
+            padding: 0.25rem 0.5rem;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        /* Content Area */
+        .doc-content {
+            padding: 0 2rem;
+            width: 100%;
+            max-width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 0.9375rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Image Styles */
+        .doc-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 1.5rem auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Limit screenshot width to 80% for better readability */
+        .doc-content p > img {
+            max-width: 80%;
+        }
+
+        /* Table Styles */
+        .doc-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.875rem;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .doc-content table thead {
+            background: #f8fafc;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .doc-content table th {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #0f172a;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        .doc-content table td {
+            padding: 0.75rem 1rem;
+            border-top: 1px solid #e2e8f0;
+            color: #334155;
+        }
+
+        .doc-content table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        /* Table responsive wrapper */
+        .doc-content table {
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .doc-content table thead,
+        .doc-content table tbody,
+        .doc-content table tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 18% 64% 18%;
+                gap: 0;
+                padding: 1rem 0 1.5rem 0;
+            }
+            .doc-nav {
+                padding-right: 1.5rem;
+            }
+            .doc-toc {
+                padding-left: 1.5rem;
+            }
+            .doc-content {
+                padding: 0 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 0;
+                padding: 1rem 0 1.5rem 0;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 0 2rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                gap: 0;
+                padding: 0.5rem 0 1rem 0;
+            }
+            .doc-nav {
+                display: none;
+                border-right: none;
+            }
+            .doc-content {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="../../../../../index.html" class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </a>
+            <div class="doc-header-actions">
+                <div class="header-search-container">
+                    <button class="header-search-btn" id="headerSearchBtn">
+                        <i class="fas fa-search"></i>
+                        <span>Search documentation...</span>
+                        <kbd>Ctrl+K</kbd>
+                    </button>
+                </div>
+                <a href="../../../../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../../../01-overview/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Index</span>
+                    </a>
+                    <a href="../../../../../01-overview/business-value.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value & ROI</span>
+                    </a>
+                    <a href="../../../../../01-overview/tech-stack.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Technology Stack</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../../../02-architecture/system-architecture.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-database"></i>
+                    <span>Data Model</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../../../03-data-model/data-dictionary.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Data Dictionary</span>
+                    </a>
+                    <a href="../../../../../03-data-model/schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-th-large"></i>
+                    <span>Application Modules</span>
+                </div>
+                <div class="nav-items">
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Procurement</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../../../04-modules/procurement/purchase-requests/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Purchase Requests</span>
+                            </a>
+                            <a href="../../../../../04-modules/procurement/purchase-orders/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Purchase Orders</span>
+                            </a>
+                            <a href="../../../../../04-modules/procurement/goods-received-notes/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Goods Received Notes</span>
+                            </a>
+                            <a href="../../../../../04-modules/procurement/credit-notes/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Credit Notes</span>
+                            </a>
+                            <a href="../../../../../04-modules/procurement/templates/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Templates</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-boxes"></i>
+                            <span>Inventory Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../../../04-modules/inventory/stock-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Stock Management</span>
+                            </a>
+                            <a href="../../../../../04-modules/inventory/physical-count/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Physical Count</span>
+                            </a>
+                            <a href="../../../../../04-modules/inventory/spot-check/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Spot Check</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span>Finance</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../../../04-modules/finance/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Finance Module</span>
+                            </a>
+                            <a href="../../../../../04-modules/finance/features/account-code-mapping/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Account Code Mapping</span>
+                            </a>
+                            <a href="../../../../../04-modules/finance/features/currency-and-rates/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Currency Management</span>
+                            </a>
+                            <a href="../../../../../04-modules/finance/features/departments/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Departments</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-handshake"></i>
+                            <span>Vendor Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../../../04-modules/vendor-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Management</span>
+                            </a>
+                            <a href="../../../../../04-modules/vendor-management/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Management Module</span>
+                            </a>
+                            <a href="../../../../../04-modules/vendor-management/MANAGE-VENDORS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Manage Vendors</span>
+                            </a>
+                            <a href="../../../../../04-modules/vendor-management/VENDOR-PORTAL.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Portal</span>
+                            </a>
+                            <a href="../../../../../04-modules/vendor-management/CAMPAIGNS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Campaigns</span>
+                            </a>
+                            <a href="../../../../../04-modules/vendor-management/PRICELISTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Pricelists</span>
+                            </a>
+                            <a href="../../../../../04-modules/vendor-management/TEMPLATES.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Templates</span>
+                            </a>
+                            <a href="../../../../../04-modules/vendor-management/sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Sitemap</span>
+                            </a>
+                            <a href="../../../../../04-modules/vendor-management/PAGES-AND-COMPONENTS-SPEC.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Pages & Components Spec</span>
+                            </a>
+                            <a href="../../../../../04-modules/vendor-management/SHARED-COMPONENTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Shared Components</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-box"></i>
+                            <span>Product Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../../../04-modules/product-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management</span>
+                            </a>
+                            <a href="../../../../../04-modules/product-management/product-management-specification.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management Specification</span>
+                            </a>
+                            <a href="../../../../../04-modules/product-management/product-management-sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management Sitemap</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-store"></i>
+                            <span>Store Operations</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../../../store-ops/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Operations</span>
+                            </a>
+                            <a href="../../../../../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Operations Module</span>
+                            </a>
+                            <a href="../../../../../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Requisitions</span>
+                            </a>
+                            <a href="../../../../../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Stock Replenishment</span>
+                            </a>
+                            <a href="../../../../../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Wastage Reporting</span>
+                            </a>
+                            <a href="../../../../../store-ops/SHARED-COMPONENTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Shared Components</span>
+                            </a>
+                            <a href="../../../../../store-ops/GLOSSARY.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Glossary</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-clipboard-list"></i>
+                            <span>Operational Planning</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../../../operational-planning/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Operational Planning</span>
+                            </a>
+                            <a href="../../../../../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Operational Planning Module</span>
+                            </a>
+                            <a href="../../../../../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Recipe Management</span>
+                            </a>
+                            <a href="../../../../../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Menu Engineering</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-cog"></i>
+                            <span>System Administration</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../../../sa/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>System Administration</span>
+                            </a>
+                            <a href="../../../../../sa/system-administration-sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>System Administration Sitemap</span>
+                            </a>
+                            <a href="../../../../../sa/features/permission-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Permission Management</span>
+                            </a>
+                            <a href="../../../../../sa/features/permission-management/specification.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Permission Specification</span>
+                            </a>
+                            <a href="../../../../../sa/features/location-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Location Management</span>
+                            </a>
+                            <a href="../../../../../sa/features/workflow/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Workflow</span>
+                            </a>
+                            <a href="../../../../../sa/features/pos-integration/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Reporting</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../../../04-modules/reporting/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Reporting & Analytics</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../../../dashboard/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard</span>
+                            </a>
+                            <a href="../../../../../dashboard/sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard Sitemap</span>
+                            </a>
+                            <a href="../../../../../dashboard/components/components-overview.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Components Overview</span>
+                            </a>
+                            <a href="../../../../../dashboard/api/api-specifications.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>API Specifications</span>
+                            </a>
+                            <a href="../../../../../dashboard/business-logic/dashboard-business-rules.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard Business Rules</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-industry"></i>
+                            <span>Production</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../../../04-modules/production/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Production</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-cash-register"></i>
+                            <span>POS Integration</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../../../pos-integration/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration</span>
+                            </a>
+                            <a href="../../../../../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration Module</span>
+                            </a>
+                            <a href="../../../../../pos-integration/MAPPING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Mapping</span>
+                            </a>
+                            <a href="../../../../../pos-integration/REPORTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Reports</span>
+                            </a>
+                            <a href="../../../../../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Transactions</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="policies-management-abac">Policies Management (ABAC)</h1>
+<blockquote>
+<p><strong>Feature:</strong> Permission Management &gt; Policies<br><strong>Pages:</strong> 7<br><strong>Status:</strong> ✅ Production Ready</p>
+</blockquote>
+<hr>
+<h2 id="overview">Overview</h2>
+<p>The Policies Management sub-feature provides an advanced Attribute-Based Access Control (ABAC) system for Carmen ERP. Unlike traditional role-based permissions, ABAC policies enable fine-grained access control based on user attributes, resource attributes, environmental context, and custom conditions.</p>
+<h3 id="key-features">Key Features</h3>
+<ol>
+<li><strong>Visual Policy Builder</strong> - Step-by-step wizard for creating complex policies</li>
+<li><strong>Simple Policy Creator</strong> - Quick creation for basic allow/deny rules</li>
+<li><strong>Policy Testing</strong> - Simulate policy evaluation with test scenarios</li>
+<li><strong>Priority-Based Evaluation</strong> - Deterministic policy resolution using priorities</li>
+<li><strong>Advanced Filtering</strong> - Filter by effect, status, resource type, priority, date</li>
+<li><strong>Policy Cloning</strong> - Duplicate existing policies for quick creation</li>
+</ol>
+<h3 id="abac-vs-rbac">ABAC vs RBAC</h3>
+<p><strong>Role-Based (RBAC)</strong>:</p>
+<ul>
+<li>Simple: User → Role → Permissions</li>
+<li>Static: Permissions fixed per role</li>
+<li>Coarse-grained: All-or-nothing access</li>
+</ul>
+<p><strong>Attribute-Based (ABAC)</strong>:</p>
+<ul>
+<li>Dynamic: User attributes + Resource attributes + Context → Decision</li>
+<li>Flexible: Conditions can consider time, location, department</li>
+<li>Fine-grained: Precise control (e.g., &quot;approve if amount &lt; $5000 AND department = &#39;procurement&#39;&quot;)</li>
+</ul>
+<hr>
+<h2 id="page-structure">Page Structure</h2>
+<h3 id="1-policy-list-page">1. Policy List Page</h3>
+<p><strong>Route:</strong> <code>/system-administration/permission-management/policies</code></p>
+<h4>Components:</h4>
+<ul>
+<li><strong>Header Section</strong>: Title, description, type toggle</li>
+<li><strong>Action Buttons</strong>: Simple Creator, Advanced Builder, Filters</li>
+<li><strong>Policy Type Toggle</strong>: Switch between RBAC and ABAC policies</li>
+<li><strong>Filters Panel</strong>: Advanced filtering interface</li>
+<li><strong>Policy List</strong>: Table view with sorting and pagination</li>
+</ul>
+<h4>Features:</h4>
+<ul>
+<li><strong>Policy Type Filter</strong>: Toggle between role-based and attribute-based policies</li>
+<li><strong>Search</strong>: Full-text search in policy name and description</li>
+<li><strong>Advanced Filters</strong>:<ul>
+<li>Effect (Permit, Deny, All)</li>
+<li>Status (Enabled, Disabled, All)</li>
+<li>Resource Types (multi-select)</li>
+<li>Priority Range (0-1000 slider)</li>
+<li>Created Date Range</li>
+<li>Categories (multi-select)</li>
+</ul>
+</li>
+<li><strong>Saved Filter Presets</strong>: Save and load common filter combinations</li>
+<li><strong>Bulk Actions</strong>: Enable/disable multiple policies</li>
+</ul>
+<h4>Policy List Columns:</h4>
+<ul>
+<li><strong>Name</strong>: Policy name with effect badge</li>
+<li><strong>Description</strong>: Brief description</li>
+<li><strong>Priority</strong>: Numeric priority (0-1000)</li>
+<li><strong>Effect</strong>: Permit/Deny badge</li>
+<li><strong>Status</strong>: Enabled/Disabled toggle</li>
+<li><strong>Resources</strong>: Resource types targeted</li>
+<li><strong>Created</strong>: Creation date</li>
+<li><strong>Actions</strong>: View, Edit, Test, Clone, Delete</li>
+</ul>
+<h4>User Actions:</h4>
+<ul>
+<li><strong>Create Policy</strong>: Opens simple creator or advanced builder</li>
+<li><strong>View Policy</strong>: Navigate to detail page</li>
+<li><strong>Edit Policy</strong>: Navigate to builder in edit mode</li>
+<li><strong>Test Policy</strong>: Open testing dialog</li>
+<li><strong>Clone Policy</strong>: Duplicate with modifications</li>
+<li><strong>Toggle Status</strong>: Enable/disable policy</li>
+<li><strong>Delete Policy</strong>: Remove policy (with confirmation)</li>
+</ul>
+<h3 id="2-simple-policy-creator">2. Simple Policy Creator</h3>
+<p><strong>Route:</strong> <code>/system-administration/permission-management/policies/simple</code></p>
+<h4>Purpose</h4>
+<p>Quick creation of basic allow/deny policies without complex conditions.</p>
+<h4>Form Fields:</h4>
+<ul>
+<li><p><strong>Basic Information</strong></p>
+<ul>
+<li>Policy Name (required)</li>
+<li>Description (optional)</li>
+<li>Effect (Permit/Deny, required)</li>
+<li>Priority (0-1000, default: 500)</li>
+</ul>
+</li>
+<li><p><strong>Who</strong> (Subject)</p>
+<ul>
+<li>All Users</li>
+<li>Specific Roles (multi-select)</li>
+<li>Specific Users (multi-select)</li>
+<li>Department (select)</li>
+</ul>
+</li>
+<li><p><strong>What</strong> (Resource)</p>
+<ul>
+<li>Resource Type (select: Purchase Request, Order, Inventory, etc.)</li>
+<li>All Resources of Type</li>
+<li>Specific Resources (ID pattern)</li>
+</ul>
+</li>
+<li><p><strong>When</strong> (Context) - Optional</p>
+<ul>
+<li>Time-based (business hours, specific dates)</li>
+<li>Location-based (specific locations)</li>
+<li>Custom attributes</li>
+</ul>
+</li>
+<li><p><strong>Actions</strong></p>
+<ul>
+<li>Select actions (read, write, approve, delete, etc.)</li>
+<li>All actions on resource</li>
+</ul>
+</li>
+</ul>
+<h4>Workflow:</h4>
+<ol>
+<li>Enter policy name and effect</li>
+<li>Select who the policy applies to</li>
+<li>Select what resources are affected</li>
+<li>Choose which actions are permitted/denied</li>
+<li>Add optional time/location conditions</li>
+<li>Review generated policy</li>
+<li>Save and enable</li>
+</ol>
+<h4>Generated Policy:</h4>
+<p>The simple creator generates a standard ABAC policy that can be further customized in the advanced builder.</p>
+<h3 id="3-advanced-policy-builder">3. Advanced Policy Builder</h3>
+<p><strong>Route:</strong> <code>/system-administration/permission-management/policies/builder</code></p>
+<h4>Purpose</h4>
+<p>Full-featured policy creation wizard with support for complex conditions, multiple resources, and advanced attribute matching.</p>
+<h4>Wizard Steps:</h4>
+<p><strong>Step 1: Policy Information</strong></p>
+<ul>
+<li>Name (required, unique)</li>
+<li>Description (optional)</li>
+<li>Category (select from predefined or custom)</li>
+<li>Tags (comma-separated)</li>
+<li>Priority (0-1000)</li>
+<li>Effect (Permit/Deny)</li>
+</ul>
+<p><strong>Step 2: Resource Selection</strong></p>
+<ul>
+<li>Resource Types (multi-select with search)</li>
+<li>Resource Filters:<ul>
+<li>Specific IDs (comma-separated)</li>
+<li>ID Patterns (wildcards: <code>purchase-*</code>, <code>order-2024-*</code>)</li>
+<li>Attribute Filters (JSON-based)</li>
+</ul>
+</li>
+<li>Resource Preview (shows matching resources)</li>
+</ul>
+<p><strong>Step 3: Action Selection</strong></p>
+<ul>
+<li>Browse action categories</li>
+<li>Select specific actions</li>
+<li>Define action scope (own, department, all)</li>
+<li>Custom action patterns</li>
+</ul>
+<p><strong>Step 4: Subject Definition</strong></p>
+<ul>
+<li>User Attributes:<ul>
+<li>Roles (multi-select)</li>
+<li>Departments (multi-select)</li>
+<li>Locations (multi-select)</li>
+<li>Custom user attributes</li>
+</ul>
+</li>
+<li>Attribute Operators (equals, in, matches, exists)</li>
+</ul>
+<p><strong>Step 5: Conditions (Optional)</strong></p>
+<ul>
+<li>Time Conditions:<ul>
+<li>Business hours only</li>
+<li>Specific date ranges</li>
+<li>Day of week restrictions</li>
+</ul>
+</li>
+<li>Location Conditions:<ul>
+<li>Specific locations</li>
+<li>Location attributes</li>
+</ul>
+</li>
+<li>Resource Conditions:<ul>
+<li>Amount thresholds</li>
+<li>Status requirements</li>
+<li>Ownership checks</li>
+</ul>
+</li>
+<li>Context Conditions:<ul>
+<li>Request source (web, mobile, API)</li>
+<li>IP address restrictions</li>
+<li>Custom context attributes</li>
+</ul>
+</li>
+</ul>
+<p><strong>Step 6: Review &amp; Test</strong></p>
+<ul>
+<li>Policy Summary (all settings)</li>
+<li>Visual Policy Flow Diagram</li>
+<li>Test Scenarios:<ul>
+<li>Define test users</li>
+<li>Define test resources</li>
+<li>Define test actions</li>
+<li>View evaluation results</li>
+</ul>
+</li>
+<li>Policy JSON Preview</li>
+<li>Validation Results</li>
+</ul>
+<p><strong>Step 7: Save &amp; Activate</strong></p>
+<ul>
+<li>Enable immediately or save as draft</li>
+<li>Schedule activation (future date)</li>
+<li>Set expiration date (optional)</li>
+<li>Add activation notes</li>
+</ul>
+<h4>Features:</h4>
+<ul>
+<li><strong>Drag &amp; Drop</strong>: Reorder conditions</li>
+<li><strong>Copy/Paste</strong>: Duplicate condition groups</li>
+<li><strong>Templates</strong>: Pre-built policy templates</li>
+<li><strong>Import/Export</strong>: JSON policy import/export</li>
+<li><strong>Version History</strong>: Track policy changes</li>
+<li><strong>Conflict Detection</strong>: Warn about conflicting policies</li>
+</ul>
+<h3 id="4-policy-demo-page">4. Policy Demo Page</h3>
+<p><strong>Route:</strong> <code>/system-administration/permission-management/policies/demo</code></p>
+<h4>Purpose</h4>
+<p>Interactive demonstration of policy evaluation with pre-configured examples.</p>
+<h4>Sections:</h4>
+<ul>
+<li><strong>Example Policies</strong>: Pre-configured policies showing common patterns</li>
+<li><strong>Interactive Testing</strong>: Live policy evaluation simulator</li>
+<li><strong>Use Case Scenarios</strong>: Real-world examples with explanations</li>
+<li><strong>Tutorial</strong>: Step-by-step guide to ABAC concepts</li>
+</ul>
+<h4>Demo Scenarios:</h4>
+<ol>
+<li><p><strong>Department-Based Access</strong></p>
+<ul>
+<li>&quot;Allow procurement staff to create purchase requests&quot;</li>
+<li>Shows role + department condition</li>
+</ul>
+</li>
+<li><p><strong>Amount-Based Approval</strong></p>
+<ul>
+<li>&quot;Allow department managers to approve orders under $5000&quot;</li>
+<li>Shows role + amount threshold condition</li>
+</ul>
+</li>
+<li><p><strong>Time-Based Access</strong></p>
+<ul>
+<li>&quot;Allow inventory adjustments only during business hours&quot;</li>
+<li>Shows time-based condition</li>
+</ul>
+</li>
+<li><p><strong>Location-Based Access</strong></p>
+<ul>
+<li>&quot;Allow stock transfers only within assigned locations&quot;</li>
+<li>Shows location attribute condition</li>
+</ul>
+</li>
+<li><p><strong>Complex Multi-Condition</strong></p>
+<ul>
+<li>&quot;Allow senior staff to approve high-value orders outside business hours&quot;</li>
+<li>Shows multiple conditions combined</li>
+</ul>
+</li>
+</ol>
+<h4>Interactive Features:</h4>
+<ul>
+<li>Modify demo policies</li>
+<li>Add custom test cases</li>
+<li>View evaluation logs</li>
+<li>Export demo policies for use</li>
+</ul>
+<h3 id="5-policy-detail-page">5. Policy Detail Page</h3>
+<p><strong>Route:</strong> <code>/system-administration/permission-management/policies/[id]</code></p>
+<h4>Sections:</h4>
+<p><strong>Policy Overview</strong></p>
+<ul>
+<li>Name, description, effect badge</li>
+<li>Priority level indicator</li>
+<li>Status toggle (enabled/disabled)</li>
+<li>Created/updated metadata</li>
+<li>Edit button</li>
+</ul>
+<p><strong>Statistics Cards</strong></p>
+<ul>
+<li>Evaluation Count (total evaluations)</li>
+<li>Permit Rate (% of permit outcomes)</li>
+<li>Last Evaluated (timestamp)</li>
+<li>Affected Resources (count)</li>
+</ul>
+<p><strong>Policy Configuration</strong></p>
+<ul>
+<li>Resources Targeted<ul>
+<li>Resource types list</li>
+<li>Resource patterns</li>
+<li>Attribute filters</li>
+</ul>
+</li>
+<li>Actions Permitted/Denied<ul>
+<li>Action list with scopes</li>
+</ul>
+</li>
+<li>Conditions Applied<ul>
+<li>User conditions</li>
+<li>Resource conditions</li>
+<li>Time conditions</li>
+<li>Context conditions</li>
+</ul>
+</li>
+</ul>
+<p><strong>Evaluation History</strong></p>
+<ul>
+<li>Recent evaluations table</li>
+<li>User, resource, action, outcome</li>
+<li>Condition results breakdown</li>
+<li>Timestamp and duration</li>
+<li>Filter by outcome (permit/deny)</li>
+</ul>
+<p><strong>Impact Analysis</strong></p>
+<ul>
+<li>Affected Users (count + list)</li>
+<li>Affected Resources (count + list)</li>
+<li>Conflicting Policies (warnings)</li>
+<li>Policy Dependencies</li>
+</ul>
+<p><strong>Activity Timeline</strong></p>
+<ul>
+<li>Policy changes (created, updated, enabled/disabled)</li>
+<li>Evaluation statistics over time</li>
+<li>Notable events (e.g., high denial rate)</li>
+</ul>
+<h4>User Actions:</h4>
+<ul>
+<li>Edit policy (navigate to builder)</li>
+<li>Test policy (open test dialog)</li>
+<li>Clone policy</li>
+<li>Enable/disable toggle</li>
+<li>Delete policy</li>
+<li>View raw JSON</li>
+<li>Export policy</li>
+</ul>
+<h3 id="6-policy-edit-page">6. Policy Edit Page</h3>
+<p><strong>Route:</strong> <code>/system-administration/permission-management/policies/[id]/edit</code></p>
+<h4>Features:</h4>
+<ul>
+<li>Same wizard interface as advanced builder</li>
+<li>Pre-populated with existing policy data</li>
+<li>Change tracking (highlights modified fields)</li>
+<li>Version comparison (before/after diff)</li>
+<li>Rollback option</li>
+<li>Test before saving</li>
+</ul>
+<h4>Edit Modes:</h4>
+<ul>
+<li><strong>Full Edit</strong>: Modify all policy aspects</li>
+<li><strong>Quick Edit</strong>: Modify priority, status, or description only</li>
+<li><strong>Condition Edit</strong>: Modify only conditions without changing targeting</li>
+</ul>
+<h4>Validation:</h4>
+<ul>
+<li>Name uniqueness check (excluding self)</li>
+<li>Priority conflict detection</li>
+<li>Condition syntax validation</li>
+<li>Impact analysis before save</li>
+<li>Test evaluation with sample data</li>
+</ul>
+<h3 id="7-policy-testing-interface">7. Policy Testing Interface</h3>
+<p><strong>Accessible from</strong>: Policy list actions, policy detail page, builder wizard</p>
+<h4>Testing Workflow:</h4>
+<p><strong>Step 1: Define Test Context</strong></p>
+<ul>
+<li><p><strong>User Context</strong>:</p>
+<ul>
+<li>Select user or define attributes manually</li>
+<li>Role, department, location</li>
+<li>Custom user attributes</li>
+</ul>
+</li>
+<li><p><strong>Resource Context</strong>:</p>
+<ul>
+<li>Select resource or define attributes</li>
+<li>Resource type, ID, status</li>
+<li>Custom resource attributes</li>
+</ul>
+</li>
+<li><p><strong>Action Context</strong>:</p>
+<ul>
+<li>Action name (e.g., &quot;approve&quot;, &quot;delete&quot;)</li>
+<li>Action scope</li>
+</ul>
+</li>
+<li><p><strong>Environment Context</strong>:</p>
+<ul>
+<li>Current time (or custom time)</li>
+<li>Location</li>
+<li>Request source</li>
+<li>IP address</li>
+</ul>
+</li>
+</ul>
+<p><strong>Step 2: Run Evaluation</strong></p>
+<ul>
+<li>Click &quot;Test Policy&quot;</li>
+<li>View evaluation process step-by-step</li>
+<li>See which conditions matched/failed</li>
+</ul>
+<p><strong>Step 3: View Results</strong></p>
+<ul>
+<li><strong>Outcome</strong>: PERMIT or DENY with explanation</li>
+<li><strong>Evaluation Path</strong>: Which conditions were checked</li>
+<li><strong>Condition Results</strong>: Each condition&#39;s result with details</li>
+<li><strong>Evaluation Time</strong>: Performance metrics</li>
+<li><strong>Recommendation</strong>: Suggestions if result unexpected</li>
+</ul>
+<h4>Test Features:</h4>
+<ul>
+<li><strong>Batch Testing</strong>: Test multiple scenarios at once</li>
+<li><strong>Save Test Cases</strong>: Save common test scenarios</li>
+<li><strong>Compare Results</strong>: Test before/after policy changes</li>
+<li><strong>Export Results</strong>: Export test results to CSV</li>
+</ul>
+<hr>
+<h2 id="data-model">Data Model</h2>
+<pre><code class="language-typescript">interface Policy {
+  // Identity
+  id: string;
+  name: string;
+  description: string;
+
+  // Effect
+  effect: EffectType; // &#39;permit&#39; | &#39;deny&#39;
+  enabled: boolean;
+  priority: number; // 0-1000
+
+  // Targeting
+  resources: ResourceSelector[];
+  actions: ActionSelector[];
+  subjects?: SubjectSelector[];
+  conditions?: PolicyCondition[];
+
+  // Classification
+  category?: string;
+  tags?: string[];
+  version: number;
+
+  // Schedule
+  activeFrom?: Date;
+  activeUntil?: Date;
+
+  // Audit
+  createdBy: string;
+  createdAt: Date;
+  updatedBy: string;
+  updatedAt: Date;
+
+  // Statistics
+  evaluationCount: number;
+  permitCount: number;
+  denyCount: number;
+  lastEvaluatedAt?: Date;
+}
+
+interface ResourceSelector {
+  type: ResourceType;
+  id?: string;
+  pattern?: string; // Wildcard pattern
+  attributes?: AttributeMatcher[];
+}
+
+interface ActionSelector {
+  name: string; // &#39;read&#39;, &#39;write&#39;, &#39;approve&#39;, etc.
+  scope?: ActionScope; // &#39;own&#39;, &#39;department&#39;, &#39;all&#39;
+}
+
+interface SubjectSelector {
+  type: &#39;user&#39; | &#39;role&#39; | &#39;department&#39;;
+  id?: string;
+  attributes?: AttributeMatcher[];
+}
+
+interface PolicyCondition {
+  type: ConditionType;
+  operator: ComparisonOperator;
+  path?: string; // JSON path for attribute
+  value: any;
+  negate?: boolean; // Invert condition result
+}
+
+enum ConditionType {
+  USER_ATTRIBUTE = &#39;user_attribute&#39;,
+  RESOURCE_ATTRIBUTE = &#39;resource_attribute&#39;,
+  CONTEXT_ATTRIBUTE = &#39;context_attribute&#39;,
+  TIME_BASED = &#39;time_based&#39;,
+  LOCATION_BASED = &#39;location_based&#39;,
+  AMOUNT_BASED = &#39;amount_based&#39;,
+  STATUS_BASED = &#39;status_based&#39;
+}
+
+enum ComparisonOperator {
+  EQUALS = &#39;eq&#39;,
+  NOT_EQUALS = &#39;ne&#39;,
+  GREATER_THAN = &#39;gt&#39;,
+  GREATER_THAN_OR_EQUAL = &#39;gte&#39;,
+  LESS_THAN = &#39;lt&#39;,
+  LESS_THAN_OR_EQUAL = &#39;lte&#39;,
+  IN = &#39;in&#39;,
+  NOT_IN = &#39;not_in&#39;,
+  MATCHES = &#39;matches&#39;, // Regex
+  EXISTS = &#39;exists&#39;,
+  NOT_EXISTS = &#39;not_exists&#39;
+}
+
+interface AttributeMatcher {
+  path: string;
+  operator: ComparisonOperator;
+  value: any;
+}
+</code></pre>
+<hr>
+<h2 id="policy-evaluation-engine">Policy Evaluation Engine</h2>
+<h3 id="evaluation-algorithm">Evaluation Algorithm</h3>
+<pre><code class="language-typescript">function evaluatePolicy(
+  policy: Policy,
+  context: EvaluationContext
+): EvaluationResult {
+  // Step 1: Check if policy is enabled
+  if (!policy.enabled) {
+    return { decision: &#39;not_applicable&#39;, reason: &#39;Policy disabled&#39; };
+  }
+
+  // Step 2: Check schedule
+  if (!isWithinSchedule(policy, context.timestamp)) {
+    return { decision: &#39;not_applicable&#39;, reason: &#39;Outside active schedule&#39; };
+  }
+
+  // Step 3: Match resources
+  if (!matchesResources(policy.resources, context.resource)) {
+    return { decision: &#39;not_applicable&#39;, reason: &#39;Resource not matched&#39; };
+  }
+
+  // Step 4: Match actions
+  if (!matchesActions(policy.actions, context.action)) {
+    return { decision: &#39;not_applicable&#39;, reason: &#39;Action not matched&#39; };
+  }
+
+  // Step 5: Match subjects (if defined)
+  if (policy.subjects &amp;&amp; !matchesSubjects(policy.subjects, context.user)) {
+    return { decision: &#39;not_applicable&#39;, reason: &#39;Subject not matched&#39; };
+  }
+
+  // Step 6: Evaluate conditions
+  if (policy.conditions &amp;&amp; !evaluateConditions(policy.conditions, context)) {
+    return { decision: &#39;deny&#39;, reason: &#39;Conditions not met&#39; };
+  }
+
+  // All checks passed
+  return {
+    decision: policy.effect === &#39;permit&#39; ? &#39;permit&#39; : &#39;deny&#39;,
+    reason: `Policy ${policy.name} applied`,
+    policyId: policy.id,
+    priority: policy.priority
+  };
+}
+</code></pre>
+<h3 id="priority-based-resolution">Priority-Based Resolution</h3>
+<p>When multiple policies match:</p>
+<ol>
+<li><strong>Sort by Priority</strong>: Highest priority first (1000 → 0)</li>
+<li><strong>First Explicit Decision Wins</strong>: First permit or deny ends evaluation</li>
+<li><strong>Default Deny</strong>: If no policies match, deny access</li>
+<li><strong>Deny Overrides</strong>: At same priority, deny overrides permit</li>
+</ol>
+<h3 id="condition-evaluation">Condition Evaluation</h3>
+<p>All conditions in a policy must evaluate to <code>true</code> for the policy to apply (AND logic).</p>
+<p>For OR logic between conditions, create multiple policies.</p>
+<p><strong>Example</strong>:</p>
+<pre><code class="language-typescript">// Policy: &quot;Allow if (amount &lt; 5000) AND (department = &#39;procurement&#39;)&quot;
+conditions: [
+  { type: &#39;resource_attribute&#39;, path: &#39;amount&#39;, operator: &#39;lt&#39;, value: 5000 },
+  { type: &#39;user_attribute&#39;, path: &#39;department&#39;, operator: &#39;eq&#39;, value: &#39;procurement&#39; }
+]
+</code></pre>
+<hr>
+<h2 id="component-architecture">Component Architecture</h2>
+<h3 id="policylist-component">PolicyList Component</h3>
+<p><strong>File:</strong> <code>components/permissions/policy-manager/policy-list.tsx</code></p>
+<p><strong>Props</strong>:</p>
+<ul>
+<li><code>policyType</code>: &#39;rbac&#39; | &#39;abac&#39;</li>
+<li><code>onPolicyTypeChange</code>: Callback for type toggle</li>
+<li><code>onCreatePolicy</code>, <code>onEditPolicy</code>, <code>onViewPolicy</code>, <code>onTestPolicy</code>, <code>onClonePolicy</code>, <code>onToggleStatus</code>: Action callbacks</li>
+</ul>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Policy type toggle tabs</li>
+<li>Search and filtering</li>
+<li>Sortable table</li>
+<li>Quick actions menu</li>
+<li>Status toggle switches</li>
+</ul>
+<h3 id="policyfilterscomponent">PolicyFiltersComponent</h3>
+<p><strong>File:</strong> <code>components/permissions/policy-manager/policy-filters.tsx</code></p>
+<p><strong>Props</strong>:</p>
+<ul>
+<li><code>filters</code>: Current filter state</li>
+<li><code>onFiltersChange</code>: Callback with new filters</li>
+<li><code>onSavePreset</code>, <code>onLoadPreset</code>: Preset management</li>
+<li><code>savedPresets</code>: Array of saved presets</li>
+</ul>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Advanced filter panel</li>
+<li>Filter presets</li>
+<li>Clear all filters</li>
+<li>Active filter badges</li>
+</ul>
+<h3 id="policybuilderwizard">PolicyBuilderWizard</h3>
+<p><strong>File:</strong> <code>components/permissions/policy-builder-wizard.tsx</code></p>
+<p><strong>Props</strong>:</p>
+<ul>
+<li><code>open</code>: Dialog open state</li>
+<li><code>onOpenChange</code>: Dialog state callback</li>
+<li><code>policy</code>: Optional existing policy for editing</li>
+<li><code>onSave</code>: Callback with policy data</li>
+</ul>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Multi-step wizard</li>
+<li>Step validation</li>
+<li>Progress indicator</li>
+<li>Back/Next navigation</li>
+<li>Save as draft</li>
+<li>Test before save</li>
+</ul>
+<hr>
+<h2 id="api-integration">API Integration</h2>
+<h3 id="endpoints">Endpoints</h3>
+<h4>GET /api/policies</h4>
+<pre><code class="language-typescript">// List policies with filters
+Query: {
+  effect?: &#39;permit&#39; | &#39;deny&#39;;
+  status?: &#39;enabled&#39; | &#39;disabled&#39;;
+  category?: string;
+  search?: string;
+  limit?: number;
+  offset?: number;
+}
+
+Response: {
+  policies: Policy[];
+  total: number;
+}
+</code></pre>
+<h4>POST /api/policies</h4>
+<pre><code class="language-typescript">// Create new policy
+Body: {
+  name: string;
+  description?: string;
+  effect: &#39;permit&#39; | &#39;deny&#39;;
+  priority: number;
+  resources: ResourceSelector[];
+  actions: ActionSelector[];
+  subjects?: SubjectSelector[];
+  conditions?: PolicyCondition[];
+}
+
+Response: Policy
+</code></pre>
+<h4>GET /api/policies/:id</h4>
+<pre><code class="language-typescript">// Get policy details
+Response: {
+  policy: Policy;
+  evaluationStats: {
+    totalEvaluations: number;
+    permitRate: number;
+    avgEvaluationTime: number;
+  };
+  impactAnalysis: {
+    affectedUsers: number;
+    affectedResources: number;
+  };
+}
+</code></pre>
+<h4>PUT /api/policies/:id</h4>
+<pre><code class="language-typescript">// Update policy
+Body: Partial&lt;Policy&gt;
+Response: Policy
+</code></pre>
+<h4>DELETE /api/policies/:id</h4>
+<pre><code class="language-typescript">// Delete policy
+Response: 204 No Content
+</code></pre>
+<h4>POST /api/policies/:id/test</h4>
+<pre><code class="language-typescript">// Test policy evaluation
+Body: {
+  user: UserContext;
+  resource: ResourceContext;
+  action: string;
+  context?: Record&lt;string, any&gt;;
+}
+
+Response: {
+  result: &#39;permit&#39; | &#39;deny&#39; | &#39;not_applicable&#39;;
+  reason: string;
+  conditionResults: ConditionResult[];
+  evaluationTime: number;
+}
+</code></pre>
+<h4>POST /api/policies/:id/clone</h4>
+<pre><code class="language-typescript">// Clone existing policy
+Body: {
+  name: string; // New policy name
+  modifications?: Partial&lt;Policy&gt;;
+}
+
+Response: Policy
+</code></pre>
+<hr>
+<h2 id="business-rules">Business Rules</h2>
+<h3 id="policy-creation">Policy Creation</h3>
+<ol>
+<li><strong>Name Uniqueness</strong>: Policy names must be unique within organization</li>
+<li><strong>Priority Range</strong>: Priority must be 0-1000</li>
+<li><strong>Resource Requirement</strong>: At least one resource must be targeted</li>
+<li><strong>Action Requirement</strong>: At least one action must be defined</li>
+<li><strong>Condition Syntax</strong>: All conditions must have valid operators and values</li>
+</ol>
+<h3 id="policy-evaluation">Policy Evaluation</h3>
+<ol>
+<li><strong>Enable Check</strong>: Only enabled policies are evaluated</li>
+<li><strong>Schedule Check</strong>: Policy must be within active date range</li>
+<li><strong>Priority Order</strong>: Policies evaluated highest priority first</li>
+<li><strong>First Match Wins</strong>: First explicit decision (permit/deny) is final</li>
+<li><strong>Default Deny</strong>: No match = deny access</li>
+</ol>
+<h3 id="policy-modification">Policy Modification</h3>
+<ol>
+<li><strong>Impact Warning</strong>: Warn when modifying active policies</li>
+<li><strong>Test Required</strong>: Encourage testing before enabling</li>
+<li><strong>Version Control</strong>: Track all policy changes</li>
+<li><strong>Rollback Support</strong>: Allow reverting to previous versions</li>
+</ol>
+<h3 id="conflict-detection">Conflict Detection</h3>
+<ol>
+<li><strong>Same Priority</strong>: Warn when policies have same priority</li>
+<li><strong>Contradictory Effects</strong>: Highlight conflicting permit/deny on same resources</li>
+<li><strong>Overlapping Conditions</strong>: Detect policies that might overlap</li>
+<li><strong>Dead Policies</strong>: Identify policies that never match due to higher priority policies</li>
+</ol>
+<hr>
+<h2 id="user-guide">User Guide</h2>
+<h3 id="creating-a-simple-policy">Creating a Simple Policy</h3>
+<p><strong>Scenario</strong>: Allow procurement staff to create purchase requests</p>
+<p><strong>Steps</strong>:</p>
+<ol>
+<li>Navigate to Policies → Simple Creator</li>
+<li>Enter policy name: &quot;Procurement Create PR&quot;</li>
+<li>Select effect: Permit</li>
+<li>Set priority: 500</li>
+<li>Who: Select role &quot;Procurement Staff&quot;</li>
+<li>What: Select resource type &quot;Purchase Request&quot;</li>
+<li>Actions: Select &quot;create&quot;</li>
+<li>Review and save</li>
+<li>Enable policy</li>
+</ol>
+<h3 id="creating-an-advanced-policy">Creating an Advanced Policy</h3>
+<p><strong>Scenario</strong>: Allow managers to approve orders under $5000</p>
+<p><strong>Steps</strong>:</p>
+<ol>
+<li>Navigate to Policies → Advanced Builder</li>
+<li><strong>Step 1</strong>: Name &quot;Manager Small Order Approval&quot;, Priority 600, Effect Permit</li>
+<li><strong>Step 2</strong>: Resource type &quot;Purchase Order&quot;</li>
+<li><strong>Step 3</strong>: Action &quot;approve&quot;</li>
+<li><strong>Step 4</strong>: Subject role &quot;Department Manager&quot;</li>
+<li><strong>Step 5</strong>: Add condition:<ul>
+<li>Type: Resource Attribute</li>
+<li>Path: &quot;totalAmount&quot;</li>
+<li>Operator: Less Than</li>
+<li>Value: 5000</li>
+</ul>
+</li>
+<li><strong>Step 6</strong>: Test with sample orders</li>
+<li><strong>Step 7</strong>: Save and enable</li>
+</ol>
+<h3 id="testing-a-policy">Testing a Policy</h3>
+<ol>
+<li>Navigate to policy detail page</li>
+<li>Click &quot;Test Policy&quot; button</li>
+<li>Select test user (or define attributes)</li>
+<li>Select test resource</li>
+<li>Enter action to test</li>
+<li>Click &quot;Evaluate&quot;</li>
+<li>Review results and explanation</li>
+<li>Adjust policy if needed</li>
+</ol>
+<hr>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="issue-policy-not-applying">Issue: Policy not applying</h3>
+<p><strong>Symptoms</strong>: Expected permit/deny not happening</p>
+<p><strong>Solutions</strong>:</p>
+<ul>
+<li>Check policy is enabled</li>
+<li>Verify priority (higher priority policies may override)</li>
+<li>Test policy with exact user/resource combination</li>
+<li>Check condition values match actual data</li>
+<li>Review evaluation logs for details</li>
+</ul>
+<h3 id="issue-conflicting-policies">Issue: Conflicting policies</h3>
+<p><strong>Symptoms</strong>: Unexpected deny or permit results</p>
+<p><strong>Solutions</strong>:</p>
+<ul>
+<li>Check policy priorities</li>
+<li>Look for same-priority policies with different effects</li>
+<li>Use policy testing to identify which policy is applying</li>
+<li>Adjust priorities to resolve conflicts</li>
+<li>Consider combining into single policy</li>
+</ul>
+<h3 id="issue-policy-evaluation-slow">Issue: Policy evaluation slow</h3>
+<p><strong>Symptoms</strong>: Performance degradation</p>
+<p><strong>Solutions</strong>:</p>
+<ul>
+<li>Review condition complexity</li>
+<li>Check for excessive wildcard patterns</li>
+<li>Optimize attribute matching</li>
+<li>Consider caching policy results</li>
+<li>Review evaluation logs for bottlenecks</li>
+</ul>
+<hr>
+<h2 id="best-practices">Best Practices</h2>
+<h3 id="policy-design">Policy Design</h3>
+<ol>
+<li><strong>Start Simple</strong>: Use simple creator before advanced builder</li>
+<li><strong>Test First</strong>: Always test before enabling</li>
+<li><strong>Clear Names</strong>: Use descriptive policy names</li>
+<li><strong>Document</strong>: Add detailed descriptions</li>
+<li><strong>Use Categories</strong>: Organize policies by category</li>
+<li><strong>Set Priorities</strong>: Use priority ranges by category (e.g., 800-900 for security policies)</li>
+</ol>
+<h3 id="performance">Performance</h3>
+<ol>
+<li><strong>Minimize Conditions</strong>: Fewer conditions = faster evaluation</li>
+<li><strong>Specific Targeting</strong>: Narrow resource/action targeting</li>
+<li><strong>Avoid Wildcards</strong>: Use specific IDs when possible</li>
+<li><strong>Enable Caching</strong>: Let system cache policy results</li>
+<li><strong>Regular Cleanup</strong>: Remove unused policies</li>
+</ol>
+<h3 id="security">Security</h3>
+<ol>
+<li><strong>Default Deny</strong>: Never rely on absence of deny policies</li>
+<li><strong>Explicit Permits</strong>: Always use explicit permit policies</li>
+<li><strong>Audit Trail</strong>: Enable evaluation logging for sensitive resources</li>
+<li><strong>Regular Review</strong>: Review policies quarterly</li>
+<li><strong>Least Privilege</strong>: Start restrictive, loosen as needed</li>
+</ol>
+<hr>
+<h2 id="screenshots">Screenshots</h2>
+<p>See <a href="./screenshots/">screenshots directory</a> for visual examples.</p>
+<hr>
+<p><strong>Last Updated:</strong> 2025-01-17<br><strong>Version:</strong> 1.0.0</p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#policies-management-abac" class="level-1">Policies Management (ABAC)</a>
+<a href="#overview" class="level-2">Overview</a>
+<a href="#key-features" class="level-3">Key Features</a>
+<a href="#abac-vs-rbac" class="level-3">ABAC vs RBAC</a>
+<a href="#page-structure" class="level-2">Page Structure</a>
+<a href="#1-policy-list-page" class="level-3">1. Policy List Page</a>
+<a href="#2-simple-policy-creator" class="level-3">2. Simple Policy Creator</a>
+<a href="#3-advanced-policy-builder" class="level-3">3. Advanced Policy Builder</a>
+<a href="#4-policy-demo-page" class="level-3">4. Policy Demo Page</a>
+<a href="#5-policy-detail-page" class="level-3">5. Policy Detail Page</a>
+<a href="#6-policy-edit-page" class="level-3">6. Policy Edit Page</a>
+<a href="#7-policy-testing-interface" class="level-3">7. Policy Testing Interface</a>
+<a href="#data-model" class="level-2">Data Model</a>
+<a href="#policy-evaluation-engine" class="level-2">Policy Evaluation Engine</a>
+<a href="#evaluation-algorithm" class="level-3">Evaluation Algorithm</a>
+<a href="#priority-based-resolution" class="level-3">Priority-Based Resolution</a>
+<a href="#condition-evaluation" class="level-3">Condition Evaluation</a>
+<a href="#component-architecture" class="level-2">Component Architecture</a>
+<a href="#policylist-component" class="level-3">PolicyList Component</a>
+<a href="#policyfilterscomponent" class="level-3">PolicyFiltersComponent</a>
+<a href="#policybuilderwizard" class="level-3">PolicyBuilderWizard</a>
+<a href="#api-integration" class="level-2">API Integration</a>
+<a href="#endpoints" class="level-3">Endpoints</a>
+<a href="#business-rules" class="level-2">Business Rules</a>
+<a href="#policy-creation" class="level-3">Policy Creation</a>
+<a href="#policy-evaluation" class="level-3">Policy Evaluation</a>
+<a href="#policy-modification" class="level-3">Policy Modification</a>
+<a href="#conflict-detection" class="level-3">Conflict Detection</a>
+<a href="#user-guide" class="level-2">User Guide</a>
+<a href="#creating-a-simple-policy" class="level-3">Creating a Simple Policy</a>
+<a href="#creating-an-advanced-policy" class="level-3">Creating an Advanced Policy</a>
+<a href="#testing-a-policy" class="level-3">Testing a Policy</a>
+<a href="#troubleshooting" class="level-2">Troubleshooting</a>
+<a href="#issue-policy-not-applying" class="level-3">Issue: Policy not applying</a>
+<a href="#issue-conflicting-policies" class="level-3">Issue: Conflicting policies</a>
+<a href="#issue-policy-evaluation-slow" class="level-3">Issue: Policy evaluation slow</a>
+<a href="#best-practices" class="level-2">Best Practices</a>
+<a href="#policy-design" class="level-3">Policy Design</a>
+<a href="#performance" class="level-3">Performance</a>
+<a href="#security" class="level-3">Security</a>
+<a href="#screenshots" class="level-2">Screenshots</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Search Modal -->
+    <div class="search-modal" id="searchModal">
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchModalInput" placeholder="Search documentation..." autofocus>
+                    <button class="search-close-btn" id="searchCloseBtn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="search-results" id="searchResults">
+                <div class="search-empty">
+                    <i class="fas fa-search"></i>
+                    <p>Start typing to search...</p>
+                </div>
+            </div>
+            <div class="search-footer">
+                <div class="search-shortcuts">
+                    <kbd>↑↓</kbd> Navigate
+                    <kbd>Enter</kbd> Select
+                    <kbd>Esc</kbd> Close
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Search functionality
+        let searchIndex = [];
+        let selectedResultIndex = -1;
+
+        // Load search index
+        fetch('../../../../../search-index.json')
+            .then(res => res.json())
+            .then(data => {
+                searchIndex = data;
+                console.log('✓ Search index loaded:', searchIndex.length, 'entries');
+            })
+            .catch(err => console.error('❌ Failed to load search index:', err));
+
+        // Open search modal
+        function openSearchModal() {
+            console.log('🔍 Opening search modal...');
+            document.getElementById('searchModal').classList.add('active');
+            document.getElementById('searchModalInput').focus();
+            selectedResultIndex = -1;
+        }
+
+        // Close search modal
+        function closeSearchModal() {
+            document.getElementById('searchModal').classList.remove('active');
+            document.getElementById('searchModalInput').value = '';
+            document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-search"></i><p>Start typing to search...</p></div>';
+            selectedResultIndex = -1;
+        }
+
+        // Search function
+        function performSearch(query) {
+            console.log('🔎 Searching for:', query);
+
+            if (!query || query.length < 2) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-search"></i><p>Start typing to search...</p></div>';
+                return;
+            }
+
+            if (searchIndex.length === 0) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-exclamation-circle"></i><p>Search index not loaded</p></div>';
+                return;
+            }
+
+            const queryLower = query.toLowerCase();
+            const queryWords = queryLower.split(/s+/).filter(word => word.length > 1);
+
+            // Search and score results
+            const results = searchIndex
+                .map(entry => {
+                    let score = 0;
+
+                    // Title match (highest weight)
+                    if (entry.title.toLowerCase().includes(queryLower)) {
+                        score += 100;
+                    }
+                    queryWords.forEach(word => {
+                        if (entry.title.toLowerCase().includes(word)) score += 50;
+                    });
+
+                    // Content match
+                    if (entry.content.toLowerCase().includes(queryLower)) {
+                        score += 10;
+                    }
+                    queryWords.forEach(word => {
+                        if (entry.content.toLowerCase().includes(word)) score += 5;
+                    });
+
+                    return { ...entry, score };
+                })
+                .filter(result => result.score > 0)
+                .sort((a, b) => b.score - a.score)
+                .slice(0, 10); // Top 10 results
+
+            console.log('📊 Found', results.length, 'results');
+
+            // Display results
+            if (results.length === 0) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-times-circle"></i><p>No results found</p></div>';
+                return;
+            }
+
+            const resultsHtml = results.map((result, index) => {
+                const urlPath = '../../../../../' + result.url;
+                return '<a href="' + urlPath + '" class="search-result ' + (index === 0 ? 'selected' : '') + '" data-index="' + index + '">' +
+                    '<div class="result-title">' + result.title + '</div>' +
+                    '<div class="result-content">' + highlightMatch(result.content, query) + '</div>' +
+                    '</a>';
+            }).join('');
+
+            document.getElementById('searchResults').innerHTML = resultsHtml;
+            selectedResultIndex = 0;
+        }
+
+        // Highlight matching text
+        function highlightMatch(text, query) {
+            if (!text) return '';
+            const queryWords = query.split(/\s+/).join('|');
+            const regex = new RegExp('(' + queryWords + ')', 'gi');
+            return text.substring(0, 150).replace(regex, '<mark>$1</mark>') + '...';
+        }
+
+        // Navigate results with keyboard
+        function navigateResults(direction) {
+            const results = document.querySelectorAll('.search-result');
+            if (results.length === 0) return;
+
+            results[selectedResultIndex]?.classList.remove('selected');
+
+            if (direction === 'down') {
+                selectedResultIndex = (selectedResultIndex + 1) % results.length;
+            } else if (direction === 'up') {
+                selectedResultIndex = (selectedResultIndex - 1 + results.length) % results.length;
+            }
+
+            results[selectedResultIndex]?.classList.add('selected');
+            results[selectedResultIndex]?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+
+        // Select result
+        function selectResult() {
+            const selected = document.querySelector('.search-result.selected');
+            if (selected) {
+                window.location.href = selected.href;
+            }
+        }
+
+        // Event listeners
+        document.getElementById('headerSearchBtn')?.addEventListener('click', openSearchModal);
+        document.getElementById('searchCloseBtn')?.addEventListener('click', closeSearchModal);
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Ctrl+K or Cmd+K to open search
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                openSearchModal();
+            }
+
+            // Esc to close search
+            if (e.key === 'Escape' && document.getElementById('searchModal').classList.contains('active')) {
+                closeSearchModal();
+            }
+
+            // Navigate results
+            if (document.getElementById('searchModal').classList.contains('active')) {
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    navigateResults('down');
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    navigateResults('up');
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    selectResult();
+                }
+            }
+        });
+
+        // Search input
+        document.getElementById('searchModalInput')?.addEventListener('input', (e) => {
+            performSearch(e.target.value);
+        });
+
+        // Click outside to close
+        document.getElementById('searchModal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'searchModal') {
+                closeSearchModal();
+            }
+        });
+    </script>
+</body>
+</html>

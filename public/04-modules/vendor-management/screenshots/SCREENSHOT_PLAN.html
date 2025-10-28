@@ -1,0 +1,1965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Management Module - Screenshot Capture Plan - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: #f8fafc;
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 15% 70% 15%;
+            gap: 0;
+            width: 100%;
+            padding: 1rem 0 2rem 0;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 1rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 2rem);
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-right: 1px solid var(--border-color);
+            padding-right: 2rem;
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 0.75rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+        .nav-subgroup {
+            margin: 0.5rem 0 0.5rem 0.5rem;
+        }
+        .nav-subgroup-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-subgroup-header:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .nav-subitems {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+            margin-left: 0.75rem;
+            margin-top: 0.25rem;
+        }
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 1rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 2rem);
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-left: 1px solid var(--border-color);
+            padding-left: 2rem;
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header - Modern Compact Design */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 52px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+        }
+        .header-content {
+            height: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--foreground);
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+        .logo:hover {
+            opacity: 0.8;
+        }
+        .logo i {
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+        .header-search-container {
+            display: flex;
+            align-items: center;
+        }
+        .header-search-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.375rem 0.75rem;
+            background: var(--secondary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.8125rem;
+            color: var(--muted-foreground);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            min-width: 180px;
+            flex-shrink: 0;
+        }
+        .header-search-btn:hover {
+            background: var(--background);
+            border-color: var(--primary);
+        }
+        .header-search-btn i {
+            color: var(--muted-foreground);
+            font-size: 0.875rem;
+        }
+        .header-search-btn span {
+            flex: 1;
+            text-align: left;
+        }
+        .header-search-btn kbd {
+            padding: 0.125rem 0.375rem;
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.6875rem;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--muted-foreground);
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        .back-to-home {
+            display: none; /* Hidden - navigation is sufficient */
+        }
+
+        /* Responsive Header */
+        @media (max-width: 768px) {
+            .header-search-btn {
+                min-width: auto;
+            }
+            .header-search-btn span {
+                display: none;
+            }
+        }
+
+        /* Search Modal */
+        .search-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            padding: 2rem;
+        }
+        .search-modal.active {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 10vh;
+        }
+        .search-modal-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 640px;
+            max-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            animation: slideDown 0.2s ease-out;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .search-modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .search-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .search-input-wrapper i {
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+        }
+        .search-input-wrapper input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 1.125rem;
+            color: var(--text-primary);
+        }
+        .search-close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .search-close-btn:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .search-results {
+            overflow-y: auto;
+            max-height: calc(70vh - 150px);
+        }
+        .search-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 2rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+        .search-empty i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        .search-result {
+            display: block;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+        .search-result:hover,
+        .search-result.selected {
+            background: var(--bg-secondary);
+        }
+        .search-result.selected {
+            border-left: 3px solid var(--primary-color);
+        }
+        .result-header {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .result-category {
+            font-size: 0.75rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .result-title {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        .result-badge {
+            display: inline-block;
+            padding: 0.125rem 0.5rem;
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-radius: 4px;
+            font-size: 0.6875rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        .result-content {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        .result-content mark {
+            background: rgba(79, 70, 229, 0.2);
+            color: var(--primary-color);
+            font-weight: 600;
+            padding: 0.125rem 0.25rem;
+            border-radius: 2px;
+        }
+        .search-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            border-bottom-left-radius: var(--border-radius-xl);
+            border-bottom-right-radius: var(--border-radius-xl);
+        }
+        .search-shortcuts {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        .search-shortcuts kbd {
+            padding: 0.25rem 0.5rem;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        /* Content Area */
+        .doc-content {
+            padding: 0 2rem;
+            width: 100%;
+            max-width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 0.9375rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Image Styles */
+        .doc-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 1.5rem auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Limit screenshot width to 80% for better readability */
+        .doc-content p > img {
+            max-width: 80%;
+        }
+
+        /* Table Styles */
+        .doc-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.875rem;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .doc-content table thead {
+            background: #f8fafc;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .doc-content table th {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #0f172a;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        .doc-content table td {
+            padding: 0.75rem 1rem;
+            border-top: 1px solid #e2e8f0;
+            color: #334155;
+        }
+
+        .doc-content table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        /* Table responsive wrapper */
+        .doc-content table {
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .doc-content table thead,
+        .doc-content table tbody,
+        .doc-content table tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 18% 64% 18%;
+                gap: 0;
+                padding: 1rem 0 1.5rem 0;
+            }
+            .doc-nav {
+                padding-right: 1.5rem;
+            }
+            .doc-toc {
+                padding-left: 1.5rem;
+            }
+            .doc-content {
+                padding: 0 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 0;
+                padding: 1rem 0 1.5rem 0;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 0 2rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                gap: 0;
+                padding: 0.5rem 0 1rem 0;
+            }
+            .doc-nav {
+                display: none;
+                border-right: none;
+            }
+            .doc-content {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="../../../index.html" class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </a>
+            <div class="doc-header-actions">
+                <div class="header-search-container">
+                    <button class="header-search-btn" id="headerSearchBtn">
+                        <i class="fas fa-search"></i>
+                        <span>Search documentation...</span>
+                        <kbd>Ctrl+K</kbd>
+                    </button>
+                </div>
+                <a href="../../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../01-overview/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Index</span>
+                    </a>
+                    <a href="../../../01-overview/business-value.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value & ROI</span>
+                    </a>
+                    <a href="../../../01-overview/tech-stack.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Technology Stack</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../02-architecture/system-architecture.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-database"></i>
+                    <span>Data Model</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../03-data-model/data-dictionary.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Data Dictionary</span>
+                    </a>
+                    <a href="../../../03-data-model/schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-th-large"></i>
+                    <span>Application Modules</span>
+                </div>
+                <div class="nav-items">
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Procurement</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/procurement/purchase-requests/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Purchase Requests</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/purchase-orders/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Purchase Orders</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/goods-received-notes/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Goods Received Notes</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/credit-notes/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Credit Notes</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/templates/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Templates</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-boxes"></i>
+                            <span>Inventory Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/inventory/stock-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Stock Management</span>
+                            </a>
+                            <a href="../../../04-modules/inventory/physical-count/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Physical Count</span>
+                            </a>
+                            <a href="../../../04-modules/inventory/spot-check/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Spot Check</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span>Finance</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/finance/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Finance Module</span>
+                            </a>
+                            <a href="../../../04-modules/finance/features/account-code-mapping/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Account Code Mapping</span>
+                            </a>
+                            <a href="../../../04-modules/finance/features/currency-and-rates/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Currency Management</span>
+                            </a>
+                            <a href="../../../04-modules/finance/features/departments/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Departments</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-handshake"></i>
+                            <span>Vendor Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/vendor-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Management</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Management Module</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/MANAGE-VENDORS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Manage Vendors</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/VENDOR-PORTAL.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Portal</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/CAMPAIGNS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Campaigns</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/PRICELISTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Pricelists</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/TEMPLATES.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Templates</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Sitemap</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/PAGES-AND-COMPONENTS-SPEC.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Pages & Components Spec</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/SHARED-COMPONENTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Shared Components</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-box"></i>
+                            <span>Product Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/product-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management</span>
+                            </a>
+                            <a href="../../../04-modules/product-management/product-management-specification.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management Specification</span>
+                            </a>
+                            <a href="../../../04-modules/product-management/product-management-sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management Sitemap</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-store"></i>
+                            <span>Store Operations</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../store-ops/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Operations</span>
+                            </a>
+                            <a href="../../../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Operations Module</span>
+                            </a>
+                            <a href="../../../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Requisitions</span>
+                            </a>
+                            <a href="../../../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Stock Replenishment</span>
+                            </a>
+                            <a href="../../../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Wastage Reporting</span>
+                            </a>
+                            <a href="../../../store-ops/SHARED-COMPONENTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Shared Components</span>
+                            </a>
+                            <a href="../../../store-ops/GLOSSARY.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Glossary</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-clipboard-list"></i>
+                            <span>Operational Planning</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../operational-planning/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Operational Planning</span>
+                            </a>
+                            <a href="../../../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Operational Planning Module</span>
+                            </a>
+                            <a href="../../../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Recipe Management</span>
+                            </a>
+                            <a href="../../../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Menu Engineering</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-cog"></i>
+                            <span>System Administration</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../sa/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>System Administration</span>
+                            </a>
+                            <a href="../../../sa/system-administration-sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>System Administration Sitemap</span>
+                            </a>
+                            <a href="../../../sa/features/permission-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Permission Management</span>
+                            </a>
+                            <a href="../../../sa/features/permission-management/specification.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Permission Specification</span>
+                            </a>
+                            <a href="../../../sa/features/location-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Location Management</span>
+                            </a>
+                            <a href="../../../sa/features/workflow/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Workflow</span>
+                            </a>
+                            <a href="../../../sa/features/pos-integration/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Reporting</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/reporting/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Reporting & Analytics</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../dashboard/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard</span>
+                            </a>
+                            <a href="../../../dashboard/sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard Sitemap</span>
+                            </a>
+                            <a href="../../../dashboard/components/components-overview.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Components Overview</span>
+                            </a>
+                            <a href="../../../dashboard/api/api-specifications.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>API Specifications</span>
+                            </a>
+                            <a href="../../../dashboard/business-logic/dashboard-business-rules.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard Business Rules</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-industry"></i>
+                            <span>Production</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/production/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Production</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-cash-register"></i>
+                            <span>POS Integration</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../pos-integration/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration</span>
+                            </a>
+                            <a href="../../../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration Module</span>
+                            </a>
+                            <a href="../../../pos-integration/MAPPING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Mapping</span>
+                            </a>
+                            <a href="../../../pos-integration/REPORTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Reports</span>
+                            </a>
+                            <a href="../../../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Transactions</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="vendor-management-module-screenshot-capture-plan">Vendor Management Module - Screenshot Capture Plan</h1>
+<h2 id="overview">Overview</h2>
+<p>This document outlines all screenshots needed to document the Vendor Management module. Screenshots should be captured when the development server is running.</p>
+<h2 id="screenshot-categories">Screenshot Categories</h2>
+<h3 id="1-main-landing-page">1. Main Landing Page</h3>
+<h4>VM-001: Landing Page Overview</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management</code></li>
+<li><strong>Description</strong>: Main landing page with statistics and module cards</li>
+<li><strong>Elements to Capture</strong>:<ul>
+<li>Header with title and description</li>
+<li>Quick statistics cards (Total Vendors, Price Updates, Active Contracts, Pending)</li>
+<li>Module navigation cards (Manage Vendors, Price Lists, Templates, Campaigns)</li>
+<li>Development status section</li>
+</ul>
+</li>
+<li><strong>Viewport</strong>: Desktop (1920x1080)</li>
+<li><strong>Filename</strong>: <code>vm-landing-page.png</code></li>
+</ul>
+<h3 id="2-vendor-list-pages">2. Vendor List Pages</h3>
+<h4>VM-002: Vendor List - Table View</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management/manage-vendors</code></li>
+<li><strong>Description</strong>: Vendor list in table view</li>
+<li><strong>Elements to Capture</strong>:<ul>
+<li>Page header with title</li>
+<li>Search bar and filters</li>
+<li>Status dropdown filter</li>
+<li>View toggle buttons (Table/Card)</li>
+<li>Table with vendor data</li>
+<li>Action menu dropdown (expanded)</li>
+</ul>
+</li>
+<li><strong>Viewport</strong>: Desktop (1920x1080)</li>
+<li><strong>Filename</strong>: <code>vm-vendor-list-table.png</code></li>
+</ul>
+<h4>VM-003: Vendor List - Card View</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management/manage-vendors?view=card</code></li>
+<li><strong>Description</strong>: Vendor list in card view</li>
+<li><strong>Elements to Capture</strong>:<ul>
+<li>Card grid layout</li>
+<li>Vendor cards with information</li>
+<li>Action menu on card (expanded on one card)</li>
+</ul>
+</li>
+<li><strong>Viewport</strong>: Desktop (1920x1080)</li>
+<li><strong>Filename</strong>: <code>vm-vendor-list-card.png</code></li>
+</ul>
+<h4>VM-004: Advanced Filter Dialog</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management/manage-vendors</code> (with filter dialog open)</li>
+<li><strong>Description</strong>: Advanced filter dialog</li>
+<li><strong>Elements to Capture</strong>:<ul>
+<li>Filter dialog overlay</li>
+<li>Field selection dropdown</li>
+<li>Operator selection dropdown</li>
+<li>Value input field</li>
+<li>Multiple filter criteria</li>
+<li>Save filter option</li>
+<li>Apply and Cancel buttons</li>
+</ul>
+</li>
+<li><strong>Viewport</strong>: Desktop (1920x1080)</li>
+<li><strong>Filename</strong>: <code>vm-advanced-filter-dialog.png</code></li>
+</ul>
+<h4>VM-005: Saved Filters Dialog</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management/manage-vendors</code> (with saved filters dialog)</li>
+<li><strong>Description</strong>: Saved filters selection</li>
+<li><strong>Elements to Capture</strong>:<ul>
+<li>Saved filter list</li>
+<li>Filter preview</li>
+<li>Load and Delete options</li>
+</ul>
+</li>
+<li><strong>Viewport</strong>: Desktop (1920x1080)</li>
+<li><strong>Filename</strong>: <code>vm-saved-filters-dialog.png</code></li>
+</ul>
+<h4>VM-006: Search Results</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management/manage-vendors?search=tech</code></li>
+<li><strong>Description</strong>: Filtered search results</li>
+<li><strong>Elements to Capture</strong>:<ul>
+<li>Search query in search bar</li>
+<li>Filtered results</li>
+<li>Result count</li>
+</ul>
+</li>
+<li><strong>Viewport</strong>: Desktop (1920x1080)</li>
+<li><strong>Filename</strong>: <code>vm-search-results.png</code></li>
+</ul>
+<h3 id="3-vendor-detail-pages">3. Vendor Detail Pages</h3>
+<h4>VM-007: Vendor Detail - Overview Tab</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management/manage-vendors/[id]</code></li>
+<li><strong>Description</strong>: Vendor detail overview tab</li>
+<li><strong>Elements to Capture</strong>:<ul>
+<li>Back button and vendor name header</li>
+<li>Status badge and toggle</li>
+<li>Summary card with key information</li>
+<li>Tab navigation</li>
+<li>Basic Information card</li>
+<li>Tax Configuration card</li>
+<li>Primary Address and Contact cards</li>
+<li>Action buttons (Edit, Print, Delete)</li>
+</ul>
+</li>
+<li><strong>Viewport</strong>: Desktop (1920x1080)</li>
+<li><strong>Filename</strong>: <code>vm-vendor-detail-overview.png</code></li>
+</ul>
+<h4>VM-008: Vendor Detail - Pricelists Tab</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management/manage-vendors/[id]?tab=pricelists</code></li>
+<li><strong>Description</strong>: Vendor pricelists tab</li>
+<li><strong>Elements to Capture</strong>:<ul>
+<li>Pricelist list</li>
+<li>Filter and search options</li>
+<li>Add pricelist button</li>
+</ul>
+</li>
+<li><strong>Viewport</strong>: Desktop (1920x1080)</li>
+<li><strong>Filename</strong>: <code>vm-vendor-detail-pricelists.png</code></li>
+</ul>
+<h4>VM-009: Vendor Detail - Contacts Tab</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management/manage-vendors/[id]?tab=contacts</code></li>
+<li><strong>Description</strong>: Contacts and addresses tab</li>
+<li><strong>Elements to Capture</strong>:<ul>
+<li>Address list</li>
+<li>Contact list</li>
+<li>Add buttons for each</li>
+<li>Primary designation indicators</li>
+</ul>
+</li>
+<li><strong>Viewport</strong>: Desktop (1920x1080)</li>
+<li><strong>Filename</strong>: <code>vm-vendor-detail-contacts.png</code></li>
+</ul>
+<h4>VM-010: Vendor Detail - Certifications Tab</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management/manage-vendors/[id]?tab=certifications</code></li>
+<li><strong>Description</strong>: Certifications tab</li>
+<li><strong>Elements to Capture</strong>:<ul>
+<li>Certification badges</li>
+<li>Add certification button</li>
+<li>Expiry indicators</li>
+</ul>
+</li>
+<li><strong>Viewport</strong>: Desktop (1920x1080)</li>
+<li><strong>Filename</strong>: <code>vm-vendor-detail-certifications.png</code></li>
+</ul>
+<h4>VM-011: Vendor Detail - Edit Mode</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management/manage-vendors/[id]?edit=1</code></li>
+<li><strong>Description</strong>: Vendor detail in edit mode</li>
+<li><strong>Elements to Capture</strong>:<ul>
+<li>Editable fields</li>
+<li>Tax profile dropdown expanded</li>
+<li>Tax rate input</li>
+<li>Save Changes and Cancel buttons</li>
+</ul>
+</li>
+<li><strong>Viewport</strong>: Desktop (1920x1080)</li>
+<li><strong>Filename</strong>: <code>vm-vendor-detail-edit-mode.png</code></li>
+</ul>
+<h3 id="4-vendor-form-pages">4. Vendor Form Pages</h3>
+<h4>VM-012: New Vendor Form - Empty</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management/manage-vendors/new</code></li>
+<li><strong>Description</strong>: New vendor form (empty state)</li>
+<li><strong>Elements to Capture</strong>:<ul>
+<li>Form header</li>
+<li>All form sections</li>
+<li>Required field indicators</li>
+<li>Submit and Cancel buttons</li>
+</ul>
+</li>
+<li><strong>Viewport</strong>: Desktop (1920x1080)</li>
+<li><strong>Filename</strong>: <code>vm-new-vendor-form-empty.png</code></li>
+</ul>
+<h4>VM-013: New Vendor Form - Filled</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management/manage-vendors/new</code> (filled)</li>
+<li><strong>Description</strong>: New vendor form with sample data</li>
+<li><strong>Elements to Capture</strong>:<ul>
+<li>Filled form fields</li>
+<li>Validation states</li>
+</ul>
+</li>
+<li><strong>Viewport</strong>: Desktop (1920x1080)</li>
+<li><strong>Filename</strong>: <code>vm-new-vendor-form-filled.png</code></li>
+</ul>
+<h4>VM-014: New Vendor Form - Validation Errors</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management/manage-vendors/new</code> (with errors)</li>
+<li><strong>Description</strong>: Form validation error states</li>
+<li><strong>Elements to Capture</strong>:<ul>
+<li>Error messages</li>
+<li>Invalid field highlighting</li>
+<li>Error summary</li>
+</ul>
+</li>
+<li><strong>Viewport</strong>: Desktop (1920x1080)</li>
+<li><strong>Filename</strong>: <code>vm-new-vendor-form-errors.png</code></li>
+</ul>
+<h3 id="5-vendor-deletion-flow">5. Vendor Deletion Flow</h3>
+<h4>VM-015: Delete Confirmation Dialog</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management/manage-vendors/[id]</code> (delete dialog open)</li>
+<li><strong>Description</strong>: Delete confirmation dialog</li>
+<li><strong>Elements to Capture</strong>:<ul>
+<li>Confirmation message</li>
+<li>Vendor details</li>
+<li>Delete and Cancel buttons</li>
+</ul>
+</li>
+<li><strong>Viewport</strong>: Desktop (1920x1080)</li>
+<li><strong>Filename</strong>: <code>vm-delete-confirmation.png</code></li>
+</ul>
+<h4>VM-016: Delete Warning - Has Dependencies</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management/manage-vendors/[id]</code> (delete dialog with dependencies)</li>
+<li><strong>Description</strong>: Delete warning with dependency list</li>
+<li><strong>Elements to Capture</strong>:<ul>
+<li>Warning message</li>
+<li>Dependency list (POs, PRs, contracts)</li>
+<li>Force delete option</li>
+<li>Cancel and Confirm buttons</li>
+</ul>
+</li>
+<li><strong>Viewport</strong>: Desktop (1920x1080)</li>
+<li><strong>Filename</strong>: <code>vm-delete-warning-dependencies.png</code></li>
+</ul>
+<h3 id="6-price-management-prototype">6. Price Management (Prototype)</h3>
+<h4>VM-017: Template List</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management/templates</code></li>
+<li><strong>Description</strong>: Pricelist template list</li>
+<li><strong>Elements to Capture</strong>:<ul>
+<li>Template cards/table</li>
+<li>New template button</li>
+<li>Prototype badge</li>
+</ul>
+</li>
+<li><strong>Viewport</strong>: Desktop (1920x1080)</li>
+<li><strong>Filename</strong>: <code>vm-template-list.png</code></li>
+</ul>
+<h4>VM-018: New Template Form</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management/templates/new</code></li>
+<li><strong>Description</strong>: Create new pricelist template</li>
+<li><strong>Elements to Capture</strong>:<ul>
+<li>Template basic info section</li>
+<li>Product selection component</li>
+<li>Custom fields configuration</li>
+<li>MOQ pricing setup</li>
+<li>Save and Cancel buttons</li>
+</ul>
+</li>
+<li><strong>Viewport</strong>: Desktop (1920x1080)</li>
+<li><strong>Filename</strong>: <code>vm-new-template-form.png</code></li>
+</ul>
+<h4>VM-019: Product Selection Component</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management/templates/new</code> (product selection expanded)</li>
+<li><strong>Description</strong>: Product selection interface</li>
+<li><strong>Elements to Capture</strong>:<ul>
+<li>Category tree</li>
+<li>Product search</li>
+<li>Selected products list</li>
+<li>Product instances with units</li>
+</ul>
+</li>
+<li><strong>Viewport</strong>: Desktop (1920x1080)</li>
+<li><strong>Filename</strong>: <code>vm-product-selection.png</code></li>
+</ul>
+<h4>VM-020: Custom Fields Configuration</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management/templates/new</code> (custom fields section)</li>
+<li><strong>Description</strong>: Custom fields setup</li>
+<li><strong>Elements to Capture</strong>:<ul>
+<li>Field type selection</li>
+<li>Field properties</li>
+<li>Validation rules</li>
+<li>Required toggle</li>
+</ul>
+</li>
+<li><strong>Viewport</strong>: Desktop (1920x1080)</li>
+<li><strong>Filename</strong>: <code>vm-custom-fields-config.png</code></li>
+</ul>
+<h4>VM-021: MOQ Pricing Component</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management/templates/new</code> (MOQ section)</li>
+<li><strong>Description</strong>: MOQ pricing configuration</li>
+<li><strong>Elements to Capture</strong>:<ul>
+<li>MOQ tiers</li>
+<li>Unit price inputs</li>
+<li>Conversion factors</li>
+<li>Lead time fields</li>
+</ul>
+</li>
+<li><strong>Viewport</strong>: Desktop (1920x1080)</li>
+<li><strong>Filename</strong>: <code>vm-moq-pricing.png</code></li>
+</ul>
+<h4>VM-022: Campaign List</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management/campaigns</code></li>
+<li><strong>Description</strong>: Pricing campaign list</li>
+<li><strong>Elements to Capture</strong>:<ul>
+<li>Campaign cards</li>
+<li>Status indicators</li>
+<li>New campaign button</li>
+<li>Prototype badge</li>
+</ul>
+</li>
+<li><strong>Viewport</strong>: Desktop (1920x1080)</li>
+<li><strong>Filename</strong>: <code>vm-campaign-list.png</code></li>
+</ul>
+<h4>VM-023: New Campaign Form</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management/campaigns/new</code></li>
+<li><strong>Description</strong>: Create pricing campaign</li>
+<li><strong>Elements to Capture</strong>:<ul>
+<li>Campaign details</li>
+<li>Template selection</li>
+<li>Vendor selection</li>
+<li>Schedule configuration</li>
+<li>Priority and tags</li>
+</ul>
+</li>
+<li><strong>Viewport</strong>: Desktop (1920x1080)</li>
+<li><strong>Filename</strong>: <code>vm-new-campaign-form.png</code></li>
+</ul>
+<h4>VM-024: Campaign Detail</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management/campaigns/[id]</code></li>
+<li><strong>Description</strong>: Campaign detail and analytics</li>
+<li><strong>Elements to Capture</strong>:<ul>
+<li>Campaign information</li>
+<li>Invitation status</li>
+<li>Response tracking</li>
+<li>Analytics dashboard</li>
+<li>Vendor engagement metrics</li>
+</ul>
+</li>
+<li><strong>Viewport</strong>: Desktop (1920x1080)</li>
+<li><strong>Filename</strong>: <code>vm-campaign-detail.png</code></li>
+</ul>
+<h4>VM-025: Pricelist List</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management/pricelists</code></li>
+<li><strong>Description</strong>: Vendor pricelist list</li>
+<li><strong>Elements to Capture</strong>:<ul>
+<li>Pricelist table</li>
+<li>Filter options</li>
+<li>Status badges</li>
+<li>Action menu</li>
+</ul>
+</li>
+<li><strong>Viewport</strong>: Desktop (1920x1080)</li>
+<li><strong>Filename</strong>: <code>vm-pricelist-list.png</code></li>
+</ul>
+<h4>VM-026: Pricelist Detail</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management/pricelists/[id]</code></li>
+<li><strong>Description</strong>: Pricelist detail view</li>
+<li><strong>Elements to Capture</strong>:<ul>
+<li>Pricelist header</li>
+<li>Item list with pricing</li>
+<li>MOQ tiers</li>
+<li>Approval status</li>
+<li>Action buttons</li>
+</ul>
+</li>
+<li><strong>Viewport</strong>: Desktop (1920x1080)</li>
+<li><strong>Filename</strong>: <code>vm-pricelist-detail.png</code></li>
+</ul>
+<h4>VM-027: Pricelist Edit Form</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management/pricelists/[id]/edit</code></li>
+<li><strong>Description</strong>: Edit pricelist</li>
+<li><strong>Elements to Capture</strong>:<ul>
+<li>Editable item list</li>
+<li>Inline editing</li>
+<li>Price validation</li>
+<li>Save and Submit buttons</li>
+</ul>
+</li>
+<li><strong>Viewport</strong>: Desktop (1920x1080)</li>
+<li><strong>Filename</strong>: <code>vm-pricelist-edit.png</code></li>
+</ul>
+<h4>VM-028: Vendor Portal - Login</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management/vendor-portal/sample</code></li>
+<li><strong>Description</strong>: Vendor portal entry</li>
+<li><strong>Elements to Capture</strong>:<ul>
+<li>Token input field</li>
+<li>Campaign information</li>
+<li>Access button</li>
+<li>Instructions</li>
+</ul>
+</li>
+<li><strong>Viewport</strong>: Desktop (1920x1080)</li>
+<li><strong>Filename</strong>: <code>vm-vendor-portal-login.png</code></li>
+</ul>
+<h4>VM-029: Vendor Portal - Price Entry</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management/vendor-portal/sample</code> (authenticated)</li>
+<li><strong>Description</strong>: Vendor price entry form</li>
+<li><strong>Elements to Capture</strong>:<ul>
+<li>Product list</li>
+<li>Price input fields</li>
+<li>MOQ inputs</li>
+<li>Real-time validation</li>
+<li>Auto-save indicator</li>
+<li>Progress bar</li>
+</ul>
+</li>
+<li><strong>Viewport</strong>: Desktop (1920x1080)</li>
+<li><strong>Filename</strong>: <code>vm-vendor-portal-entry.png</code></li>
+</ul>
+<h4>VM-030: Vendor Portal - Validation</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management/vendor-portal/sample</code> (with validation)</li>
+<li><strong>Description</strong>: Price validation feedback</li>
+<li><strong>Elements to Capture</strong>:<ul>
+<li>Validation error messages</li>
+<li>Warning indicators</li>
+<li>Suggested corrections</li>
+</ul>
+</li>
+<li><strong>Viewport</strong>: Desktop (1920x1080)</li>
+<li><strong>Filename</strong>: <code>vm-vendor-portal-validation.png</code></li>
+</ul>
+<h3 id="7-mobile-views">7. Mobile Views</h3>
+<h4>VM-031: Mobile - Landing Page</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management</code></li>
+<li><strong>Viewport</strong>: Mobile (375x812)</li>
+<li><strong>Filename</strong>: <code>vm-mobile-landing.png</code></li>
+</ul>
+<h4>VM-032: Mobile - Vendor List</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management/manage-vendors</code></li>
+<li><strong>Viewport</strong>: Mobile (375x812)</li>
+<li><strong>Filename</strong>: <code>vm-mobile-vendor-list.png</code></li>
+</ul>
+<h4>VM-033: Mobile - Vendor Detail</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management/manage-vendors/[id]</code></li>
+<li><strong>Viewport</strong>: Mobile (375x812)</li>
+<li><strong>Filename</strong>: <code>vm-mobile-vendor-detail.png</code></li>
+</ul>
+<h4>VM-034: Mobile - New Vendor Form</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management/manage-vendors/new</code></li>
+<li><strong>Viewport</strong>: Mobile (375x812)</li>
+<li><strong>Filename</strong>: <code>vm-mobile-new-vendor.png</code></li>
+</ul>
+<h3 id="8-edge-cases-and-error-states">8. Edge Cases and Error States</h3>
+<h4>VM-035: Empty State - No Vendors</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management/manage-vendors</code> (empty)</li>
+<li><strong>Description</strong>: No vendors in system</li>
+<li><strong>Elements to Capture</strong>:<ul>
+<li>Empty state illustration</li>
+<li>Create first vendor CTA</li>
+</ul>
+</li>
+<li><strong>Viewport</strong>: Desktop (1920x1080)</li>
+<li><strong>Filename</strong>: <code>vm-empty-state.png</code></li>
+</ul>
+<h4>VM-036: Loading State</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management/manage-vendors</code> (loading)</li>
+<li><strong>Description</strong>: Loading skeleton</li>
+<li><strong>Elements to Capture</strong>:<ul>
+<li>Skeleton loaders</li>
+<li>Loading indicators</li>
+</ul>
+</li>
+<li><strong>Viewport</strong>: Desktop (1920x1080)</li>
+<li><strong>Filename</strong>: <code>vm-loading-state.png</code></li>
+</ul>
+<h4>VM-037: Error State</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management/manage-vendors</code> (error)</li>
+<li><strong>Description</strong>: Error fetching vendors</li>
+<li><strong>Elements to Capture</strong>:<ul>
+<li>Error message</li>
+<li>Retry button</li>
+<li>Error details</li>
+</ul>
+</li>
+<li><strong>Viewport</strong>: Desktop (1920x1080)</li>
+<li><strong>Filename</strong>: <code>vm-error-state.png</code></li>
+</ul>
+<h4>VM-038: No Search Results</h4>
+<ul>
+<li><strong>Route</strong>: <code>/vendor-management/manage-vendors?search=xxxxx</code></li>
+<li><strong>Description</strong>: No results found</li>
+<li><strong>Elements to Capture</strong>:<ul>
+<li>No results message</li>
+<li>Clear search button</li>
+<li>Suggestions</li>
+</ul>
+</li>
+<li><strong>Viewport</strong>: Desktop (1920x1080)</li>
+<li><strong>Filename</strong>: <code>vm-no-results.png</code></li>
+</ul>
+<h2 id="capture-instructions">Capture Instructions</h2>
+<h3 id="tools-needed">Tools Needed</h3>
+<ul>
+<li>Browser: Chrome/Firefox with responsive design mode</li>
+<li>Screenshot tool: Browser DevTools, Playwright, or similar</li>
+<li>Image editing: For annotations if needed</li>
+</ul>
+<h3 id="screenshot-standards">Screenshot Standards</h3>
+<ol>
+<li><p><strong>Resolution</strong>:</p>
+<ul>
+<li>Desktop: 1920x1080</li>
+<li>Mobile: 375x812 (iPhone X)</li>
+<li>Tablet: 768x1024 (iPad)</li>
+</ul>
+</li>
+<li><p><strong>Format</strong>: PNG with transparency where applicable</p>
+</li>
+<li><p><strong>Naming Convention</strong>:</p>
+<ul>
+<li>Format: <code>vm-[category]-[description].png</code></li>
+<li>Use kebab-case</li>
+<li>Include viewport suffix for mobile/tablet</li>
+</ul>
+</li>
+<li><p><strong>Content Standards</strong>:</p>
+<ul>
+<li>Use consistent sample data</li>
+<li>Show realistic vendor names</li>
+<li>Include diverse data types</li>
+<li>Capture both empty and populated states</li>
+</ul>
+</li>
+<li><p><strong>Annotations</strong>:</p>
+<ul>
+<li>Add arrows/highlights for key features</li>
+<li>Number sequential steps</li>
+<li>Use consistent color scheme for annotations</li>
+</ul>
+</li>
+</ol>
+<h3 id="sample-data-for-screenshots">Sample Data for Screenshots</h3>
+<h4>Vendor Examples:</h4>
+<ol>
+<li><p><strong>Tech Innovations Inc.</strong></p>
+<ul>
+<li>Type: Technology</li>
+<li>Status: Active</li>
+<li>Rating: 4.5/5</li>
+</ul>
+</li>
+<li><p><strong>Green Fields Produce</strong></p>
+<ul>
+<li>Type: Agriculture</li>
+<li>Status: Active</li>
+<li>Rating: 4.2/5</li>
+</ul>
+</li>
+<li><p><strong>Global Logistics Co.</strong></p>
+<ul>
+<li>Type: Transportation</li>
+<li>Status: Inactive</li>
+<li>Rating: 3.8/5</li>
+</ul>
+</li>
+<li><p><strong>Stellar Manufacturing</strong></p>
+<ul>
+<li>Type: Manufacturing</li>
+<li>Status: Active</li>
+<li>Rating: 4.7/5</li>
+</ul>
+</li>
+</ol>
+<h4>Price List Examples:</h4>
+<ul>
+<li>Electronics Components - Q1 2025</li>
+<li>Fresh Produce - March 2025</li>
+<li>Packaging Materials - 2025</li>
+</ul>
+<h4>Campaign Examples:</h4>
+<ul>
+<li>Q1 Food Supplies RFP</li>
+<li>Office Equipment Quote Request</li>
+<li>Annual Packaging Contract</li>
+</ul>
+<h2 id="capture-sequence">Capture Sequence</h2>
+<h3 id="phase-1-core-functionality-priority-1">Phase 1: Core Functionality (Priority 1)</h3>
+<ul>
+<li>VM-001 to VM-016 (Landing, List, Detail, Forms, Deletion)</li>
+</ul>
+<h3 id="phase-2-price-management-priority-2">Phase 2: Price Management (Priority 2)</h3>
+<ul>
+<li>VM-017 to VM-030 (Templates, Campaigns, Pricelists, Portal)</li>
+</ul>
+<h3 id="phase-3-responsive-views-priority-3">Phase 3: Responsive Views (Priority 3)</h3>
+<ul>
+<li>VM-031 to VM-034 (Mobile views)</li>
+</ul>
+<h3 id="phase-4-edge-cases-priority-4">Phase 4: Edge Cases (Priority 4)</h3>
+<ul>
+<li>VM-035 to VM-038 (Empty, Loading, Error states)</li>
+</ul>
+<h2 id="automation-script">Automation Script</h2>
+<pre><code class="language-bash"># Example Playwright script structure
+# To be run when dev server is active
+
+npm run dev &amp;
+sleep 5  # Wait for server
+
+# Capture desktop screenshots
+npx playwright screenshot http://localhost:3000/vendor-management vm-landing-page.png
+# ... (repeat for all routes)
+
+# Capture mobile screenshots
+npx playwright screenshot --viewport-size=375,812 http://localhost:3000/vendor-management vm-mobile-landing.png
+# ... (repeat for mobile routes)
+
+# Kill dev server
+pkill -f &quot;npm run dev&quot;
+</code></pre>
+<h2 id="post-capture-tasks">Post-Capture Tasks</h2>
+<ol>
+<li><strong>Review</strong>: Check all screenshots for clarity and completeness</li>
+<li><strong>Annotate</strong>: Add arrows, highlights, and labels where needed</li>
+<li><strong>Optimize</strong>: Compress images without losing quality</li>
+<li><strong>Organize</strong>: Place in appropriate documentation folders</li>
+<li><strong>Reference</strong>: Update documentation with screenshot references</li>
+</ol>
+<h2 id="screenshot-usage-in-documentation">Screenshot Usage in Documentation</h2>
+<h3 id="in-readmemd">In README.md:</h3>
+<pre><code class="language-markdown">## Vendor List View
+
+![Vendor List Table](./vm-vendor-list.png)
+*Vendor list in table view with search and filter options*
+</code></pre>
+<h3 id="in-component-docs">In Component Docs:</h3>
+<pre><code class="language-markdown">## Advanced Filter Component
+
+![Advanced Filter Dialog](./vm-vendor-list-search.png)
+*Advanced filter dialog showing multi-criteria selection*
+</code></pre>
+<hr>
+<p><strong>Last Updated</strong>: 2025-10-02<br><strong>Total Screenshots Planned</strong>: 38<br><strong>Estimated Capture Time</strong>: 2-3 hours</p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#vendor-management-module-screenshot-capture-plan" class="level-1">Vendor Management Module - Screenshot Capture Plan</a>
+<a href="#overview" class="level-2">Overview</a>
+<a href="#screenshot-categories" class="level-2">Screenshot Categories</a>
+<a href="#1-main-landing-page" class="level-3">1. Main Landing Page</a>
+<a href="#2-vendor-list-pages" class="level-3">2. Vendor List Pages</a>
+<a href="#3-vendor-detail-pages" class="level-3">3. Vendor Detail Pages</a>
+<a href="#4-vendor-form-pages" class="level-3">4. Vendor Form Pages</a>
+<a href="#5-vendor-deletion-flow" class="level-3">5. Vendor Deletion Flow</a>
+<a href="#6-price-management-prototype" class="level-3">6. Price Management (Prototype)</a>
+<a href="#7-mobile-views" class="level-3">7. Mobile Views</a>
+<a href="#8-edge-cases-and-error-states" class="level-3">8. Edge Cases and Error States</a>
+<a href="#capture-instructions" class="level-2">Capture Instructions</a>
+<a href="#tools-needed" class="level-3">Tools Needed</a>
+<a href="#screenshot-standards" class="level-3">Screenshot Standards</a>
+<a href="#sample-data-for-screenshots" class="level-3">Sample Data for Screenshots</a>
+<a href="#capture-sequence" class="level-2">Capture Sequence</a>
+<a href="#phase-1-core-functionality-priority-1" class="level-3">Phase 1: Core Functionality (Priority 1)</a>
+<a href="#phase-2-price-management-priority-2" class="level-3">Phase 2: Price Management (Priority 2)</a>
+<a href="#phase-3-responsive-views-priority-3" class="level-3">Phase 3: Responsive Views (Priority 3)</a>
+<a href="#phase-4-edge-cases-priority-4" class="level-3">Phase 4: Edge Cases (Priority 4)</a>
+<a href="#automation-script" class="level-2">Automation Script</a>
+<a href="#post-capture-tasks" class="level-2">Post-Capture Tasks</a>
+<a href="#screenshot-usage-in-documentation" class="level-2">Screenshot Usage in Documentation</a>
+<a href="#in-readmemd" class="level-3">In README.md:</a>
+<a href="#in-component-docs" class="level-3">In Component Docs:</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Search Modal -->
+    <div class="search-modal" id="searchModal">
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchModalInput" placeholder="Search documentation..." autofocus>
+                    <button class="search-close-btn" id="searchCloseBtn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="search-results" id="searchResults">
+                <div class="search-empty">
+                    <i class="fas fa-search"></i>
+                    <p>Start typing to search...</p>
+                </div>
+            </div>
+            <div class="search-footer">
+                <div class="search-shortcuts">
+                    <kbd>↑↓</kbd> Navigate
+                    <kbd>Enter</kbd> Select
+                    <kbd>Esc</kbd> Close
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Search functionality
+        let searchIndex = [];
+        let selectedResultIndex = -1;
+
+        // Load search index
+        fetch('../../../search-index.json')
+            .then(res => res.json())
+            .then(data => {
+                searchIndex = data;
+                console.log('✓ Search index loaded:', searchIndex.length, 'entries');
+            })
+            .catch(err => console.error('❌ Failed to load search index:', err));
+
+        // Open search modal
+        function openSearchModal() {
+            console.log('🔍 Opening search modal...');
+            document.getElementById('searchModal').classList.add('active');
+            document.getElementById('searchModalInput').focus();
+            selectedResultIndex = -1;
+        }
+
+        // Close search modal
+        function closeSearchModal() {
+            document.getElementById('searchModal').classList.remove('active');
+            document.getElementById('searchModalInput').value = '';
+            document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-search"></i><p>Start typing to search...</p></div>';
+            selectedResultIndex = -1;
+        }
+
+        // Search function
+        function performSearch(query) {
+            console.log('🔎 Searching for:', query);
+
+            if (!query || query.length < 2) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-search"></i><p>Start typing to search...</p></div>';
+                return;
+            }
+
+            if (searchIndex.length === 0) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-exclamation-circle"></i><p>Search index not loaded</p></div>';
+                return;
+            }
+
+            const queryLower = query.toLowerCase();
+            const queryWords = queryLower.split(/s+/).filter(word => word.length > 1);
+
+            // Search and score results
+            const results = searchIndex
+                .map(entry => {
+                    let score = 0;
+
+                    // Title match (highest weight)
+                    if (entry.title.toLowerCase().includes(queryLower)) {
+                        score += 100;
+                    }
+                    queryWords.forEach(word => {
+                        if (entry.title.toLowerCase().includes(word)) score += 50;
+                    });
+
+                    // Content match
+                    if (entry.content.toLowerCase().includes(queryLower)) {
+                        score += 10;
+                    }
+                    queryWords.forEach(word => {
+                        if (entry.content.toLowerCase().includes(word)) score += 5;
+                    });
+
+                    return { ...entry, score };
+                })
+                .filter(result => result.score > 0)
+                .sort((a, b) => b.score - a.score)
+                .slice(0, 10); // Top 10 results
+
+            console.log('📊 Found', results.length, 'results');
+
+            // Display results
+            if (results.length === 0) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-times-circle"></i><p>No results found</p></div>';
+                return;
+            }
+
+            const resultsHtml = results.map((result, index) => {
+                const urlPath = '../../../' + result.url;
+                return '<a href="' + urlPath + '" class="search-result ' + (index === 0 ? 'selected' : '') + '" data-index="' + index + '">' +
+                    '<div class="result-title">' + result.title + '</div>' +
+                    '<div class="result-content">' + highlightMatch(result.content, query) + '</div>' +
+                    '</a>';
+            }).join('');
+
+            document.getElementById('searchResults').innerHTML = resultsHtml;
+            selectedResultIndex = 0;
+        }
+
+        // Highlight matching text
+        function highlightMatch(text, query) {
+            if (!text) return '';
+            const queryWords = query.split(/\s+/).join('|');
+            const regex = new RegExp('(' + queryWords + ')', 'gi');
+            return text.substring(0, 150).replace(regex, '<mark>$1</mark>') + '...';
+        }
+
+        // Navigate results with keyboard
+        function navigateResults(direction) {
+            const results = document.querySelectorAll('.search-result');
+            if (results.length === 0) return;
+
+            results[selectedResultIndex]?.classList.remove('selected');
+
+            if (direction === 'down') {
+                selectedResultIndex = (selectedResultIndex + 1) % results.length;
+            } else if (direction === 'up') {
+                selectedResultIndex = (selectedResultIndex - 1 + results.length) % results.length;
+            }
+
+            results[selectedResultIndex]?.classList.add('selected');
+            results[selectedResultIndex]?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+
+        // Select result
+        function selectResult() {
+            const selected = document.querySelector('.search-result.selected');
+            if (selected) {
+                window.location.href = selected.href;
+            }
+        }
+
+        // Event listeners
+        document.getElementById('headerSearchBtn')?.addEventListener('click', openSearchModal);
+        document.getElementById('searchCloseBtn')?.addEventListener('click', closeSearchModal);
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Ctrl+K or Cmd+K to open search
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                openSearchModal();
+            }
+
+            // Esc to close search
+            if (e.key === 'Escape' && document.getElementById('searchModal').classList.contains('active')) {
+                closeSearchModal();
+            }
+
+            // Navigate results
+            if (document.getElementById('searchModal').classList.contains('active')) {
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    navigateResults('down');
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    navigateResults('up');
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    selectResult();
+                }
+            }
+        });
+
+        // Search input
+        document.getElementById('searchModalInput')?.addEventListener('input', (e) => {
+            performSearch(e.target.value);
+        });
+
+        // Click outside to close
+        document.getElementById('searchModal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'searchModal') {
+                closeSearchModal();
+            }
+        });
+    </script>
+</body>
+</html>

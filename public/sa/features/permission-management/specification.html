@@ -1,0 +1,2125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Permission Management - Technical Specification - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: #f8fafc;
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 15% 70% 15%;
+            gap: 0;
+            width: 100%;
+            padding: 1rem 0 2rem 0;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 1rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 2rem);
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-right: 1px solid var(--border-color);
+            padding-right: 2rem;
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 0.75rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+        .nav-subgroup {
+            margin: 0.5rem 0 0.5rem 0.5rem;
+        }
+        .nav-subgroup-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-subgroup-header:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .nav-subitems {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+            margin-left: 0.75rem;
+            margin-top: 0.25rem;
+        }
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 1rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 2rem);
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-left: 1px solid var(--border-color);
+            padding-left: 2rem;
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header - Modern Compact Design */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 52px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+        }
+        .header-content {
+            height: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--foreground);
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+        .logo:hover {
+            opacity: 0.8;
+        }
+        .logo i {
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+        .header-search-container {
+            display: flex;
+            align-items: center;
+        }
+        .header-search-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.375rem 0.75rem;
+            background: var(--secondary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.8125rem;
+            color: var(--muted-foreground);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            min-width: 180px;
+            flex-shrink: 0;
+        }
+        .header-search-btn:hover {
+            background: var(--background);
+            border-color: var(--primary);
+        }
+        .header-search-btn i {
+            color: var(--muted-foreground);
+            font-size: 0.875rem;
+        }
+        .header-search-btn span {
+            flex: 1;
+            text-align: left;
+        }
+        .header-search-btn kbd {
+            padding: 0.125rem 0.375rem;
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.6875rem;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--muted-foreground);
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        .back-to-home {
+            display: none; /* Hidden - navigation is sufficient */
+        }
+
+        /* Responsive Header */
+        @media (max-width: 768px) {
+            .header-search-btn {
+                min-width: auto;
+            }
+            .header-search-btn span {
+                display: none;
+            }
+        }
+
+        /* Search Modal */
+        .search-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            padding: 2rem;
+        }
+        .search-modal.active {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 10vh;
+        }
+        .search-modal-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 640px;
+            max-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            animation: slideDown 0.2s ease-out;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .search-modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .search-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .search-input-wrapper i {
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+        }
+        .search-input-wrapper input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 1.125rem;
+            color: var(--text-primary);
+        }
+        .search-close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .search-close-btn:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .search-results {
+            overflow-y: auto;
+            max-height: calc(70vh - 150px);
+        }
+        .search-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 2rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+        .search-empty i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        .search-result {
+            display: block;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+        .search-result:hover,
+        .search-result.selected {
+            background: var(--bg-secondary);
+        }
+        .search-result.selected {
+            border-left: 3px solid var(--primary-color);
+        }
+        .result-header {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .result-category {
+            font-size: 0.75rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .result-title {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        .result-badge {
+            display: inline-block;
+            padding: 0.125rem 0.5rem;
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-radius: 4px;
+            font-size: 0.6875rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        .result-content {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        .result-content mark {
+            background: rgba(79, 70, 229, 0.2);
+            color: var(--primary-color);
+            font-weight: 600;
+            padding: 0.125rem 0.25rem;
+            border-radius: 2px;
+        }
+        .search-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            border-bottom-left-radius: var(--border-radius-xl);
+            border-bottom-right-radius: var(--border-radius-xl);
+        }
+        .search-shortcuts {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        .search-shortcuts kbd {
+            padding: 0.25rem 0.5rem;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        /* Content Area */
+        .doc-content {
+            padding: 0 2rem;
+            width: 100%;
+            max-width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 0.9375rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Image Styles */
+        .doc-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 1.5rem auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Limit screenshot width to 80% for better readability */
+        .doc-content p > img {
+            max-width: 80%;
+        }
+
+        /* Table Styles */
+        .doc-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.875rem;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .doc-content table thead {
+            background: #f8fafc;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .doc-content table th {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #0f172a;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        .doc-content table td {
+            padding: 0.75rem 1rem;
+            border-top: 1px solid #e2e8f0;
+            color: #334155;
+        }
+
+        .doc-content table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        /* Table responsive wrapper */
+        .doc-content table {
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .doc-content table thead,
+        .doc-content table tbody,
+        .doc-content table tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 18% 64% 18%;
+                gap: 0;
+                padding: 1rem 0 1.5rem 0;
+            }
+            .doc-nav {
+                padding-right: 1.5rem;
+            }
+            .doc-toc {
+                padding-left: 1.5rem;
+            }
+            .doc-content {
+                padding: 0 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 0;
+                padding: 1rem 0 1.5rem 0;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 0 2rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                gap: 0;
+                padding: 0.5rem 0 1rem 0;
+            }
+            .doc-nav {
+                display: none;
+                border-right: none;
+            }
+            .doc-content {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="../../../index.html" class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </a>
+            <div class="doc-header-actions">
+                <div class="header-search-container">
+                    <button class="header-search-btn" id="headerSearchBtn">
+                        <i class="fas fa-search"></i>
+                        <span>Search documentation...</span>
+                        <kbd>Ctrl+K</kbd>
+                    </button>
+                </div>
+                <a href="../../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../01-overview/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Index</span>
+                    </a>
+                    <a href="../../../01-overview/business-value.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value & ROI</span>
+                    </a>
+                    <a href="../../../01-overview/tech-stack.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Technology Stack</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../02-architecture/system-architecture.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-database"></i>
+                    <span>Data Model</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../03-data-model/data-dictionary.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Data Dictionary</span>
+                    </a>
+                    <a href="../../../03-data-model/schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-th-large"></i>
+                    <span>Application Modules</span>
+                </div>
+                <div class="nav-items">
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Procurement</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/procurement/purchase-requests/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Purchase Requests</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/purchase-orders/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Purchase Orders</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/goods-received-notes/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Goods Received Notes</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/credit-notes/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Credit Notes</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/templates/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Templates</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-boxes"></i>
+                            <span>Inventory Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/inventory/stock-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Stock Management</span>
+                            </a>
+                            <a href="../../../04-modules/inventory/physical-count/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Physical Count</span>
+                            </a>
+                            <a href="../../../04-modules/inventory/spot-check/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Spot Check</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span>Finance</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/finance/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Finance Module</span>
+                            </a>
+                            <a href="../../../04-modules/finance/features/account-code-mapping/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Account Code Mapping</span>
+                            </a>
+                            <a href="../../../04-modules/finance/features/currency-and-rates/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Currency Management</span>
+                            </a>
+                            <a href="../../../04-modules/finance/features/departments/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Departments</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-handshake"></i>
+                            <span>Vendor Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/vendor-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Management</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Management Module</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/MANAGE-VENDORS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Manage Vendors</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/VENDOR-PORTAL.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Portal</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/CAMPAIGNS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Campaigns</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/PRICELISTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Pricelists</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/TEMPLATES.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Templates</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Sitemap</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/PAGES-AND-COMPONENTS-SPEC.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Pages & Components Spec</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/SHARED-COMPONENTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Shared Components</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-box"></i>
+                            <span>Product Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/product-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management</span>
+                            </a>
+                            <a href="../../../04-modules/product-management/product-management-specification.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management Specification</span>
+                            </a>
+                            <a href="../../../04-modules/product-management/product-management-sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management Sitemap</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-store"></i>
+                            <span>Store Operations</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../store-ops/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Operations</span>
+                            </a>
+                            <a href="../../../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Operations Module</span>
+                            </a>
+                            <a href="../../../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Requisitions</span>
+                            </a>
+                            <a href="../../../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Stock Replenishment</span>
+                            </a>
+                            <a href="../../../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Wastage Reporting</span>
+                            </a>
+                            <a href="../../../store-ops/SHARED-COMPONENTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Shared Components</span>
+                            </a>
+                            <a href="../../../store-ops/GLOSSARY.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Glossary</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-clipboard-list"></i>
+                            <span>Operational Planning</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../operational-planning/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Operational Planning</span>
+                            </a>
+                            <a href="../../../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Operational Planning Module</span>
+                            </a>
+                            <a href="../../../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Recipe Management</span>
+                            </a>
+                            <a href="../../../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Menu Engineering</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-cog"></i>
+                            <span>System Administration</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../sa/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>System Administration</span>
+                            </a>
+                            <a href="../../../sa/system-administration-sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>System Administration Sitemap</span>
+                            </a>
+                            <a href="../../../sa/features/permission-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Permission Management</span>
+                            </a>
+                            <a href="../../../sa/features/permission-management/specification.html" class="nav-item active">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Permission Specification</span>
+                            </a>
+                            <a href="../../../sa/features/location-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Location Management</span>
+                            </a>
+                            <a href="../../../sa/features/workflow/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Workflow</span>
+                            </a>
+                            <a href="../../../sa/features/pos-integration/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Reporting</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/reporting/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Reporting & Analytics</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../dashboard/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard</span>
+                            </a>
+                            <a href="../../../dashboard/sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard Sitemap</span>
+                            </a>
+                            <a href="../../../dashboard/components/components-overview.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Components Overview</span>
+                            </a>
+                            <a href="../../../dashboard/api/api-specifications.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>API Specifications</span>
+                            </a>
+                            <a href="../../../dashboard/business-logic/dashboard-business-rules.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard Business Rules</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-industry"></i>
+                            <span>Production</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/production/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Production</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-cash-register"></i>
+                            <span>POS Integration</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../pos-integration/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration</span>
+                            </a>
+                            <a href="../../../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration Module</span>
+                            </a>
+                            <a href="../../../pos-integration/MAPPING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Mapping</span>
+                            </a>
+                            <a href="../../../pos-integration/REPORTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Reports</span>
+                            </a>
+                            <a href="../../../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Transactions</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="permission-management-technical-specification">Permission Management - Technical Specification</h1>
+<blockquote>
+<p><strong>Version:</strong> 1.0.0<br><strong>Status:</strong> Production Ready<br><strong>Last Updated:</strong> 2025-01-17</p>
+</blockquote>
+<hr>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#system-overview">System Overview</a></li>
+<li><a href="#architecture">Architecture</a></li>
+<li><a href="#data-models">Data Models</a></li>
+<li><a href="#api-specifications">API Specifications</a></li>
+<li><a href="#security--compliance">Security &amp; Compliance</a></li>
+<li><a href="#performance-requirements">Performance Requirements</a></li>
+<li><a href="#integration-points">Integration Points</a></li>
+</ol>
+<hr>
+<h2 id="system-overview">System Overview</h2>
+<h3 id="purpose">Purpose</h3>
+<p>The Permission Management system provides enterprise-grade access control for Carmen ERP through a hybrid RBAC/ABAC approach, enabling both simple role-based permissions and complex attribute-based policies.</p>
+<h3 id="key-design-decisions">Key Design Decisions</h3>
+<ol>
+<li><strong>Hybrid RBAC/ABAC</strong>: Combines simplicity of roles with flexibility of attribute-based policies</li>
+<li><strong>Priority-Based Evaluation</strong>: Deterministic policy evaluation using priority levels</li>
+<li><strong>Real-Time Enforcement</strong>: Sub-100ms policy evaluation for all requests</li>
+<li><strong>Subscription Integration</strong>: Feature gating based on subscription tiers</li>
+<li><strong>Audit-First Design</strong>: Comprehensive logging of all permission changes</li>
+</ol>
+<h3 id="system-boundaries">System Boundaries</h3>
+<p><strong>In Scope</strong>:</p>
+<ul>
+<li>Policy creation, management, and evaluation</li>
+<li>Role definition and assignment</li>
+<li>Subscription-based feature gating</li>
+<li>Permission audit logging</li>
+<li>Policy testing and simulation</li>
+</ul>
+<p><strong>Out of Scope</strong>:</p>
+<ul>
+<li>User authentication (handled by auth module)</li>
+<li>Session management (handled by auth module)</li>
+<li>Billing and payment processing (handled by finance module)</li>
+<li>User provisioning (handled by user management)</li>
+</ul>
+<hr>
+<h2 id="architecture">Architecture</h2>
+<h3 id="system-components">System Components</h3>
+<pre><code>┌─────────────────────────────────────────────────────────────┐
+│                    Frontend Layer                           │
+├─────────────────────────────────────────────────────────────┤
+│  PolicyList  │  RoleList  │  SubscriptionManager           │
+└──────┬────────────┬────────────────┬────────────────────────┘
+       │            │                │
+       ▼            ▼                ▼
+┌─────────────────────────────────────────────────────────────┐
+│                  Application Layer                          │
+├─────────────────────────────────────────────────────────────┤
+│  PolicyService │ RoleService │ SubscriptionService          │
+└──────┬─────────────┬──────────────┬──────────────────────────┘
+       │             │              │
+       ▼             ▼              ▼
+┌─────────────────────────────────────────────────────────────┐
+│                    Data Layer                               │
+├─────────────────────────────────────────────────────────────┤
+│   PolicyStore  │  RoleStore  │  SubscriptionStore           │
+└─────────────────────────────────────────────────────────────┘
+</code></pre>
+<h3 id="component-responsibilities">Component Responsibilities</h3>
+<h4>Frontend Components</h4>
+<p><strong>PolicyList</strong>:</p>
+<ul>
+<li>Display policies in table/card view</li>
+<li>Filter and search policies</li>
+<li>Handle policy CRUD operations</li>
+<li>Trigger policy builder wizard</li>
+</ul>
+<p><strong>RoleList</strong>:</p>
+<ul>
+<li>Display roles in table/card view</li>
+<li>Manage role assignments</li>
+<li>Handle role CRUD operations</li>
+<li>User assignment interface</li>
+</ul>
+<p><strong>SubscriptionManager</strong>:</p>
+<ul>
+<li>Package comparison and selection</li>
+<li>Resource activation management</li>
+<li>Billing information management</li>
+<li>Usage analytics display</li>
+</ul>
+<h4>Application Services</h4>
+<p><strong>PolicyService</strong>:</p>
+<ul>
+<li>Policy evaluation engine</li>
+<li>Policy CRUD operations</li>
+<li>Policy validation</li>
+<li>Policy testing and simulation</li>
+<li>Conflict resolution</li>
+</ul>
+<p><strong>RoleService</strong>:</p>
+<ul>
+<li>Role CRUD operations</li>
+<li>Permission inheritance calculation</li>
+<li>User-role assignment</li>
+<li>Role hierarchy validation</li>
+</ul>
+<p><strong>SubscriptionService</strong>:</p>
+<ul>
+<li>Subscription package management</li>
+<li>Resource limit enforcement</li>
+<li>Usage tracking</li>
+<li>Billing status monitoring</li>
+</ul>
+<h4>Data Stores</h4>
+<p><strong>PolicyStore</strong> (Zustand):</p>
+<ul>
+<li>Policy state management</li>
+<li>Policy caching</li>
+<li>Optimistic updates</li>
+<li>Real-time sync</li>
+</ul>
+<p><strong>RoleStore</strong> (Zustand):</p>
+<ul>
+<li>Role state management</li>
+<li>Role caching</li>
+<li>Permission aggregation</li>
+<li>Hierarchy calculation</li>
+</ul>
+<p><strong>SubscriptionStore</strong> (Zustand):</p>
+<ul>
+<li>Subscription state</li>
+<li>Resource usage tracking</li>
+<li>Limit enforcement</li>
+<li>Usage analytics</li>
+</ul>
+<hr>
+<h2 id="data-models">Data Models</h2>
+<h3 id="policy-model">Policy Model</h3>
+<pre><code class="language-typescript">interface Policy {
+  // Identity
+  id: string;
+  name: string;
+  description: string;
+
+  // Effect
+  effect: EffectType; // &#39;permit&#39; | &#39;deny&#39;
+  enabled: boolean;
+  priority: number; // 0-1000, higher = evaluated first
+
+  // Targeting
+  resources: ResourceSelector[];
+  actions: ActionSelector[];
+  conditions?: PolicyCondition[];
+
+  // Metadata
+  category?: string;
+  tags?: string[];
+  version: number;
+
+  // Audit
+  createdBy: string;
+  createdAt: Date;
+  updatedBy: string;
+  updatedAt: Date;
+
+  // Statistics
+  evaluationCount: number;
+  lastEvaluatedAt?: Date;
+}
+
+interface ResourceSelector {
+  type: ResourceType;
+  id?: string; // Specific resource ID or pattern
+  pattern?: string; // Wildcard pattern (e.g., &quot;purchase-*&quot;)
+  attributes?: Record&lt;string, any&gt;;
+}
+
+interface ActionSelector {
+  name: string; // e.g., &quot;read&quot;, &quot;write&quot;, &quot;approve&quot;
+  scope?: string; // e.g., &quot;own&quot;, &quot;department&quot;, &quot;all&quot;
+}
+
+interface PolicyCondition {
+  type: ConditionType;
+  operator: ComparisonOperator;
+  value: any;
+  path?: string; // JSON path for nested attributes
+}
+
+enum EffectType {
+  PERMIT = &#39;permit&#39;,
+  DENY = &#39;deny&#39;
+}
+
+enum ConditionType {
+  USER_ATTRIBUTE = &#39;user_attribute&#39;,
+  RESOURCE_ATTRIBUTE = &#39;resource_attribute&#39;,
+  CONTEXT_ATTRIBUTE = &#39;context_attribute&#39;,
+  TIME_BASED = &#39;time_based&#39;,
+  LOCATION_BASED = &#39;location_based&#39;
+}
+
+enum ComparisonOperator {
+  EQUALS = &#39;eq&#39;,
+  NOT_EQUALS = &#39;ne&#39;,
+  GREATER_THAN = &#39;gt&#39;,
+  LESS_THAN = &#39;lt&#39;,
+  IN = &#39;in&#39;,
+  NOT_IN = &#39;not_in&#39;,
+  MATCHES = &#39;matches&#39;, // Regex
+  EXISTS = &#39;exists&#39;
+}
+</code></pre>
+<h3 id="role-model">Role Model</h3>
+<pre><code class="language-typescript">interface Role {
+  // Identity
+  id: string;
+  name: string;
+  description: string;
+
+  // Hierarchy
+  hierarchy: number; // 0-100, higher = more privileged
+  parentRoles: string[]; // IDs of parent roles
+
+  // Permissions
+  permissions: string[]; // Array of permission strings
+  inheritedPermissions?: string[]; // Computed from parents
+
+  // Classification
+  type: RoleType; // &#39;system&#39; | &#39;custom&#39; | &#39;department&#39;
+  department?: string; // Department scope (optional)
+  location?: string; // Location scope (optional)
+
+  // Status
+  isSystemRole: boolean; // Cannot be modified if true
+  isActive: boolean;
+
+  // Statistics
+  userCount: number; // Number of users with this role
+
+  // Audit
+  createdBy: string;
+  createdAt: Date;
+  updatedBy: string;
+  updatedAt: Date;
+}
+
+enum RoleType {
+  SYSTEM = &#39;system&#39;,       // Pre-defined, cannot delete
+  CUSTOM = &#39;custom&#39;,       // User-created
+  DEPARTMENT = &#39;department&#39; // Scoped to department
+}
+</code></pre>
+<h3 id="subscription-model">Subscription Model</h3>
+<pre><code class="language-typescript">interface Subscription {
+  // Identity
+  id: string;
+  organizationId: string;
+
+  // Package
+  packageType: PackageType;
+  packageName: string;
+
+  // Status
+  status: SubscriptionStatus;
+  billingCycle: BillingCycle;
+
+  // Resources
+  resources: ResourceLimits;
+  usage: ResourceUsage;
+
+  // Billing
+  billingInfo: BillingInformation;
+  paymentMethod: PaymentMethod;
+
+  // Dates
+  startDate: Date;
+  renewalDate: Date;
+  trialEndDate?: Date;
+  suspendedAt?: Date;
+  cancelledAt?: Date;
+
+  // Metadata
+  notes?: string;
+  customLimits?: Record&lt;string, number&gt;;
+}
+
+enum PackageType {
+  STARTER = &#39;starter&#39;,
+  PROFESSIONAL = &#39;professional&#39;,
+  ENTERPRISE = &#39;enterprise&#39;,
+  CUSTOM = &#39;custom&#39;
+}
+
+enum SubscriptionStatus {
+  ACTIVE = &#39;active&#39;,
+  TRIAL = &#39;trial&#39;,
+  SUSPENDED = &#39;suspended&#39;,
+  CANCELLED = &#39;cancelled&#39;,
+  EXPIRED = &#39;expired&#39;
+}
+
+enum BillingCycle {
+  MONTHLY = &#39;monthly&#39;,
+  ANNUAL = &#39;annual&#39;,
+  CUSTOM = &#39;custom&#39;
+}
+
+interface ResourceLimits {
+  users: number;
+  locations: number;
+  storage: number; // GB
+  apiCalls: number; // per month
+  features: string[]; // Enabled feature IDs
+}
+
+interface ResourceUsage {
+  users: number;
+  locations: number;
+  storage: number;
+  apiCalls: number;
+  lastUpdated: Date;
+}
+
+interface BillingInformation {
+  company: string;
+  email: string;
+  address: Address;
+  taxId?: string;
+  currency: string;
+}
+
+interface PaymentMethod {
+  type: &#39;card&#39; | &#39;bank_transfer&#39; | &#39;invoice&#39;;
+  cardLast4?: string;
+  cardBrand?: string;
+  expiryMonth?: number;
+  expiryYear?: number;
+}
+</code></pre>
+<hr>
+<h2 id="api-specifications">API Specifications</h2>
+<h3 id="policy-endpoints">Policy Endpoints</h3>
+<h4>List Policies</h4>
+<pre><code class="language-http">GET /api/policies
+Query Parameters:
+  - effect: string (optional) - Filter by effect type
+  - status: string (optional) - Filter by enabled status
+  - category: string (optional) - Filter by category
+  - search: string (optional) - Search in name/description
+  - limit: number (optional, default: 50)
+  - offset: number (optional, default: 0)
+
+Response: 200 OK
+{
+  &quot;policies&quot;: Policy[],
+  &quot;total&quot;: number,
+  &quot;limit&quot;: number,
+  &quot;offset&quot;: number
+}
+</code></pre>
+<h4>Create Policy</h4>
+<pre><code class="language-http">POST /api/policies
+Request Body:
+{
+  &quot;name&quot;: string,
+  &quot;description&quot;: string,
+  &quot;effect&quot;: EffectType,
+  &quot;priority&quot;: number,
+  &quot;resources&quot;: ResourceSelector[],
+  &quot;actions&quot;: ActionSelector[],
+  &quot;conditions&quot;: PolicyCondition[] (optional)
+}
+
+Response: 201 Created
+{
+  &quot;policy&quot;: Policy
+}
+
+Errors:
+  - 400: Invalid policy data
+  - 409: Policy name already exists
+  - 403: Insufficient permissions
+</code></pre>
+<h4>Get Policy Details</h4>
+<pre><code class="language-http">GET /api/policies/:id
+
+Response: 200 OK
+{
+  &quot;policy&quot;: Policy,
+  &quot;evaluationHistory&quot;: EvaluationStats
+}
+
+Errors:
+  - 404: Policy not found
+  - 403: Insufficient permissions
+</code></pre>
+<h4>Update Policy</h4>
+<pre><code class="language-http">PUT /api/policies/:id
+Request Body: Partial&lt;Policy&gt;
+
+Response: 200 OK
+{
+  &quot;policy&quot;: Policy
+}
+
+Errors:
+  - 400: Invalid update data
+  - 404: Policy not found
+  - 409: Conflict (e.g., name already exists)
+  - 403: Insufficient permissions
+</code></pre>
+<h4>Delete Policy</h4>
+<pre><code class="language-http">DELETE /api/policies/:id
+
+Response: 204 No Content
+
+Errors:
+  - 404: Policy not found
+  - 403: Insufficient permissions
+  - 409: Policy in use (provide override flag)
+</code></pre>
+<h4>Test Policy</h4>
+<pre><code class="language-http">POST /api/policies/:id/test
+Request Body:
+{
+  &quot;user&quot;: UserContext,
+  &quot;resource&quot;: ResourceContext,
+  &quot;action&quot;: string,
+  &quot;context&quot;: Record&lt;string, any&gt;
+}
+
+Response: 200 OK
+{
+  &quot;result&quot;: &#39;permit&#39; | &#39;deny&#39;,
+  &quot;matchedConditions&quot;: ConditionResult[],
+  &quot;evaluationTime&quot;: number, // milliseconds
+  &quot;explanation&quot;: string
+}
+</code></pre>
+<h3 id="role-endpoints">Role Endpoints</h3>
+<h4>List Roles</h4>
+<pre><code class="language-http">GET /api/roles
+Query Parameters:
+  - hierarchy: string (optional) - Filter by hierarchy level
+  - department: string (optional) - Filter by department
+  - type: string (optional) - Filter by role type
+  - search: string (optional) - Search in name/description
+  - limit: number (optional, default: 50)
+  - offset: number (optional, default: 0)
+
+Response: 200 OK
+{
+  &quot;roles&quot;: Role[],
+  &quot;total&quot;: number,
+  &quot;limit&quot;: number,
+  &quot;offset&quot;: number
+}
+</code></pre>
+<h4>Create Role</h4>
+<pre><code class="language-http">POST /api/roles
+Request Body:
+{
+  &quot;name&quot;: string,
+  &quot;description&quot;: string,
+  &quot;hierarchy&quot;: number,
+  &quot;permissions&quot;: string[],
+  &quot;parentRoles&quot;: string[] (optional),
+  &quot;department&quot;: string (optional)
+}
+
+Response: 201 Created
+{
+  &quot;role&quot;: Role
+}
+
+Errors:
+  - 400: Invalid role data
+  - 409: Role name already exists
+  - 403: Insufficient permissions
+</code></pre>
+<h4>Get Role Details</h4>
+<pre><code class="language-http">GET /api/roles/:id
+
+Response: 200 OK
+{
+  &quot;role&quot;: Role,
+  &quot;users&quot;: User[], // Users with this role
+  &quot;effectivePermissions&quot;: string[] // Including inherited
+}
+</code></pre>
+<h4>Update Role</h4>
+<pre><code class="language-http">PUT /api/roles/:id
+Request Body: Partial&lt;Role&gt;
+
+Response: 200 OK
+{
+  &quot;role&quot;: Role
+}
+
+Errors:
+  - 400: Invalid update data
+  - 404: Role not found
+  - 409: Circular hierarchy detected
+  - 403: Insufficient permissions or system role
+</code></pre>
+<h4>Delete Role</h4>
+<pre><code class="language-http">DELETE /api/roles/:id
+
+Response: 204 No Content
+
+Errors:
+  - 404: Role not found
+  - 403: Insufficient permissions or system role
+  - 409: Role assigned to users (provide force flag)
+</code></pre>
+<h4>Assign Users to Role</h4>
+<pre><code class="language-http">POST /api/roles/:id/assign
+Request Body:
+{
+  &quot;userIds&quot;: string[]
+}
+
+Response: 200 OK
+{
+  &quot;assigned&quot;: number,
+  &quot;failed&quot;: number,
+  &quot;errors&quot;: AssignmentError[]
+}
+</code></pre>
+<h3 id="subscription-endpoints">Subscription Endpoints</h3>
+<h4>Get Subscription</h4>
+<pre><code class="language-http">GET /api/subscriptions
+
+Response: 200 OK
+{
+  &quot;subscription&quot;: Subscription,
+  &quot;availablePackages&quot;: Package[],
+  &quot;usage&quot;: ResourceUsage
+}
+</code></pre>
+<h4>Update Package</h4>
+<pre><code class="language-http">PUT /api/subscriptions/package
+Request Body:
+{
+  &quot;packageType&quot;: PackageType,
+  &quot;billingCycle&quot;: BillingCycle
+}
+
+Response: 200 OK
+{
+  &quot;subscription&quot;: Subscription,
+  &quot;prorationAmount&quot;: number,
+  &quot;effectiveDate&quot;: Date
+}
+
+Errors:
+  - 400: Invalid package
+  - 402: Payment required
+  - 403: Insufficient permissions
+</code></pre>
+<h4>Toggle Resource</h4>
+<pre><code class="language-http">POST /api/subscriptions/resources
+Request Body:
+{
+  &quot;resourceId&quot;: string,
+  &quot;enabled&quot;: boolean
+}
+
+Response: 200 OK
+{
+  &quot;subscription&quot;: Subscription
+}
+
+Errors:
+  - 400: Resource not available in package
+  - 403: Insufficient permissions
+</code></pre>
+<h4>Update Billing Info</h4>
+<pre><code class="language-http">PUT /api/subscriptions/billing
+Request Body: BillingInformation
+
+Response: 200 OK
+{
+  &quot;subscription&quot;: Subscription
+}
+</code></pre>
+<hr>
+<h2 id="security-amp-compliance">Security &amp; Compliance</h2>
+<h3 id="authentication-requirements">Authentication Requirements</h3>
+<p>All Permission Management endpoints require:</p>
+<ul>
+<li>Valid authentication token</li>
+<li>Active user session</li>
+<li>MFA verification for sensitive operations (policy delete, role delete)</li>
+</ul>
+<h3 id="authorization-matrix">Authorization Matrix</h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Required Permission</th>
+<th>Additional Checks</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>List Policies</td>
+<td><code>view_policies</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td>Create Policy</td>
+<td><code>manage_policies</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td>Edit Policy</td>
+<td><code>manage_policies</code></td>
+<td>Owner or Admin</td>
+</tr>
+<tr>
+<td>Delete Policy</td>
+<td><code>manage_policies</code></td>
+<td>MFA required</td>
+</tr>
+<tr>
+<td>Test Policy</td>
+<td><code>test_policies</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td>List Roles</td>
+<td><code>view_roles</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td>Create Role</td>
+<td><code>manage_roles</code></td>
+<td>Hierarchy check</td>
+</tr>
+<tr>
+<td>Edit Role</td>
+<td><code>manage_roles</code></td>
+<td>Cannot edit higher hierarchy</td>
+</tr>
+<tr>
+<td>Delete Role</td>
+<td><code>manage_roles</code></td>
+<td>MFA required, not system role</td>
+</tr>
+<tr>
+<td>Assign Users</td>
+<td><code>assign_roles</code></td>
+<td>Department scope check</td>
+</tr>
+<tr>
+<td>View Subscription</td>
+<td><code>view_subscription</code></td>
+<td>-</td>
+</tr>
+<tr>
+<td>Manage Subscription</td>
+<td><code>manage_subscription</code></td>
+<td>Organization admin only</td>
+</tr>
+</tbody></table>
+<h3 id="audit-logging">Audit Logging</h3>
+<p>All permission changes are logged with:</p>
+<pre><code class="language-typescript">interface AuditLog {
+  id: string;
+  timestamp: Date;
+  userId: string;
+  userEmail: string;
+  action: AuditAction;
+  resource: string; // e.g., &quot;policy:123&quot;
+  oldValue?: any;
+  newValue?: any;
+  reason?: string;
+  ipAddress: string;
+  userAgent: string;
+}
+
+enum AuditAction {
+  CREATE = &#39;create&#39;,
+  UPDATE = &#39;update&#39;,
+  DELETE = &#39;delete&#39;,
+  VIEW = &#39;view&#39;,
+  ASSIGN = &#39;assign&#39;,
+  UNASSIGN = &#39;unassign&#39;,
+  ENABLE = &#39;enable&#39;,
+  DISABLE = &#39;disable&#39;
+}
+</code></pre>
+<h3 id="data-encryption">Data Encryption</h3>
+<ul>
+<li><strong>At Rest</strong>: All sensitive data encrypted using AES-256</li>
+<li><strong>In Transit</strong>: TLS 1.3 minimum for all API communications</li>
+<li><strong>Secrets</strong>: Payment methods and API keys encrypted with separate key</li>
+</ul>
+<hr>
+<h2 id="performance-requirements">Performance Requirements</h2>
+<h3 id="response-time-targets">Response Time Targets</h3>
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Target</th>
+<th>Maximum</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Policy Evaluation</td>
+<td>&lt;50ms</td>
+<td>&lt;100ms</td>
+</tr>
+<tr>
+<td>List Policies</td>
+<td>&lt;200ms</td>
+<td>&lt;500ms</td>
+</tr>
+<tr>
+<td>Create Policy</td>
+<td>&lt;500ms</td>
+<td>&lt;1s</td>
+</tr>
+<tr>
+<td>List Roles</td>
+<td>&lt;200ms</td>
+<td>&lt;500ms</td>
+</tr>
+<tr>
+<td>Permission Check</td>
+<td>&lt;10ms</td>
+<td>&lt;50ms</td>
+</tr>
+<tr>
+<td>Subscription Check</td>
+<td>&lt;50ms</td>
+<td>&lt;100ms</td>
+</tr>
+</tbody></table>
+<h3 id="scalability-targets">Scalability Targets</h3>
+<ul>
+<li>Support 10,000+ concurrent users</li>
+<li>Handle 100,000+ policy evaluations per second</li>
+<li>Store 50,000+ policies per organization</li>
+<li>Manage 10,000+ roles per organization</li>
+</ul>
+<h3 id="caching-strategy">Caching Strategy</h3>
+<ol>
+<li><p><strong>Policy Cache</strong>:</p>
+<ul>
+<li>TTL: 5 minutes</li>
+<li>Invalidation: On policy update/delete</li>
+<li>Size: 1000 most-used policies per organization</li>
+</ul>
+</li>
+<li><p><strong>Role Cache</strong>:</p>
+<ul>
+<li>TTL: 10 minutes</li>
+<li>Invalidation: On role update/delete/assignment</li>
+<li>Size: All roles (typically &lt;1000 per org)</li>
+</ul>
+</li>
+<li><p><strong>Permission Cache</strong>:</p>
+<ul>
+<li>TTL: User session duration</li>
+<li>Invalidation: On role assignment change</li>
+<li>Size: Per-user effective permissions</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h2 id="integration-points">Integration Points</h2>
+<h3 id="user-management-integration">User Management Integration</h3>
+<p>Permission system integrates with user management for:</p>
+<ul>
+<li>User context in policy evaluation</li>
+<li>Role assignment to users</li>
+<li>Permission inheritance calculation</li>
+<li>User attribute access</li>
+</ul>
+<h3 id="audit-system-integration">Audit System Integration</h3>
+<p>All permission changes are sent to central audit system:</p>
+<ul>
+<li>Real-time event streaming</li>
+<li>Compliance report generation</li>
+<li>Security incident correlation</li>
+<li>Access pattern analysis</li>
+</ul>
+<h3 id="billing-system-integration">Billing System Integration</h3>
+<p>Subscription management integrates with billing:</p>
+<ul>
+<li>Package change events</li>
+<li>Usage metering data</li>
+<li>Payment status updates</li>
+<li>Invoice generation triggers</li>
+</ul>
+<h3 id="notification-system-integration">Notification System Integration</h3>
+<p>Sends notifications for:</p>
+<ul>
+<li>Policy violations</li>
+<li>Subscription limit warnings</li>
+<li>Renewal reminders</li>
+<li>Feature activation confirmations</li>
+</ul>
+<hr>
+<p><strong>Document Version:</strong> 1.0.0<br><strong>Last Updated:</strong> 2025-01-17<br><strong>Status:</strong> Production Ready</p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#permission-management-technical-specification" class="level-1">Permission Management - Technical Specification</a>
+<a href="#table-of-contents" class="level-2">Table of Contents</a>
+<a href="#system-overview" class="level-2">System Overview</a>
+<a href="#purpose" class="level-3">Purpose</a>
+<a href="#key-design-decisions" class="level-3">Key Design Decisions</a>
+<a href="#system-boundaries" class="level-3">System Boundaries</a>
+<a href="#architecture" class="level-2">Architecture</a>
+<a href="#system-components" class="level-3">System Components</a>
+<a href="#component-responsibilities" class="level-3">Component Responsibilities</a>
+<a href="#data-models" class="level-2">Data Models</a>
+<a href="#policy-model" class="level-3">Policy Model</a>
+<a href="#role-model" class="level-3">Role Model</a>
+<a href="#subscription-model" class="level-3">Subscription Model</a>
+<a href="#api-specifications" class="level-2">API Specifications</a>
+<a href="#policy-endpoints" class="level-3">Policy Endpoints</a>
+<a href="#role-endpoints" class="level-3">Role Endpoints</a>
+<a href="#subscription-endpoints" class="level-3">Subscription Endpoints</a>
+<a href="#security-amp-compliance" class="level-2">Security &amp; Compliance</a>
+<a href="#authentication-requirements" class="level-3">Authentication Requirements</a>
+<a href="#authorization-matrix" class="level-3">Authorization Matrix</a>
+<a href="#audit-logging" class="level-3">Audit Logging</a>
+<a href="#data-encryption" class="level-3">Data Encryption</a>
+<a href="#performance-requirements" class="level-2">Performance Requirements</a>
+<a href="#response-time-targets" class="level-3">Response Time Targets</a>
+<a href="#scalability-targets" class="level-3">Scalability Targets</a>
+<a href="#caching-strategy" class="level-3">Caching Strategy</a>
+<a href="#integration-points" class="level-2">Integration Points</a>
+<a href="#user-management-integration" class="level-3">User Management Integration</a>
+<a href="#audit-system-integration" class="level-3">Audit System Integration</a>
+<a href="#billing-system-integration" class="level-3">Billing System Integration</a>
+<a href="#notification-system-integration" class="level-3">Notification System Integration</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Search Modal -->
+    <div class="search-modal" id="searchModal">
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchModalInput" placeholder="Search documentation..." autofocus>
+                    <button class="search-close-btn" id="searchCloseBtn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="search-results" id="searchResults">
+                <div class="search-empty">
+                    <i class="fas fa-search"></i>
+                    <p>Start typing to search...</p>
+                </div>
+            </div>
+            <div class="search-footer">
+                <div class="search-shortcuts">
+                    <kbd>↑↓</kbd> Navigate
+                    <kbd>Enter</kbd> Select
+                    <kbd>Esc</kbd> Close
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Search functionality
+        let searchIndex = [];
+        let selectedResultIndex = -1;
+
+        // Load search index
+        fetch('../../../search-index.json')
+            .then(res => res.json())
+            .then(data => {
+                searchIndex = data;
+                console.log('✓ Search index loaded:', searchIndex.length, 'entries');
+            })
+            .catch(err => console.error('❌ Failed to load search index:', err));
+
+        // Open search modal
+        function openSearchModal() {
+            console.log('🔍 Opening search modal...');
+            document.getElementById('searchModal').classList.add('active');
+            document.getElementById('searchModalInput').focus();
+            selectedResultIndex = -1;
+        }
+
+        // Close search modal
+        function closeSearchModal() {
+            document.getElementById('searchModal').classList.remove('active');
+            document.getElementById('searchModalInput').value = '';
+            document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-search"></i><p>Start typing to search...</p></div>';
+            selectedResultIndex = -1;
+        }
+
+        // Search function
+        function performSearch(query) {
+            console.log('🔎 Searching for:', query);
+
+            if (!query || query.length < 2) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-search"></i><p>Start typing to search...</p></div>';
+                return;
+            }
+
+            if (searchIndex.length === 0) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-exclamation-circle"></i><p>Search index not loaded</p></div>';
+                return;
+            }
+
+            const queryLower = query.toLowerCase();
+            const queryWords = queryLower.split(/s+/).filter(word => word.length > 1);
+
+            // Search and score results
+            const results = searchIndex
+                .map(entry => {
+                    let score = 0;
+
+                    // Title match (highest weight)
+                    if (entry.title.toLowerCase().includes(queryLower)) {
+                        score += 100;
+                    }
+                    queryWords.forEach(word => {
+                        if (entry.title.toLowerCase().includes(word)) score += 50;
+                    });
+
+                    // Content match
+                    if (entry.content.toLowerCase().includes(queryLower)) {
+                        score += 10;
+                    }
+                    queryWords.forEach(word => {
+                        if (entry.content.toLowerCase().includes(word)) score += 5;
+                    });
+
+                    return { ...entry, score };
+                })
+                .filter(result => result.score > 0)
+                .sort((a, b) => b.score - a.score)
+                .slice(0, 10); // Top 10 results
+
+            console.log('📊 Found', results.length, 'results');
+
+            // Display results
+            if (results.length === 0) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-times-circle"></i><p>No results found</p></div>';
+                return;
+            }
+
+            const resultsHtml = results.map((result, index) => {
+                const urlPath = '../../../' + result.url;
+                return '<a href="' + urlPath + '" class="search-result ' + (index === 0 ? 'selected' : '') + '" data-index="' + index + '">' +
+                    '<div class="result-title">' + result.title + '</div>' +
+                    '<div class="result-content">' + highlightMatch(result.content, query) + '</div>' +
+                    '</a>';
+            }).join('');
+
+            document.getElementById('searchResults').innerHTML = resultsHtml;
+            selectedResultIndex = 0;
+        }
+
+        // Highlight matching text
+        function highlightMatch(text, query) {
+            if (!text) return '';
+            const queryWords = query.split(/\s+/).join('|');
+            const regex = new RegExp('(' + queryWords + ')', 'gi');
+            return text.substring(0, 150).replace(regex, '<mark>$1</mark>') + '...';
+        }
+
+        // Navigate results with keyboard
+        function navigateResults(direction) {
+            const results = document.querySelectorAll('.search-result');
+            if (results.length === 0) return;
+
+            results[selectedResultIndex]?.classList.remove('selected');
+
+            if (direction === 'down') {
+                selectedResultIndex = (selectedResultIndex + 1) % results.length;
+            } else if (direction === 'up') {
+                selectedResultIndex = (selectedResultIndex - 1 + results.length) % results.length;
+            }
+
+            results[selectedResultIndex]?.classList.add('selected');
+            results[selectedResultIndex]?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+
+        // Select result
+        function selectResult() {
+            const selected = document.querySelector('.search-result.selected');
+            if (selected) {
+                window.location.href = selected.href;
+            }
+        }
+
+        // Event listeners
+        document.getElementById('headerSearchBtn')?.addEventListener('click', openSearchModal);
+        document.getElementById('searchCloseBtn')?.addEventListener('click', closeSearchModal);
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Ctrl+K or Cmd+K to open search
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                openSearchModal();
+            }
+
+            // Esc to close search
+            if (e.key === 'Escape' && document.getElementById('searchModal').classList.contains('active')) {
+                closeSearchModal();
+            }
+
+            // Navigate results
+            if (document.getElementById('searchModal').classList.contains('active')) {
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    navigateResults('down');
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    navigateResults('up');
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    selectResult();
+                }
+            }
+        });
+
+        // Search input
+        document.getElementById('searchModalInput')?.addEventListener('input', (e) => {
+            performSearch(e.target.value);
+        });
+
+        // Click outside to close
+        document.getElementById('searchModal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'searchModal') {
+                closeSearchModal();
+            }
+        });
+    </script>
+</body>
+</html>

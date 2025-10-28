@@ -1,0 +1,2178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spot Check Module - Complete Specification - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: #f8fafc;
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 15% 70% 15%;
+            gap: 0;
+            width: 100%;
+            padding: 1rem 0 2rem 0;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 1rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 2rem);
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-right: 1px solid var(--border-color);
+            padding-right: 2rem;
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 0.75rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+        .nav-subgroup {
+            margin: 0.5rem 0 0.5rem 0.5rem;
+        }
+        .nav-subgroup-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-subgroup-header:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .nav-subitems {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+            margin-left: 0.75rem;
+            margin-top: 0.25rem;
+        }
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 1rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 2rem);
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-left: 1px solid var(--border-color);
+            padding-left: 2rem;
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header - Modern Compact Design */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 52px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+        }
+        .header-content {
+            height: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--foreground);
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+        .logo:hover {
+            opacity: 0.8;
+        }
+        .logo i {
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+        .header-search-container {
+            display: flex;
+            align-items: center;
+        }
+        .header-search-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.375rem 0.75rem;
+            background: var(--secondary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.8125rem;
+            color: var(--muted-foreground);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            min-width: 180px;
+            flex-shrink: 0;
+        }
+        .header-search-btn:hover {
+            background: var(--background);
+            border-color: var(--primary);
+        }
+        .header-search-btn i {
+            color: var(--muted-foreground);
+            font-size: 0.875rem;
+        }
+        .header-search-btn span {
+            flex: 1;
+            text-align: left;
+        }
+        .header-search-btn kbd {
+            padding: 0.125rem 0.375rem;
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.6875rem;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--muted-foreground);
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        .back-to-home {
+            display: none; /* Hidden - navigation is sufficient */
+        }
+
+        /* Responsive Header */
+        @media (max-width: 768px) {
+            .header-search-btn {
+                min-width: auto;
+            }
+            .header-search-btn span {
+                display: none;
+            }
+        }
+
+        /* Search Modal */
+        .search-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            padding: 2rem;
+        }
+        .search-modal.active {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 10vh;
+        }
+        .search-modal-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 640px;
+            max-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            animation: slideDown 0.2s ease-out;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .search-modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .search-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .search-input-wrapper i {
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+        }
+        .search-input-wrapper input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 1.125rem;
+            color: var(--text-primary);
+        }
+        .search-close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .search-close-btn:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .search-results {
+            overflow-y: auto;
+            max-height: calc(70vh - 150px);
+        }
+        .search-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 2rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+        .search-empty i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        .search-result {
+            display: block;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+        .search-result:hover,
+        .search-result.selected {
+            background: var(--bg-secondary);
+        }
+        .search-result.selected {
+            border-left: 3px solid var(--primary-color);
+        }
+        .result-header {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .result-category {
+            font-size: 0.75rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .result-title {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        .result-badge {
+            display: inline-block;
+            padding: 0.125rem 0.5rem;
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-radius: 4px;
+            font-size: 0.6875rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        .result-content {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        .result-content mark {
+            background: rgba(79, 70, 229, 0.2);
+            color: var(--primary-color);
+            font-weight: 600;
+            padding: 0.125rem 0.25rem;
+            border-radius: 2px;
+        }
+        .search-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            border-bottom-left-radius: var(--border-radius-xl);
+            border-bottom-right-radius: var(--border-radius-xl);
+        }
+        .search-shortcuts {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        .search-shortcuts kbd {
+            padding: 0.25rem 0.5rem;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        /* Content Area */
+        .doc-content {
+            padding: 0 2rem;
+            width: 100%;
+            max-width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 0.9375rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Image Styles */
+        .doc-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 1.5rem auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Limit screenshot width to 80% for better readability */
+        .doc-content p > img {
+            max-width: 80%;
+        }
+
+        /* Table Styles */
+        .doc-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.875rem;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .doc-content table thead {
+            background: #f8fafc;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .doc-content table th {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #0f172a;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        .doc-content table td {
+            padding: 0.75rem 1rem;
+            border-top: 1px solid #e2e8f0;
+            color: #334155;
+        }
+
+        .doc-content table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        /* Table responsive wrapper */
+        .doc-content table {
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .doc-content table thead,
+        .doc-content table tbody,
+        .doc-content table tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 18% 64% 18%;
+                gap: 0;
+                padding: 1rem 0 1.5rem 0;
+            }
+            .doc-nav {
+                padding-right: 1.5rem;
+            }
+            .doc-toc {
+                padding-left: 1.5rem;
+            }
+            .doc-content {
+                padding: 0 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 0;
+                padding: 1rem 0 1.5rem 0;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 0 2rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                gap: 0;
+                padding: 0.5rem 0 1rem 0;
+            }
+            .doc-nav {
+                display: none;
+                border-right: none;
+            }
+            .doc-content {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="../../../index.html" class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </a>
+            <div class="doc-header-actions">
+                <div class="header-search-container">
+                    <button class="header-search-btn" id="headerSearchBtn">
+                        <i class="fas fa-search"></i>
+                        <span>Search documentation...</span>
+                        <kbd>Ctrl+K</kbd>
+                    </button>
+                </div>
+                <a href="../../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../01-overview/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Index</span>
+                    </a>
+                    <a href="../../../01-overview/business-value.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value & ROI</span>
+                    </a>
+                    <a href="../../../01-overview/tech-stack.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Technology Stack</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../02-architecture/system-architecture.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-database"></i>
+                    <span>Data Model</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../03-data-model/data-dictionary.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Data Dictionary</span>
+                    </a>
+                    <a href="../../../03-data-model/schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-th-large"></i>
+                    <span>Application Modules</span>
+                </div>
+                <div class="nav-items">
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Procurement</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/procurement/purchase-requests/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Purchase Requests</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/purchase-orders/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Purchase Orders</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/goods-received-notes/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Goods Received Notes</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/credit-notes/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Credit Notes</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/templates/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Templates</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-boxes"></i>
+                            <span>Inventory Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/inventory/stock-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Stock Management</span>
+                            </a>
+                            <a href="../../../04-modules/inventory/physical-count/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Physical Count</span>
+                            </a>
+                            <a href="../../../04-modules/inventory/spot-check/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Spot Check</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span>Finance</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/finance/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Finance Module</span>
+                            </a>
+                            <a href="../../../04-modules/finance/features/account-code-mapping/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Account Code Mapping</span>
+                            </a>
+                            <a href="../../../04-modules/finance/features/currency-and-rates/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Currency Management</span>
+                            </a>
+                            <a href="../../../04-modules/finance/features/departments/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Departments</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-handshake"></i>
+                            <span>Vendor Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/vendor-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Management</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Management Module</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/MANAGE-VENDORS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Manage Vendors</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/VENDOR-PORTAL.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Portal</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/CAMPAIGNS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Campaigns</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/PRICELISTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Pricelists</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/TEMPLATES.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Templates</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Sitemap</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/PAGES-AND-COMPONENTS-SPEC.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Pages & Components Spec</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/SHARED-COMPONENTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Shared Components</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-box"></i>
+                            <span>Product Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/product-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management</span>
+                            </a>
+                            <a href="../../../04-modules/product-management/product-management-specification.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management Specification</span>
+                            </a>
+                            <a href="../../../04-modules/product-management/product-management-sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management Sitemap</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-store"></i>
+                            <span>Store Operations</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../store-ops/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Operations</span>
+                            </a>
+                            <a href="../../../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Operations Module</span>
+                            </a>
+                            <a href="../../../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Requisitions</span>
+                            </a>
+                            <a href="../../../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Stock Replenishment</span>
+                            </a>
+                            <a href="../../../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Wastage Reporting</span>
+                            </a>
+                            <a href="../../../store-ops/SHARED-COMPONENTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Shared Components</span>
+                            </a>
+                            <a href="../../../store-ops/GLOSSARY.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Glossary</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-clipboard-list"></i>
+                            <span>Operational Planning</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../operational-planning/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Operational Planning</span>
+                            </a>
+                            <a href="../../../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Operational Planning Module</span>
+                            </a>
+                            <a href="../../../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Recipe Management</span>
+                            </a>
+                            <a href="../../../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Menu Engineering</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-cog"></i>
+                            <span>System Administration</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../sa/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>System Administration</span>
+                            </a>
+                            <a href="../../../sa/system-administration-sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>System Administration Sitemap</span>
+                            </a>
+                            <a href="../../../sa/features/permission-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Permission Management</span>
+                            </a>
+                            <a href="../../../sa/features/permission-management/specification.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Permission Specification</span>
+                            </a>
+                            <a href="../../../sa/features/location-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Location Management</span>
+                            </a>
+                            <a href="../../../sa/features/workflow/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Workflow</span>
+                            </a>
+                            <a href="../../../sa/features/pos-integration/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Reporting</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/reporting/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Reporting & Analytics</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../dashboard/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard</span>
+                            </a>
+                            <a href="../../../dashboard/sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard Sitemap</span>
+                            </a>
+                            <a href="../../../dashboard/components/components-overview.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Components Overview</span>
+                            </a>
+                            <a href="../../../dashboard/api/api-specifications.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>API Specifications</span>
+                            </a>
+                            <a href="../../../dashboard/business-logic/dashboard-business-rules.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard Business Rules</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-industry"></i>
+                            <span>Production</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/production/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Production</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-cash-register"></i>
+                            <span>POS Integration</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../pos-integration/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration</span>
+                            </a>
+                            <a href="../../../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration Module</span>
+                            </a>
+                            <a href="../../../pos-integration/MAPPING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Mapping</span>
+                            </a>
+                            <a href="../../../pos-integration/REPORTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Reports</span>
+                            </a>
+                            <a href="../../../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Transactions</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="spot-check-module-complete-specification">Spot Check Module - Complete Specification</h1>
+<p><strong>Carmen ERP System - Inventory Management</strong></p>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#module-structure">Module Structure</a></li>
+<li><a href="#pages-and-components">Pages and Components</a></li>
+<li><a href="#user-interface-elements">User Interface Elements</a></li>
+<li><a href="#data-flow">Data Flow</a></li>
+<li><a href="#actions-and-options">Actions and Options</a></li>
+<li><a href="#screenshots">Screenshots</a></li>
+<li><a href="#site-map">Site Map</a></li>
+</ol>
+<hr>
+<h2 id="overview">Overview</h2>
+<p>The Spot Check module is a core component of Carmen ERP&#39;s Inventory Management system designed to facilitate random inventory verification and accuracy checking. It allows authorized personnel to perform targeted inventory counts on specific items or locations to maintain inventory accuracy and identify discrepancies.</p>
+<h3 id="key-features">Key Features</h3>
+<ul>
+<li><strong>Random Item Selection</strong>: Automatically select items for spot checking based on criteria</li>
+<li><strong>High-Value Item Focus</strong>: Target expensive items for more frequent verification</li>
+<li><strong>Real-time Count Tracking</strong>: Live progress monitoring during active counts</li>
+<li><strong>Variance Analysis</strong>: Automatic calculation and tracking of inventory discrepancies</li>
+<li><strong>Dashboard Overview</strong>: Comprehensive monitoring of all spot check activities</li>
+<li><strong>Multi-user Support</strong>: Role-based access for different user types</li>
+</ul>
+<h3 id="business-objectives">Business Objectives</h3>
+<ul>
+<li>Maintain inventory accuracy through regular spot checks</li>
+<li>Identify potential inventory issues before full cycle counts</li>
+<li>Reduce inventory shrinkage through targeted verification</li>
+<li>Improve overall inventory control and visibility</li>
+</ul>
+<hr>
+<h2 id="module-structure">Module Structure</h2>
+<h3 id="file-structure">File Structure</h3>
+<pre><code>app/(main)/inventory-management/spot-check/
+├── page.tsx                       # Main spot check listing
+├── layout.tsx                     # Module layout wrapper
+├── types.ts                       # TypeScript interfaces
+├── dashboard/
+│   └── page.tsx                   # Dashboard overview
+├── new/
+│   ├── page.tsx                   # New spot check creation
+│   └── layout.tsx                 # New spot check layout
+├── active/
+│   ├── page.tsx                   # Active spot checks listing
+│   └── [id]/
+│       └── page.tsx               # Individual active count
+├── completed/
+│   ├── page.tsx                   # Completed spot checks
+│   └── [id]/
+│       └── page.tsx               # Individual completed count details
+├── components/
+│   ├── new-spot-check-form.tsx    # Form for creating new spot checks
+│   ├── count-detail-form.tsx      # Form for entering count data
+│   ├── count-list-item.tsx        # List item component
+│   ├── count-detail-card.tsx      # Card view component
+│   ├── spot-check-nav.tsx         # Navigation component
+│   └── [other components]         # Additional UI components
+</code></pre>
+<h3 id="core-typescript-interfaces">Core TypeScript Interfaces</h3>
+<pre><code class="language-typescript">interface SpotCheckDetails {
+  countId: string
+  counter: string
+  department: string
+  store: string
+  date: Date
+  selectedItems: Array&lt;{
+    id: string
+    code: string
+    name: string
+    description: string
+    expectedQuantity: number
+    unit: string
+  }&gt;
+}
+
+interface CountDetailData {
+  items: {
+    id: string
+    name: string
+    code: string
+    currentStock: number
+    actualCount: number
+    unit: string
+    status: &#39;good&#39; | &#39;damaged&#39; | &#39;missing&#39; | &#39;expired&#39;
+    isSubmitted: boolean
+    variance: number
+  }[]
+  notes: string
+}
+</code></pre>
+<hr>
+<h2 id="pages-and-components">Pages and Components</h2>
+<h3 id="1-main-spot-check-page-spot-check">1. Main Spot Check Page (<code>/spot-check</code>)</h3>
+<p><strong>File</strong>: <code>page.tsx</code><br><strong>Route</strong>: <code>/inventory-management/spot-check</code></p>
+<h4>Description</h4>
+<p>The main landing page displaying all spot check entries with filtering and search capabilities.</p>
+<h4>Key Features</h4>
+<ul>
+<li>List and grid view toggle</li>
+<li>Status filtering (All, Pending, In Progress, Completed)</li>
+<li>Department and location filtering</li>
+<li>Search functionality</li>
+<li>Quick actions for each spot check entry</li>
+</ul>
+<h4>UI Elements</h4>
+<ul>
+<li><p><strong>Header Section</strong>:</p>
+<ul>
+<li>Page title: &quot;Spot Check&quot;</li>
+<li>Description: &quot;Random inventory spot checks for accuracy verification&quot;</li>
+<li>&quot;New Spot Check&quot; button with Plus icon</li>
+</ul>
+</li>
+<li><p><strong>Filter Controls Card</strong>:</p>
+<ul>
+<li>Search input field</li>
+<li>Status dropdown (All Statuses, Pending, In Progress, Completed)</li>
+<li>Department dropdown (populated from mockData)</li>
+<li>Location filter toggle button (Building icon)</li>
+<li>View toggle buttons (List/Grid icons)</li>
+</ul>
+</li>
+<li><p><strong>Location Filter Panel</strong> (conditional):</p>
+<ul>
+<li>Location dropdown selector</li>
+<li>Active filter tags with remove option</li>
+</ul>
+</li>
+<li><p><strong>Content Display</strong>:</p>
+<ul>
+<li>List View: <code>CountListItem</code> components</li>
+<li>Grid View: <code>CountDetailCard</code> components</li>
+</ul>
+</li>
+</ul>
+<h4>Mock Data Structure</h4>
+<pre><code class="language-javascript">const spotCheckData = [
+  {
+    storeName: &quot;Main Kitchen Store&quot;,
+    department: &quot;F&amp;B&quot;,
+    userName: &quot;John Doe&quot;,
+    date: &quot;2024-04-20&quot;,
+    status: &quot;pending&quot;,
+    itemCount: 10,
+    lastCountDate: &quot;2024-03-20&quot;,
+    variance: 5.2,
+    notes: &quot;Spot check of dry goods section&quot;,
+    completedCount: 5
+  }
+]
+</code></pre>
+<hr>
+<h3 id="2-dashboard-page-spot-checkdashboard">2. Dashboard Page (<code>/spot-check/dashboard</code>)</h3>
+<p><strong>File</strong>: <code>dashboard/page.tsx</code><br><strong>Route</strong>: <code>/inventory-management/spot-check/dashboard</code></p>
+<h4>Description</h4>
+<p>Comprehensive dashboard providing real-time overview of all spot check activities and key metrics.</p>
+<h4>Key Features</h4>
+<ul>
+<li>Statistics overview cards</li>
+<li>Active counts monitoring</li>
+<li>Pending reviews management</li>
+<li>Recent activity feed</li>
+<li>Quick access actions</li>
+</ul>
+<h4>UI Elements</h4>
+<ul>
+<li><p><strong>Statistics Cards</strong>:</p>
+<ul>
+<li>Active Counters: Shows number of users currently performing counts</li>
+<li>Items Counted Today: Total items counted across all active sessions</li>
+<li>Pending Reviews: Number of completed counts awaiting approval</li>
+</ul>
+</li>
+<li><p><strong>Active Counts Panel</strong>:</p>
+<ul>
+<li>Real-time list of ongoing spot checks</li>
+<li>Progress indicators (percentage complete)</li>
+<li>Counter and location information</li>
+<li>Start time and duration tracking</li>
+<li>&quot;View All Active Counts&quot; action button</li>
+</ul>
+</li>
+<li><p><strong>Pending Reviews Panel</strong>:</p>
+<ul>
+<li>Completed counts awaiting review/approval</li>
+<li>Variance count indicators</li>
+<li>Counter and completion date information</li>
+<li>Status badges (Pending Review, Pending Approval)</li>
+<li>&quot;Review All Pending&quot; action button</li>
+</ul>
+</li>
+<li><p><strong>Latest Activities Panel</strong>:</p>
+<ul>
+<li>Timeline of recent spot check activities</li>
+<li>Activity type indicators (Count Completed, Count Started, Variance Approved)</li>
+<li>User attribution and timestamps</li>
+<li>Descriptive activity messages</li>
+</ul>
+</li>
+</ul>
+<h4>Mock Data Examples</h4>
+<pre><code class="language-javascript">const stats = [
+  { title: &quot;Active Counters&quot;, value: &quot;4&quot;, icon: Users },
+  { title: &quot;Items Counted Today&quot;, value: &quot;245&quot;, icon: Boxes },
+  { title: &quot;Pending Reviews&quot;, value: &quot;8&quot;, icon: ClipboardList }
+]
+</code></pre>
+<hr>
+<h3 id="3-new-spot-check-page-spot-checknew">3. New Spot Check Page (<code>/spot-check/new</code>)</h3>
+<p><strong>File</strong>: <code>new/page.tsx</code><br><strong>Route</strong>: <code>/inventory-management/spot-check/new</code></p>
+<h4>Description</h4>
+<p>Form interface for creating new spot check sessions with customizable selection criteria.</p>
+<h4>Key Features</h4>
+<ul>
+<li>Counter assignment</li>
+<li>Location and department selection</li>
+<li>Item selection methodology (Random vs High-Value)</li>
+<li>Real-time item preview</li>
+<li>Form validation</li>
+</ul>
+<h4>UI Elements</h4>
+<ul>
+<li><p><strong>Form Section</strong> (Left Panel):</p>
+<ul>
+<li>Counter dropdown selector</li>
+<li>Department dropdown selector</li>
+<li>Store location dropdown selector</li>
+<li>Count date picker (calendar widget)</li>
+<li>Selection method radio buttons:<ul>
+<li>Random Selection</li>
+<li>High Value Items (with minimum price field)</li>
+</ul>
+</li>
+<li>Number of items input (1-100 range)</li>
+</ul>
+</li>
+<li><p><strong>Selected Items Preview</strong> (Right Panel):</p>
+<ul>
+<li>Sticky sidebar showing selected items</li>
+<li>Real-time updates based on form criteria</li>
+<li>Item cards displaying:<ul>
+<li>Item name and code</li>
+<li>Category and location</li>
+<li>Stock level and unit</li>
+<li>Item value</li>
+<li>Last count date</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4>Form Validation Schema</h4>
+<pre><code class="language-typescript">const formSchema = z.object({
+  counterId: z.string().nonempty(&quot;Please select a counter&quot;),
+  departmentId: z.string().nonempty(&quot;Please select a department&quot;),
+  storeId: z.string().nonempty(&quot;Please select a store&quot;),
+  countDate: z.date(),
+  selectionType: z.enum([&quot;random&quot;, &quot;highValue&quot;]),
+  itemCount: z.number().min(1).max(100),
+  minimumPrice: z.number().optional(),
+})
+</code></pre>
+<hr>
+<h3 id="4-active-spot-checks-page-spot-checkactive">4. Active Spot Checks Page (<code>/spot-check/active</code>)</h3>
+<p><strong>File</strong>: <code>active/page.tsx</code><br><strong>Route</strong>: <code>/inventory-management/spot-check/active</code></p>
+<h4>Description</h4>
+<p>Lists all currently active or pending spot check sessions that can be started or resumed.</p>
+<h4>Key Features</h4>
+<ul>
+<li>Status filtering (All, Pending, In Progress, Paused)</li>
+<li>Progress tracking with visual indicators</li>
+<li>Quick start/resume actions</li>
+<li>Comprehensive session details</li>
+</ul>
+<h4>UI Elements</h4>
+<ul>
+<li><p><strong>Header Section</strong>:</p>
+<ul>
+<li>Title: &quot;Pending Counts&quot;</li>
+<li>Description: &quot;Start or resume your inventory counts&quot;</li>
+<li>Status filter dropdown</li>
+</ul>
+</li>
+<li><p><strong>Count Session Cards</strong>:</p>
+<ul>
+<li>Session ID with status badge</li>
+<li>Counter and department information</li>
+<li>Start time and duration display</li>
+<li>Location badges</li>
+<li>Progress bar with completion percentage</li>
+<li>Item count tracking (completed/total)</li>
+<li>Match/variance/pending counters</li>
+<li>Start/Resume action button</li>
+</ul>
+</li>
+</ul>
+<h4>Status Badge Variants</h4>
+<ul>
+<li><strong>Pending</strong>: Blue background, &quot;Pending&quot; text</li>
+<li><strong>In Progress</strong>: Green background, &quot;In Progress&quot; text</li>
+<li><strong>Paused</strong>: Yellow background, &quot;Paused&quot; text</li>
+</ul>
+<hr>
+<h3 id="5-individual-active-count-page-spot-checkactiveid">5. Individual Active Count Page (<code>/spot-check/active/[id]</code>)</h3>
+<p><strong>File</strong>: <code>active/[id]/page.tsx</code><br><strong>Route</strong>: <code>/inventory-management/spot-check/active/{countId}</code></p>
+<h4>Description</h4>
+<p>Interactive counting interface for performing actual spot checks on selected items.</p>
+<h4>Key Features</h4>
+<ul>
+<li>Item-by-item counting interface</li>
+<li>Real-time variance calculation</li>
+<li>Item status tracking (good, damaged, missing, expired)</li>
+<li>Progress persistence</li>
+<li>Session controls (pause, complete)</li>
+</ul>
+<h4>UI Elements</h4>
+<ul>
+<li><p><strong>Header Navigation Bar</strong>:</p>
+<ul>
+<li>Back to Spot Checks button</li>
+<li>Session controls (Pause, Complete Count)</li>
+<li>Sticky positioning</li>
+</ul>
+</li>
+<li><p><strong>Session Info Card</strong>:</p>
+<ul>
+<li>Counter name with User icon</li>
+<li>Count date with Calendar icon</li>
+<li>Session reference with FileText icon</li>
+<li>Grid layout for information display</li>
+</ul>
+</li>
+<li><p><strong>Count Detail Form</strong>:</p>
+<ul>
+<li>Full-screen counting interface</li>
+<li>Integrated <code>CountDetailForm</code> component</li>
+<li>Item listing with current stock levels</li>
+<li>Actual count input fields</li>
+<li>Status dropdown selectors</li>
+<li>Notes section for additional information</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="6-completed-spot-checks-page-spot-checkcompleted">6. Completed Spot Checks Page (<code>/spot-check/completed</code>)</h3>
+<p><strong>File</strong>: <code>completed/page.tsx</code><br><strong>Route</strong>: <code>/inventory-management/spot-check/completed</code></p>
+<h4>Description</h4>
+<p>Historical view of all completed spot check sessions with search and filtering capabilities.</p>
+<h4>Key Features</h4>
+<ul>
+<li>Search functionality across multiple fields</li>
+<li>Date range filtering</li>
+<li>Accuracy percentage display</li>
+<li>Export capabilities</li>
+<li>Detailed view access</li>
+</ul>
+<h4>UI Elements</h4>
+<ul>
+<li><p><strong>Search and Filter Bar</strong>:</p>
+<ul>
+<li>Search input with Search icon</li>
+<li>Date range filter dropdown (All Time, Today, This Week, This Month)</li>
+</ul>
+</li>
+<li><p><strong>Completed Count Cards</strong>:</p>
+<ul>
+<li>Count ID with accuracy percentage badge</li>
+<li>Counter and department information</li>
+<li>Completion timestamp and duration</li>
+<li>Location badges</li>
+<li>Progress indicator (always 100%)</li>
+<li>Match/variance counters</li>
+<li>Notes preview (truncated)</li>
+<li>Action buttons (View Details, Export)</li>
+</ul>
+</li>
+</ul>
+<h4>Accuracy Badge Colors</h4>
+<ul>
+<li><strong>95%+</strong>: Green background (high accuracy)</li>
+<li><strong>85-94%</strong>: Yellow background (medium accuracy)</li>
+<li><strong>&lt;85%</strong>: Red background (low accuracy)</li>
+</ul>
+<hr>
+<h3 id="7-individual-completed-count-page-spot-checkcompletedid">7. Individual Completed Count Page (<code>/spot-check/completed/[id]</code>)</h3>
+<p><strong>File</strong>: <code>completed/[id]/page.tsx</code><br><strong>Route</strong>: <code>/inventory-management/spot-check/completed/{countId}</code></p>
+<h4>Description</h4>
+<p>Detailed read-only view of a completed spot check session with full audit information.</p>
+<h4>Key Features</h4>
+<ul>
+<li>Complete session history</li>
+<li>Detailed variance analysis</li>
+<li>Item-level results</li>
+<li>Audit trail information</li>
+<li>Export/print capabilities</li>
+</ul>
+<p><em>Note: Implementation details to be added based on actual component development.</em></p>
+<hr>
+<h2 id="user-interface-elements">User Interface Elements</h2>
+<h3 id="buttons-and-actions">Buttons and Actions</h3>
+<h4>Primary Actions</h4>
+<ul>
+<li><strong>New Spot Check</strong> (Plus icon): Creates new spot check session</li>
+<li><strong>Start Count</strong> (PlayCircle icon): Initiates pending count</li>
+<li><strong>Resume Count</strong> (PlayCircle icon): Continues paused count</li>
+<li><strong>Complete Count</strong> (CheckCircle icon): Finalizes active count</li>
+<li><strong>Pause</strong> (PauseCircle icon): Temporarily suspends count</li>
+</ul>
+<h4>Secondary Actions</h4>
+<ul>
+<li><strong>View Details</strong> (FileText icon): Shows detailed information</li>
+<li><strong>Export</strong> (Download icon): Downloads count data</li>
+<li><strong>Back</strong> (ChevronLeft icon): Navigation return</li>
+<li><strong>Delete</strong> (X icon): Removes count session</li>
+</ul>
+<h3 id="input-controls">Input Controls</h3>
+<h4>Form Elements</h4>
+<ul>
+<li><strong>Text Inputs</strong>: Standard text entry with validation</li>
+<li><strong>Number Inputs</strong>: Numeric fields with min/max constraints</li>
+<li><strong>Dropdowns</strong>: Single-select with search capabilities</li>
+<li><strong>Radio Buttons</strong>: Exclusive choice selection</li>
+<li><strong>Checkboxes</strong>: Multiple selection options</li>
+<li><strong>Date Pickers</strong>: Calendar-based date selection</li>
+<li><strong>Textareas</strong>: Multi-line text entry for notes</li>
+</ul>
+<h4>Filter Controls</h4>
+<ul>
+<li><strong>Search Bars</strong>: Real-time filtering with search icons</li>
+<li><strong>Status Filters</strong>: Dropdown selection for status types</li>
+<li><strong>View Toggles</strong>: List/Grid display mode switching</li>
+<li><strong>Location Filters</strong>: Collapsible panel with multi-select</li>
+</ul>
+<h3 id="visual-indicators">Visual Indicators</h3>
+<h4>Status Badges</h4>
+<ul>
+<li><strong>Pending</strong>: Blue with &quot;Pending&quot; text</li>
+<li><strong>In Progress</strong>: Green with &quot;In Progress&quot; text</li>
+<li><strong>Completed</strong>: Gray with &quot;Completed&quot; text</li>
+<li><strong>Paused</strong>: Yellow with &quot;Paused&quot; text</li>
+</ul>
+<h4>Progress Indicators</h4>
+<ul>
+<li><strong>Progress Bars</strong>: Visual completion tracking</li>
+<li><strong>Percentage Displays</strong>: Numeric progress indicators</li>
+<li><strong>Item Counters</strong>: &quot;X of Y items&quot; format</li>
+</ul>
+<h4>Variance Indicators</h4>
+<ul>
+<li><strong>Positive Variance</strong>: Green badge with &quot;+&quot; prefix</li>
+<li><strong>Negative Variance</strong>: Red badge with &quot;-&quot; prefix</li>
+<li><strong>Zero Variance</strong>: Gray outline badge</li>
+</ul>
+<hr>
+<h2 id="data-flow">Data Flow</h2>
+<h3 id="spot-check-creation-flow">Spot Check Creation Flow</h3>
+<ol>
+<li><strong>User navigates</strong> to <code>/spot-check/new</code></li>
+<li><strong>Form renders</strong> with empty state</li>
+<li><strong>User selects</strong> counter, department, store, date</li>
+<li><strong>System filters</strong> available items based on criteria</li>
+<li><strong>Preview updates</strong> with selected items in real-time</li>
+<li><strong>User submits</strong> form with validation</li>
+<li><strong>System creates</strong> spot check session with unique ID</li>
+<li><strong>Navigation redirects</strong> to active count page</li>
+</ol>
+<h3 id="count-execution-flow">Count Execution Flow</h3>
+<ol>
+<li><strong>User accesses</strong> active count via <code>/spot-check/active/[id]</code></li>
+<li><strong>System loads</strong> session data and selected items</li>
+<li><strong>Count form renders</strong> with item listing</li>
+<li><strong>User enters</strong> actual counts for each item</li>
+<li><strong>System calculates</strong> variance in real-time</li>
+<li><strong>User selects</strong> item status (good/damaged/missing/expired)</li>
+<li><strong>Progress tracking</strong> updates completion percentage</li>
+<li><strong>User submits</strong> individual items or entire session</li>
+<li><strong>System saves</strong> count data and updates session status</li>
+</ol>
+<h3 id="data-persistence">Data Persistence</h3>
+<h4>Session Storage</h4>
+<ul>
+<li>Count sessions persist across browser refreshes</li>
+<li>Form state maintained during navigation</li>
+<li>Progress automatically saved on item submission</li>
+</ul>
+<h4>Mock Data Integration</h4>
+<ul>
+<li>Uses centralized mock data from <code>@/lib/mockData</code></li>
+<li>Simulates real database operations</li>
+<li>Maintains data consistency across components</li>
+</ul>
+<hr>
+<h2 id="actions-and-options">Actions and Options</h2>
+<h3 id="user-actions-by-page">User Actions by Page</h3>
+<h4>Main Spot Check Page (<code>/spot-check</code>)</h4>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Description</th>
+<th>Icon</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>New Spot Check</td>
+<td>Creates new count session</td>
+<td>Plus</td>
+<td>Navigate to <code>/spot-check/new</code></td>
+</tr>
+<tr>
+<td>Filter by Status</td>
+<td>Filters entries by status</td>
+<td>None</td>
+<td>Updates displayed items</td>
+</tr>
+<tr>
+<td>Filter by Department</td>
+<td>Filters entries by department</td>
+<td>None</td>
+<td>Updates displayed items</td>
+</tr>
+<tr>
+<td>Filter by Location</td>
+<td>Filters entries by location</td>
+<td>Building</td>
+<td>Shows/hides location panel</td>
+</tr>
+<tr>
+<td>Toggle View</td>
+<td>Switches between list/grid</td>
+<td>List/Grid</td>
+<td>Changes display layout</td>
+</tr>
+<tr>
+<td>Search</td>
+<td>Filters entries by text</td>
+<td>None</td>
+<td>Real-time filtering</td>
+</tr>
+<tr>
+<td>Start Count</td>
+<td>Opens count detail form</td>
+<td>None</td>
+<td>Shows modal overlay</td>
+</tr>
+<tr>
+<td>Delete Count</td>
+<td>Removes count entry</td>
+<td>None</td>
+<td>Confirms and deletes</td>
+</tr>
+</tbody></table>
+<h4>Dashboard Page (<code>/spot-check/dashboard</code>)</h4>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Description</th>
+<th>Icon</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>View All Active Counts</td>
+<td>Navigate to active counts</td>
+<td>ArrowRight</td>
+<td>Route to <code>/spot-check/active</code></td>
+</tr>
+<tr>
+<td>Review All Pending</td>
+<td>Navigate to reviews</td>
+<td>ArrowRight</td>
+<td>Route to review interface</td>
+</tr>
+</tbody></table>
+<h4>New Spot Check Page (<code>/spot-check/new</code>)</h4>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Description</th>
+<th>Icon</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Select Counter</td>
+<td>Choose count performer</td>
+<td>None</td>
+<td>Dropdown selection</td>
+</tr>
+<tr>
+<td>Select Department</td>
+<td>Choose department</td>
+<td>None</td>
+<td>Dropdown selection</td>
+</tr>
+<tr>
+<td>Select Store</td>
+<td>Choose location</td>
+<td>None</td>
+<td>Dropdown selection</td>
+</tr>
+<tr>
+<td>Pick Date</td>
+<td>Choose count date</td>
+<td>Calendar</td>
+<td>Date picker modal</td>
+</tr>
+<tr>
+<td>Choose Selection Type</td>
+<td>Random vs High-Value</td>
+<td>None</td>
+<td>Radio button toggle</td>
+</tr>
+<tr>
+<td>Set Item Count</td>
+<td>Number of items to count</td>
+<td>None</td>
+<td>Numeric input</td>
+</tr>
+<tr>
+<td>Set Minimum Price</td>
+<td>High-value threshold</td>
+<td>None</td>
+<td>Currency input</td>
+</tr>
+<tr>
+<td>Create Spot Check</td>
+<td>Submit form</td>
+<td>None</td>
+<td>Validation and creation</td>
+</tr>
+</tbody></table>
+<h4>Active Counts Page (<code>/spot-check/active</code>)</h4>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Description</th>
+<th>Icon</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Filter by Status</td>
+<td>Filter active counts</td>
+<td>None</td>
+<td>Dropdown filtering</td>
+</tr>
+<tr>
+<td>Start Count</td>
+<td>Begin pending count</td>
+<td>PlayCircle</td>
+<td>Navigate to count interface</td>
+</tr>
+<tr>
+<td>Resume Count</td>
+<td>Continue paused count</td>
+<td>PlayCircle</td>
+<td>Navigate to count interface</td>
+</tr>
+</tbody></table>
+<h4>Individual Count Page (<code>/spot-check/active/[id]</code>)</h4>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Description</th>
+<th>Icon</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Back to Spot Checks</td>
+<td>Return to main page</td>
+<td>ChevronLeft</td>
+<td>Navigate back</td>
+</tr>
+<tr>
+<td>Pause Count</td>
+<td>Temporarily stop</td>
+<td>PauseCircle</td>
+<td>Save state and pause</td>
+</tr>
+<tr>
+<td>Complete Count</td>
+<td>Finish counting</td>
+<td>CheckCircle</td>
+<td>Finalize and submit</td>
+</tr>
+<tr>
+<td>Enter Actual Count</td>
+<td>Input count value</td>
+<td>None</td>
+<td>Update item data</td>
+</tr>
+<tr>
+<td>Set Item Status</td>
+<td>Mark item condition</td>
+<td>None</td>
+<td>Dropdown selection</td>
+</tr>
+<tr>
+<td>Submit Item</td>
+<td>Confirm item count</td>
+<td>Check</td>
+<td>Lock item entry</td>
+</tr>
+<tr>
+<td>Add Notes</td>
+<td>Enter additional info</td>
+<td>None</td>
+<td>Textarea input</td>
+</tr>
+</tbody></table>
+<h3 id="dropdown-options">Dropdown Options</h3>
+<h4>Status Filter Options</h4>
+<ul>
+<li><strong>All Statuses</strong>: Shows all entries</li>
+<li><strong>Pending</strong>: Not yet started</li>
+<li><strong>In Progress</strong>: Currently being counted</li>
+<li><strong>Completed</strong>: Finished counting</li>
+</ul>
+<h4>Department Filter Options</h4>
+<p><em>(Populated from mock data)</em></p>
+<ul>
+<li><strong>F&amp;B</strong>: Food &amp; Beverage operations</li>
+<li><strong>Housekeeping</strong>: Room and facility maintenance</li>
+<li><strong>Maintenance</strong>: Equipment and infrastructure</li>
+</ul>
+<h4>Location Filter Options</h4>
+<p><em>(Populated from mock data)</em></p>
+<ul>
+<li><strong>Main Kitchen Store</strong>: Primary food storage</li>
+<li><strong>Cold Room</strong>: Refrigerated storage</li>
+<li><strong>Dry Store</strong>: Non-perishable storage</li>
+<li><strong>Linen Room</strong>: Housekeeping supplies</li>
+</ul>
+<h4>Item Selection Methods</h4>
+<ul>
+<li><strong>Random Selection</strong>: Computer-generated random item selection</li>
+<li><strong>High Value Items</strong>: Focus on expensive inventory items</li>
+</ul>
+<h4>Item Status Options</h4>
+<ul>
+<li><strong>Good</strong>: Item in acceptable condition</li>
+<li><strong>Damaged</strong>: Item has defects but may be usable</li>
+<li><strong>Missing</strong>: Item not found at expected location</li>
+<li><strong>Expired</strong>: Item past expiration date</li>
+</ul>
+<hr>
+<h2 id="screenshots">Screenshots</h2>
+<p><em>Note: Screenshots to be captured and placed in this section showing:</em></p>
+<ol>
+<li><strong>Main Spot Check Page</strong>: List and grid views with filters</li>
+<li><strong>Dashboard Overview</strong>: Statistics and active monitoring</li>
+<li><strong>New Spot Check Form</strong>: Creation interface with item preview</li>
+<li><strong>Active Count Interface</strong>: Item-by-item counting screen</li>
+<li><strong>Completed Counts</strong>: Historical view with search</li>
+<li><strong>Count Detail Modal</strong>: Item entry form</li>
+<li><strong>Mobile Responsive Views</strong>: All pages on mobile devices</li>
+</ol>
+<hr>
+<h2 id="site-map">Site Map</h2>
+<div class="mermaid">
+graph TD
+    A[Spot Check Module] --> B[Main Page ]
+    A --> C[Dashboard ]
+    A --> D[New Spot Check ]
+    A --> E[Active Counts ]
+    A --> F[Completed Counts ] 
+
+    B --> G[Count Detail Modal]
+    B --> H[List View]
+    B --> I[Grid View]
+    B --> J[Filter Panel]
+
+    C --> K[Stats Overview]
+    C --> L[Active Counts Panel]
+    C --> M[Pending Reviews Panel]
+    C --> N[Activities Panel]
+
+    D --> O[Creation Form]
+    D --> P[Item Preview Panel]
+    D --> Q[Validation]
+
+    E --> R[Active Count Detail ]
+    E --> S[Status Filters]
+
+    F --> T[Completed Count Detail] 
+    F --> U[Search & Filters]
+    F --> V[Export Options]
+
+    R --> W[Count Interface]
+    R --> X[Session Controls]
+    R --> Y[Progress Tracking]
+
+    W --> Z[Item Entry Form]
+    W --> AA[Status Selection]
+    W --> BB[Notes Section]
+
+</div>
+<hr>
+<h2 id="technical-implementation-notes">Technical Implementation Notes</h2>
+<h3 id="state-management">State Management</h3>
+<ul>
+<li>Uses React hooks (<code>useState</code>) for local component state</li>
+<li>Form state managed with React Hook Form and Zod validation</li>
+<li>Session persistence through browser storage for active counts</li>
+</ul>
+<h3 id="data-sources">Data Sources</h3>
+<ul>
+<li>Mock data imported from <code>@/lib/mockData</code></li>
+<li>TypeScript interfaces defined in <code>types.ts</code></li>
+<li>Real-time calculations for variances and progress</li>
+</ul>
+<h3 id="navigation">Navigation</h3>
+<ul>
+<li>Next.js App Router for routing</li>
+<li><code>useRouter</code> for programmatic navigation</li>
+<li>Nested layouts for consistent page structure</li>
+</ul>
+<h3 id="styling">Styling</h3>
+<ul>
+<li>Tailwind CSS for styling</li>
+<li>Shadcn/ui components for consistent UI</li>
+<li>Responsive design with mobile-first approach</li>
+<li>Card-based layouts with consistent spacing</li>
+</ul>
+<h3 id="key-dependencies">Key Dependencies</h3>
+<ul>
+<li>React 18+ with Next.js 14</li>
+<li>React Hook Form for form handling</li>
+<li>Zod for schema validation</li>
+<li>Lucide React for icons</li>
+<li>Date-fns for date formatting</li>
+</ul>
+<hr>
+<h2 id="future-enhancement-opportunities">Future Enhancement Opportunities</h2>
+<ol>
+<li><strong>Real-time Collaboration</strong>: Multiple counters on same session</li>
+<li><strong>Barcode Integration</strong>: Scanner support for item identification</li>
+<li><strong>Photo Documentation</strong>: Attach images for damaged/missing items</li>
+<li><strong>Advanced Analytics</strong>: Trend analysis and predictive insights</li>
+<li><strong>Mobile App</strong>: Native mobile application for counting</li>
+<li><strong>Integration APIs</strong>: Connection to external inventory systems</li>
+<li><strong>Automated Scheduling</strong>: Recurring spot check automation</li>
+<li><strong>Approval Workflows</strong>: Multi-level approval for variances</li>
+</ol>
+<hr>
+<p><em>This specification document serves as the complete reference for the Carmen ERP Spot Check module implementation and functionality.</em></p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#spot-check-module-complete-specification" class="level-1">Spot Check Module - Complete Specification</a>
+<a href="#table-of-contents" class="level-2">Table of Contents</a>
+<a href="#overview" class="level-2">Overview</a>
+<a href="#key-features" class="level-3">Key Features</a>
+<a href="#business-objectives" class="level-3">Business Objectives</a>
+<a href="#module-structure" class="level-2">Module Structure</a>
+<a href="#file-structure" class="level-3">File Structure</a>
+<a href="#core-typescript-interfaces" class="level-3">Core TypeScript Interfaces</a>
+<a href="#pages-and-components" class="level-2">Pages and Components</a>
+<a href="#1-main-spot-check-page-spot-check" class="level-3">1. Main Spot Check Page (/spot-check)</a>
+<a href="#2-dashboard-page-spot-checkdashboard" class="level-3">2. Dashboard Page (/spot-check/dashboard)</a>
+<a href="#3-new-spot-check-page-spot-checknew" class="level-3">3. New Spot Check Page (/spot-check/new)</a>
+<a href="#4-active-spot-checks-page-spot-checkactive" class="level-3">4. Active Spot Checks Page (/spot-check/active)</a>
+<a href="#5-individual-active-count-page-spot-checkactiveid" class="level-3">5. Individual Active Count Page (/spot-check/active/[id])</a>
+<a href="#6-completed-spot-checks-page-spot-checkcompleted" class="level-3">6. Completed Spot Checks Page (/spot-check/completed)</a>
+<a href="#7-individual-completed-count-page-spot-checkcompletedid" class="level-3">7. Individual Completed Count Page (/spot-check/completed/[id])</a>
+<a href="#user-interface-elements" class="level-2">User Interface Elements</a>
+<a href="#buttons-and-actions" class="level-3">Buttons and Actions</a>
+<a href="#input-controls" class="level-3">Input Controls</a>
+<a href="#visual-indicators" class="level-3">Visual Indicators</a>
+<a href="#data-flow" class="level-2">Data Flow</a>
+<a href="#spot-check-creation-flow" class="level-3">Spot Check Creation Flow</a>
+<a href="#count-execution-flow" class="level-3">Count Execution Flow</a>
+<a href="#data-persistence" class="level-3">Data Persistence</a>
+<a href="#actions-and-options" class="level-2">Actions and Options</a>
+<a href="#user-actions-by-page" class="level-3">User Actions by Page</a>
+<a href="#dropdown-options" class="level-3">Dropdown Options</a>
+<a href="#screenshots" class="level-2">Screenshots</a>
+<a href="#site-map" class="level-2">Site Map</a>
+<a href="#technical-implementation-notes" class="level-2">Technical Implementation Notes</a>
+<a href="#state-management" class="level-3">State Management</a>
+<a href="#data-sources" class="level-3">Data Sources</a>
+<a href="#navigation" class="level-3">Navigation</a>
+<a href="#styling" class="level-3">Styling</a>
+<a href="#key-dependencies" class="level-3">Key Dependencies</a>
+<a href="#future-enhancement-opportunities" class="level-2">Future Enhancement Opportunities</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Search Modal -->
+    <div class="search-modal" id="searchModal">
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchModalInput" placeholder="Search documentation..." autofocus>
+                    <button class="search-close-btn" id="searchCloseBtn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="search-results" id="searchResults">
+                <div class="search-empty">
+                    <i class="fas fa-search"></i>
+                    <p>Start typing to search...</p>
+                </div>
+            </div>
+            <div class="search-footer">
+                <div class="search-shortcuts">
+                    <kbd>↑↓</kbd> Navigate
+                    <kbd>Enter</kbd> Select
+                    <kbd>Esc</kbd> Close
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Search functionality
+        let searchIndex = [];
+        let selectedResultIndex = -1;
+
+        // Load search index
+        fetch('../../../search-index.json')
+            .then(res => res.json())
+            .then(data => {
+                searchIndex = data;
+                console.log('✓ Search index loaded:', searchIndex.length, 'entries');
+            })
+            .catch(err => console.error('❌ Failed to load search index:', err));
+
+        // Open search modal
+        function openSearchModal() {
+            console.log('🔍 Opening search modal...');
+            document.getElementById('searchModal').classList.add('active');
+            document.getElementById('searchModalInput').focus();
+            selectedResultIndex = -1;
+        }
+
+        // Close search modal
+        function closeSearchModal() {
+            document.getElementById('searchModal').classList.remove('active');
+            document.getElementById('searchModalInput').value = '';
+            document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-search"></i><p>Start typing to search...</p></div>';
+            selectedResultIndex = -1;
+        }
+
+        // Search function
+        function performSearch(query) {
+            console.log('🔎 Searching for:', query);
+
+            if (!query || query.length < 2) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-search"></i><p>Start typing to search...</p></div>';
+                return;
+            }
+
+            if (searchIndex.length === 0) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-exclamation-circle"></i><p>Search index not loaded</p></div>';
+                return;
+            }
+
+            const queryLower = query.toLowerCase();
+            const queryWords = queryLower.split(/s+/).filter(word => word.length > 1);
+
+            // Search and score results
+            const results = searchIndex
+                .map(entry => {
+                    let score = 0;
+
+                    // Title match (highest weight)
+                    if (entry.title.toLowerCase().includes(queryLower)) {
+                        score += 100;
+                    }
+                    queryWords.forEach(word => {
+                        if (entry.title.toLowerCase().includes(word)) score += 50;
+                    });
+
+                    // Content match
+                    if (entry.content.toLowerCase().includes(queryLower)) {
+                        score += 10;
+                    }
+                    queryWords.forEach(word => {
+                        if (entry.content.toLowerCase().includes(word)) score += 5;
+                    });
+
+                    return { ...entry, score };
+                })
+                .filter(result => result.score > 0)
+                .sort((a, b) => b.score - a.score)
+                .slice(0, 10); // Top 10 results
+
+            console.log('📊 Found', results.length, 'results');
+
+            // Display results
+            if (results.length === 0) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-times-circle"></i><p>No results found</p></div>';
+                return;
+            }
+
+            const resultsHtml = results.map((result, index) => {
+                const urlPath = '../../../' + result.url;
+                return '<a href="' + urlPath + '" class="search-result ' + (index === 0 ? 'selected' : '') + '" data-index="' + index + '">' +
+                    '<div class="result-title">' + result.title + '</div>' +
+                    '<div class="result-content">' + highlightMatch(result.content, query) + '</div>' +
+                    '</a>';
+            }).join('');
+
+            document.getElementById('searchResults').innerHTML = resultsHtml;
+            selectedResultIndex = 0;
+        }
+
+        // Highlight matching text
+        function highlightMatch(text, query) {
+            if (!text) return '';
+            const queryWords = query.split(/\s+/).join('|');
+            const regex = new RegExp('(' + queryWords + ')', 'gi');
+            return text.substring(0, 150).replace(regex, '<mark>$1</mark>') + '...';
+        }
+
+        // Navigate results with keyboard
+        function navigateResults(direction) {
+            const results = document.querySelectorAll('.search-result');
+            if (results.length === 0) return;
+
+            results[selectedResultIndex]?.classList.remove('selected');
+
+            if (direction === 'down') {
+                selectedResultIndex = (selectedResultIndex + 1) % results.length;
+            } else if (direction === 'up') {
+                selectedResultIndex = (selectedResultIndex - 1 + results.length) % results.length;
+            }
+
+            results[selectedResultIndex]?.classList.add('selected');
+            results[selectedResultIndex]?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+
+        // Select result
+        function selectResult() {
+            const selected = document.querySelector('.search-result.selected');
+            if (selected) {
+                window.location.href = selected.href;
+            }
+        }
+
+        // Event listeners
+        document.getElementById('headerSearchBtn')?.addEventListener('click', openSearchModal);
+        document.getElementById('searchCloseBtn')?.addEventListener('click', closeSearchModal);
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Ctrl+K or Cmd+K to open search
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                openSearchModal();
+            }
+
+            // Esc to close search
+            if (e.key === 'Escape' && document.getElementById('searchModal').classList.contains('active')) {
+                closeSearchModal();
+            }
+
+            // Navigate results
+            if (document.getElementById('searchModal').classList.contains('active')) {
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    navigateResults('down');
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    navigateResults('up');
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    selectResult();
+                }
+            }
+        });
+
+        // Search input
+        document.getElementById('searchModalInput')?.addEventListener('input', (e) => {
+            performSearch(e.target.value);
+        });
+
+        // Click outside to close
+        document.getElementById('searchModal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'searchModal') {
+                closeSearchModal();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,2024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase Request Module - Detailed Specification - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: #f8fafc;
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 15% 70% 15%;
+            gap: 0;
+            width: 100%;
+            padding: 1rem 0 2rem 0;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 1rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 2rem);
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-right: 1px solid var(--border-color);
+            padding-right: 2rem;
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 0.75rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+        .nav-subgroup {
+            margin: 0.5rem 0 0.5rem 0.5rem;
+        }
+        .nav-subgroup-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-subgroup-header:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .nav-subitems {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+            margin-left: 0.75rem;
+            margin-top: 0.25rem;
+        }
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 1rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 2rem);
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-left: 1px solid var(--border-color);
+            padding-left: 2rem;
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header - Modern Compact Design */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 52px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+        }
+        .header-content {
+            height: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--foreground);
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+        .logo:hover {
+            opacity: 0.8;
+        }
+        .logo i {
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+        .header-search-container {
+            display: flex;
+            align-items: center;
+        }
+        .header-search-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.375rem 0.75rem;
+            background: var(--secondary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.8125rem;
+            color: var(--muted-foreground);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            min-width: 180px;
+            flex-shrink: 0;
+        }
+        .header-search-btn:hover {
+            background: var(--background);
+            border-color: var(--primary);
+        }
+        .header-search-btn i {
+            color: var(--muted-foreground);
+            font-size: 0.875rem;
+        }
+        .header-search-btn span {
+            flex: 1;
+            text-align: left;
+        }
+        .header-search-btn kbd {
+            padding: 0.125rem 0.375rem;
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.6875rem;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--muted-foreground);
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        .back-to-home {
+            display: none; /* Hidden - navigation is sufficient */
+        }
+
+        /* Responsive Header */
+        @media (max-width: 768px) {
+            .header-search-btn {
+                min-width: auto;
+            }
+            .header-search-btn span {
+                display: none;
+            }
+        }
+
+        /* Search Modal */
+        .search-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            padding: 2rem;
+        }
+        .search-modal.active {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 10vh;
+        }
+        .search-modal-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 640px;
+            max-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            animation: slideDown 0.2s ease-out;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .search-modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .search-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .search-input-wrapper i {
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+        }
+        .search-input-wrapper input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 1.125rem;
+            color: var(--text-primary);
+        }
+        .search-close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .search-close-btn:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .search-results {
+            overflow-y: auto;
+            max-height: calc(70vh - 150px);
+        }
+        .search-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 2rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+        .search-empty i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        .search-result {
+            display: block;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+        .search-result:hover,
+        .search-result.selected {
+            background: var(--bg-secondary);
+        }
+        .search-result.selected {
+            border-left: 3px solid var(--primary-color);
+        }
+        .result-header {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .result-category {
+            font-size: 0.75rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .result-title {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        .result-badge {
+            display: inline-block;
+            padding: 0.125rem 0.5rem;
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-radius: 4px;
+            font-size: 0.6875rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        .result-content {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        .result-content mark {
+            background: rgba(79, 70, 229, 0.2);
+            color: var(--primary-color);
+            font-weight: 600;
+            padding: 0.125rem 0.25rem;
+            border-radius: 2px;
+        }
+        .search-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            border-bottom-left-radius: var(--border-radius-xl);
+            border-bottom-right-radius: var(--border-radius-xl);
+        }
+        .search-shortcuts {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        .search-shortcuts kbd {
+            padding: 0.25rem 0.5rem;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        /* Content Area */
+        .doc-content {
+            padding: 0 2rem;
+            width: 100%;
+            max-width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 0.9375rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Image Styles */
+        .doc-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 1.5rem auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Limit screenshot width to 80% for better readability */
+        .doc-content p > img {
+            max-width: 80%;
+        }
+
+        /* Table Styles */
+        .doc-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.875rem;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .doc-content table thead {
+            background: #f8fafc;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .doc-content table th {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #0f172a;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        .doc-content table td {
+            padding: 0.75rem 1rem;
+            border-top: 1px solid #e2e8f0;
+            color: #334155;
+        }
+
+        .doc-content table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        /* Table responsive wrapper */
+        .doc-content table {
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .doc-content table thead,
+        .doc-content table tbody,
+        .doc-content table tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 18% 64% 18%;
+                gap: 0;
+                padding: 1rem 0 1.5rem 0;
+            }
+            .doc-nav {
+                padding-right: 1.5rem;
+            }
+            .doc-toc {
+                padding-left: 1.5rem;
+            }
+            .doc-content {
+                padding: 0 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 0;
+                padding: 1rem 0 1.5rem 0;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 0 2rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                gap: 0;
+                padding: 0.5rem 0 1rem 0;
+            }
+            .doc-nav {
+                display: none;
+                border-right: none;
+            }
+            .doc-content {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="../../../index.html" class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </a>
+            <div class="doc-header-actions">
+                <div class="header-search-container">
+                    <button class="header-search-btn" id="headerSearchBtn">
+                        <i class="fas fa-search"></i>
+                        <span>Search documentation...</span>
+                        <kbd>Ctrl+K</kbd>
+                    </button>
+                </div>
+                <a href="../../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../01-overview/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Index</span>
+                    </a>
+                    <a href="../../../01-overview/business-value.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value & ROI</span>
+                    </a>
+                    <a href="../../../01-overview/tech-stack.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Technology Stack</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../02-architecture/system-architecture.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-database"></i>
+                    <span>Data Model</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../03-data-model/data-dictionary.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Data Dictionary</span>
+                    </a>
+                    <a href="../../../03-data-model/schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-th-large"></i>
+                    <span>Application Modules</span>
+                </div>
+                <div class="nav-items">
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Procurement</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/procurement/purchase-requests/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Purchase Requests</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/purchase-orders/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Purchase Orders</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/goods-received-notes/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Goods Received Notes</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/credit-notes/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Credit Notes</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/templates/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Templates</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-boxes"></i>
+                            <span>Inventory Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/inventory/stock-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Stock Management</span>
+                            </a>
+                            <a href="../../../04-modules/inventory/physical-count/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Physical Count</span>
+                            </a>
+                            <a href="../../../04-modules/inventory/spot-check/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Spot Check</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span>Finance</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/finance/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Finance Module</span>
+                            </a>
+                            <a href="../../../04-modules/finance/features/account-code-mapping/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Account Code Mapping</span>
+                            </a>
+                            <a href="../../../04-modules/finance/features/currency-and-rates/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Currency Management</span>
+                            </a>
+                            <a href="../../../04-modules/finance/features/departments/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Departments</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-handshake"></i>
+                            <span>Vendor Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/vendor-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Management</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Management Module</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/MANAGE-VENDORS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Manage Vendors</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/VENDOR-PORTAL.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Portal</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/CAMPAIGNS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Campaigns</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/PRICELISTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Pricelists</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/TEMPLATES.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Templates</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Sitemap</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/PAGES-AND-COMPONENTS-SPEC.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Pages & Components Spec</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/SHARED-COMPONENTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Shared Components</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-box"></i>
+                            <span>Product Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/product-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management</span>
+                            </a>
+                            <a href="../../../04-modules/product-management/product-management-specification.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management Specification</span>
+                            </a>
+                            <a href="../../../04-modules/product-management/product-management-sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management Sitemap</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-store"></i>
+                            <span>Store Operations</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../store-ops/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Operations</span>
+                            </a>
+                            <a href="../../../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Operations Module</span>
+                            </a>
+                            <a href="../../../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Requisitions</span>
+                            </a>
+                            <a href="../../../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Stock Replenishment</span>
+                            </a>
+                            <a href="../../../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Wastage Reporting</span>
+                            </a>
+                            <a href="../../../store-ops/SHARED-COMPONENTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Shared Components</span>
+                            </a>
+                            <a href="../../../store-ops/GLOSSARY.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Glossary</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-clipboard-list"></i>
+                            <span>Operational Planning</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../operational-planning/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Operational Planning</span>
+                            </a>
+                            <a href="../../../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Operational Planning Module</span>
+                            </a>
+                            <a href="../../../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Recipe Management</span>
+                            </a>
+                            <a href="../../../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Menu Engineering</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-cog"></i>
+                            <span>System Administration</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../sa/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>System Administration</span>
+                            </a>
+                            <a href="../../../sa/system-administration-sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>System Administration Sitemap</span>
+                            </a>
+                            <a href="../../../sa/features/permission-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Permission Management</span>
+                            </a>
+                            <a href="../../../sa/features/permission-management/specification.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Permission Specification</span>
+                            </a>
+                            <a href="../../../sa/features/location-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Location Management</span>
+                            </a>
+                            <a href="../../../sa/features/workflow/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Workflow</span>
+                            </a>
+                            <a href="../../../sa/features/pos-integration/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Reporting</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/reporting/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Reporting & Analytics</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../dashboard/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard</span>
+                            </a>
+                            <a href="../../../dashboard/sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard Sitemap</span>
+                            </a>
+                            <a href="../../../dashboard/components/components-overview.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Components Overview</span>
+                            </a>
+                            <a href="../../../dashboard/api/api-specifications.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>API Specifications</span>
+                            </a>
+                            <a href="../../../dashboard/business-logic/dashboard-business-rules.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard Business Rules</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-industry"></i>
+                            <span>Production</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/production/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Production</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-cash-register"></i>
+                            <span>POS Integration</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../pos-integration/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration</span>
+                            </a>
+                            <a href="../../../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration Module</span>
+                            </a>
+                            <a href="../../../pos-integration/MAPPING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Mapping</span>
+                            </a>
+                            <a href="../../../pos-integration/REPORTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Reports</span>
+                            </a>
+                            <a href="../../../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Transactions</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="purchase-request-module-detailed-specification">Purchase Request Module - Detailed Specification</h1>
+<h2 id="module-overview">Module Overview</h2>
+<p><strong>Module Name</strong>: Purchase Request Management System<br><strong>Module Code</strong>: <code>PR_MGT</code><br><strong>Version</strong>: 1.0.0<br><strong>Last Updated</strong>: 2024-12-23<br><strong>Status</strong>: Active Development</p>
+<h3 id="purpose">Purpose</h3>
+<p>The Purchase Request Module is a comprehensive procurement initiation system that allows users to create, submit, approve, and track purchase requests throughout the organization&#39;s approval workflow.</p>
+<h3 id="scope">Scope</h3>
+<p>This module handles the complete lifecycle of purchase requests from initial creation through final approval and conversion to purchase orders, including vendor management, budget validation, and workflow automation.</p>
+<h2 id="system-screenshots">System Screenshots</h2>
+<h3 id="purchase-request-list-view">Purchase Request List View</h3>
+<p><img src="./purchase-request-list-view.png" alt="Purchase Request List View"></p>
+<p><em>The main Purchase Request list interface showing filtering, sorting, and status management capabilities with comprehensive data display including requestor, department, amounts, and workflow status.</em></p>
+<h3 id="purchase-request-detail-view-items-tab">Purchase Request Detail View - Items Tab</h3>
+<p><img src="./purchase-request-detail-view.png" alt="Purchase Request Detail View"></p>
+<p><em>Detailed view of a purchase request showing the Items tab with comprehensive item management, including location status, product details, pricing, and approval workflow progress indicators.</em></p>
+<h3 id="purchase-request-creation-form">Purchase Request Creation Form</h3>
+<p><img src="./purchase-request-creation-form.png" alt="Purchase Request Creation Form"></p>
+<p><em>Purchase request creation interface with template selection, item management, budget allocation, and workflow submission capabilities.</em></p>
+<h3 id="role-based-view-purchasing-staff">Role-Based View - Purchasing Staff</h3>
+<p><img src="./role-based-purchasing-staff-view.png" alt="Role-Based Purchasing Staff View"></p>
+<p><em>Specialized view for purchasing staff showing additional controls and bulk operations for efficient purchase request processing.</em></p>
+<h2 id="functional-requirements">Functional Requirements</h2>
+<h3 id="1-purchase-request-creation">1. Purchase Request Creation</h3>
+<h4>1.1 Template-Based Creation</h4>
+<div class="mermaid">
+flowchart TD
+    A[User Clicks Create PR] --> B[Template Selection Modal]
+    B --> C{Template Type}
+    C -->|Office| D[Office Supplies Template]
+    C -->|IT| E[IT Equipment Template]
+    C -->|Kitchen| F[Kitchen/F&B Template]
+    C -->|Maintenance| G[Maintenance Template]
+    C -->|Custom| H[Blank Template]
+
+    D --> I[Pre-filled Categories]
+    E --> I
+    F --> I
+    G --> I
+    H --> I
+
+    I --> J[PR Form]
+
+</div>
+<p><strong>Requirements</strong>:</p>
+<ul>
+<li><strong>PR-REQ-001</strong>: System shall provide predefined templates for common purchase categories</li>
+<li><strong>PR-REQ-002</strong>: Templates shall pre-populate relevant item categories and default values</li>
+<li><strong>PR-REQ-003</strong>: Users shall be able to modify template items before submission</li>
+<li><strong>PR-REQ-004</strong>: System shall support custom/blank template creation</li>
+</ul>
+<h4>1.2 Form Data Collection</h4>
+<pre><code class="language-typescript">interface PurchaseRequestForm {
+  // Basic Information
+  requestorId: string;
+  departmentId: string;
+  locationId: string;
+  priority: &#39;low&#39; | &#39;medium&#39; | &#39;high&#39; | &#39;urgent&#39;;
+  requiredDate: Date;
+  justification: string;
+
+  // Items
+  items: PurchaseRequestItem[];
+
+  // Budget
+  budgetCode?: string;
+  costCenter?: string;
+
+  // Approval
+  approvalRoute?: &#39;standard&#39; | &#39;expedited&#39; | &#39;executive&#39;;
+}
+</code></pre>
+<p><strong>Requirements</strong>:</p>
+<ul>
+<li><strong>PR-REQ-005</strong>: System shall capture all mandatory fields before submission</li>
+<li><strong>PR-REQ-006</strong>: System shall validate required date is future date</li>
+<li><strong>PR-REQ-007</strong>: System shall enforce character limits on text fields</li>
+<li><strong>PR-REQ-008</strong>: System shall auto-populate requestor information from user session</li>
+</ul>
+<h3 id="2-item-management">2. Item Management</h3>
+<h4>2.1 Item Addition and Configuration</h4>
+<div class="mermaid">
+graph TD
+    A[Add Item Button] --> B[Item Form Modal]
+    B --> C[Item Details Input]
+    C --> D[Quantity & Units]
+    D --> E[Price Information]
+    E --> F[Vendor Selection]
+    F --> G[Save Item]
+
+    G --> H{Validation}
+    H -->|Valid| I[Add to PR]
+    H -->|Invalid| J[Show Errors]
+    J --> C
+
+</div>
+<p><strong>Requirements</strong>:</p>
+<ul>
+<li><strong>PR-REQ-009</strong>: System shall support unlimited items per purchase request</li>
+<li><strong>PR-REQ-010</strong>: Each item shall have name, description, quantity, unit, and estimated price</li>
+<li><strong>PR-REQ-011</strong>: System shall validate numeric fields for quantity and price</li>
+<li><strong>PR-REQ-012</strong>: System shall support multiple units of measure per item type</li>
+</ul>
+<h4>2.2 Vendor Management Integration</h4>
+<pre><code class="language-typescript">interface ItemVendorSelection {
+  preferredVendor?: Vendor;
+  alternativeVendors: Vendor[];
+  priceQuotes: PriceQuote[];
+  selectedQuote?: PriceQuote;
+  justification?: string;
+}
+</code></pre>
+<p><strong>Requirements</strong>:</p>
+<ul>
+<li><strong>PR-REQ-013</strong>: System shall integrate with vendor database for selection</li>
+<li><strong>PR-REQ-014</strong>: System shall display vendor ratings and performance history</li>
+<li><strong>PR-REQ-015</strong>: System shall support multiple price quotes per item</li>
+<li><strong>PR-REQ-016</strong>: System shall track vendor selection justification</li>
+</ul>
+<h3 id="3-workflow-management">3. Workflow Management</h3>
+<h4>3.1 Approval Routing Engine</h4>
+<div class="mermaid">
+stateDiagram-v2
+    [*] --> Draft
+
+    Draft --> Submitted : Submit for Approval
+
+    Submitted --> DeptApproval : Value < $5000
+    Submitted --> FinanceApproval : Value $5000-$10000
+    Submitted --> GMApproval : Value > $10000
+
+    DeptApproval --> FinanceApproval : Approved & Value > $1000
+    DeptApproval --> Purchasing : Approved & Value ≤ $1000
+    DeptApproval --> Rejected : Rejected
+    DeptApproval --> Draft : Returned
+
+    FinanceApproval --> GMApproval : Approved & Value > $10000
+    FinanceApproval --> Purchasing : Approved
+    FinanceApproval --> Rejected : Rejected
+    FinanceApproval --> DeptApproval : Returned
+
+    GMApproval --> Purchasing : Approved
+    GMApproval --> Rejected : Rejected
+    GMApproval --> FinanceApproval : Returned
+
+    Purchasing --> Completed : Processed
+    Purchasing --> OnHold : Vendor Issues
+
+    OnHold --> Purchasing : Issues Resolved
+
+    Rejected --> [*]
+    Completed --> [*]
+
+</div>
+<p><strong>Requirements</strong>:</p>
+<ul>
+<li><strong>PR-REQ-017</strong>: System shall route approval based on total request value</li>
+<li><strong>PR-REQ-018</strong>: System shall support department-specific approval workflows</li>
+<li><strong>PR-REQ-019</strong>: System shall track approval timestamps and comments</li>
+<li><strong>PR-REQ-020</strong>: System shall send notifications at each workflow stage</li>
+</ul>
+<h4>3.2 Role-Based Permissions</h4>
+<pre><code class="language-typescript">interface WorkflowPermissions {
+  canCreate: boolean;
+  canEdit: boolean;
+  canDelete: boolean;
+  canApprove: boolean;
+  canReject: boolean;
+  canReturn: boolean;
+  canViewFinancials: boolean;
+  canOverridePrices: boolean;
+}
+
+type UserRole = &#39;requester&#39; | &#39;dept_manager&#39; | &#39;finance_manager&#39; | &#39;purchasing_staff&#39; | &#39;gm&#39;;
+</code></pre>
+<p><strong>Requirements</strong>:</p>
+<ul>
+<li><strong>PR-REQ-021</strong>: System shall enforce role-based access control</li>
+<li><strong>PR-REQ-022</strong>: System shall hide/show UI elements based on permissions</li>
+<li><strong>PR-REQ-023</strong>: System shall validate permissions on all API operations</li>
+<li><strong>PR-REQ-024</strong>: System shall maintain audit trail of permission-based actions</li>
+</ul>
+<h3 id="4-budget-integration">4. Budget Integration</h3>
+<h4>4.1 Budget Validation</h4>
+<div class="mermaid">
+flowchart TD
+    A[PR Submission] --> B[Extract Budget Codes]
+    B --> C[Validate Budget Existence]
+    C --> D{Budget Valid?}
+    D -->|No| E[Budget Error]
+    D -->|Yes| F[Check Available Balance]
+    F --> G{Sufficient Funds?}
+    G -->|No| H[Over Budget Warning]
+    G -->|Yes| I[Reserve Funds]
+
+    H --> J[Require Additional Approval]
+    I --> K[Proceed with Approval]
+    E --> L[Return to User]
+    J --> M[Route to Finance]
+
+</div>
+<p><strong>Requirements</strong>:</p>
+<ul>
+<li><strong>PR-REQ-025</strong>: System shall validate budget codes against financial system</li>
+<li><strong>PR-REQ-026</strong>: System shall check available budget balance before approval</li>
+<li><strong>PR-REQ-027</strong>: System shall reserve funds upon approval</li>
+<li><strong>PR-REQ-028</strong>: System shall handle over-budget scenarios with escalation</li>
+</ul>
+<h3 id="5-reporting-and-analytics">5. Reporting and Analytics</h3>
+<h4>5.1 Dashboard Metrics</h4>
+<pre><code class="language-typescript">interface PRDashboardMetrics {
+  totalRequests: number;
+  pendingApprovals: number;
+  approvedThisMonth: number;
+  rejectedThisMonth: number;
+  averageApprovalTime: number;
+  topCategories: CategorySpending[];
+  budgetUtilization: BudgetMetrics[];
+}
+</code></pre>
+<p><strong>Requirements</strong>:</p>
+<ul>
+<li><strong>PR-REQ-029</strong>: System shall provide real-time dashboard metrics</li>
+<li><strong>PR-REQ-030</strong>: System shall track approval cycle times</li>
+<li><strong>PR-REQ-031</strong>: System shall generate spending analytics by category</li>
+<li><strong>PR-REQ-032</strong>: System shall provide budget utilization reporting</li>
+</ul>
+<h2 id="technical-requirements">Technical Requirements</h2>
+<h3 id="1-performance-requirements">1. Performance Requirements</h3>
+<table>
+<thead>
+<tr>
+<th>Metric</th>
+<th>Requirement</th>
+<th>Current Performance</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Page Load Time</td>
+<td>&lt; 2 seconds</td>
+<td>1.8 seconds</td>
+</tr>
+<tr>
+<td>API Response Time</td>
+<td>&lt; 500ms</td>
+<td>320ms average</td>
+</tr>
+<tr>
+<td>Database Query Time</td>
+<td>&lt; 100ms</td>
+<td>85ms average</td>
+</tr>
+<tr>
+<td>File Upload Time</td>
+<td>&lt; 30 seconds for 10MB</td>
+<td>25 seconds</td>
+</tr>
+<tr>
+<td>Concurrent Users</td>
+<td>100+ simultaneous</td>
+<td>150+ tested</td>
+</tr>
+</tbody></table>
+<p><strong>Requirements</strong>:</p>
+<ul>
+<li><strong>PR-TECH-001</strong>: System shall load pages within 2 seconds on standard network</li>
+<li><strong>PR-TECH-002</strong>: API responses shall return within 500ms for standard operations</li>
+<li><strong>PR-TECH-003</strong>: System shall support 100+ concurrent users</li>
+<li><strong>PR-TECH-004</strong>: File uploads shall complete within 30 seconds for files up to 10MB</li>
+</ul>
+<h3 id="2-data-requirements">2. Data Requirements</h3>
+<h4>2.1 Data Model</h4>
+<div class="mermaid">
+erDiagram
+    PURCHASE_REQUEST {
+        string id PK
+        string ref_number UK
+        datetime created_date
+        datetime required_date
+        string status
+        string current_stage
+        decimal total_amount
+        string requestor_id FK
+        string department_id FK
+        text justification
+    }
+
+    PR_ITEM {
+        string id PK
+        string pr_id FK
+        string name
+        text description
+        decimal quantity
+        string unit
+        decimal unit_price
+        decimal total_price
+        string vendor_id FK
+    }
+
+    PR_APPROVAL {
+        string id PK
+        string pr_id FK
+        string approver_id FK
+        string action
+        datetime timestamp
+        text comments
+    }
+
+    BUDGET_ALLOCATION {
+        string id PK
+        string pr_id FK
+        string budget_code
+        decimal amount
+        string cost_center
+    }
+
+    PURCHASE_REQUEST ||--o{ PR_ITEM : contains
+    PURCHASE_REQUEST ||--o{ PR_APPROVAL : has
+    PURCHASE_REQUEST ||--o{ BUDGET_ALLOCATION : allocates
+
+</div>
+<p><strong>Requirements</strong>:</p>
+<ul>
+<li><strong>PR-DATA-001</strong>: System shall maintain referential integrity across all tables</li>
+<li><strong>PR-DATA-002</strong>: System shall implement soft deletes for audit purposes</li>
+<li><strong>PR-DATA-003</strong>: System shall encrypt sensitive financial data at rest</li>
+<li><strong>PR-DATA-004</strong>: System shall implement row-level security for data access</li>
+</ul>
+<h4>2.2 Data Validation Rules</h4>
+<pre><code class="language-typescript">const ValidationRules = {
+  purchaseRequest: {
+    refNumber: { required: true, pattern: /^PR-\d{6}$/, unique: true },
+    requiredDate: { required: true, minDate: &#39;today+1&#39; },
+    justification: { required: true, maxLength: 1000 },
+    totalAmount: { required: true, min: 0.01, max: 1000000 }
+  },
+  prItem: {
+    name: { required: true, maxLength: 200 },
+    quantity: { required: true, min: 0.01, max: 99999 },
+    unitPrice: { required: true, min: 0.01, max: 100000 }
+  }
+};
+</code></pre>
+<p><strong>Requirements</strong>:</p>
+<ul>
+<li><strong>PR-DATA-005</strong>: System shall validate all input data according to business rules</li>
+<li><strong>PR-DATA-006</strong>: System shall prevent SQL injection and XSS attacks</li>
+<li><strong>PR-DATA-007</strong>: System shall implement field-level validation with user feedback</li>
+<li><strong>PR-DATA-008</strong>: System shall maintain data consistency across all operations</li>
+</ul>
+<h3 id="3-integration-requirements">3. Integration Requirements</h3>
+<h4>3.1 External System Integration</h4>
+<div class="mermaid">
+graph LR
+    A[PR Module] --> B[ERP System]
+    A --> C[Budget System]
+    A --> D[Vendor Database]
+    A --> E[Email Service]
+    A --> F[Document Storage]
+
+    B --> G[Purchase Orders]
+    C --> H[Budget Validation]
+    D --> I[Vendor Information]
+    E --> J[Notifications]
+    F --> K[File Attachments]
+
+</div>
+<p><strong>Requirements</strong>:</p>
+<ul>
+<li><strong>PR-INT-001</strong>: System shall integrate with central ERP for purchase order creation</li>
+<li><strong>PR-INT-002</strong>: System shall validate budgets against financial system</li>
+<li><strong>PR-INT-003</strong>: System shall sync vendor data from central vendor database</li>
+<li><strong>PR-INT-004</strong>: System shall send email notifications via SMTP service</li>
+<li><strong>PR-INT-005</strong>: System shall store attachments in secure document management system</li>
+</ul>
+<h3 id="4-security-requirements">4. Security Requirements</h3>
+<h4>4.1 Authentication and Authorization</h4>
+<pre><code class="language-typescript">interface SecurityControls {
+  authentication: {
+    method: &#39;SSO&#39; | &#39;LDAP&#39; | &#39;LOCAL&#39;;
+    sessionTimeout: number; // minutes
+    passwordPolicy: PasswordPolicy;
+  };
+  authorization: {
+    rbac: boolean;
+    fieldLevelSecurity: boolean;
+    dataEncryption: boolean;
+  };
+  audit: {
+    logAllActions: boolean;
+    retentionPeriod: number; // days
+    tamperProtection: boolean;
+  };
+}
+</code></pre>
+<p><strong>Requirements</strong>:</p>
+<ul>
+<li><strong>PR-SEC-001</strong>: System shall authenticate users via SSO integration</li>
+<li><strong>PR-SEC-002</strong>: System shall implement role-based access control</li>
+<li><strong>PR-SEC-003</strong>: System shall encrypt sensitive data in transit and at rest</li>
+<li><strong>PR-SEC-004</strong>: System shall maintain comprehensive audit logs</li>
+<li><strong>PR-SEC-005</strong>: System shall implement session timeout after 30 minutes of inactivity</li>
+</ul>
+<h2 id="user-interface-requirements">User Interface Requirements</h2>
+<h3 id="1-responsive-design">1. Responsive Design</h3>
+<div class="mermaid">
+graph TD
+    A[Device Detection] --> B{Screen Size}
+    B -->|Mobile < 768px| C[Mobile Layout]
+    B -->|Tablet 768-1024px| D[Tablet Layout]
+    B -->|Desktop > 1024px| E[Desktop Layout]
+
+    C --> F[Single Column]
+    C --> G[Collapsible Menu]
+    C --> H[Touch Optimized]
+
+    D --> I[Two Column]
+    D --> J[Sidebar Menu]
+
+    E --> K[Multi Column]
+    E --> L[Full Navigation]
+
+</div>
+<p><strong>Requirements</strong>:</p>
+<ul>
+<li><strong>PR-UI-001</strong>: System shall provide responsive design for mobile, tablet, and desktop</li>
+<li><strong>PR-UI-002</strong>: System shall maintain functionality across all screen sizes</li>
+<li><strong>PR-UI-003</strong>: System shall provide touch-friendly interface on mobile devices</li>
+<li><strong>PR-UI-004</strong>: System shall optimize performance for slower mobile networks</li>
+</ul>
+<h3 id="2-accessibility-requirements">2. Accessibility Requirements</h3>
+<pre><code class="language-typescript">interface AccessibilityFeatures {
+  keyboardNavigation: boolean;
+  screenReaderSupport: boolean;
+  colorContrastRatio: number; // WCAG AA: 4.5:1
+  focusIndicators: boolean;
+  alternativeText: boolean;
+  semanticMarkup: boolean;
+}
+</code></pre>
+<p><strong>Requirements</strong>:</p>
+<ul>
+<li><strong>PR-UI-005</strong>: System shall meet WCAG 2.1 AA accessibility standards</li>
+<li><strong>PR-UI-006</strong>: System shall provide keyboard navigation for all functionality</li>
+<li><strong>PR-UI-007</strong>: System shall include appropriate ARIA labels and roles</li>
+<li><strong>PR-UI-008</strong>: System shall maintain color contrast ratio of 4.5:1 minimum</li>
+</ul>
+<h3 id="3-user-experience-requirements">3. User Experience Requirements</h3>
+<div class="mermaid">
+journey
+    title Purchase Request User Experience Journey
+    section Discovery
+        Navigate to PR Module    : 5: User
+        View Dashboard          : 4: User
+        Find Create Button      : 5: User
+    section Creation
+        Select Template         : 4: User
+        Fill Form              : 3: User
+        Add Items              : 3: User
+        Review Summary         : 4: User
+        Submit Request         : 5: User
+    section Tracking
+        Receive Confirmation   : 5: User
+        Check Status           : 4: User
+        Respond to Returns     : 3: User
+        Final Approval         : 5: User
+
+</div>
+<p><strong>Requirements</strong>:</p>
+<ul>
+<li><strong>PR-UI-009</strong>: System shall provide intuitive navigation with clear visual hierarchy</li>
+<li><strong>PR-UI-010</strong>: System shall minimize clicks required for common tasks</li>
+<li><strong>PR-UI-011</strong>: System shall provide clear status indicators and progress feedback</li>
+<li><strong>PR-UI-012</strong>: System shall implement consistent design patterns throughout</li>
+</ul>
+<h2 id="api-specifications">API Specifications</h2>
+<h3 id="1-restful-api-endpoints">1. RESTful API Endpoints</h3>
+<h4>1.1 Purchase Requests</h4>
+<pre><code class="language-typescript">// GET /api/purchase-requests
+interface GetPurchaseRequestsResponse {
+  data: PurchaseRequest[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
+  filters: FilterOptions;
+}
+
+// POST /api/purchase-requests
+interface CreatePurchaseRequestRequest {
+  requestorId: string;
+  departmentId: string;
+  locationId: string;
+  priority: Priority;
+  requiredDate: string;
+  justification: string;
+  items: CreatePRItemRequest[];
+  budgetAllocations: BudgetAllocation[];
+}
+
+// PUT /api/purchase-requests/{id}
+interface UpdatePurchaseRequestRequest {
+  priority?: Priority;
+  requiredDate?: string;
+  justification?: string;
+  items?: UpdatePRItemRequest[];
+}
+
+// POST /api/purchase-requests/{id}/workflow
+interface WorkflowActionRequest {
+  action: &#39;approve&#39; | &#39;reject&#39; | &#39;return&#39;;
+  comments?: string;
+  returnToStage?: string;
+}
+</code></pre>
+<h4>1.2 Response Format</h4>
+<pre><code class="language-typescript">interface ApiResponse&lt;T&gt; {
+  success: boolean;
+  data?: T;
+  error?: {
+    code: string;
+    message: string;
+    details?: any;
+  };
+  metadata?: {
+    timestamp: string;
+    requestId: string;
+    version: string;
+  };
+}
+</code></pre>
+<p><strong>Requirements</strong>:</p>
+<ul>
+<li><strong>PR-API-001</strong>: All API endpoints shall follow RESTful conventions</li>
+<li><strong>PR-API-002</strong>: API responses shall include consistent error handling</li>
+<li><strong>PR-API-003</strong>: API shall implement pagination for list endpoints</li>
+<li><strong>PR-API-004</strong>: API shall support filtering, sorting, and searching</li>
+<li><strong>PR-API-005</strong>: API shall implement rate limiting and authentication</li>
+</ul>
+<h3 id="2-real-time-updates">2. Real-time Updates</h3>
+<pre><code class="language-typescript">interface WebSocketEvents {
+  &#39;pr:status-changed&#39;: {
+    prId: string;
+    oldStatus: string;
+    newStatus: string;
+    timestamp: string;
+  };
+  &#39;pr:comment-added&#39;: {
+    prId: string;
+    comment: Comment;
+    author: User;
+  };
+  &#39;pr:approval-received&#39;: {
+    prId: string;
+    approver: User;
+    action: &#39;approved&#39; | &#39;rejected&#39; | &#39;returned&#39;;
+  };
+}
+</code></pre>
+<p><strong>Requirements</strong>:</p>
+<ul>
+<li><strong>PR-API-006</strong>: System shall provide real-time status updates via WebSockets</li>
+<li><strong>PR-API-007</strong>: System shall notify relevant users of workflow changes</li>
+<li><strong>PR-API-008</strong>: System shall maintain connection state and handle reconnection</li>
+</ul>
+<h2 id="testing-requirements">Testing Requirements</h2>
+<h3 id="1-unit-testing">1. Unit Testing</h3>
+<pre><code class="language-typescript">describe(&#39;Purchase Request Creation&#39;, () =&gt; {
+  it(&#39;should validate required fields&#39;, () =&gt; {
+    const invalidPR = createPRWithoutRequiredFields();
+    const result = validatePurchaseRequest(invalidPR);
+    expect(result.isValid).toBe(false);
+    expect(result.errors).toContain(&#39;Required date is mandatory&#39;);
+  });
+
+  it(&#39;should calculate total amount correctly&#39;, () =&gt; {
+    const pr = createPRWithItems([
+      { quantity: 2, unitPrice: 10.50 },
+      { quantity: 1, unitPrice: 25.00 }
+    ]);
+    expect(pr.totalAmount).toBe(46.00);
+  });
+});
+</code></pre>
+<p><strong>Requirements</strong>:</p>
+<ul>
+<li><strong>PR-TEST-001</strong>: System shall achieve 90%+ code coverage for unit tests</li>
+<li><strong>PR-TEST-002</strong>: All business logic functions shall have comprehensive unit tests</li>
+<li><strong>PR-TEST-003</strong>: Tests shall cover both positive and negative scenarios</li>
+<li><strong>PR-TEST-004</strong>: Tests shall validate data transformations and calculations</li>
+</ul>
+<h3 id="2-integration-testing">2. Integration Testing</h3>
+<pre><code class="language-typescript">describe(&#39;Workflow Integration&#39;, () =&gt; {
+  it(&#39;should route approval correctly based on amount&#39;, async () =&gt; {
+    const highValuePR = await createPR({ totalAmount: 15000 });
+    await submitPR(highValuePR.id);
+
+    const updatedPR = await getPR(highValuePR.id);
+    expect(updatedPR.currentStage).toBe(&#39;GM_APPROVAL&#39;);
+  });
+});
+</code></pre>
+<p><strong>Requirements</strong>:</p>
+<ul>
+<li><strong>PR-TEST-005</strong>: System shall test integration with external systems</li>
+<li><strong>PR-TEST-006</strong>: Tests shall validate workflow routing logic</li>
+<li><strong>PR-TEST-007</strong>: Tests shall verify permission enforcement</li>
+<li><strong>PR-TEST-008</strong>: Tests shall validate API contract compliance</li>
+</ul>
+<h3 id="3-end-to-end-testing">3. End-to-End Testing</h3>
+<pre><code class="language-typescript">describe(&#39;Complete PR Lifecycle&#39;, () =&gt; {
+  it(&#39;should complete full approval workflow&#39;, async () =&gt; {
+    await page.goto(&#39;/procurement/purchase-requests&#39;);
+    await page.click(&#39;[data-testid=&quot;create-pr-button&quot;]&#39;);
+    await page.selectOption(&#39;[data-testid=&quot;template-select&quot;]&#39;, &#39;office&#39;);
+    // ... complete E2E test scenario
+  });
+});
+</code></pre>
+<p><strong>Requirements</strong>:</p>
+<ul>
+<li><strong>PR-TEST-009</strong>: System shall have E2E tests for critical user journeys</li>
+<li><strong>PR-TEST-010</strong>: Tests shall validate UI functionality across browsers</li>
+<li><strong>PR-TEST-011</strong>: Tests shall verify responsive design behavior</li>
+<li><strong>PR-TEST-012</strong>: Tests shall include accessibility validation</li>
+</ul>
+<h2 id="deployment-requirements">Deployment Requirements</h2>
+<h3 id="1-environment-configuration">1. Environment Configuration</h3>
+<pre><code class="language-yaml">environments:
+  development:
+    database_url: &quot;postgresql://localhost/carmen_dev&quot;
+    redis_url: &quot;redis://localhost:6379&quot;
+    log_level: &quot;debug&quot;
+    enable_debug_tools: true
+
+  staging:
+    database_url: &quot;${DATABASE_URL}&quot;
+    redis_url: &quot;${REDIS_URL}&quot;
+    log_level: &quot;info&quot;
+    enable_debug_tools: false
+
+  production:
+    database_url: &quot;${DATABASE_URL}&quot;
+    redis_url: &quot;${REDIS_URL}&quot;
+    log_level: &quot;warn&quot;
+    enable_monitoring: true
+    ssl_required: true
+</code></pre>
+<p><strong>Requirements</strong>:</p>
+<ul>
+<li><strong>PR-DEPLOY-001</strong>: System shall support multiple deployment environments</li>
+<li><strong>PR-DEPLOY-002</strong>: Configuration shall be externalized via environment variables</li>
+<li><strong>PR-DEPLOY-003</strong>: System shall implement blue-green deployment strategy</li>
+<li><strong>PR-DEPLOY-004</strong>: System shall include health checks and monitoring</li>
+</ul>
+<h3 id="2-monitoring-and-observability">2. Monitoring and Observability</h3>
+<pre><code class="language-typescript">interface MonitoringMetrics {
+  performance: {
+    responseTime: number;
+    throughput: number;
+    errorRate: number;
+  };
+  business: {
+    totalPRsCreated: number;
+    averageApprovalTime: number;
+    rejectionRate: number;
+  };
+  system: {
+    memoryUsage: number;
+    cpuUsage: number;
+    diskSpace: number;
+  };
+}
+</code></pre>
+<p><strong>Requirements</strong>:</p>
+<ul>
+<li><strong>PR-DEPLOY-005</strong>: System shall implement comprehensive application monitoring</li>
+<li><strong>PR-DEPLOY-006</strong>: System shall track business and technical metrics</li>
+<li><strong>PR-DEPLOY-007</strong>: System shall provide alerting for critical issues</li>
+<li><strong>PR-DEPLOY-008</strong>: System shall maintain audit logs for compliance</li>
+</ul>
+<h2 id="maintenance-and-support">Maintenance and Support</h2>
+<h3 id="1-documentation-requirements">1. Documentation Requirements</h3>
+<p><strong>Requirements</strong>:</p>
+<ul>
+<li><strong>PR-MAINT-001</strong>: System shall maintain up-to-date API documentation</li>
+<li><strong>PR-MAINT-002</strong>: System shall provide user manuals for each role</li>
+<li><strong>PR-MAINT-003</strong>: System shall document deployment and configuration procedures</li>
+<li><strong>PR-MAINT-004</strong>: System shall maintain troubleshooting guides</li>
+</ul>
+<h3 id="2-support-procedures">2. Support Procedures</h3>
+<p><strong>Requirements</strong>:</p>
+<ul>
+<li><strong>PR-MAINT-005</strong>: System shall provide tiered support structure</li>
+<li><strong>PR-MAINT-006</strong>: System shall maintain knowledge base for common issues</li>
+<li><strong>PR-MAINT-007</strong>: System shall implement issue tracking and resolution</li>
+<li><strong>PR-MAINT-008</strong>: System shall provide user training materials</li>
+</ul>
+<hr>
+<p>This specification serves as the definitive technical and functional reference for the Purchase Request Module, covering all aspects from business requirements through technical implementation and ongoing maintenance.</p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#purchase-request-module-detailed-specification" class="level-1">Purchase Request Module - Detailed Specification</a>
+<a href="#module-overview" class="level-2">Module Overview</a>
+<a href="#purpose" class="level-3">Purpose</a>
+<a href="#scope" class="level-3">Scope</a>
+<a href="#system-screenshots" class="level-2">System Screenshots</a>
+<a href="#purchase-request-list-view" class="level-3">Purchase Request List View</a>
+<a href="#purchase-request-detail-view-items-tab" class="level-3">Purchase Request Detail View - Items Tab</a>
+<a href="#purchase-request-creation-form" class="level-3">Purchase Request Creation Form</a>
+<a href="#role-based-view-purchasing-staff" class="level-3">Role-Based View - Purchasing Staff</a>
+<a href="#functional-requirements" class="level-2">Functional Requirements</a>
+<a href="#1-purchase-request-creation" class="level-3">1. Purchase Request Creation</a>
+<a href="#2-item-management" class="level-3">2. Item Management</a>
+<a href="#3-workflow-management" class="level-3">3. Workflow Management</a>
+<a href="#4-budget-integration" class="level-3">4. Budget Integration</a>
+<a href="#5-reporting-and-analytics" class="level-3">5. Reporting and Analytics</a>
+<a href="#technical-requirements" class="level-2">Technical Requirements</a>
+<a href="#1-performance-requirements" class="level-3">1. Performance Requirements</a>
+<a href="#2-data-requirements" class="level-3">2. Data Requirements</a>
+<a href="#3-integration-requirements" class="level-3">3. Integration Requirements</a>
+<a href="#4-security-requirements" class="level-3">4. Security Requirements</a>
+<a href="#user-interface-requirements" class="level-2">User Interface Requirements</a>
+<a href="#1-responsive-design" class="level-3">1. Responsive Design</a>
+<a href="#2-accessibility-requirements" class="level-3">2. Accessibility Requirements</a>
+<a href="#3-user-experience-requirements" class="level-3">3. User Experience Requirements</a>
+<a href="#api-specifications" class="level-2">API Specifications</a>
+<a href="#1-restful-api-endpoints" class="level-3">1. RESTful API Endpoints</a>
+<a href="#2-real-time-updates" class="level-3">2. Real-time Updates</a>
+<a href="#testing-requirements" class="level-2">Testing Requirements</a>
+<a href="#1-unit-testing" class="level-3">1. Unit Testing</a>
+<a href="#2-integration-testing" class="level-3">2. Integration Testing</a>
+<a href="#3-end-to-end-testing" class="level-3">3. End-to-End Testing</a>
+<a href="#deployment-requirements" class="level-2">Deployment Requirements</a>
+<a href="#1-environment-configuration" class="level-3">1. Environment Configuration</a>
+<a href="#2-monitoring-and-observability" class="level-3">2. Monitoring and Observability</a>
+<a href="#maintenance-and-support" class="level-2">Maintenance and Support</a>
+<a href="#1-documentation-requirements" class="level-3">1. Documentation Requirements</a>
+<a href="#2-support-procedures" class="level-3">2. Support Procedures</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Search Modal -->
+    <div class="search-modal" id="searchModal">
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchModalInput" placeholder="Search documentation..." autofocus>
+                    <button class="search-close-btn" id="searchCloseBtn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="search-results" id="searchResults">
+                <div class="search-empty">
+                    <i class="fas fa-search"></i>
+                    <p>Start typing to search...</p>
+                </div>
+            </div>
+            <div class="search-footer">
+                <div class="search-shortcuts">
+                    <kbd>↑↓</kbd> Navigate
+                    <kbd>Enter</kbd> Select
+                    <kbd>Esc</kbd> Close
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Search functionality
+        let searchIndex = [];
+        let selectedResultIndex = -1;
+
+        // Load search index
+        fetch('../../../search-index.json')
+            .then(res => res.json())
+            .then(data => {
+                searchIndex = data;
+                console.log('✓ Search index loaded:', searchIndex.length, 'entries');
+            })
+            .catch(err => console.error('❌ Failed to load search index:', err));
+
+        // Open search modal
+        function openSearchModal() {
+            console.log('🔍 Opening search modal...');
+            document.getElementById('searchModal').classList.add('active');
+            document.getElementById('searchModalInput').focus();
+            selectedResultIndex = -1;
+        }
+
+        // Close search modal
+        function closeSearchModal() {
+            document.getElementById('searchModal').classList.remove('active');
+            document.getElementById('searchModalInput').value = '';
+            document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-search"></i><p>Start typing to search...</p></div>';
+            selectedResultIndex = -1;
+        }
+
+        // Search function
+        function performSearch(query) {
+            console.log('🔎 Searching for:', query);
+
+            if (!query || query.length < 2) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-search"></i><p>Start typing to search...</p></div>';
+                return;
+            }
+
+            if (searchIndex.length === 0) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-exclamation-circle"></i><p>Search index not loaded</p></div>';
+                return;
+            }
+
+            const queryLower = query.toLowerCase();
+            const queryWords = queryLower.split(/s+/).filter(word => word.length > 1);
+
+            // Search and score results
+            const results = searchIndex
+                .map(entry => {
+                    let score = 0;
+
+                    // Title match (highest weight)
+                    if (entry.title.toLowerCase().includes(queryLower)) {
+                        score += 100;
+                    }
+                    queryWords.forEach(word => {
+                        if (entry.title.toLowerCase().includes(word)) score += 50;
+                    });
+
+                    // Content match
+                    if (entry.content.toLowerCase().includes(queryLower)) {
+                        score += 10;
+                    }
+                    queryWords.forEach(word => {
+                        if (entry.content.toLowerCase().includes(word)) score += 5;
+                    });
+
+                    return { ...entry, score };
+                })
+                .filter(result => result.score > 0)
+                .sort((a, b) => b.score - a.score)
+                .slice(0, 10); // Top 10 results
+
+            console.log('📊 Found', results.length, 'results');
+
+            // Display results
+            if (results.length === 0) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-times-circle"></i><p>No results found</p></div>';
+                return;
+            }
+
+            const resultsHtml = results.map((result, index) => {
+                const urlPath = '../../../' + result.url;
+                return '<a href="' + urlPath + '" class="search-result ' + (index === 0 ? 'selected' : '') + '" data-index="' + index + '">' +
+                    '<div class="result-title">' + result.title + '</div>' +
+                    '<div class="result-content">' + highlightMatch(result.content, query) + '</div>' +
+                    '</a>';
+            }).join('');
+
+            document.getElementById('searchResults').innerHTML = resultsHtml;
+            selectedResultIndex = 0;
+        }
+
+        // Highlight matching text
+        function highlightMatch(text, query) {
+            if (!text) return '';
+            const queryWords = query.split(/\s+/).join('|');
+            const regex = new RegExp('(' + queryWords + ')', 'gi');
+            return text.substring(0, 150).replace(regex, '<mark>$1</mark>') + '...';
+        }
+
+        // Navigate results with keyboard
+        function navigateResults(direction) {
+            const results = document.querySelectorAll('.search-result');
+            if (results.length === 0) return;
+
+            results[selectedResultIndex]?.classList.remove('selected');
+
+            if (direction === 'down') {
+                selectedResultIndex = (selectedResultIndex + 1) % results.length;
+            } else if (direction === 'up') {
+                selectedResultIndex = (selectedResultIndex - 1 + results.length) % results.length;
+            }
+
+            results[selectedResultIndex]?.classList.add('selected');
+            results[selectedResultIndex]?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+
+        // Select result
+        function selectResult() {
+            const selected = document.querySelector('.search-result.selected');
+            if (selected) {
+                window.location.href = selected.href;
+            }
+        }
+
+        // Event listeners
+        document.getElementById('headerSearchBtn')?.addEventListener('click', openSearchModal);
+        document.getElementById('searchCloseBtn')?.addEventListener('click', closeSearchModal);
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Ctrl+K or Cmd+K to open search
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                openSearchModal();
+            }
+
+            // Esc to close search
+            if (e.key === 'Escape' && document.getElementById('searchModal').classList.contains('active')) {
+                closeSearchModal();
+            }
+
+            // Navigate results
+            if (document.getElementById('searchModal').classList.contains('active')) {
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    navigateResults('down');
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    navigateResults('up');
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    selectResult();
+                }
+            }
+        });
+
+        // Search input
+        document.getElementById('searchModalInput')?.addEventListener('input', (e) => {
+            performSearch(e.target.value);
+        });
+
+        // Click outside to close
+        document.getElementById('searchModal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'searchModal') {
+                closeSearchModal();
+            }
+        });
+    </script>
+</body>
+</html>

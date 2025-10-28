@@ -1,0 +1,2266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management - Glossary and Feature Gap Analysis - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: #f8fafc;
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 15% 70% 15%;
+            gap: 0;
+            width: 100%;
+            padding: 1rem 0 2rem 0;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 1rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 2rem);
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-right: 1px solid var(--border-color);
+            padding-right: 2rem;
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 0.75rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+        .nav-subgroup {
+            margin: 0.5rem 0 0.5rem 0.5rem;
+        }
+        .nav-subgroup-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-subgroup-header:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .nav-subitems {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+            margin-left: 0.75rem;
+            margin-top: 0.25rem;
+        }
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 1rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 2rem);
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-left: 1px solid var(--border-color);
+            padding-left: 2rem;
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header - Modern Compact Design */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 52px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+        }
+        .header-content {
+            height: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--foreground);
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+        .logo:hover {
+            opacity: 0.8;
+        }
+        .logo i {
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+        .header-search-container {
+            display: flex;
+            align-items: center;
+        }
+        .header-search-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.375rem 0.75rem;
+            background: var(--secondary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.8125rem;
+            color: var(--muted-foreground);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            min-width: 180px;
+            flex-shrink: 0;
+        }
+        .header-search-btn:hover {
+            background: var(--background);
+            border-color: var(--primary);
+        }
+        .header-search-btn i {
+            color: var(--muted-foreground);
+            font-size: 0.875rem;
+        }
+        .header-search-btn span {
+            flex: 1;
+            text-align: left;
+        }
+        .header-search-btn kbd {
+            padding: 0.125rem 0.375rem;
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.6875rem;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--muted-foreground);
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        .back-to-home {
+            display: none; /* Hidden - navigation is sufficient */
+        }
+
+        /* Responsive Header */
+        @media (max-width: 768px) {
+            .header-search-btn {
+                min-width: auto;
+            }
+            .header-search-btn span {
+                display: none;
+            }
+        }
+
+        /* Search Modal */
+        .search-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            padding: 2rem;
+        }
+        .search-modal.active {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 10vh;
+        }
+        .search-modal-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 640px;
+            max-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            animation: slideDown 0.2s ease-out;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .search-modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .search-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .search-input-wrapper i {
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+        }
+        .search-input-wrapper input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 1.125rem;
+            color: var(--text-primary);
+        }
+        .search-close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .search-close-btn:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .search-results {
+            overflow-y: auto;
+            max-height: calc(70vh - 150px);
+        }
+        .search-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 2rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+        .search-empty i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        .search-result {
+            display: block;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+        .search-result:hover,
+        .search-result.selected {
+            background: var(--bg-secondary);
+        }
+        .search-result.selected {
+            border-left: 3px solid var(--primary-color);
+        }
+        .result-header {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .result-category {
+            font-size: 0.75rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .result-title {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        .result-badge {
+            display: inline-block;
+            padding: 0.125rem 0.5rem;
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-radius: 4px;
+            font-size: 0.6875rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        .result-content {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        .result-content mark {
+            background: rgba(79, 70, 229, 0.2);
+            color: var(--primary-color);
+            font-weight: 600;
+            padding: 0.125rem 0.25rem;
+            border-radius: 2px;
+        }
+        .search-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            border-bottom-left-radius: var(--border-radius-xl);
+            border-bottom-right-radius: var(--border-radius-xl);
+        }
+        .search-shortcuts {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        .search-shortcuts kbd {
+            padding: 0.25rem 0.5rem;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        /* Content Area */
+        .doc-content {
+            padding: 0 2rem;
+            width: 100%;
+            max-width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 0.9375rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Image Styles */
+        .doc-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 1.5rem auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Limit screenshot width to 80% for better readability */
+        .doc-content p > img {
+            max-width: 80%;
+        }
+
+        /* Table Styles */
+        .doc-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.875rem;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .doc-content table thead {
+            background: #f8fafc;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .doc-content table th {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #0f172a;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        .doc-content table td {
+            padding: 0.75rem 1rem;
+            border-top: 1px solid #e2e8f0;
+            color: #334155;
+        }
+
+        .doc-content table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        /* Table responsive wrapper */
+        .doc-content table {
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .doc-content table thead,
+        .doc-content table tbody,
+        .doc-content table tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 18% 64% 18%;
+                gap: 0;
+                padding: 1rem 0 1.5rem 0;
+            }
+            .doc-nav {
+                padding-right: 1.5rem;
+            }
+            .doc-toc {
+                padding-left: 1.5rem;
+            }
+            .doc-content {
+                padding: 0 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 0;
+                padding: 1rem 0 1.5rem 0;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 0 2rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                gap: 0;
+                padding: 0.5rem 0 1rem 0;
+            }
+            .doc-nav {
+                display: none;
+                border-right: none;
+            }
+            .doc-content {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="../../../index.html" class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </a>
+            <div class="doc-header-actions">
+                <div class="header-search-container">
+                    <button class="header-search-btn" id="headerSearchBtn">
+                        <i class="fas fa-search"></i>
+                        <span>Search documentation...</span>
+                        <kbd>Ctrl+K</kbd>
+                    </button>
+                </div>
+                <a href="../../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../01-overview/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Index</span>
+                    </a>
+                    <a href="../../../01-overview/business-value.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value & ROI</span>
+                    </a>
+                    <a href="../../../01-overview/tech-stack.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Technology Stack</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../02-architecture/system-architecture.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-database"></i>
+                    <span>Data Model</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../03-data-model/data-dictionary.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Data Dictionary</span>
+                    </a>
+                    <a href="../../../03-data-model/schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-th-large"></i>
+                    <span>Application Modules</span>
+                </div>
+                <div class="nav-items">
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Procurement</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/procurement/purchase-requests/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Purchase Requests</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/purchase-orders/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Purchase Orders</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/goods-received-notes/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Goods Received Notes</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/credit-notes/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Credit Notes</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/templates/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Templates</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-boxes"></i>
+                            <span>Inventory Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/inventory/stock-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Stock Management</span>
+                            </a>
+                            <a href="../../../04-modules/inventory/physical-count/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Physical Count</span>
+                            </a>
+                            <a href="../../../04-modules/inventory/spot-check/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Spot Check</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span>Finance</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/finance/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Finance Module</span>
+                            </a>
+                            <a href="../../../04-modules/finance/features/account-code-mapping/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Account Code Mapping</span>
+                            </a>
+                            <a href="../../../04-modules/finance/features/currency-and-rates/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Currency Management</span>
+                            </a>
+                            <a href="../../../04-modules/finance/features/departments/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Departments</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-handshake"></i>
+                            <span>Vendor Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/vendor-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Management</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Management Module</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/MANAGE-VENDORS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Manage Vendors</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/VENDOR-PORTAL.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Portal</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/CAMPAIGNS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Campaigns</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/PRICELISTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Pricelists</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/TEMPLATES.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Templates</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Sitemap</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/PAGES-AND-COMPONENTS-SPEC.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Pages & Components Spec</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/SHARED-COMPONENTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Shared Components</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-box"></i>
+                            <span>Product Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/product-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management</span>
+                            </a>
+                            <a href="../../../04-modules/product-management/product-management-specification.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management Specification</span>
+                            </a>
+                            <a href="../../../04-modules/product-management/product-management-sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management Sitemap</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-store"></i>
+                            <span>Store Operations</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../store-ops/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Operations</span>
+                            </a>
+                            <a href="../../../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Operations Module</span>
+                            </a>
+                            <a href="../../../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Requisitions</span>
+                            </a>
+                            <a href="../../../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Stock Replenishment</span>
+                            </a>
+                            <a href="../../../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Wastage Reporting</span>
+                            </a>
+                            <a href="../../../store-ops/SHARED-COMPONENTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Shared Components</span>
+                            </a>
+                            <a href="../../../store-ops/GLOSSARY.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Glossary</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-clipboard-list"></i>
+                            <span>Operational Planning</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../operational-planning/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Operational Planning</span>
+                            </a>
+                            <a href="../../../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Operational Planning Module</span>
+                            </a>
+                            <a href="../../../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Recipe Management</span>
+                            </a>
+                            <a href="../../../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Menu Engineering</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-cog"></i>
+                            <span>System Administration</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../sa/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>System Administration</span>
+                            </a>
+                            <a href="../../../sa/system-administration-sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>System Administration Sitemap</span>
+                            </a>
+                            <a href="../../../sa/features/permission-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Permission Management</span>
+                            </a>
+                            <a href="../../../sa/features/permission-management/specification.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Permission Specification</span>
+                            </a>
+                            <a href="../../../sa/features/location-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Location Management</span>
+                            </a>
+                            <a href="../../../sa/features/workflow/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Workflow</span>
+                            </a>
+                            <a href="../../../sa/features/pos-integration/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Reporting</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/reporting/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Reporting & Analytics</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../dashboard/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard</span>
+                            </a>
+                            <a href="../../../dashboard/sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard Sitemap</span>
+                            </a>
+                            <a href="../../../dashboard/components/components-overview.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Components Overview</span>
+                            </a>
+                            <a href="../../../dashboard/api/api-specifications.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>API Specifications</span>
+                            </a>
+                            <a href="../../../dashboard/business-logic/dashboard-business-rules.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard Business Rules</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-industry"></i>
+                            <span>Production</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/production/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Production</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-cash-register"></i>
+                            <span>POS Integration</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../pos-integration/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration</span>
+                            </a>
+                            <a href="../../../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration Module</span>
+                            </a>
+                            <a href="../../../pos-integration/MAPPING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Mapping</span>
+                            </a>
+                            <a href="../../../pos-integration/REPORTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Reports</span>
+                            </a>
+                            <a href="../../../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Transactions</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="inventory-management-glossary-and-feature-gap-analysis">Inventory Management - Glossary and Feature Gap Analysis</h1>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#glossary-of-terms">Glossary of Terms</a></li>
+<li><a href="#abbreviations">Abbreviations</a></li>
+<li><a href="#feature-gap-analysis">Feature Gap Analysis</a></li>
+<li><a href="#implementation-status">Implementation Status</a></li>
+</ol>
+<hr>
+<h2 id="glossary-of-terms">Glossary of Terms</h2>
+<h3 id="a">A</h3>
+<p><strong>Adjustment</strong><br>An inventory transaction that corrects stock levels due to damage, theft, expiry, or counting discrepancies. Creates journal entries to reflect the change in inventory value.</p>
+<p><strong>Aging</strong><br>The process of tracking how long inventory items have been in stock, used to identify slow-moving items and potential obsolescence.</p>
+<p><strong>As Of Date</strong><br>The date for which a report reflects inventory status. Useful for historical reporting and period-end comparisons.</p>
+<h3 id="b">B</h3>
+<p><strong>Balance Report</strong><br>A comprehensive report showing current inventory quantities and values across locations, categories, and products.</p>
+<p><strong>Batch Tracking</strong><br>The practice of tracking inventory by production batch or lot number, essential for quality control and recall management.</p>
+<p><strong>Base Unit</strong><br>The primary unit of measure for an item (e.g., &quot;Each&quot;, &quot;Case&quot;, &quot;Kilogram&quot;).</p>
+<h3 id="c">C</h3>
+<p><strong>Category</strong><br>A classification grouping for inventory items (e.g., Food, Beverages, Cleaning Supplies).</p>
+<p><strong>Conversion</strong><br>In fractional inventory, the process of splitting whole units into portions or combining portions into whole units.</p>
+<p><strong>Count</strong><br>See Physical Count or Spot Check.</p>
+<p><strong>Count Variance</strong><br>The difference between expected (system) quantity and actual (counted) quantity.</p>
+<h3 id="d">D</h3>
+<p><strong>Department</strong><br>An organizational unit responsible for inventory (e.g., F&amp;B, Housekeeping, Maintenance).</p>
+<p><strong>Draft</strong><br>A saved but not finalized transaction that does not affect inventory levels or create journal entries.</p>
+<h3 id="e">E</h3>
+<p><strong>Expiry Date</strong><br>The date after which an item should not be used or sold, critical for perishable goods tracking.</p>
+<p><strong>Expiring Soon</strong><br>Items approaching their expiry date, typically within 7 days.</p>
+<h3 id="f">F</h3>
+<p><strong>FIFO (First In, First Out)</strong><br>An inventory valuation method where the oldest stock is assumed to be sold/used first.</p>
+<p><strong>Fractional Inventory</strong><br>Inventory management system for items that can be divided into portions (e.g., pizzas into slices) with state tracking and quality monitoring.</p>
+<p><strong>Fill Rate</strong><br>The percentage of demand that can be satisfied from current stock levels.</p>
+<h3 id="g">G</h3>
+<p><strong>GRN (Goods Received Note)</strong><br>A document recording the receipt of goods into inventory, typically from a purchase order.</p>
+<p><strong>Grade</strong> (Quality)<br>A classification of item condition or freshness (EXCELLENT, GOOD, FAIR, POOR), used in fractional inventory.</p>
+<h3 id="i">I</h3>
+<p><strong>Inventory Adjustment</strong><br>See Adjustment.</p>
+<p><strong>Inventory Balance</strong><br>The current quantity and value of stock on hand.</p>
+<p><strong>Inventory Turnover</strong><br>A ratio showing how many times inventory is sold/used and replaced over a period.</p>
+<p><strong>Issue</strong><br>The release of inventory from storage for use or sale.</p>
+<h3 id="j">J</h3>
+<p><strong>Journal Entry</strong><br>An accounting entry recording the financial impact of inventory transactions (debits and credits).</p>
+<h3 id="l">L</h3>
+<p><strong>Location</strong><br>A physical storage area where inventory is kept (e.g., Main Kitchen, Cold Room, Dry Store).</p>
+<p><strong>Lot Number</strong><br>A unique identifier for a batch of items, used in batch tracking.</p>
+<p><strong>Low Stock</strong><br>Items with quantities below their defined reorder point.</p>
+<h3 id="m">M</h3>
+<p><strong>Movement</strong><br>Any transaction that changes inventory quantity (receipt, issue, transfer, adjustment).</p>
+<p><strong>Movement History</strong><br>A chronological log of all transactions affecting an item&#39;s stock level.</p>
+<h3 id="p">P</h3>
+<p><strong>Period End</strong><br>The month-end process of closing inventory transactions, reconciling counts, and generating financial reports.</p>
+<p><strong>Physical Count</strong><br>A comprehensive counting process where all items in selected locations are counted and compared to system records.</p>
+<p><strong>Portion</strong><br>A fractional unit of a whole item (e.g., one slice of pizza where the whole pizza has 8 slices).</p>
+<p><strong>Posting</strong><br>The act of finalizing a transaction, which updates inventory levels and creates journal entries.</p>
+<p><strong>Purchase Order (PO)</strong><br>A document sent to a supplier to purchase goods, which generates expected stock receipts.</p>
+<h3 id="q">Q</h3>
+<p><strong>Quality Grade</strong><br>See Grade.</p>
+<h3 id="r">R</h3>
+<p><strong>Receipt</strong><br>The process of receiving goods into inventory, typically from a purchase order or transfer.</p>
+<p><strong>Reorder Point</strong><br>The inventory level that triggers a replenishment order.</p>
+<p><strong>Reserved</strong><br>Inventory that is allocated but not yet issued (e.g., reserved for a specific order).</p>
+<h3 id="s">S</h3>
+<p><strong>SKU (Stock Keeping Unit)</strong><br>A unique identifier for each distinct product in inventory.</p>
+<p><strong>Slow Moving</strong><br>Items with low turnover rates, identified by long periods without movement.</p>
+<p><strong>Spot Check</strong><br>A quick, random count of selected items to verify inventory accuracy without performing a full physical count.</p>
+<p><strong>State</strong> (Fractional)<br>The current form of fractional inventory (WHOLE, PARTIAL, PREPARED).</p>
+<p><strong>Stock Card</strong><br>A detailed record showing all movements and the current balance for a specific item.</p>
+<p><strong>Stock In</strong><br>See Receipt.</p>
+<p><strong>Stock Efficiency</strong><br>A metric measuring how well inventory levels match demand patterns.</p>
+<h3 id="t">T</h3>
+<p><strong>Transfer</strong><br>Movement of inventory between locations.</p>
+<p><strong>Turnover Rate</strong><br>See Inventory Turnover.</p>
+<h3 id="u">U</h3>
+<p><strong>Unit Cost</strong><br>The cost per single unit of an item.</p>
+<p><strong>Unit of Measure (UOM)</strong><br>The unit in which inventory quantities are tracked (e.g., Each, Box, Liter, Kilogram).</p>
+<h3 id="v">V</h3>
+<p><strong>Valuation</strong><br>The process of calculating the total value of inventory, typically using FIFO, LIFO, or average cost methods.</p>
+<p><strong>Variance</strong><br>The difference between expected and actual quantities or values.</p>
+<h3 id="w">W</h3>
+<p><strong>Waste</strong><br>Inventory lost due to spoilage, damage, or portion conversion inefficiencies.</p>
+<p><strong>Warehouse</strong><br>See Location.</p>
+<p><strong>Whole Unit</strong><br>The complete, undivided form of a fractional item (e.g., a whole pizza before being cut into slices).</p>
+<hr>
+<h2 id="abbreviations">Abbreviations</h2>
+<table>
+<thead>
+<tr>
+<th>Abbreviation</th>
+<th>Full Term</th>
+<th>Context</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Adj</td>
+<td>Adjustment</td>
+<td>Inventory adjustment transaction</td>
+</tr>
+<tr>
+<td>COGS</td>
+<td>Cost of Goods Sold</td>
+<td>Expense account for issued inventory</td>
+</tr>
+<tr>
+<td>Exp</td>
+<td>Expiry / Expired</td>
+<td>Expiration date or expired items</td>
+</tr>
+<tr>
+<td>FIFO</td>
+<td>First In, First Out</td>
+<td>Inventory valuation method</td>
+</tr>
+<tr>
+<td>F&amp;B</td>
+<td>Food &amp; Beverage</td>
+<td>Department type</td>
+</tr>
+<tr>
+<td>GRN</td>
+<td>Goods Received Note</td>
+<td>Stock receipt document</td>
+</tr>
+<tr>
+<td>ID</td>
+<td>Identifier</td>
+<td>Unique reference number</td>
+</tr>
+<tr>
+<td>JE</td>
+<td>Journal Entry</td>
+<td>Accounting entry</td>
+</tr>
+<tr>
+<td>LIFO</td>
+<td>Last In, First Out</td>
+<td>Inventory valuation method</td>
+</tr>
+<tr>
+<td>Loc</td>
+<td>Location</td>
+<td>Storage location</td>
+</tr>
+<tr>
+<td>PA</td>
+<td>Positive Adjustment</td>
+<td>Stock in adjustment</td>
+</tr>
+<tr>
+<td>PC</td>
+<td>Physical Count</td>
+<td>Full inventory count</td>
+</tr>
+<tr>
+<td>PE</td>
+<td>Period End</td>
+<td>Month-end closing</td>
+</tr>
+<tr>
+<td>PO</td>
+<td>Purchase Order</td>
+<td>Purchase document</td>
+</tr>
+<tr>
+<td>Qty</td>
+<td>Quantity</td>
+<td>Amount/count</td>
+</tr>
+<tr>
+<td>SC</td>
+<td>Spot Check</td>
+<td>Random item count</td>
+</tr>
+<tr>
+<td>SKU</td>
+<td>Stock Keeping Unit</td>
+<td>Product identifier</td>
+</tr>
+<tr>
+<td>UOM</td>
+<td>Unit of Measure</td>
+<td>Quantity unit</td>
+</tr>
+<tr>
+<td>WAC</td>
+<td>Weighted Average Cost</td>
+<td>Valuation method</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="feature-gap-analysis">Feature Gap Analysis</h2>
+<h3 id="1-core-features-implemented-">1. Core Features - Implemented ✅</h3>
+<h4>Dashboard</h4>
+<ul>
+<li>✅ Draggable widget system</li>
+<li>✅ Inventory levels chart</li>
+<li>✅ Value trend chart</li>
+<li>✅ Turnover visualization</li>
+<li>✅ Key metrics display</li>
+</ul>
+<h4>Stock Overview</h4>
+<ul>
+<li>✅ Multi-location visibility</li>
+<li>✅ Aggregate metrics</li>
+<li>✅ Location comparison</li>
+<li>✅ Transfer suggestions</li>
+<li>✅ Performance analytics</li>
+</ul>
+<h4>Stock In</h4>
+<ul>
+<li>✅ Receipt listing</li>
+<li>✅ Receipt detail view</li>
+<li>✅ Journal entry preview</li>
+</ul>
+<h4>Inventory Adjustments</h4>
+<ul>
+<li>✅ Adjustment creation</li>
+<li>✅ Multiple adjustment types</li>
+<li>✅ Reason codes</li>
+<li>✅ Journal entry generation</li>
+<li>✅ Stock movement tracking</li>
+</ul>
+<h4>Physical Count</h4>
+<ul>
+<li>✅ Multi-step wizard</li>
+<li>✅ Location selection</li>
+<li>✅ Item review</li>
+<li>✅ Active count tracking</li>
+<li>✅ Dashboard view</li>
+</ul>
+<h4>Spot Check</h4>
+<ul>
+<li>✅ Quick count creation</li>
+<li>✅ Random item selection</li>
+<li>✅ List and grid views</li>
+<li>✅ Progress tracking</li>
+<li>✅ Variance calculation</li>
+</ul>
+<h4>Fractional Inventory</h4>
+<ul>
+<li>✅ Portion tracking</li>
+<li>✅ Split operations</li>
+<li>✅ Combine operations</li>
+<li>✅ Quality grading</li>
+<li>✅ Conversion history</li>
+</ul>
+<h4>Period End</h4>
+<ul>
+<li>✅ Period listing</li>
+<li>✅ Status tracking</li>
+<li>✅ Basic workflow</li>
+</ul>
+<h4>Stock Cards</h4>
+<ul>
+<li>✅ General information display</li>
+<li>✅ Lot information</li>
+<li>✅ Movement history</li>
+<li>✅ Valuation display</li>
+</ul>
+<hr>
+<h3 id="2-features-partially-implemented-">2. Features Partially Implemented ⚠️</h3>
+<h4>Stock In</h4>
+<ul>
+<li><p>⚠️ <strong>Source Selection</strong>: UI exists but integration with PO/Transfer incomplete</p>
+<ul>
+<li><strong>Gap</strong>: Cannot actually link to PO or Transfer documents</li>
+<li><strong>Impact</strong>: Medium - Manual entry works but lacks automation</li>
+<li><strong>Effort</strong>: 3-5 days</li>
+</ul>
+</li>
+<li><p>⚠️ <strong>Posting Mechanism</strong>: Journal entry displayed but not persisted</p>
+<ul>
+<li><strong>Gap</strong>: No backend service to post transactions</li>
+<li><strong>Impact</strong>: High - Cannot finalize receipts</li>
+<li><strong>Effort</strong>: 2-3 days</li>
+</ul>
+</li>
+</ul>
+<h4>Inventory Balance Report</h4>
+<ul>
+<li><p>⚠️ <strong>Export Functionality</strong>: Button exists but implementation incomplete</p>
+<ul>
+<li><strong>Gap</strong>: Excel/PDF generation not connected</li>
+<li><strong>Impact</strong>: Medium - Users can view but not export</li>
+<li><strong>Effort</strong>: 1-2 days</li>
+</ul>
+</li>
+<li><p>⚠️ <strong>Movement History</strong>: Modal opens but data hardcoded</p>
+<ul>
+<li><strong>Gap</strong>: Not connected to actual transaction history</li>
+<li><strong>Impact</strong>: Medium - Limited usability</li>
+<li><strong>Effort</strong>: 2-3 days</li>
+</ul>
+</li>
+</ul>
+<h4>Physical Count</h4>
+<ul>
+<li><p>⚠️ <strong>Count Completion</strong>: Can save progress but no final posting</p>
+<ul>
+<li><strong>Gap</strong>: No automatic adjustment creation from variances</li>
+<li><strong>Impact</strong>: High - Count results not reflected in inventory</li>
+<li><strong>Effort</strong>: 3-4 days</li>
+</ul>
+</li>
+<li><p>⚠️ <strong>Barcode Scanning</strong>: Placeholder for future implementation</p>
+<ul>
+<li><strong>Gap</strong>: No barcode input support</li>
+<li><strong>Impact</strong>: Low - Manual entry works</li>
+<li><strong>Effort</strong>: 5-7 days (with hardware integration)</li>
+</ul>
+</li>
+</ul>
+<h4>Spot Check</h4>
+<ul>
+<li>⚠️ <strong>Photo Upload</strong>: UI placeholder exists<ul>
+<li><strong>Gap</strong>: No image upload/storage implementation</li>
+<li><strong>Impact</strong>: Low - Nice to have feature</li>
+<li><strong>Effort</strong>: 2-3 days</li>
+</ul>
+</li>
+</ul>
+<h4>Period End</h4>
+<ul>
+<li><p>⚠️ <strong>Checklist Automation</strong>: Static checklist displayed</p>
+<ul>
+<li><strong>Gap</strong>: No automated validation of checklist items</li>
+<li><strong>Impact</strong>: Medium - Relies on manual verification</li>
+<li><strong>Effort</strong>: 3-4 days</li>
+</ul>
+</li>
+<li><p>⚠️ <strong>Period Locking</strong>: Status change not enforced</p>
+<ul>
+<li><strong>Gap</strong>: Can still create transactions in closed periods</li>
+<li><strong>Impact</strong>: High - Data integrity risk</li>
+<li><strong>Effort</strong>: 2-3 days</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="3-features-not-implemented-">3. Features Not Implemented ❌</h3>
+<h4>Stock Overview Sub-modules</h4>
+<p><strong>Slow Moving Report</strong></p>
+<ul>
+<li>❌ <strong>Status</strong>: Page route exists but no implementation</li>
+<li><strong>Gap</strong>: Complete module missing</li>
+<li><strong>Impact</strong>: Medium - Useful for inventory optimization</li>
+<li><strong>Effort</strong>: 3-5 days</li>
+<li><strong>Requirements</strong>:<ul>
+<li>Turnover calculation</li>
+<li>Days without movement tracking</li>
+<li>Value aging analysis</li>
+<li>Recommended actions</li>
+</ul>
+</li>
+</ul>
+<p><strong>Inventory Aging Report</strong></p>
+<ul>
+<li>❌ <strong>Status</strong>: Page route exists but no implementation</li>
+<li><strong>Gap</strong>: Complete module missing</li>
+<li><strong>Impact</strong>: Medium - Important for expiry management</li>
+<li><strong>Effort</strong>: 3-5 days</li>
+<li><strong>Requirements</strong>:<ul>
+<li>Age bucket calculation (0-30, 31-60, 61-90, 90+ days)</li>
+<li>Expiry tracking</li>
+<li>Value by age analysis</li>
+<li>Disposal recommendations</li>
+</ul>
+</li>
+</ul>
+<h4>Stock Cards Module</h4>
+<p><strong>Stock Card List Page</strong></p>
+<ul>
+<li>❌ <strong>Status</strong>: Route exists, minimal implementation</li>
+<li><strong>Gap</strong>: Card listing and filtering not built</li>
+<li><strong>Impact</strong>: Medium - Users need this for item browsing</li>
+<li><strong>Effort</strong>: 2-3 days</li>
+<li><strong>Requirements</strong>:<ul>
+<li>Search functionality</li>
+<li>Category filtering</li>
+<li>Stock status filtering</li>
+<li>Grid/list view toggle</li>
+</ul>
+</li>
+</ul>
+<h4>Inventory Adjustments</h4>
+<p><strong>New Adjustment Form</strong></p>
+<ul>
+<li>❌ <strong>Status</strong>: Button exists, no form</li>
+<li><strong>Gap</strong>: Cannot create new adjustments</li>
+<li><strong>Impact</strong>: High - Critical functionality</li>
+<li><strong>Effort</strong>: 4-5 days</li>
+<li><strong>Requirements</strong>:<ul>
+<li>Item selection modal</li>
+<li>Lot entry for batch-tracked items</li>
+<li>Reason code selection</li>
+<li>Cost calculation</li>
+<li>Department allocation</li>
+</ul>
+</li>
+</ul>
+<p><strong>Adjustment Posting</strong></p>
+<ul>
+<li>❌ <strong>Status</strong>: View-only mode</li>
+<li><strong>Gap</strong>: Cannot finalize adjustments</li>
+<li><strong>Impact</strong>: High - No inventory updates</li>
+<li><strong>Effort</strong>: 3-4 days</li>
+</ul>
+<h4>Physical Count Management</h4>
+<p><strong>Count Scheduling</strong></p>
+<ul>
+<li>❌ <strong>Status</strong>: List view only, no scheduling</li>
+<li><strong>Gap</strong>: Cannot schedule future counts</li>
+<li><strong>Impact</strong>: Medium - Manual tracking required</li>
+<li><strong>Effort</strong>: 3-4 days</li>
+<li><strong>Requirements</strong>:<ul>
+<li>Calendar picker</li>
+<li>Recurrence rules (weekly/monthly)</li>
+<li>Counter assignment</li>
+<li>Notification system</li>
+</ul>
+</li>
+</ul>
+<p><strong>Progress Dashboard</strong></p>
+<ul>
+<li>❌ <strong>Status</strong>: Exists but minimal data</li>
+<li><strong>Gap</strong>: Real-time progress tracking missing</li>
+<li><strong>Impact</strong>: Medium - Limited visibility</li>
+<li><strong>Effort</strong>: 2-3 days</li>
+</ul>
+<h4>Fractional Inventory</h4>
+<p><strong>Auto-conversion Rules</strong></p>
+<ul>
+<li>❌ <strong>Status</strong>: Field exists but no logic</li>
+<li><strong>Gap</strong>: No automatic conversion based on quality/time</li>
+<li><strong>Impact</strong>: Low - Manual conversion works</li>
+<li><strong>Effort</strong>: 4-5 days</li>
+<li><strong>Requirements</strong>:<ul>
+<li>Rule engine</li>
+<li>Quality threshold triggers</li>
+<li>Time-based triggers</li>
+<li>Notification system</li>
+</ul>
+</li>
+</ul>
+<p><strong>Waste Reporting</strong></p>
+<ul>
+<li>❌ <strong>Status</strong>: Waste tracked but no reports</li>
+<li><strong>Gap</strong>: No waste analysis or reporting</li>
+<li><strong>Impact</strong>: Medium - Cost control blind spot</li>
+<li><strong>Effort</strong>: 2-3 days</li>
+</ul>
+<h4>Stock In</h4>
+<p><strong>Multi-source Receipt Processing</strong></p>
+<ul>
+<li>❌ <strong>Status</strong>: UI exists but no backend</li>
+<li><strong>Gap</strong>: Cannot process PO-based receipts</li>
+<li><strong>Impact</strong>: High - Major workflow gap</li>
+<li><strong>Effort</strong>: 5-7 days</li>
+<li><strong>Requirements</strong>:<ul>
+<li>PO integration</li>
+<li>Transfer integration</li>
+<li>Production integration</li>
+<li>GRN clearing account logic</li>
+</ul>
+</li>
+</ul>
+<p><strong>Lot/Batch Entry</strong></p>
+<ul>
+<li>❌ <strong>Status</strong>: No modal implementation</li>
+<li><strong>Gap</strong>: Cannot enter lot details during receipt</li>
+<li><strong>Impact</strong>: High for batch-tracked items</li>
+<li><strong>Effort</strong>: 3-4 days</li>
+</ul>
+<h4>Reports and Analytics</h4>
+<p><strong>Inventory Valuation Report</strong></p>
+<ul>
+<li>❌ <strong>Status</strong>: Not implemented</li>
+<li><strong>Gap</strong>: No detailed valuation reporting</li>
+<li><strong>Impact</strong>: High - Required for financial statements</li>
+<li><strong>Effort</strong>: 4-5 days</li>
+<li><strong>Requirements</strong>:<ul>
+<li>FIFO calculation</li>
+<li>Average cost calculation</li>
+<li>Comparison by method</li>
+<li>Historical valuation</li>
+</ul>
+</li>
+</ul>
+<p><strong>Movement Summary Report</strong></p>
+<ul>
+<li>❌ <strong>Status</strong>: Not implemented</li>
+<li><strong>Gap</strong>: No transaction summary</li>
+<li><strong>Impact</strong>: Medium - Useful for analysis</li>
+<li><strong>Effort</strong>: 2-3 days</li>
+</ul>
+<p><strong>Variance Analysis Report</strong></p>
+<ul>
+<li>❌ <strong>Status</strong>: Not implemented</li>
+<li><strong>Gap</strong>: No variance trending</li>
+<li><strong>Impact</strong>: Medium - Important for accuracy monitoring</li>
+<li><strong>Effort</strong>: 3-4 days</li>
+</ul>
+<h4>Integration Features</h4>
+<p><strong>Barcode Scanning</strong></p>
+<ul>
+<li>❌ <strong>Status</strong>: Placeholder only</li>
+<li><strong>Gap</strong>: No barcode support</li>
+<li><strong>Impact</strong>: Medium - Speed improvement opportunity</li>
+<li><strong>Effort</strong>: 5-7 days</li>
+<li><strong>Requirements</strong>:<ul>
+<li>Scanner hardware support</li>
+<li>Barcode lookup</li>
+<li>Batch scanning</li>
+<li>Error handling</li>
+</ul>
+</li>
+</ul>
+<p><strong>Mobile App</strong></p>
+<ul>
+<li>❌ <strong>Status</strong>: Web responsive only</li>
+<li><strong>Gap</strong>: No native mobile app</li>
+<li><strong>Impact</strong>: Medium - Counting on mobile browser is suboptimal</li>
+<li><strong>Effort</strong>: 20-30 days</li>
+<li><strong>Requirements</strong>:<ul>
+<li>React Native app</li>
+<li>Offline support</li>
+<li>Camera integration</li>
+<li>Sync mechanism</li>
+</ul>
+</li>
+</ul>
+<p><strong>Purchase Module Integration</strong></p>
+<ul>
+<li>❌ <strong>Status</strong>: Mock data only</li>
+<li><strong>Gap</strong>: No actual PO integration</li>
+<li><strong>Impact</strong>: High - Manual data entry required</li>
+<li><strong>Effort</strong>: 5-7 days</li>
+</ul>
+<p><strong>Finance Module Integration</strong></p>
+<ul>
+<li>❌ <strong>Status</strong>: Journal entries shown but not posted</li>
+<li><strong>Gap</strong>: No GL integration</li>
+<li><strong>Impact</strong>: High - Accounting records incomplete</li>
+<li><strong>Effort</strong>: 7-10 days</li>
+<li><strong>Requirements</strong>:<ul>
+<li>Chart of accounts integration</li>
+<li>Department costing</li>
+<li>Period validation</li>
+<li>Posting validation</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="4-quality-and-performance-gaps">4. Quality and Performance Gaps</h3>
+<h4>Data Persistence</h4>
+<ul>
+<li>❌ <strong>Gap</strong>: All data is mock/in-memory</li>
+<li><strong>Impact</strong>: Critical - No production readiness</li>
+<li><strong>Effort</strong>: 15-20 days</li>
+<li><strong>Requirements</strong>:<ul>
+<li>Database schema design</li>
+<li>API layer implementation</li>
+<li>Transaction management</li>
+<li>Data migration</li>
+</ul>
+</li>
+</ul>
+<h4>Error Handling</h4>
+<ul>
+<li>⚠️ <strong>Gap</strong>: Basic error handling, no comprehensive strategy</li>
+<li><strong>Impact</strong>: High - Poor user experience on errors</li>
+<li><strong>Effort</strong>: 3-5 days</li>
+<li><strong>Requirements</strong>:<ul>
+<li>Global error boundary</li>
+<li>API error handling</li>
+<li>Validation error display</li>
+<li>User-friendly messages</li>
+</ul>
+</li>
+</ul>
+<h4>Loading States</h4>
+<ul>
+<li>⚠️ <strong>Gap</strong>: Some components have loading states, inconsistent</li>
+<li><strong>Impact</strong>: Medium - User experience</li>
+<li><strong>Effort</strong>: 2-3 days</li>
+<li><strong>Requirements</strong>:<ul>
+<li>Skeleton screens</li>
+<li>Loading spinners</li>
+<li>Progress indicators</li>
+<li>Timeout handling</li>
+</ul>
+</li>
+</ul>
+<h4>Accessibility</h4>
+<ul>
+<li>⚠️ <strong>Gap</strong>: Basic accessibility, not fully WCAG compliant</li>
+<li><strong>Impact</strong>: Medium - May exclude users</li>
+<li><strong>Effort</strong>: 5-7 days</li>
+<li><strong>Requirements</strong>:<ul>
+<li>ARIA labels</li>
+<li>Keyboard navigation</li>
+<li>Screen reader testing</li>
+<li>Color contrast fixes</li>
+</ul>
+</li>
+</ul>
+<h4>Performance Optimization</h4>
+<ul>
+<li>⚠️ <strong>Gap</strong>: No optimization for large datasets</li>
+<li><strong>Impact</strong>: Medium - Will slow down with real data</li>
+<li><strong>Effort</strong>: 3-5 days</li>
+<li><strong>Requirements</strong>:<ul>
+<li>Virtual scrolling</li>
+<li>Pagination</li>
+<li>Data caching</li>
+<li>Lazy loading</li>
+</ul>
+</li>
+</ul>
+<h4>Testing</h4>
+<ul>
+<li>❌ <strong>Gap</strong>: No automated tests</li>
+<li><strong>Impact</strong>: High - Code quality and regression risk</li>
+<li><strong>Effort</strong>: 10-15 days</li>
+<li><strong>Requirements</strong>:<ul>
+<li>Unit tests (components)</li>
+<li>Integration tests (flows)</li>
+<li>E2E tests (critical paths)</li>
+<li>Test coverage &gt; 80%</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="5-security-and-compliance-gaps">5. Security and Compliance Gaps</h3>
+<h4>Permissions System</h4>
+<ul>
+<li>⚠️ <strong>Gap</strong>: UI shows/hides based on role but no enforcement</li>
+<li><strong>Impact</strong>: High - Security risk</li>
+<li><strong>Effort</strong>: 4-5 days</li>
+<li><strong>Requirements</strong>:<ul>
+<li>Backend permission checks</li>
+<li>Role-based access control</li>
+<li>Field-level security</li>
+<li>Audit logging</li>
+</ul>
+</li>
+</ul>
+<h4>Audit Trail</h4>
+<ul>
+<li>❌ <strong>Gap</strong>: No comprehensive audit logging</li>
+<li><strong>Impact</strong>: High - Compliance and troubleshooting</li>
+<li><strong>Effort</strong>: 5-7 days</li>
+<li><strong>Requirements</strong>:<ul>
+<li>Who changed what when</li>
+<li>Before/after values</li>
+<li>IP address logging</li>
+<li>Audit report</li>
+</ul>
+</li>
+</ul>
+<h4>Data Validation</h4>
+<ul>
+<li>⚠️ <strong>Gap</strong>: Client-side only, no server validation</li>
+<li><strong>Impact</strong>: High - Data integrity risk</li>
+<li><strong>Effort</strong>: 3-4 days</li>
+<li><strong>Requirements</strong>:<ul>
+<li>Server-side validation</li>
+<li>Business rule enforcement</li>
+<li>Duplicate detection</li>
+<li>Cross-field validation</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="implementation-priority-matrix">Implementation Priority Matrix</h2>
+<h3 id="priority-1-critical-complete-for-mvp">Priority 1 (Critical - Complete for MVP)</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Status</th>
+<th>Effort</th>
+<th>Impact</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Data Persistence Layer</td>
+<td>❌</td>
+<td>15-20 days</td>
+<td>Critical</td>
+</tr>
+<tr>
+<td>Stock In Posting</td>
+<td>⚠️</td>
+<td>3-4 days</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Inventory Adjustment Creation</td>
+<td>❌</td>
+<td>4-5 days</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Adjustment Posting</td>
+<td>❌</td>
+<td>3-4 days</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Physical Count Posting</td>
+<td>⚠️</td>
+<td>3-4 days</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Period End Locking</td>
+<td>⚠️</td>
+<td>2-3 days</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Finance Integration</td>
+<td>❌</td>
+<td>7-10 days</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Permissions Enforcement</td>
+<td>⚠️</td>
+<td>4-5 days</td>
+<td>High</td>
+</tr>
+</tbody></table>
+<p><strong>Total Priority 1 Effort:</strong> 46-63 days</p>
+<h3 id="priority-2-important-needed-for-production">Priority 2 (Important - Needed for Production)</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Status</th>
+<th>Effort</th>
+<th>Impact</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>PO Integration</td>
+<td>❌</td>
+<td>5-7 days</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Lot/Batch Entry</td>
+<td>❌</td>
+<td>3-4 days</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Inventory Valuation Report</td>
+<td>❌</td>
+<td>4-5 days</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Audit Trail</td>
+<td>❌</td>
+<td>5-7 days</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Error Handling</td>
+<td>⚠️</td>
+<td>3-5 days</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Data Validation</td>
+<td>⚠️</td>
+<td>3-4 days</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Count Scheduling</td>
+<td>❌</td>
+<td>3-4 days</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Movement History Integration</td>
+<td>⚠️</td>
+<td>2-3 days</td>
+<td>Medium</td>
+</tr>
+</tbody></table>
+<p><strong>Total Priority 2 Effort:</strong> 28-43 days</p>
+<h3 id="priority-3-nice-to-have-post-launch">Priority 3 (Nice to Have - Post-Launch)</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Status</th>
+<th>Effort</th>
+<th>Impact</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Slow Moving Report</td>
+<td>❌</td>
+<td>3-5 days</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Inventory Aging Report</td>
+<td>❌</td>
+<td>3-5 days</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Stock Card List</td>
+<td>❌</td>
+<td>2-3 days</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Waste Reporting</td>
+<td>❌</td>
+<td>2-3 days</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Export Functionality</td>
+<td>⚠️</td>
+<td>1-2 days</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Photo Upload (Spot Check)</td>
+<td>⚠️</td>
+<td>2-3 days</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>Auto-conversion Rules</td>
+<td>❌</td>
+<td>4-5 days</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>Performance Optimization</td>
+<td>⚠️</td>
+<td>3-5 days</td>
+<td>Medium</td>
+</tr>
+</tbody></table>
+<p><strong>Total Priority 3 Effort:</strong> 20-36 days</p>
+<h3 id="priority-4-future-enhancements">Priority 4 (Future Enhancements)</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Status</th>
+<th>Effort</th>
+<th>Impact</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Barcode Scanning</td>
+<td>❌</td>
+<td>5-7 days</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Mobile App</td>
+<td>❌</td>
+<td>20-30 days</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Automated Testing</td>
+<td>❌</td>
+<td>10-15 days</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Accessibility Improvements</td>
+<td>⚠️</td>
+<td>5-7 days</td>
+<td>Medium</td>
+</tr>
+</tbody></table>
+<p><strong>Total Priority 4 Effort:</strong> 40-59 days</p>
+<hr>
+<h2 id="summary-statistics">Summary Statistics</h2>
+<ul>
+<li><strong>Total Features Identified:</strong> 58</li>
+<li><strong>Fully Implemented (✅):</strong> 24 (41%)</li>
+<li><strong>Partially Implemented (⚠️):</strong> 16 (28%)</li>
+<li><strong>Not Implemented (❌):</strong> 18 (31%)</li>
+</ul>
+<p><strong>Estimated Development Effort:</strong></p>
+<ul>
+<li><strong>Priority 1 (MVP):</strong> 46-63 days</li>
+<li><strong>Priority 2 (Production):</strong> 28-43 days</li>
+<li><strong>Priority 3 (Enhancement):</strong> 20-36 days</li>
+<li><strong>Priority 4 (Future):</strong> 40-59 days</li>
+<li><strong>Total:</strong> 134-201 days (6-9 months with single developer)</li>
+</ul>
+<hr>
+<h2 id="recommendations">Recommendations</h2>
+<h3 id="immediate-actions">Immediate Actions</h3>
+<ol>
+<li>Complete data persistence layer (database + API)</li>
+<li>Implement posting mechanisms for all transaction types</li>
+<li>Enforce permissions on backend</li>
+<li>Add comprehensive error handling</li>
+</ol>
+<h3 id="short-term-goals-1-3-months">Short-term Goals (1-3 months)</h3>
+<ol>
+<li>Complete Priority 1 features for MVP</li>
+<li>Integrate with Purchase and Finance modules</li>
+<li>Implement audit trail</li>
+<li>Add automated testing</li>
+</ol>
+<h3 id="long-term-vision-3-6-months">Long-term Vision (3-6 months)</h3>
+<ol>
+<li>Complete Priority 2 &amp; 3 features</li>
+<li>Optimize for performance with large datasets</li>
+<li>Improve accessibility</li>
+<li>Consider mobile app development</li>
+</ol>
+<h3 id="testing-strategy">Testing Strategy</h3>
+<ol>
+<li><strong>Unit Tests</strong>: All services and utilities (Target: 80% coverage)</li>
+<li><strong>Integration Tests</strong>: Critical workflows (Physical count, Adjustments)</li>
+<li><strong>E2E Tests</strong>: Main user journeys (Receipt → Stock → Count → Adjustment)</li>
+<li><strong>User Acceptance Testing</strong>: Each module with actual users</li>
+</ol>
+<hr>
+<p>This comprehensive analysis provides a clear roadmap for completing the Inventory Management module and prioritizing development efforts.</p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#inventory-management-glossary-and-feature-gap-analysis" class="level-1">Inventory Management - Glossary and Feature Gap Analysis</a>
+<a href="#table-of-contents" class="level-2">Table of Contents</a>
+<a href="#glossary-of-terms" class="level-2">Glossary of Terms</a>
+<a href="#a" class="level-3">A</a>
+<a href="#b" class="level-3">B</a>
+<a href="#c" class="level-3">C</a>
+<a href="#d" class="level-3">D</a>
+<a href="#e" class="level-3">E</a>
+<a href="#f" class="level-3">F</a>
+<a href="#g" class="level-3">G</a>
+<a href="#i" class="level-3">I</a>
+<a href="#j" class="level-3">J</a>
+<a href="#l" class="level-3">L</a>
+<a href="#m" class="level-3">M</a>
+<a href="#p" class="level-3">P</a>
+<a href="#q" class="level-3">Q</a>
+<a href="#r" class="level-3">R</a>
+<a href="#s" class="level-3">S</a>
+<a href="#t" class="level-3">T</a>
+<a href="#u" class="level-3">U</a>
+<a href="#v" class="level-3">V</a>
+<a href="#w" class="level-3">W</a>
+<a href="#abbreviations" class="level-2">Abbreviations</a>
+<a href="#feature-gap-analysis" class="level-2">Feature Gap Analysis</a>
+<a href="#1-core-features-implemented-" class="level-3">1. Core Features - Implemented ✅</a>
+<a href="#2-features-partially-implemented-" class="level-3">2. Features Partially Implemented ⚠️</a>
+<a href="#3-features-not-implemented-" class="level-3">3. Features Not Implemented ❌</a>
+<a href="#4-quality-and-performance-gaps" class="level-3">4. Quality and Performance Gaps</a>
+<a href="#5-security-and-compliance-gaps" class="level-3">5. Security and Compliance Gaps</a>
+<a href="#implementation-priority-matrix" class="level-2">Implementation Priority Matrix</a>
+<a href="#priority-1-critical-complete-for-mvp" class="level-3">Priority 1 (Critical - Complete for MVP)</a>
+<a href="#priority-2-important-needed-for-production" class="level-3">Priority 2 (Important - Needed for Production)</a>
+<a href="#priority-3-nice-to-have-post-launch" class="level-3">Priority 3 (Nice to Have - Post-Launch)</a>
+<a href="#priority-4-future-enhancements" class="level-3">Priority 4 (Future Enhancements)</a>
+<a href="#summary-statistics" class="level-2">Summary Statistics</a>
+<a href="#recommendations" class="level-2">Recommendations</a>
+<a href="#immediate-actions" class="level-3">Immediate Actions</a>
+<a href="#short-term-goals-1-3-months" class="level-3">Short-term Goals (1-3 months)</a>
+<a href="#long-term-vision-3-6-months" class="level-3">Long-term Vision (3-6 months)</a>
+<a href="#testing-strategy" class="level-3">Testing Strategy</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Search Modal -->
+    <div class="search-modal" id="searchModal">
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchModalInput" placeholder="Search documentation..." autofocus>
+                    <button class="search-close-btn" id="searchCloseBtn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="search-results" id="searchResults">
+                <div class="search-empty">
+                    <i class="fas fa-search"></i>
+                    <p>Start typing to search...</p>
+                </div>
+            </div>
+            <div class="search-footer">
+                <div class="search-shortcuts">
+                    <kbd>↑↓</kbd> Navigate
+                    <kbd>Enter</kbd> Select
+                    <kbd>Esc</kbd> Close
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Search functionality
+        let searchIndex = [];
+        let selectedResultIndex = -1;
+
+        // Load search index
+        fetch('../../../search-index.json')
+            .then(res => res.json())
+            .then(data => {
+                searchIndex = data;
+                console.log('✓ Search index loaded:', searchIndex.length, 'entries');
+            })
+            .catch(err => console.error('❌ Failed to load search index:', err));
+
+        // Open search modal
+        function openSearchModal() {
+            console.log('🔍 Opening search modal...');
+            document.getElementById('searchModal').classList.add('active');
+            document.getElementById('searchModalInput').focus();
+            selectedResultIndex = -1;
+        }
+
+        // Close search modal
+        function closeSearchModal() {
+            document.getElementById('searchModal').classList.remove('active');
+            document.getElementById('searchModalInput').value = '';
+            document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-search"></i><p>Start typing to search...</p></div>';
+            selectedResultIndex = -1;
+        }
+
+        // Search function
+        function performSearch(query) {
+            console.log('🔎 Searching for:', query);
+
+            if (!query || query.length < 2) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-search"></i><p>Start typing to search...</p></div>';
+                return;
+            }
+
+            if (searchIndex.length === 0) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-exclamation-circle"></i><p>Search index not loaded</p></div>';
+                return;
+            }
+
+            const queryLower = query.toLowerCase();
+            const queryWords = queryLower.split(/s+/).filter(word => word.length > 1);
+
+            // Search and score results
+            const results = searchIndex
+                .map(entry => {
+                    let score = 0;
+
+                    // Title match (highest weight)
+                    if (entry.title.toLowerCase().includes(queryLower)) {
+                        score += 100;
+                    }
+                    queryWords.forEach(word => {
+                        if (entry.title.toLowerCase().includes(word)) score += 50;
+                    });
+
+                    // Content match
+                    if (entry.content.toLowerCase().includes(queryLower)) {
+                        score += 10;
+                    }
+                    queryWords.forEach(word => {
+                        if (entry.content.toLowerCase().includes(word)) score += 5;
+                    });
+
+                    return { ...entry, score };
+                })
+                .filter(result => result.score > 0)
+                .sort((a, b) => b.score - a.score)
+                .slice(0, 10); // Top 10 results
+
+            console.log('📊 Found', results.length, 'results');
+
+            // Display results
+            if (results.length === 0) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-times-circle"></i><p>No results found</p></div>';
+                return;
+            }
+
+            const resultsHtml = results.map((result, index) => {
+                const urlPath = '../../../' + result.url;
+                return '<a href="' + urlPath + '" class="search-result ' + (index === 0 ? 'selected' : '') + '" data-index="' + index + '">' +
+                    '<div class="result-title">' + result.title + '</div>' +
+                    '<div class="result-content">' + highlightMatch(result.content, query) + '</div>' +
+                    '</a>';
+            }).join('');
+
+            document.getElementById('searchResults').innerHTML = resultsHtml;
+            selectedResultIndex = 0;
+        }
+
+        // Highlight matching text
+        function highlightMatch(text, query) {
+            if (!text) return '';
+            const queryWords = query.split(/\s+/).join('|');
+            const regex = new RegExp('(' + queryWords + ')', 'gi');
+            return text.substring(0, 150).replace(regex, '<mark>$1</mark>') + '...';
+        }
+
+        // Navigate results with keyboard
+        function navigateResults(direction) {
+            const results = document.querySelectorAll('.search-result');
+            if (results.length === 0) return;
+
+            results[selectedResultIndex]?.classList.remove('selected');
+
+            if (direction === 'down') {
+                selectedResultIndex = (selectedResultIndex + 1) % results.length;
+            } else if (direction === 'up') {
+                selectedResultIndex = (selectedResultIndex - 1 + results.length) % results.length;
+            }
+
+            results[selectedResultIndex]?.classList.add('selected');
+            results[selectedResultIndex]?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+
+        // Select result
+        function selectResult() {
+            const selected = document.querySelector('.search-result.selected');
+            if (selected) {
+                window.location.href = selected.href;
+            }
+        }
+
+        // Event listeners
+        document.getElementById('headerSearchBtn')?.addEventListener('click', openSearchModal);
+        document.getElementById('searchCloseBtn')?.addEventListener('click', closeSearchModal);
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Ctrl+K or Cmd+K to open search
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                openSearchModal();
+            }
+
+            // Esc to close search
+            if (e.key === 'Escape' && document.getElementById('searchModal').classList.contains('active')) {
+                closeSearchModal();
+            }
+
+            // Navigate results
+            if (document.getElementById('searchModal').classList.contains('active')) {
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    navigateResults('down');
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    navigateResults('up');
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    selectResult();
+                }
+            }
+        });
+
+        // Search input
+        document.getElementById('searchModalInput')?.addEventListener('input', (e) => {
+            performSearch(e.target.value);
+        });
+
+        // Click outside to close
+        document.getElementById('searchModal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'searchModal') {
+                closeSearchModal();
+            }
+        });
+    </script>
+</body>
+</html>

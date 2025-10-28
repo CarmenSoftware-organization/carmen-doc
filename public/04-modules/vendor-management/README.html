@@ -1,0 +1,2170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Management Module Documentation - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: #f8fafc;
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 15% 70% 15%;
+            gap: 0;
+            width: 100%;
+            padding: 1rem 0 2rem 0;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 1rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 2rem);
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-right: 1px solid var(--border-color);
+            padding-right: 2rem;
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 0.75rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+        .nav-subgroup {
+            margin: 0.5rem 0 0.5rem 0.5rem;
+        }
+        .nav-subgroup-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-subgroup-header:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .nav-subitems {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+            margin-left: 0.75rem;
+            margin-top: 0.25rem;
+        }
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 1rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 2rem);
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-left: 1px solid var(--border-color);
+            padding-left: 2rem;
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header - Modern Compact Design */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 52px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+        }
+        .header-content {
+            height: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--foreground);
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+        .logo:hover {
+            opacity: 0.8;
+        }
+        .logo i {
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+        .header-search-container {
+            display: flex;
+            align-items: center;
+        }
+        .header-search-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.375rem 0.75rem;
+            background: var(--secondary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.8125rem;
+            color: var(--muted-foreground);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            min-width: 180px;
+            flex-shrink: 0;
+        }
+        .header-search-btn:hover {
+            background: var(--background);
+            border-color: var(--primary);
+        }
+        .header-search-btn i {
+            color: var(--muted-foreground);
+            font-size: 0.875rem;
+        }
+        .header-search-btn span {
+            flex: 1;
+            text-align: left;
+        }
+        .header-search-btn kbd {
+            padding: 0.125rem 0.375rem;
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.6875rem;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--muted-foreground);
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        .back-to-home {
+            display: none; /* Hidden - navigation is sufficient */
+        }
+
+        /* Responsive Header */
+        @media (max-width: 768px) {
+            .header-search-btn {
+                min-width: auto;
+            }
+            .header-search-btn span {
+                display: none;
+            }
+        }
+
+        /* Search Modal */
+        .search-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            padding: 2rem;
+        }
+        .search-modal.active {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 10vh;
+        }
+        .search-modal-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 640px;
+            max-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            animation: slideDown 0.2s ease-out;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .search-modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .search-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .search-input-wrapper i {
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+        }
+        .search-input-wrapper input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 1.125rem;
+            color: var(--text-primary);
+        }
+        .search-close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .search-close-btn:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .search-results {
+            overflow-y: auto;
+            max-height: calc(70vh - 150px);
+        }
+        .search-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 2rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+        .search-empty i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        .search-result {
+            display: block;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+        .search-result:hover,
+        .search-result.selected {
+            background: var(--bg-secondary);
+        }
+        .search-result.selected {
+            border-left: 3px solid var(--primary-color);
+        }
+        .result-header {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .result-category {
+            font-size: 0.75rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .result-title {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        .result-badge {
+            display: inline-block;
+            padding: 0.125rem 0.5rem;
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-radius: 4px;
+            font-size: 0.6875rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        .result-content {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        .result-content mark {
+            background: rgba(79, 70, 229, 0.2);
+            color: var(--primary-color);
+            font-weight: 600;
+            padding: 0.125rem 0.25rem;
+            border-radius: 2px;
+        }
+        .search-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            border-bottom-left-radius: var(--border-radius-xl);
+            border-bottom-right-radius: var(--border-radius-xl);
+        }
+        .search-shortcuts {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        .search-shortcuts kbd {
+            padding: 0.25rem 0.5rem;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        /* Content Area */
+        .doc-content {
+            padding: 0 2rem;
+            width: 100%;
+            max-width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 0.9375rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Image Styles */
+        .doc-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 1.5rem auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Limit screenshot width to 80% for better readability */
+        .doc-content p > img {
+            max-width: 80%;
+        }
+
+        /* Table Styles */
+        .doc-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.875rem;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .doc-content table thead {
+            background: #f8fafc;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .doc-content table th {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #0f172a;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        .doc-content table td {
+            padding: 0.75rem 1rem;
+            border-top: 1px solid #e2e8f0;
+            color: #334155;
+        }
+
+        .doc-content table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        /* Table responsive wrapper */
+        .doc-content table {
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .doc-content table thead,
+        .doc-content table tbody,
+        .doc-content table tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 18% 64% 18%;
+                gap: 0;
+                padding: 1rem 0 1.5rem 0;
+            }
+            .doc-nav {
+                padding-right: 1.5rem;
+            }
+            .doc-toc {
+                padding-left: 1.5rem;
+            }
+            .doc-content {
+                padding: 0 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 0;
+                padding: 1rem 0 1.5rem 0;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 0 2rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                gap: 0;
+                padding: 0.5rem 0 1rem 0;
+            }
+            .doc-nav {
+                display: none;
+                border-right: none;
+            }
+            .doc-content {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="../../index.html" class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </a>
+            <div class="doc-header-actions">
+                <div class="header-search-container">
+                    <button class="header-search-btn" id="headerSearchBtn">
+                        <i class="fas fa-search"></i>
+                        <span>Search documentation...</span>
+                        <kbd>Ctrl+K</kbd>
+                    </button>
+                </div>
+                <a href="../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../01-overview/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Index</span>
+                    </a>
+                    <a href="../../01-overview/business-value.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value & ROI</span>
+                    </a>
+                    <a href="../../01-overview/tech-stack.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Technology Stack</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../02-architecture/system-architecture.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-database"></i>
+                    <span>Data Model</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../03-data-model/data-dictionary.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Data Dictionary</span>
+                    </a>
+                    <a href="../../03-data-model/schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-th-large"></i>
+                    <span>Application Modules</span>
+                </div>
+                <div class="nav-items">
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Procurement</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../04-modules/procurement/purchase-requests/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Purchase Requests</span>
+                            </a>
+                            <a href="../../04-modules/procurement/purchase-orders/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Purchase Orders</span>
+                            </a>
+                            <a href="../../04-modules/procurement/goods-received-notes/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Goods Received Notes</span>
+                            </a>
+                            <a href="../../04-modules/procurement/credit-notes/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Credit Notes</span>
+                            </a>
+                            <a href="../../04-modules/procurement/templates/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Templates</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-boxes"></i>
+                            <span>Inventory Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../04-modules/inventory/stock-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Stock Management</span>
+                            </a>
+                            <a href="../../04-modules/inventory/physical-count/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Physical Count</span>
+                            </a>
+                            <a href="../../04-modules/inventory/spot-check/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Spot Check</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span>Finance</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../04-modules/finance/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Finance Module</span>
+                            </a>
+                            <a href="../../04-modules/finance/features/account-code-mapping/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Account Code Mapping</span>
+                            </a>
+                            <a href="../../04-modules/finance/features/currency-and-rates/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Currency Management</span>
+                            </a>
+                            <a href="../../04-modules/finance/features/departments/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Departments</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-handshake"></i>
+                            <span>Vendor Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../04-modules/vendor-management/README.html" class="nav-item active">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Management</span>
+                            </a>
+                            <a href="../../04-modules/vendor-management/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Management Module</span>
+                            </a>
+                            <a href="../../04-modules/vendor-management/MANAGE-VENDORS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Manage Vendors</span>
+                            </a>
+                            <a href="../../04-modules/vendor-management/VENDOR-PORTAL.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Portal</span>
+                            </a>
+                            <a href="../../04-modules/vendor-management/CAMPAIGNS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Campaigns</span>
+                            </a>
+                            <a href="../../04-modules/vendor-management/PRICELISTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Pricelists</span>
+                            </a>
+                            <a href="../../04-modules/vendor-management/TEMPLATES.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Templates</span>
+                            </a>
+                            <a href="../../04-modules/vendor-management/sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Sitemap</span>
+                            </a>
+                            <a href="../../04-modules/vendor-management/PAGES-AND-COMPONENTS-SPEC.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Pages & Components Spec</span>
+                            </a>
+                            <a href="../../04-modules/vendor-management/SHARED-COMPONENTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Shared Components</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-box"></i>
+                            <span>Product Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../04-modules/product-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management</span>
+                            </a>
+                            <a href="../../04-modules/product-management/product-management-specification.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management Specification</span>
+                            </a>
+                            <a href="../../04-modules/product-management/product-management-sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management Sitemap</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-store"></i>
+                            <span>Store Operations</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../store-ops/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Operations</span>
+                            </a>
+                            <a href="../../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Operations Module</span>
+                            </a>
+                            <a href="../../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Requisitions</span>
+                            </a>
+                            <a href="../../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Stock Replenishment</span>
+                            </a>
+                            <a href="../../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Wastage Reporting</span>
+                            </a>
+                            <a href="../../store-ops/SHARED-COMPONENTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Shared Components</span>
+                            </a>
+                            <a href="../../store-ops/GLOSSARY.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Glossary</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-clipboard-list"></i>
+                            <span>Operational Planning</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../operational-planning/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Operational Planning</span>
+                            </a>
+                            <a href="../../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Operational Planning Module</span>
+                            </a>
+                            <a href="../../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Recipe Management</span>
+                            </a>
+                            <a href="../../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Menu Engineering</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-cog"></i>
+                            <span>System Administration</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../sa/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>System Administration</span>
+                            </a>
+                            <a href="../../sa/system-administration-sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>System Administration Sitemap</span>
+                            </a>
+                            <a href="../../sa/features/permission-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Permission Management</span>
+                            </a>
+                            <a href="../../sa/features/permission-management/specification.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Permission Specification</span>
+                            </a>
+                            <a href="../../sa/features/location-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Location Management</span>
+                            </a>
+                            <a href="../../sa/features/workflow/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Workflow</span>
+                            </a>
+                            <a href="../../sa/features/pos-integration/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Reporting</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../04-modules/reporting/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Reporting & Analytics</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../dashboard/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard</span>
+                            </a>
+                            <a href="../../dashboard/sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard Sitemap</span>
+                            </a>
+                            <a href="../../dashboard/components/components-overview.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Components Overview</span>
+                            </a>
+                            <a href="../../dashboard/api/api-specifications.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>API Specifications</span>
+                            </a>
+                            <a href="../../dashboard/business-logic/dashboard-business-rules.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard Business Rules</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-industry"></i>
+                            <span>Production</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../04-modules/production/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Production</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-cash-register"></i>
+                            <span>POS Integration</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../pos-integration/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration</span>
+                            </a>
+                            <a href="../../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration Module</span>
+                            </a>
+                            <a href="../../pos-integration/MAPPING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Mapping</span>
+                            </a>
+                            <a href="../../pos-integration/REPORTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Reports</span>
+                            </a>
+                            <a href="../../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Transactions</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="vendor-management-module-documentation">Vendor Management Module Documentation</h1>
+<h2 id="overview">Overview</h2>
+<p>The Vendor Management module is a comprehensive system for managing vendor relationships, profiles, certifications, price lists, and procurement workflows within the Carmen ERP system. It serves as the central hub for all vendor-related operations, from onboarding to ongoing relationship management.</p>
+<h3 id="module-screenshots">Module Screenshots</h3>
+<p><img src="screenshots/vm-landing.png" alt="Vendor Management Landing Page"><br><em>Vendor Management Landing Page - Main dashboard with navigation to all submodules</em></p>
+<h2 id="module-information">Module Information</h2>
+<ul>
+<li><strong>Main Path</strong>: <code>/vendor-management</code></li>
+<li><strong>Icon</strong>: Users</li>
+<li><strong>Primary Purpose</strong>: Manage vendor profiles, relationships, pricing, and procurement workflows</li>
+<li><strong>Status</strong>: Production-ready core features, with price management prototypes in development</li>
+</ul>
+<h2 id="quick-navigation">Quick Navigation</h2>
+<ul>
+<li><a href="#submodules">Submodules</a></li>
+<li><a href="#key-features">Key Features</a></li>
+<li><a href="#page-structure">Page Structure</a></li>
+<li><a href="#data-models">Data Models</a></li>
+<li><a href="#workflows">Workflows</a></li>
+<li><a href="#components">Components</a></li>
+<li><a href="#api--server-actions">API &amp; Server Actions</a></li>
+<li><a href="#business-rules">Business Rules</a></li>
+</ul>
+<h2 id="submodules">Submodules</h2>
+<p>The Vendor Management module consists of 6 main submodules:</p>
+<h3 id="1-vendor-directory-manage-vendors">1. Vendor Directory (Manage Vendors)</h3>
+<p><strong>Path</strong>: <code>/vendor-management/manage-vendors</code></p>
+<p><strong>Purpose</strong>: Core vendor profile management</p>
+<p><img src="screenshots/vm-vendor-list.png" alt="Vendor List Page"><br><em>Vendor List Page - Table view with filtering and search capabilities</em></p>
+<p><img src="screenshots/vm-vendor-list-search.png" alt="Vendor List with Search"><br><em>Vendor List with Active Search - Real-time filtering results</em></p>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>List view with table/card toggle</li>
+<li>Advanced filtering and search</li>
+<li>Vendor CRUD operations</li>
+<li>Vendor detail pages with tabs</li>
+<li>Vendor deletion with dependency checking</li>
+</ul>
+<p><img src="screenshots/vm-new-vendor-form.png" alt="New Vendor Form"><br><em>New Vendor Creation Form - Multi-section form with validation</em></p>
+<h3 id="2-vendors-alternative-path">2. Vendors (Alternative Path)</h3>
+<p><strong>Path</strong>: <code>/vendor-management/vendors</code></p>
+<p><strong>Purpose</strong>: Alternative vendor management interface</p>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Create new vendors</li>
+<li>Edit existing vendors</li>
+<li>Vendor pricelist settings</li>
+<li>Alternative routing for vendor operations</li>
+</ul>
+<h3 id="3-pricelist-templates">3. Pricelist Templates</h3>
+<p><strong>Path</strong>: <code>/vendor-management/templates</code></p>
+<p><strong>Status</strong>: 🚧 Prototype/Demo Only</p>
+<p><strong>Purpose</strong>: Pricelist template management and configuration</p>
+<p><img src="screenshots/vm-templates-list.png" alt="Templates List"><br><em>Pricelist Templates Management - Template configuration interface</em></p>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Template creation and customization</li>
+<li>Product selection component</li>
+<li>Custom fields configuration</li>
+<li>MOQ pricing setup</li>
+<li>Excel template generation</li>
+</ul>
+<h3 id="4-requests-for-pricing-campaigns">4. Requests for Pricing (Campaigns)</h3>
+<p><strong>Path</strong>: <code>/vendor-management/campaigns</code></p>
+<p><strong>Status</strong>: 🚧 Prototype/Demo Only</p>
+<p><strong>Purpose</strong>: Manage pricing campaign workflows</p>
+<p><img src="screenshots/vm-campaigns-list.png" alt="Campaigns List"><br><em>RFP Campaigns Management - Campaign tracking and vendor invitations</em></p>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Campaign creation and management</li>
+<li>Vendor invitation management</li>
+<li>Campaign analytics</li>
+<li>Response tracking</li>
+</ul>
+<h3 id="5-price-lists">5. Price Lists</h3>
+<p><strong>Path</strong>: <code>/vendor-management/pricelists</code></p>
+<p><strong>Status</strong>: 🚧 Prototype/Demo Only</p>
+<p><strong>Purpose</strong>: Vendor price list management</p>
+<p><img src="screenshots/vm-pricelists-list.png" alt="Pricelists Management"><br><em>Pricelists Management - Price list viewing and editing interface</em></p>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Price list viewing and editing</li>
+<li>Multi-MOQ pricing support</li>
+<li>Price validation</li>
+<li>Staff pricelist forms</li>
+</ul>
+<h3 id="6-vendor-entry-portal">6. Vendor Entry Portal</h3>
+<p><strong>Path</strong>: <code>/vendor-management/vendor-portal/sample</code></p>
+<p><strong>Status</strong>: 🚧 Prototype/Demo Only</p>
+<p><img src="screenshots/vm-vendor-portal.png" alt="Vendor Portal"><br><em>Vendor Self-Service Portal - External vendor price entry interface</em></p>
+<p><strong>Purpose</strong>: Vendor self-service price entry</p>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Token-based vendor access</li>
+<li>Self-service price submission</li>
+<li>Real-time validation</li>
+<li>Auto-save functionality</li>
+</ul>
+<h2 id="key-features">Key Features</h2>
+<h3 id="vendor-profile-management">Vendor Profile Management</h3>
+<ul>
+<li><strong>Complete Vendor Profiles</strong>: Company info, addresses, contacts, certifications</li>
+<li><strong>Multi-Address Support</strong>: Headquarters, warehouse, billing addresses</li>
+<li><strong>Contact Management</strong>: Multiple contacts with role specifications</li>
+<li><strong>Certification Tracking</strong>: Expiry monitoring and renewal alerts</li>
+<li><strong>Tax Configuration</strong>: Tax ID, profiles, and rates</li>
+<li><strong>Performance Metrics</strong>: Quality ratings, on-time delivery tracking</li>
+</ul>
+<h3 id="search-and-filtering">Search and Filtering</h3>
+<ul>
+<li><strong>Global Search</strong>: Search across vendor names, types, addresses, contacts</li>
+<li><strong>Advanced Filters</strong>: Multi-criteria filtering with saved filter support</li>
+<li><strong>Filter Storage</strong>: Save and reuse complex filter configurations</li>
+<li><strong>Status Filtering</strong>: Quick filter by active/inactive status</li>
+</ul>
+<h3 id="view-options">View Options</h3>
+<ul>
+<li><strong>Table View</strong>: Comprehensive data display with sortable columns</li>
+<li><strong>Card View</strong>: Visual grid layout for easier browsing</li>
+<li><strong>Detail View</strong>: Tabbed interface for comprehensive vendor information</li>
+</ul>
+<h3 id="data-management">Data Management</h3>
+<ul>
+<li><strong>CRUD Operations</strong>: Full create, read, update, delete capabilities</li>
+<li><strong>Bulk Operations</strong>: Export, duplicate, batch actions</li>
+<li><strong>Dependency Checking</strong>: Validation before deletion</li>
+<li><strong>Audit Trail</strong>: Track all changes with timestamps and user info</li>
+</ul>
+<h3 id="price-management-prototype">Price Management (Prototype)</h3>
+<ul>
+<li><strong>Template System</strong>: Reusable pricelist templates</li>
+<li><strong>Campaign Management</strong>: Request for pricing workflows</li>
+<li><strong>Vendor Portal</strong>: Self-service price entry</li>
+<li><strong>Excel Integration</strong>: Import/export capabilities</li>
+</ul>
+<h2 id="page-structure">Page Structure</h2>
+<h3 id="main-landing-page">Main Landing Page</h3>
+<p><strong>File</strong>: <code>app/(main)/vendor-management/page.tsx</code></p>
+<p><strong>Components</strong>:</p>
+<ul>
+<li>Quick statistics dashboard</li>
+<li>Module navigation cards</li>
+<li>Development status indicators</li>
+<li>Direct links to submodules</li>
+</ul>
+<p><strong>Key Metrics Displayed</strong>:</p>
+<ul>
+<li>Total Vendors</li>
+<li>Active Contracts</li>
+<li>Price Updates This Month</li>
+<li>Pending Approvals</li>
+</ul>
+<h3 id="manage-vendors-list-page">Manage Vendors List Page</h3>
+<p><strong>File</strong>: <code>app/(main)/vendor-management/manage-vendors/page.tsx</code></p>
+<p><strong>Layout</strong>:</p>
+<pre><code>┌─────────────────────────────────────────────────────┐
+│ Header: Vendor Management                          │
+│ - Title and description                             │
+│ - Export and Add Vendor buttons                     │
+├─────────────────────────────────────────────────────┤
+│ Search and Filters Bar                              │
+│ - Search input (global search)                      │
+│ - Status dropdown filter                            │
+│ - Saved Filters button                              │
+│ - Add Filters button                                │
+│ - View toggle (Table/Card)                          │
+├─────────────────────────────────────────────────────┤
+│ Data Display Area                                   │
+│ - Table view OR Card view                           │
+│ - Action menu per vendor                            │
+└─────────────────────────────────────────────────────┘
+</code></pre>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Dual view modes (table/card)</li>
+<li>In-line actions menu</li>
+<li>Real-time filtering</li>
+<li>Advanced filter dialog</li>
+</ul>
+<h3 id="vendor-detail-page">Vendor Detail Page</h3>
+<p><strong>File</strong>: <code>app/(main)/vendor-management/manage-vendors/[id]/page.tsx</code></p>
+<p><strong>Tabs</strong>:</p>
+<ol>
+<li><p><strong>Overview Tab</strong></p>
+<ul>
+<li>Basic Information card</li>
+<li>Tax Configuration card</li>
+<li>Primary Address card</li>
+<li>Primary Contact card</li>
+</ul>
+</li>
+<li><p><strong>Price Lists Tab</strong></p>
+<ul>
+<li>Vendor pricelists section</li>
+<li>Price history</li>
+<li>Active campaigns</li>
+</ul>
+</li>
+<li><p><strong>Contacts &amp; Addresses Tab</strong></p>
+<ul>
+<li>All addresses with management</li>
+<li>All contacts with roles</li>
+<li>Add/edit functionality</li>
+</ul>
+</li>
+<li><p><strong>Certifications Tab</strong></p>
+<ul>
+<li>Certification list</li>
+<li>Expiry status</li>
+<li>Document management</li>
+</ul>
+</li>
+</ol>
+<p><strong>Action Buttons</strong>:</p>
+<ul>
+<li>Edit Vendor (toggles edit mode)</li>
+<li>Print (print-friendly view)</li>
+<li>Delete Vendor (with dependency check)</li>
+<li>Save Changes (in edit mode)</li>
+<li>Cancel (in edit mode)</li>
+</ul>
+<h3 id="vendor-form-pages">Vendor Form Pages</h3>
+<h4>New Vendor</h4>
+<p><strong>File</strong>: <code>app/(main)/vendor-management/manage-vendors/new/page.tsx</code></p>
+<p><strong>Form Sections</strong>:</p>
+<ul>
+<li>Basic Information</li>
+<li>Address Details</li>
+<li>Contact Information</li>
+<li>Tax Configuration</li>
+<li>Certifications</li>
+</ul>
+<h4>Edit Vendor</h4>
+<p><strong>File</strong>: <code>app/(main)/vendor-management/vendors/[id]/edit/page.tsx</code></p>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Pre-populated form fields</li>
+<li>Validation on submit</li>
+<li>Change tracking</li>
+<li>Cancel confirmation</li>
+</ul>
+<h2 id="data-models">Data Models</h2>
+<h3 id="core-vendor-types">Core Vendor Types</h3>
+<h4>Vendor (Main Profile)</h4>
+<pre><code class="language-typescript">interface Vendor {
+  id: string
+  name: string
+  contactEmail: string
+  contactPhone?: string
+  address: Address
+  status: &#39;active&#39; | &#39;inactive&#39;
+  preferredCurrency: string
+  paymentTerms?: string
+  performanceMetrics: VendorMetrics
+  createdAt: Date
+  updatedAt: Date
+  createdBy: string
+  companyRegistration?: string
+  taxId?: string
+  taxProfile?: string
+  taxRate?: number
+  website?: string
+  businessType?: string
+  certifications?: string[]
+  languages?: string[]
+  notes?: string
+}
+</code></pre>
+<h4>Vendor Metrics</h4>
+<pre><code class="language-typescript">interface VendorMetrics {
+  responseRate: number
+  averageResponseTime: number
+  qualityScore: number
+  onTimeDeliveryRate: number
+  totalCampaigns: number
+  completedSubmissions: number
+  averageCompletionTime: number
+  lastSubmissionDate?: Date
+}
+</code></pre>
+<h4>Address</h4>
+<pre><code class="language-typescript">interface Address {
+  street: string
+  city: string
+  state: string
+  postalCode: string
+  country: string
+}
+</code></pre>
+<h3 id="price-management-types">Price Management Types</h3>
+<h4>Pricelist Template</h4>
+<pre><code class="language-typescript">interface PricelistTemplate {
+  id: string
+  name: string
+  description?: string
+  productSelection: ProductSelection
+  customFields: CustomField[]
+  instructions: string
+  validityPeriod: number // days
+  status: &#39;draft&#39; | &#39;active&#39; | &#39;inactive&#39;
+  createdAt: Date
+  updatedAt: Date
+  createdBy: string
+  allowMultiMOQ: boolean
+  requireLeadTime: boolean
+  defaultCurrency: string
+  supportedCurrencies: string[]
+  maxItemsPerSubmission?: number
+  notificationSettings: {
+    sendReminders: boolean
+    reminderDays: number[]
+    escalationDays: number
+  }
+}
+</code></pre>
+<h4>Request for Pricing (Campaign)</h4>
+<pre><code class="language-typescript">interface RequestForPricing {
+  id: string
+  name: string
+  description?: string
+  templateId: string
+  vendorIds: string[]
+  schedule: RequestForPricingSchedule
+  status: &#39;draft&#39; | &#39;active&#39; | &#39;paused&#39; | &#39;completed&#39; | &#39;cancelled&#39;
+  invitations: VendorInvitation[]
+  analytics: RequestForPricingAnalytics
+  createdAt: Date
+  updatedAt: Date
+  createdBy: string
+  deadlineBuffer: number
+  maxSubmissionAttempts: number
+  requireManagerApproval: boolean
+  priority: &#39;low&#39; | &#39;medium&#39; | &#39;high&#39; | &#39;urgent&#39;
+  tags: string[]
+}
+</code></pre>
+<h4>Vendor Pricelist</h4>
+<pre><code class="language-typescript">interface VendorPricelist {
+  id: string
+  pricelistNumber: string
+  vendorId: string
+  campaignId: string
+  templateId: string
+  invitationId: string
+  currency: string
+  status: &#39;draft&#39; | &#39;submitted&#39; | &#39;approved&#39; | &#39;rejected&#39; | &#39;expired&#39;
+  items: PricelistItem[]
+  validFrom: Date
+  validTo: Date
+  submittedAt?: Date
+  approvedAt?: Date
+  rejectedAt?: Date
+  rejectionReason?: string
+  approvedBy?: string
+  createdAt: Date
+  updatedAt: Date
+  completionPercentage: number
+  qualityScore: number
+  totalItems: number
+  completedItems: number
+  lastAutoSave: Date
+  submissionNotes?: string
+  internalNotes?: string
+  version: number
+  parentPricelistId?: string
+}
+</code></pre>
+<p>See <a href="./data-models.html">Data Models Documentation</a> for complete type definitions.</p>
+<h2 id="workflows">Workflows</h2>
+<h3 id="1-vendor-creation-workflow">1. Vendor Creation Workflow</h3>
+<div class="mermaid">
+graph TD
+    A[Start: New Vendor] --> B[Fill Basic Info]
+    B --> C[Add Address]
+    C --> D[Add Contact]
+    D --> E[Configure Tax]
+    E --> F[Add Certifications]
+    F --> G[Validate Form]
+    G --> H{Valid?}
+    H -->|No| I[Show Errors]
+    I --> B
+    H -->|Yes| J[Submit to Server]
+    J --> K{Success?}
+    K -->|No| L[Show Error Toast]
+    L --> B
+    K -->|Yes| M[Show Success Toast]
+    M --> N[Redirect to Vendor List]
+
+</div>
+<h3 id="2-vendor-deletion-workflow">2. Vendor Deletion Workflow</h3>
+<div class="mermaid">
+graph TD
+    A[Delete Button Click] --> B[Open Deletion Dialog]
+    B --> C[Check Dependencies]
+    C --> D{Has Dependencies?}
+    D -->|Yes| E[Show Warning with Details]
+    E --> F{Force Delete?}
+    F -->|No| G[Cancel]
+    F -->|Yes| H[Confirm Force Delete]
+    D -->|No| I[Show Standard Confirmation]
+    I --> J{Confirm?}
+    J -->|No| G
+    J -->|Yes| K[Call Delete API]
+    H --> K
+    K --> L{Success?}
+    L -->|No| M[Show Error]
+    L -->|Yes| N[Show Success]
+    N --> O[Redirect to List]
+
+</div>
+<h3 id="3-price-list-campaign-workflow-prototype">3. Price List Campaign Workflow (Prototype)</h3>
+<div class="mermaid">
+graph TD
+    A[Create Template] --> B[Select Products]
+    B --> C[Configure Custom Fields]
+    C --> D[Set MOQ Rules]
+    D --> E[Create Campaign]
+    E --> F[Select Vendors]
+    F --> G[Set Schedule]
+    G --> H[Send Invitations]
+    H --> I[Vendors Access Portal]
+    I --> J[Submit Prices]
+    J --> K[Validate Submissions]
+    K --> L[Review & Approve]
+    L --> M[Publish Pricelists]
+
+</div>
+<p>See <a href="./workflows.html">Workflows Documentation</a> for detailed workflow diagrams.</p>
+<h2 id="components">Components</h2>
+<h3 id="core-components">Core Components</h3>
+<h4>VendorCard</h4>
+<p><strong>File</strong>: <code>components/VendorCard.tsx</code></p>
+<ul>
+<li>Card view display for vendors</li>
+<li>Quick actions menu</li>
+<li>Status indicators</li>
+</ul>
+<h4>VendorForm</h4>
+<p><strong>File</strong>: <code>components/VendorForm.tsx</code></p>
+<ul>
+<li>Comprehensive vendor form</li>
+<li>Multi-section layout</li>
+<li>Validation handling</li>
+</ul>
+<h4>VendorSearchBar</h4>
+<p><strong>File</strong>: <code>components/VendorSearchBar.tsx</code></p>
+<ul>
+<li>Global search functionality</li>
+<li>Real-time filtering</li>
+<li>Search suggestions</li>
+</ul>
+<h4>VendorFilters</h4>
+<p><strong>File</strong>: <code>components/VendorFilters.tsx</code></p>
+<ul>
+<li>Filter panel</li>
+<li>Multi-criteria selection</li>
+<li>Save/load filters</li>
+</ul>
+<h4>VendorDeletionDialog</h4>
+<p><strong>File</strong>: <code>components/VendorDeletionDialog.tsx</code></p>
+<ul>
+<li>Deletion confirmation</li>
+<li>Dependency checking</li>
+<li>Force delete option</li>
+</ul>
+<h3 id="detail-page-components">Detail Page Components</h3>
+<h4>BasicInfoTab</h4>
+<p><strong>File</strong>: <code>manage-vendors/[id]/components/basic-info-tab.tsx</code></p>
+<ul>
+<li>Display/edit basic vendor info</li>
+<li>Tax configuration</li>
+<li>Business details</li>
+</ul>
+<h4>AddressesTab</h4>
+<p><strong>File</strong>: <code>manage-vendors/[id]/components/addresses-tab.tsx</code></p>
+<ul>
+<li>List all addresses</li>
+<li>Add/edit/delete addresses</li>
+<li>Primary address designation</li>
+</ul>
+<h4>ContactsTab</h4>
+<p><strong>File</strong>: <code>manage-vendors/[id]/components/contacts-tab.tsx</code></p>
+<ul>
+<li>Contact list management</li>
+<li>Role assignment</li>
+<li>Primary contact designation</li>
+</ul>
+<h4>VendorPricelistsSection</h4>
+<p><strong>File</strong>: <code>manage-vendors/[id]/sections/vendor-pricelists-section.tsx</code></p>
+<ul>
+<li>Display vendor pricelists</li>
+<li>Filter and search</li>
+<li>Price history</li>
+</ul>
+<h3 id="advanced-filter-component">Advanced Filter Component</h3>
+<h4>AdvancedFilter</h4>
+<p><strong>File</strong>: <code>manage-vendors/components/advanced-filter.tsx</code></p>
+<p><strong>Features</strong>:</p>
+<ul>
+<li>Multi-field filtering</li>
+<li>Operator selection (equals, contains, starts with, etc.)</li>
+<li>Filter combination logic</li>
+<li>Save filter configurations</li>
+<li>Load saved filters</li>
+</ul>
+<p><strong>Filter Fields</strong>:</p>
+<ul>
+<li>Company Name</li>
+<li>Business Type</li>
+<li>Status</li>
+<li>Address</li>
+<li>Contact Name</li>
+<li>Contact Email</li>
+<li>Contact Phone</li>
+</ul>
+<p>See <a href="./components/">Components Documentation</a> for detailed component specifications.</p>
+<h2 id="api-amp-server-actions">API &amp; Server Actions</h2>
+<h3 id="server-actions">Server Actions</h3>
+<p><strong>File</strong>: <code>app/(main)/vendor-management/manage-vendors/actions.ts</code></p>
+<h4>createVendor</h4>
+<pre><code class="language-typescript">async function createVendor(
+  vendorData: Omit&lt;Vendor, &#39;id&#39; | &#39;createdAt&#39; | &#39;updatedAt&#39; | &#39;performanceMetrics&#39;&gt;
+): Promise&lt;{ success: boolean; data?: Vendor; error?: string }&gt;
+</code></pre>
+<h4>updateVendor</h4>
+<pre><code class="language-typescript">async function updateVendor(
+  vendor: Vendor
+): Promise&lt;{ success: boolean; data?: Vendor; error?: string }&gt;
+</code></pre>
+<h4>deleteVendor</h4>
+<pre><code class="language-typescript">async function deleteVendor(
+  vendorId: string
+): Promise&lt;{ success: boolean; data?: any; error?: string }&gt;
+</code></pre>
+<h4>getVendor</h4>
+<pre><code class="language-typescript">async function getVendor(
+  vendorId: string
+): Promise&lt;{ success: boolean; data?: Vendor; error?: string }&gt;
+</code></pre>
+<h4>getVendors</h4>
+<pre><code class="language-typescript">async function getVendors(
+  filters?: any
+): Promise&lt;{ success: boolean; data?: Vendor[]; error?: string }&gt;
+</code></pre>
+<h3 id="api-routes">API Routes</h3>
+<h4>/api/vendors</h4>
+<ul>
+<li>GET: List all vendors with optional filters</li>
+<li>POST: Create new vendor</li>
+</ul>
+<h4>/api/vendors/[id]</h4>
+<ul>
+<li>GET: Get specific vendor</li>
+<li>PUT: Update vendor</li>
+<li>DELETE: Delete vendor</li>
+</ul>
+<h4>/api/vendors/[id]/metrics</h4>
+<ul>
+<li>GET: Get vendor performance metrics</li>
+</ul>
+<h4>/api/vendors/stats</h4>
+<ul>
+<li>GET: Get vendor statistics</li>
+</ul>
+<h3 id="vendor-service">Vendor Service</h3>
+<p><strong>File</strong>: <code>lib/services/vendor-service.ts</code></p>
+<p><strong>Methods</strong>:</p>
+<ul>
+<li><code>createVendor()</code>: Create new vendor with validation</li>
+<li><code>updateVendor()</code>: Update vendor with dependency checks</li>
+<li><code>deleteVendor()</code>: Delete vendor with dependency validation</li>
+<li><code>getVendor()</code>: Retrieve single vendor</li>
+<li><code>searchVendors()</code>: Search with filters</li>
+</ul>
+<h3 id="vendor-validation-service">Vendor Validation Service</h3>
+<p><strong>File</strong>: <code>lib/services/vendor-validation.ts</code></p>
+<p><strong>Validation Rules</strong>:</p>
+<ul>
+<li>Required fields validation</li>
+<li>Email format validation</li>
+<li>Phone format validation</li>
+<li>Tax ID format validation</li>
+<li>Business registration validation</li>
+<li>Duplicate vendor check</li>
+</ul>
+<p>See <a href="./api/">API Documentation</a> for complete API specifications.</p>
+<h2 id="business-rules">Business Rules</h2>
+<h3 id="vendor-status-rules">Vendor Status Rules</h3>
+<ol>
+<li><p><strong>Active Status</strong></p>
+<ul>
+<li>Can create purchase orders</li>
+<li>Can receive invitations</li>
+<li>Appears in vendor selection</li>
+</ul>
+</li>
+<li><p><strong>Inactive Status</strong></p>
+<ul>
+<li>Cannot create new POs</li>
+<li>Historical data preserved</li>
+<li>Can be reactivated</li>
+</ul>
+</li>
+</ol>
+<h3 id="tax-configuration-rules">Tax Configuration Rules</h3>
+<ol>
+<li><p><strong>Tax Profiles</strong></p>
+<ul>
+<li>None VAT: 0% tax rate</li>
+<li>VAT (Thailand): 7% tax rate</li>
+<li>GST (Singapore/Australia): 10% tax rate</li>
+<li>Sales Tax (USA): 8.5% tax rate</li>
+<li>Custom: User-defined rate</li>
+</ul>
+</li>
+<li><p><strong>Tax Rate Validation</strong></p>
+<ul>
+<li>Must be between 0-100%</li>
+<li>Can have decimal places (e.g., 8.25%)</li>
+<li>Auto-populated based on tax profile</li>
+</ul>
+</li>
+</ol>
+<h3 id="deletion-rules">Deletion Rules</h3>
+<ol>
+<li><p><strong>Dependency Checking</strong></p>
+<ul>
+<li>Check for active purchase orders</li>
+<li>Check for pending purchase requests</li>
+<li>Check for active contracts</li>
+<li>Check for price lists</li>
+</ul>
+</li>
+<li><p><strong>Soft Delete</strong></p>
+<ul>
+<li>Mark as deleted, preserve data</li>
+<li>Prevent new transactions</li>
+<li>Maintain audit trail</li>
+</ul>
+</li>
+</ol>
+<h3 id="performance-metrics-rules">Performance Metrics Rules</h3>
+<ol>
+<li><p><strong>Quality Score Calculation</strong></p>
+<ul>
+<li>Based on delivery performance</li>
+<li>Product quality ratings</li>
+<li>Invoice accuracy</li>
+<li>Communication responsiveness</li>
+</ul>
+</li>
+<li><p><strong>Rating System</strong></p>
+<ul>
+<li>0-5 star rating</li>
+<li>Calculated from metrics</li>
+<li>Updated periodically</li>
+</ul>
+</li>
+</ol>
+<p>See <a href="./business-logic/">Business Rules Documentation</a> for complete rule specifications.</p>
+<h2 id="integration-points">Integration Points</h2>
+<h3 id="procurement-module">Procurement Module</h3>
+<ul>
+<li>Vendor selection in Purchase Requests</li>
+<li>Vendor selection in Purchase Orders</li>
+<li>Price validation against vendor pricelists</li>
+<li>Delivery terms from vendor profile</li>
+</ul>
+<h3 id="finance-module">Finance Module</h3>
+<ul>
+<li>Tax calculation using vendor tax profile</li>
+<li>Payment terms from vendor settings</li>
+<li>Currency preferences</li>
+<li>Invoice validation</li>
+</ul>
+<h3 id="inventory-module">Inventory Module</h3>
+<ul>
+<li>GRN vendor association</li>
+<li>Stock-in vendor tracking</li>
+<li>Quality inspection by vendor</li>
+</ul>
+<h3 id="reporting-module">Reporting Module</h3>
+<ul>
+<li>Vendor performance reports</li>
+<li>Spend analysis by vendor</li>
+<li>Delivery performance tracking</li>
+<li>Price trend analysis</li>
+</ul>
+<h2 id="security-amp-permissions">Security &amp; Permissions</h2>
+<h3 id="role-based-access">Role-Based Access</h3>
+<h4>View Permissions</h4>
+<ul>
+<li>All users: View vendor list</li>
+<li>Purchasing Staff: View detailed vendor info</li>
+<li>Finance: View financial details</li>
+</ul>
+<h4>Edit Permissions</h4>
+<ul>
+<li>Purchasing Staff: Create/edit vendors</li>
+<li>Department Manager: Approve vendors</li>
+<li>Financial Manager: Edit financial terms</li>
+</ul>
+<h4>Delete Permissions</h4>
+<ul>
+<li>Department Manager: Delete vendors (with checks)</li>
+<li>Admin: Force delete vendors</li>
+</ul>
+<h3 id="data-privacy">Data Privacy</h3>
+<ul>
+<li>Sensitive fields masked for unauthorized users</li>
+<li>Audit trail for all changes</li>
+<li>Encryption for sensitive data</li>
+</ul>
+<h2 id="testing">Testing</h2>
+<h3 id="unit-tests">Unit Tests</h3>
+<ul>
+<li>Component rendering tests</li>
+<li>Form validation tests</li>
+<li>Service layer tests</li>
+<li>API endpoint tests</li>
+</ul>
+<h3 id="integration-tests">Integration Tests</h3>
+<ul>
+<li>End-to-end vendor creation flow</li>
+<li>Vendor deletion with dependencies</li>
+<li>Filter and search functionality</li>
+<li>Pricelist management workflow</li>
+</ul>
+<h3 id="test-data">Test Data</h3>
+<p><strong>File</strong>: <code>lib/mock-data/vendors.ts</code></p>
+<ul>
+<li>Sample vendor profiles</li>
+<li>Test certifications</li>
+<li>Mock pricelists</li>
+<li>Test campaigns</li>
+</ul>
+<h2 id="development-roadmap">Development Roadmap</h2>
+<h3 id="-completed-production-ready">✅ Completed (Production Ready)</h3>
+<ul>
+<li>Vendor profile management</li>
+<li>CRUD operations</li>
+<li>Advanced filtering</li>
+<li>Dependency checking</li>
+<li>Tax configuration</li>
+<li>Certification tracking</li>
+</ul>
+<h3 id="-in-progress-prototypedemo">🚧 In Progress (Prototype/Demo)</h3>
+<ul>
+<li>Pricelist templates</li>
+<li>Request for pricing campaigns</li>
+<li>Vendor portal</li>
+<li>Price validation</li>
+<li>Excel integration</li>
+</ul>
+<h3 id="-planned-future-features">📅 Planned (Future Features)</h3>
+<ul>
+<li>Advanced analytics dashboard</li>
+<li>AI-powered vendor recommendations</li>
+<li>Automated price comparison</li>
+<li>Contract management automation</li>
+<li>Vendor performance prediction</li>
+<li>Blockchain-based verification</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="common-issues">Common Issues</h3>
+<h4>Vendor Not Appearing in List</h4>
+<p><strong>Cause</strong>: Status filter or search query<br><strong>Solution</strong>: Clear all filters and check status</p>
+<h4>Cannot Delete Vendor</h4>
+<p><strong>Cause</strong>: Active dependencies<br><strong>Solution</strong>: Review dependency list, consider archiving instead</p>
+<h4>Tax Rate Not Updating</h4>
+<p><strong>Cause</strong>: Tax profile mismatch<br><strong>Solution</strong>: Select correct tax profile or use custom rate</p>
+<h4>Price List Not Loading</h4>
+<p><strong>Cause</strong>: Prototype feature using mock data<br><strong>Solution</strong>: Check if using production or demo mode</p>
+<h2 id="documentation-structure">Documentation Structure</h2>
+<p>This module documentation follows a modular structure for easy navigation and maintenance.</p>
+<h3 id="main-documentation">Main Documentation</h3>
+<ul>
+<li><strong><a href="VENDOR-MANAGEMENT-MODULE.html">VENDOR-MANAGEMENT-MODULE</a></strong> - Module overview and entry point</li>
+</ul>
+<h3 id="submodule-documentation">Submodule Documentation</h3>
+<ol>
+<li><strong><a href="MANAGE-VENDORS.html">MANAGE-VENDORS</a></strong> - Vendor CRUD operations, detail pages, and forms</li>
+<li><strong><a href="TEMPLATES.html">TEMPLATES</a></strong> - Pricelist template management</li>
+<li><strong><a href="CAMPAIGNS.html">CAMPAIGNS</a></strong> - RFP/RFQ campaign workflows</li>
+<li><strong><a href="PRICELISTS.html">PRICELISTS</a></strong> - Pricelist viewing and editing</li>
+<li><strong><a href="VENDOR-PORTAL.html">VENDOR-PORTAL</a></strong> - External vendor self-service portal</li>
+</ol>
+<h3 id="supporting-documentation">Supporting Documentation</h3>
+<ul>
+<li><strong><a href="SHARED-COMPONENTS.html">SHARED-COMPONENTS</a></strong> - Reusable UI components, modals, dropdowns, and actions</li>
+<li><strong><a href="PAGES-AND-COMPONENTS-SPEC.html">PAGES-AND-COMPONENTS-SPEC</a></strong> - Legacy comprehensive specification (reference)</li>
+</ul>
+<h3 id="templates-amp-tools">Templates &amp; Tools</h3>
+<ul>
+<li><strong><a href="../module-spec-template.html">module-spec-template</a></strong> - Reusable template for documenting other modules</li>
+</ul>
+<h2 id="related-documentation">Related Documentation</h2>
+<ul>
+<li><a href="../module-analysis-template.html">Module Analysis Template</a></li>
+<li><a href="./sitemap.html">Sitemap &amp; Navigation</a></li>
+<li><a href="./pages/">Page Documentation</a></li>
+<li><a href="./components/">Component Documentation</a></li>
+<li><a href="./business-logic/">Business Logic</a></li>
+<li><a href="./api/">API Documentation</a></li>
+</ul>
+<h2 id="support-amp-contact">Support &amp; Contact</h2>
+<p>For questions or issues with the Vendor Management module:</p>
+<ul>
+<li>Technical Lead: [Contact Info]</li>
+<li>Product Owner: [Contact Info]</li>
+<li>Documentation: This file and linked resources</li>
+</ul>
+<hr>
+<p><strong>Last Updated</strong>: 2025-10-02<br><strong>Module Version</strong>: 1.0.0 (Core), 0.5.0 (Price Management Prototype)<br><strong>Documentation Status</strong>: Complete</p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#vendor-management-module-documentation" class="level-1">Vendor Management Module Documentation</a>
+<a href="#overview" class="level-2">Overview</a>
+<a href="#module-screenshots" class="level-3">Module Screenshots</a>
+<a href="#module-information" class="level-2">Module Information</a>
+<a href="#quick-navigation" class="level-2">Quick Navigation</a>
+<a href="#submodules" class="level-2">Submodules</a>
+<a href="#1-vendor-directory-manage-vendors" class="level-3">1. Vendor Directory (Manage Vendors)</a>
+<a href="#2-vendors-alternative-path" class="level-3">2. Vendors (Alternative Path)</a>
+<a href="#3-pricelist-templates" class="level-3">3. Pricelist Templates</a>
+<a href="#4-requests-for-pricing-campaigns" class="level-3">4. Requests for Pricing (Campaigns)</a>
+<a href="#5-price-lists" class="level-3">5. Price Lists</a>
+<a href="#6-vendor-entry-portal" class="level-3">6. Vendor Entry Portal</a>
+<a href="#key-features" class="level-2">Key Features</a>
+<a href="#vendor-profile-management" class="level-3">Vendor Profile Management</a>
+<a href="#search-and-filtering" class="level-3">Search and Filtering</a>
+<a href="#view-options" class="level-3">View Options</a>
+<a href="#data-management" class="level-3">Data Management</a>
+<a href="#price-management-prototype" class="level-3">Price Management (Prototype)</a>
+<a href="#page-structure" class="level-2">Page Structure</a>
+<a href="#main-landing-page" class="level-3">Main Landing Page</a>
+<a href="#manage-vendors-list-page" class="level-3">Manage Vendors List Page</a>
+<a href="#vendor-detail-page" class="level-3">Vendor Detail Page</a>
+<a href="#vendor-form-pages" class="level-3">Vendor Form Pages</a>
+<a href="#data-models" class="level-2">Data Models</a>
+<a href="#core-vendor-types" class="level-3">Core Vendor Types</a>
+<a href="#price-management-types" class="level-3">Price Management Types</a>
+<a href="#workflows" class="level-2">Workflows</a>
+<a href="#1-vendor-creation-workflow" class="level-3">1. Vendor Creation Workflow</a>
+<a href="#2-vendor-deletion-workflow" class="level-3">2. Vendor Deletion Workflow</a>
+<a href="#3-price-list-campaign-workflow-prototype" class="level-3">3. Price List Campaign Workflow (Prototype)</a>
+<a href="#components" class="level-2">Components</a>
+<a href="#core-components" class="level-3">Core Components</a>
+<a href="#detail-page-components" class="level-3">Detail Page Components</a>
+<a href="#advanced-filter-component" class="level-3">Advanced Filter Component</a>
+<a href="#api-amp-server-actions" class="level-2">API &amp; Server Actions</a>
+<a href="#server-actions" class="level-3">Server Actions</a>
+<a href="#api-routes" class="level-3">API Routes</a>
+<a href="#vendor-service" class="level-3">Vendor Service</a>
+<a href="#vendor-validation-service" class="level-3">Vendor Validation Service</a>
+<a href="#business-rules" class="level-2">Business Rules</a>
+<a href="#vendor-status-rules" class="level-3">Vendor Status Rules</a>
+<a href="#tax-configuration-rules" class="level-3">Tax Configuration Rules</a>
+<a href="#deletion-rules" class="level-3">Deletion Rules</a>
+<a href="#performance-metrics-rules" class="level-3">Performance Metrics Rules</a>
+<a href="#integration-points" class="level-2">Integration Points</a>
+<a href="#procurement-module" class="level-3">Procurement Module</a>
+<a href="#finance-module" class="level-3">Finance Module</a>
+<a href="#inventory-module" class="level-3">Inventory Module</a>
+<a href="#reporting-module" class="level-3">Reporting Module</a>
+<a href="#security-amp-permissions" class="level-2">Security &amp; Permissions</a>
+<a href="#role-based-access" class="level-3">Role-Based Access</a>
+<a href="#data-privacy" class="level-3">Data Privacy</a>
+<a href="#testing" class="level-2">Testing</a>
+<a href="#unit-tests" class="level-3">Unit Tests</a>
+<a href="#integration-tests" class="level-3">Integration Tests</a>
+<a href="#test-data" class="level-3">Test Data</a>
+<a href="#development-roadmap" class="level-2">Development Roadmap</a>
+<a href="#-completed-production-ready" class="level-3">✅ Completed (Production Ready)</a>
+<a href="#-in-progress-prototypedemo" class="level-3">🚧 In Progress (Prototype/Demo)</a>
+<a href="#-planned-future-features" class="level-3">📅 Planned (Future Features)</a>
+<a href="#troubleshooting" class="level-2">Troubleshooting</a>
+<a href="#common-issues" class="level-3">Common Issues</a>
+<a href="#documentation-structure" class="level-2">Documentation Structure</a>
+<a href="#main-documentation" class="level-3">Main Documentation</a>
+<a href="#submodule-documentation" class="level-3">Submodule Documentation</a>
+<a href="#supporting-documentation" class="level-3">Supporting Documentation</a>
+<a href="#templates-amp-tools" class="level-3">Templates &amp; Tools</a>
+<a href="#related-documentation" class="level-2">Related Documentation</a>
+<a href="#support-amp-contact" class="level-2">Support &amp; Contact</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Search Modal -->
+    <div class="search-modal" id="searchModal">
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchModalInput" placeholder="Search documentation..." autofocus>
+                    <button class="search-close-btn" id="searchCloseBtn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="search-results" id="searchResults">
+                <div class="search-empty">
+                    <i class="fas fa-search"></i>
+                    <p>Start typing to search...</p>
+                </div>
+            </div>
+            <div class="search-footer">
+                <div class="search-shortcuts">
+                    <kbd>↑↓</kbd> Navigate
+                    <kbd>Enter</kbd> Select
+                    <kbd>Esc</kbd> Close
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Search functionality
+        let searchIndex = [];
+        let selectedResultIndex = -1;
+
+        // Load search index
+        fetch('../../search-index.json')
+            .then(res => res.json())
+            .then(data => {
+                searchIndex = data;
+                console.log('✓ Search index loaded:', searchIndex.length, 'entries');
+            })
+            .catch(err => console.error('❌ Failed to load search index:', err));
+
+        // Open search modal
+        function openSearchModal() {
+            console.log('🔍 Opening search modal...');
+            document.getElementById('searchModal').classList.add('active');
+            document.getElementById('searchModalInput').focus();
+            selectedResultIndex = -1;
+        }
+
+        // Close search modal
+        function closeSearchModal() {
+            document.getElementById('searchModal').classList.remove('active');
+            document.getElementById('searchModalInput').value = '';
+            document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-search"></i><p>Start typing to search...</p></div>';
+            selectedResultIndex = -1;
+        }
+
+        // Search function
+        function performSearch(query) {
+            console.log('🔎 Searching for:', query);
+
+            if (!query || query.length < 2) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-search"></i><p>Start typing to search...</p></div>';
+                return;
+            }
+
+            if (searchIndex.length === 0) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-exclamation-circle"></i><p>Search index not loaded</p></div>';
+                return;
+            }
+
+            const queryLower = query.toLowerCase();
+            const queryWords = queryLower.split(/s+/).filter(word => word.length > 1);
+
+            // Search and score results
+            const results = searchIndex
+                .map(entry => {
+                    let score = 0;
+
+                    // Title match (highest weight)
+                    if (entry.title.toLowerCase().includes(queryLower)) {
+                        score += 100;
+                    }
+                    queryWords.forEach(word => {
+                        if (entry.title.toLowerCase().includes(word)) score += 50;
+                    });
+
+                    // Content match
+                    if (entry.content.toLowerCase().includes(queryLower)) {
+                        score += 10;
+                    }
+                    queryWords.forEach(word => {
+                        if (entry.content.toLowerCase().includes(word)) score += 5;
+                    });
+
+                    return { ...entry, score };
+                })
+                .filter(result => result.score > 0)
+                .sort((a, b) => b.score - a.score)
+                .slice(0, 10); // Top 10 results
+
+            console.log('📊 Found', results.length, 'results');
+
+            // Display results
+            if (results.length === 0) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-times-circle"></i><p>No results found</p></div>';
+                return;
+            }
+
+            const resultsHtml = results.map((result, index) => {
+                const urlPath = '../../' + result.url;
+                return '<a href="' + urlPath + '" class="search-result ' + (index === 0 ? 'selected' : '') + '" data-index="' + index + '">' +
+                    '<div class="result-title">' + result.title + '</div>' +
+                    '<div class="result-content">' + highlightMatch(result.content, query) + '</div>' +
+                    '</a>';
+            }).join('');
+
+            document.getElementById('searchResults').innerHTML = resultsHtml;
+            selectedResultIndex = 0;
+        }
+
+        // Highlight matching text
+        function highlightMatch(text, query) {
+            if (!text) return '';
+            const queryWords = query.split(/\s+/).join('|');
+            const regex = new RegExp('(' + queryWords + ')', 'gi');
+            return text.substring(0, 150).replace(regex, '<mark>$1</mark>') + '...';
+        }
+
+        // Navigate results with keyboard
+        function navigateResults(direction) {
+            const results = document.querySelectorAll('.search-result');
+            if (results.length === 0) return;
+
+            results[selectedResultIndex]?.classList.remove('selected');
+
+            if (direction === 'down') {
+                selectedResultIndex = (selectedResultIndex + 1) % results.length;
+            } else if (direction === 'up') {
+                selectedResultIndex = (selectedResultIndex - 1 + results.length) % results.length;
+            }
+
+            results[selectedResultIndex]?.classList.add('selected');
+            results[selectedResultIndex]?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+
+        // Select result
+        function selectResult() {
+            const selected = document.querySelector('.search-result.selected');
+            if (selected) {
+                window.location.href = selected.href;
+            }
+        }
+
+        // Event listeners
+        document.getElementById('headerSearchBtn')?.addEventListener('click', openSearchModal);
+        document.getElementById('searchCloseBtn')?.addEventListener('click', closeSearchModal);
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Ctrl+K or Cmd+K to open search
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                openSearchModal();
+            }
+
+            // Esc to close search
+            if (e.key === 'Escape' && document.getElementById('searchModal').classList.contains('active')) {
+                closeSearchModal();
+            }
+
+            // Navigate results
+            if (document.getElementById('searchModal').classList.contains('active')) {
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    navigateResults('down');
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    navigateResults('up');
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    selectResult();
+                }
+            }
+        });
+
+        // Search input
+        document.getElementById('searchModalInput')?.addEventListener('input', (e) => {
+            performSearch(e.target.value);
+        });
+
+        // Click outside to close
+        document.getElementById('searchModal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'searchModal') {
+                closeSearchModal();
+            }
+        });
+    </script>
+</body>
+</html>

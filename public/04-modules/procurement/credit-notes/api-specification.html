@@ -1,0 +1,2091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit Note Module - API Specification - Carmen ERP Documentation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <style>
+        /* Override for document pages */
+        body {
+            background: #f8fafc;
+        }
+        .doc-layout {
+            display: grid;
+            grid-template-columns: 15% 70% 15%;
+            gap: 0;
+            width: 100%;
+            padding: 1rem 0 2rem 0;
+        }
+
+        /* Global Navigation Sidebar */
+        .doc-nav {
+            position: sticky;
+            top: calc(var(--header-height) + 1rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 2rem);
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-right: 1px solid var(--border-color);
+            padding-right: 2rem;
+        }
+        .doc-nav h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .nav-group {
+            margin-bottom: 1rem;
+        }
+        .nav-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-group-header:hover {
+            background: var(--bg-secondary);
+        }
+        .nav-group-header i.fa-chevron-down {
+            font-size: 0.75rem;
+            transition: transform 0.2s ease;
+        }
+        .nav-group.collapsed .fa-chevron-down {
+            transform: rotate(-90deg);
+        }
+        .nav-group.collapsed .nav-items {
+            display: none;
+        }
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-left: 0.75rem;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-item:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .nav-item.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .nav-item i {
+        .nav-subgroup {
+            margin: 0.5rem 0 0.5rem 0.5rem;
+        }
+        .nav-subgroup-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .nav-subgroup-header:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .nav-subitems {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+            margin-left: 0.75rem;
+            margin-top: 0.25rem;
+        }
+            font-size: 0.75rem;
+        }
+
+        /* TOC Sidebar */
+        .doc-toc {
+            position: sticky;
+            top: calc(var(--header-height) + 1rem);
+            height: fit-content;
+            max-height: calc(100vh - var(--header-height) - 2rem);
+            overflow-y: auto;
+            overflow-x: hidden;
+            border-left: 1px solid var(--border-color);
+            padding-left: 2rem;
+        }
+        .doc-toc h4 {
+            margin: 0 0 1rem 0;
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+        .doc-toc nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .doc-toc a {
+            display: block;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: var(--transition);
+            border-left: 2px solid transparent;
+        }
+        .doc-toc a:hover {
+            background: var(--bg-secondary);
+            color: var(--primary-color);
+        }
+        .doc-toc a.active {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        .doc-toc a.level-2 {
+            padding-left: 1rem;
+        }
+        .doc-toc a.level-3 {
+            padding-left: 2rem;
+            font-size: 0.8125rem;
+        }
+
+        /* Header - Modern Compact Design */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 52px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+        }
+        .header-content {
+            height: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--foreground);
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+        .logo:hover {
+            opacity: 0.8;
+        }
+        .logo i {
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+
+        /* Header Actions */
+        .doc-header-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+        .header-search-container {
+            display: flex;
+            align-items: center;
+        }
+        .header-search-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.375rem 0.75rem;
+            background: var(--secondary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.8125rem;
+            color: var(--muted-foreground);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            min-width: 180px;
+            flex-shrink: 0;
+        }
+        .header-search-btn:hover {
+            background: var(--background);
+            border-color: var(--primary);
+        }
+        .header-search-btn i {
+            color: var(--muted-foreground);
+            font-size: 0.875rem;
+        }
+        .header-search-btn span {
+            flex: 1;
+            text-align: left;
+        }
+        .header-search-btn kbd {
+            padding: 0.125rem 0.375rem;
+            background: var(--background);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.6875rem;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            color: var(--muted-foreground);
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        .back-to-home {
+            display: none; /* Hidden - navigation is sufficient */
+        }
+
+        /* Responsive Header */
+        @media (max-width: 768px) {
+            .header-search-btn {
+                min-width: auto;
+            }
+            .header-search-btn span {
+                display: none;
+            }
+        }
+
+        /* Search Modal */
+        .search-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            padding: 2rem;
+        }
+        .search-modal.active {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 10vh;
+        }
+        .search-modal-content {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 640px;
+            max-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            animation: slideDown 0.2s ease-out;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .search-modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .search-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .search-input-wrapper i {
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+        }
+        .search-input-wrapper input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 1.125rem;
+            color: var(--text-primary);
+        }
+        .search-close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .search-close-btn:hover {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        .search-results {
+            overflow-y: auto;
+            max-height: calc(70vh - 150px);
+        }
+        .search-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 2rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+        .search-empty i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        .search-result {
+            display: block;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
+        }
+        .search-result:hover,
+        .search-result.selected {
+            background: var(--bg-secondary);
+        }
+        .search-result.selected {
+            border-left: 3px solid var(--primary-color);
+        }
+        .result-header {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .result-category {
+            font-size: 0.75rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .result-title {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        .result-badge {
+            display: inline-block;
+            padding: 0.125rem 0.5rem;
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            border-radius: 4px;
+            font-size: 0.6875rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+        .result-content {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        .result-content mark {
+            background: rgba(79, 70, 229, 0.2);
+            color: var(--primary-color);
+            font-weight: 600;
+            padding: 0.125rem 0.25rem;
+            border-radius: 2px;
+        }
+        .search-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            border-bottom-left-radius: var(--border-radius-xl);
+            border-bottom-right-radius: var(--border-radius-xl);
+        }
+        .search-shortcuts {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+        .search-shortcuts kbd {
+            padding: 0.25rem 0.5rem;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        /* Content Area */
+        .doc-content {
+            padding: 0 2rem;
+            width: 100%;
+            max-width: 100%;
+        }
+        .doc-content p,
+        .doc-content li {
+            font-size: 0.9375rem;
+            line-height: 1.7;
+        }
+        .doc-content h1,
+        .doc-content h2,
+        .doc-content h3 {
+            scroll-margin-top: calc(var(--header-height) + 2rem);
+        }
+
+        /* Image Styles */
+        .doc-content img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 1.5rem auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Limit screenshot width to 80% for better readability */
+        .doc-content p > img {
+            max-width: 80%;
+        }
+
+        /* Table Styles */
+        .doc-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.875rem;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .doc-content table thead {
+            background: #f8fafc;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .doc-content table th {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #0f172a;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        .doc-content table td {
+            padding: 0.75rem 1rem;
+            border-top: 1px solid #e2e8f0;
+            color: #334155;
+        }
+
+        .doc-content table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        /* Table responsive wrapper */
+        .doc-content table {
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .doc-content table thead,
+        .doc-content table tbody,
+        .doc-content table tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .doc-layout {
+                grid-template-columns: 18% 64% 18%;
+                gap: 0;
+                padding: 1rem 0 1.5rem 0;
+            }
+            .doc-nav {
+                padding-right: 1.5rem;
+            }
+            .doc-toc {
+                padding-left: 1.5rem;
+            }
+            .doc-content {
+                padding: 0 1.5rem;
+            }
+        }
+        @media (max-width: 1200px) {
+            .doc-layout {
+                grid-template-columns: 240px 1fr;
+                gap: 0;
+                padding: 1rem 0 1.5rem 0;
+            }
+            .doc-toc {
+                display: none;
+            }
+            .doc-content {
+                padding: 0 2rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .doc-layout {
+                grid-template-columns: 1fr;
+                gap: 0;
+                padding: 0.5rem 0 1rem 0;
+            }
+            .doc-nav {
+                display: none;
+                border-right: none;
+            }
+            .doc-content {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="../../../index.html" class="logo">
+                <i class="fas fa-book"></i>
+                <span>Carmen ERP Docs</span>
+            </a>
+            <div class="doc-header-actions">
+                <div class="header-search-container">
+                    <button class="header-search-btn" id="headerSearchBtn">
+                        <i class="fas fa-search"></i>
+                        <span>Search documentation...</span>
+                        <kbd>Ctrl+K</kbd>
+                    </button>
+                </div>
+                <a href="../../../index.html" class="back-to-home">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: var(--header-height);">
+        <div class="doc-layout">
+            <!-- Global Navigation -->
+            <aside class="doc-nav">
+                <h4><i class="fas fa-bars"></i> Documentation</h4>
+                
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-home"></i>
+                    <span>Overview</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../01-overview/README.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Documentation Index</span>
+                    </a>
+                    <a href="../../../01-overview/business-value.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Business Value & ROI</span>
+                    </a>
+                    <a href="../../../01-overview/tech-stack.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Technology Stack</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-sitemap"></i>
+                    <span>Architecture</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../02-architecture/system-architecture.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>System Architecture</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-database"></i>
+                    <span>Data Model</span>
+                </div>
+                <div class="nav-items">
+                    <a href="../../../03-data-model/data-dictionary.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Data Dictionary</span>
+                    </a>
+                    <a href="../../../03-data-model/schema-analysis.html" class="nav-item ">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Schema Analysis</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-group">
+                <div class="nav-group-header">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-th-large"></i>
+                    <span>Application Modules</span>
+                </div>
+                <div class="nav-items">
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Procurement</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/procurement/purchase-requests/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Purchase Requests</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/purchase-orders/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Purchase Orders</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/goods-received-notes/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Goods Received Notes</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/credit-notes/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Credit Notes</span>
+                            </a>
+                            <a href="../../../04-modules/procurement/templates/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Templates</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-boxes"></i>
+                            <span>Inventory Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/inventory/stock-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Stock Management</span>
+                            </a>
+                            <a href="../../../04-modules/inventory/physical-count/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Physical Count</span>
+                            </a>
+                            <a href="../../../04-modules/inventory/spot-check/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Spot Check</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span>Finance</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/finance/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Finance Module</span>
+                            </a>
+                            <a href="../../../04-modules/finance/features/account-code-mapping/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Account Code Mapping</span>
+                            </a>
+                            <a href="../../../04-modules/finance/features/currency-and-rates/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Currency Management</span>
+                            </a>
+                            <a href="../../../04-modules/finance/features/departments/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Departments</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-handshake"></i>
+                            <span>Vendor Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/vendor-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Management</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/VENDOR-MANAGEMENT-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Management Module</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/MANAGE-VENDORS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Manage Vendors</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/VENDOR-PORTAL.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Vendor Portal</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/CAMPAIGNS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Campaigns</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/PRICELISTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Pricelists</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/TEMPLATES.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Templates</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Sitemap</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/PAGES-AND-COMPONENTS-SPEC.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Pages & Components Spec</span>
+                            </a>
+                            <a href="../../../04-modules/vendor-management/SHARED-COMPONENTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Shared Components</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-box"></i>
+                            <span>Product Management</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/product-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management</span>
+                            </a>
+                            <a href="../../../04-modules/product-management/product-management-specification.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management Specification</span>
+                            </a>
+                            <a href="../../../04-modules/product-management/product-management-sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Product Management Sitemap</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-store"></i>
+                            <span>Store Operations</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../store-ops/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Operations</span>
+                            </a>
+                            <a href="../../../store-ops/STORE-OPERATIONS-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Operations Module</span>
+                            </a>
+                            <a href="../../../store-ops/STORE-REQUISITIONS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Store Requisitions</span>
+                            </a>
+                            <a href="../../../store-ops/STOCK-REPLENISHMENT.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Stock Replenishment</span>
+                            </a>
+                            <a href="../../../store-ops/WASTAGE-REPORTING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Wastage Reporting</span>
+                            </a>
+                            <a href="../../../store-ops/SHARED-COMPONENTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Shared Components</span>
+                            </a>
+                            <a href="../../../store-ops/GLOSSARY.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Glossary</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-clipboard-list"></i>
+                            <span>Operational Planning</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../operational-planning/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Operational Planning</span>
+                            </a>
+                            <a href="../../../operational-planning/OPERATIONAL-PLANNING-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Operational Planning Module</span>
+                            </a>
+                            <a href="../../../operational-planning/RECIPE-MANAGEMENT.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Recipe Management</span>
+                            </a>
+                            <a href="../../../operational-planning/MENU-ENGINEERING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Menu Engineering</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-cog"></i>
+                            <span>System Administration</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../sa/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>System Administration</span>
+                            </a>
+                            <a href="../../../sa/system-administration-sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>System Administration Sitemap</span>
+                            </a>
+                            <a href="../../../sa/features/permission-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Permission Management</span>
+                            </a>
+                            <a href="../../../sa/features/permission-management/specification.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Permission Specification</span>
+                            </a>
+                            <a href="../../../sa/features/location-management/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Location Management</span>
+                            </a>
+                            <a href="../../../sa/features/workflow/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Workflow</span>
+                            </a>
+                            <a href="../../../sa/features/pos-integration/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Reporting</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/reporting/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Reporting & Analytics</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../dashboard/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard</span>
+                            </a>
+                            <a href="../../../dashboard/sitemap.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard Sitemap</span>
+                            </a>
+                            <a href="../../../dashboard/components/components-overview.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Components Overview</span>
+                            </a>
+                            <a href="../../../dashboard/api/api-specifications.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>API Specifications</span>
+                            </a>
+                            <a href="../../../dashboard/business-logic/dashboard-business-rules.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Dashboard Business Rules</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-industry"></i>
+                            <span>Production</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../04-modules/production/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Production</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="nav-subgroup">
+                        <div class="nav-subgroup-header">
+                            <i class="fas fa-cash-register"></i>
+                            <span>POS Integration</span>
+                        </div>
+                        <div class="nav-subitems">
+                            <a href="../../../pos-integration/README.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration</span>
+                            </a>
+                            <a href="../../../pos-integration/POS-INTEGRATION-MODULE.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>POS Integration Module</span>
+                            </a>
+                            <a href="../../../pos-integration/MAPPING.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Mapping</span>
+                            </a>
+                            <a href="../../../pos-integration/REPORTS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Reports</span>
+                            </a>
+                            <a href="../../../pos-integration/TRANSACTIONS.html" class="nav-item ">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Transactions</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main>
+                <article class="doc-content content">
+                    <h1 id="credit-note-module-api-specification">Credit Note Module - API Specification</h1>
+<p>Complete API documentation for the Carmen ERP Credit Note module with endpoints, data models, authentication, and integration patterns.</p>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+<li><a href="#authentication--authorization">Authentication &amp; Authorization</a></li>
+<li><a href="#core-endpoints">Core Endpoints</a></li>
+<li><a href="#data-models">Data Models</a></li>
+<li><a href="#error-handling">Error Handling</a></li>
+<li><a href="#rate-limiting">Rate Limiting</a></li>
+<li><a href="#webhooks">Webhooks</a></li>
+<li><a href="#integration-patterns">Integration Patterns</a></li>
+</ol>
+<h2 id="authentication-amp-authorization">Authentication &amp; Authorization</h2>
+<h3 id="authentication-methods">Authentication Methods</h3>
+<p><strong>Bearer Token Authentication</strong>:</p>
+<pre><code class="language-http">Authorization: Bearer &lt;jwt_token&gt;
+</code></pre>
+<p><strong>API Key Authentication</strong>:</p>
+<pre><code class="language-http">X-API-Key: &lt;api_key&gt;
+X-API-Secret: &lt;api_secret&gt;
+</code></pre>
+<h3 id="authorization-levels">Authorization Levels</h3>
+<p><strong>Role-based Permissions</strong>:</p>
+<ul>
+<li><code>credit-note:read</code> - View credit notes</li>
+<li><code>credit-note:create</code> - Create new credit notes</li>
+<li><code>credit-note:edit</code> - Modify existing credit notes</li>
+<li><code>credit-note:delete</code> - Delete credit notes</li>
+<li><code>credit-note:approve</code> - Approve credit notes</li>
+<li><code>credit-note:process</code> - Process approved credit notes</li>
+</ul>
+<p><strong>Scope-based Access</strong>:</p>
+<ul>
+<li><code>department:procurement</code> - Procurement department access</li>
+<li><code>department:finance</code> - Finance department access</li>
+<li><code>location:specific</code> - Location-specific access</li>
+<li><code>vendor:specific</code> - Vendor-specific access</li>
+</ul>
+<h3 id="jwt-token-structure">JWT Token Structure</h3>
+<pre><code class="language-json">{
+  &quot;sub&quot;: &quot;user_id&quot;,
+  &quot;roles&quot;: [&quot;procurement_staff&quot;, &quot;finance_manager&quot;],
+  &quot;permissions&quot;: [&quot;credit-note:read&quot;, &quot;credit-note:create&quot;],
+  &quot;department&quot;: &quot;procurement&quot;,
+  &quot;location&quot;: &quot;main_warehouse&quot;,
+  &quot;exp&quot;: 1640995200
+}
+</code></pre>
+<h2 id="core-endpoints">Core Endpoints</h2>
+<h3 id="1-credit-note-management">1. Credit Note Management</h3>
+<h4>Get All Credit Notes</h4>
+<pre><code class="language-http">GET /api/v1/credit-notes
+</code></pre>
+<p><strong>Query Parameters</strong>:</p>
+<ul>
+<li><code>page</code> (number): Page number (default: 1)</li>
+<li><code>limit</code> (number): Items per page (default: 20, max: 100)</li>
+<li><code>status</code> (string): Filter by status (draft, pending_approval, approved, processed)</li>
+<li><code>vendor_id</code> (string): Filter by vendor ID</li>
+<li><code>date_from</code> (string): Start date filter (ISO 8601)</li>
+<li><code>date_to</code> (string): End date filter (ISO 8601)</li>
+<li><code>type</code> (string): Credit note type (quantity_return, amount_discount)</li>
+<li><code>search</code> (string): Search in reference number, vendor name, description</li>
+<li><code>sort_by</code> (string): Sort field (date, amount, vendor_name, status)</li>
+<li><code>sort_order</code> (string): Sort direction (asc, desc)</li>
+</ul>
+<p><strong>Response</strong>:</p>
+<pre><code class="language-json">{
+  &quot;data&quot;: [
+    {
+      &quot;id&quot;: &quot;cn_001&quot;,
+      &quot;ref_number&quot;: &quot;CN-2025-001&quot;,
+      &quot;vendor&quot;: {
+        &quot;id&quot;: &quot;vendor_001&quot;,
+        &quot;name&quot;: &quot;ACME Corporation&quot;,
+        &quot;registration_number&quot;: &quot;BN123456&quot;
+      },
+      &quot;type&quot;: &quot;quantity_return&quot;,
+      &quot;status&quot;: &quot;pending_approval&quot;,
+      &quot;date&quot;: &quot;2025-01-15T00:00:00Z&quot;,
+      &quot;currency&quot;: &quot;MYR&quot;,
+      &quot;total_amount&quot;: 1250.50,
+      &quot;items_count&quot;: 3,
+      &quot;created_at&quot;: &quot;2025-01-15T10:30:00Z&quot;,
+      &quot;updated_at&quot;: &quot;2025-01-15T14:20:00Z&quot;
+    }
+  ],
+  &quot;pagination&quot;: {
+    &quot;current_page&quot;: 1,
+    &quot;total_pages&quot;: 5,
+    &quot;total_items&quot;: 95,
+    &quot;items_per_page&quot;: 20
+  },
+  &quot;filters&quot;: {
+    &quot;status&quot;: [&quot;draft&quot;, &quot;pending_approval&quot;, &quot;approved&quot;, &quot;processed&quot;],
+    &quot;vendors&quot;: [{&quot;id&quot;: &quot;vendor_001&quot;, &quot;name&quot;: &quot;ACME Corporation&quot;}],
+    &quot;types&quot;: [&quot;quantity_return&quot;, &quot;amount_discount&quot;]
+  }
+}
+</code></pre>
+<h4>Get Credit Note by ID</h4>
+<pre><code class="language-http">GET /api/v1/credit-notes/{id}
+</code></pre>
+<p><strong>Response</strong>:</p>
+<pre><code class="language-json">{
+  &quot;data&quot;: {
+    &quot;id&quot;: &quot;cn_001&quot;,
+    &quot;ref_number&quot;: &quot;CN-2025-001&quot;,
+    &quot;vendor&quot;: {
+      &quot;id&quot;: &quot;vendor_001&quot;,
+      &quot;name&quot;: &quot;ACME Corporation&quot;,
+      &quot;registration_number&quot;: &quot;BN123456&quot;,
+      &quot;contact_person&quot;: &quot;John Doe&quot;,
+      &quot;email&quot;: &quot;john@acme.com&quot;
+    },
+    &quot;type&quot;: &quot;quantity_return&quot;,
+    &quot;status&quot;: &quot;pending_approval&quot;,
+    &quot;date&quot;: &quot;2025-01-15T00:00:00Z&quot;,
+    &quot;currency&quot;: &quot;MYR&quot;,
+    &quot;exchange_rate&quot;: 1.0,
+    &quot;reason&quot;: &quot;Quality issues with delivered items&quot;,
+    &quot;description&quot;: &quot;Credit note for defective products returned&quot;,
+    &quot;items&quot;: [
+      {
+        &quot;id&quot;: &quot;item_001&quot;,
+        &quot;product&quot;: {
+          &quot;id&quot;: &quot;prod_001&quot;,
+          &quot;name&quot;: &quot;Premium Rice 5kg&quot;,
+          &quot;sku&quot;: &quot;RICE-PREM-5KG&quot;
+        },
+        &quot;quantity&quot;: 10,
+        &quot;unit_price&quot;: 25.50,
+        &quot;total_amount&quot;: 255.00,
+        &quot;reason_code&quot;: &quot;quality_defect&quot;,
+        &quot;lot_number&quot;: &quot;LOT-2025-001&quot;,
+        &quot;expiry_date&quot;: &quot;2025-12-31T00:00:00Z&quot;,
+        &quot;grn_reference&quot;: &quot;GRN-2025-001&quot;
+      }
+    ],
+    &quot;related_grns&quot;: [&quot;GRN-2025-001&quot;, &quot;GRN-2025-002&quot;],
+    &quot;financial_summary&quot;: {
+      &quot;subtotal&quot;: 1200.00,
+      &quot;tax_amount&quot;: 50.50,
+      &quot;total_amount&quot;: 1250.50
+    },
+    &quot;workflow&quot;: {
+      &quot;created_by&quot;: &quot;user_001&quot;,
+      &quot;approved_by&quot;: null,
+      &quot;approval_date&quot;: null,
+      &quot;processed_by&quot;: null,
+      &quot;processing_date&quot;: null
+    },
+    &quot;created_at&quot;: &quot;2025-01-15T10:30:00Z&quot;,
+    &quot;updated_at&quot;: &quot;2025-01-15T14:20:00Z&quot;
+  }
+}
+</code></pre>
+<h4>Create Credit Note</h4>
+<pre><code class="language-http">POST /api/v1/credit-notes
+</code></pre>
+<p><strong>Request Body</strong>:</p>
+<pre><code class="language-json">{
+  &quot;vendor_id&quot;: &quot;vendor_001&quot;,
+  &quot;type&quot;: &quot;quantity_return&quot;,
+  &quot;date&quot;: &quot;2025-01-15T00:00:00Z&quot;,
+  &quot;currency&quot;: &quot;MYR&quot;,
+  &quot;reason&quot;: &quot;Quality issues with delivered items&quot;,
+  &quot;description&quot;: &quot;Credit note for defective products&quot;,
+  &quot;items&quot;: [
+    {
+      &quot;product_id&quot;: &quot;prod_001&quot;,
+      &quot;quantity&quot;: 10,
+      &quot;unit_price&quot;: 25.50,
+      &quot;reason_code&quot;: &quot;quality_defect&quot;,
+      &quot;lot_number&quot;: &quot;LOT-2025-001&quot;,
+      &quot;grn_reference&quot;: &quot;GRN-2025-001&quot;,
+      &quot;notes&quot;: &quot;Visible damage on packaging&quot;
+    }
+  ],
+  &quot;related_grn_ids&quot;: [&quot;GRN-2025-001&quot;]
+}
+</code></pre>
+<p><strong>Response</strong>:</p>
+<pre><code class="language-json">{
+  &quot;data&quot;: {
+    &quot;id&quot;: &quot;cn_002&quot;,
+    &quot;ref_number&quot;: &quot;CN-2025-002&quot;,
+    &quot;status&quot;: &quot;draft&quot;,
+    &quot;total_amount&quot;: 255.00,
+    &quot;created_at&quot;: &quot;2025-01-15T15:30:00Z&quot;
+  },
+  &quot;message&quot;: &quot;Credit note created successfully&quot;
+}
+</code></pre>
+<h4>Update Credit Note</h4>
+<pre><code class="language-http">PUT /api/v1/credit-notes/{id}
+</code></pre>
+<p><strong>Request Body</strong>:</p>
+<pre><code class="language-json">{
+  &quot;reason&quot;: &quot;Updated reason for credit note&quot;,
+  &quot;description&quot;: &quot;Updated description&quot;,
+  &quot;items&quot;: [
+    {
+      &quot;id&quot;: &quot;item_001&quot;,
+      &quot;quantity&quot;: 8,
+      &quot;unit_price&quot;: 25.50,
+      &quot;reason_code&quot;: &quot;partial_damage&quot;
+    }
+  ]
+}
+</code></pre>
+<p><strong>Response</strong>:</p>
+<pre><code class="language-json">{
+  &quot;data&quot;: {
+    &quot;id&quot;: &quot;cn_001&quot;,
+    &quot;ref_number&quot;: &quot;CN-2025-001&quot;,
+    &quot;status&quot;: &quot;draft&quot;,
+    &quot;total_amount&quot;: 204.00,
+    &quot;updated_at&quot;: &quot;2025-01-15T16:45:00Z&quot;
+  },
+  &quot;message&quot;: &quot;Credit note updated successfully&quot;
+}
+</code></pre>
+<h4>Delete Credit Note</h4>
+<pre><code class="language-http">DELETE /api/v1/credit-notes/{id}
+</code></pre>
+<p><strong>Response</strong>:</p>
+<pre><code class="language-json">{
+  &quot;message&quot;: &quot;Credit note deleted successfully&quot;,
+  &quot;deleted_at&quot;: &quot;2025-01-15T17:00:00Z&quot;
+}
+</code></pre>
+<h3 id="2-credit-note-workflow">2. Credit Note Workflow</h3>
+<h4>Submit for Approval</h4>
+<pre><code class="language-http">POST /api/v1/credit-notes/{id}/submit
+</code></pre>
+<p><strong>Response</strong>:</p>
+<pre><code class="language-json">{
+  &quot;data&quot;: {
+    &quot;id&quot;: &quot;cn_001&quot;,
+    &quot;status&quot;: &quot;pending_approval&quot;,
+    &quot;submitted_at&quot;: &quot;2025-01-15T17:30:00Z&quot;,
+    &quot;submitted_by&quot;: &quot;user_001&quot;
+  },
+  &quot;message&quot;: &quot;Credit note submitted for approval&quot;
+}
+</code></pre>
+<h4>Approve Credit Note</h4>
+<pre><code class="language-http">POST /api/v1/credit-notes/{id}/approve
+</code></pre>
+<p><strong>Request Body</strong>:</p>
+<pre><code class="language-json">{
+  &quot;comments&quot;: &quot;Approved - valid quality issues documented&quot;
+}
+</code></pre>
+<p><strong>Response</strong>:</p>
+<pre><code class="language-json">{
+  &quot;data&quot;: {
+    &quot;id&quot;: &quot;cn_001&quot;,
+    &quot;status&quot;: &quot;approved&quot;,
+    &quot;approved_at&quot;: &quot;2025-01-16T09:00:00Z&quot;,
+    &quot;approved_by&quot;: &quot;manager_001&quot;
+  },
+  &quot;message&quot;: &quot;Credit note approved successfully&quot;
+}
+</code></pre>
+<h4>Reject Credit Note</h4>
+<pre><code class="language-http">POST /api/v1/credit-notes/{id}/reject
+</code></pre>
+<p><strong>Request Body</strong>:</p>
+<pre><code class="language-json">{
+  &quot;reason&quot;: &quot;insufficient_documentation&quot;,
+  &quot;comments&quot;: &quot;Please provide quality inspection reports&quot;
+}
+</code></pre>
+<p><strong>Response</strong>:</p>
+<pre><code class="language-json">{
+  &quot;data&quot;: {
+    &quot;id&quot;: &quot;cn_001&quot;,
+    &quot;status&quot;: &quot;rejected&quot;,
+    &quot;rejected_at&quot;: &quot;2025-01-16T09:15:00Z&quot;,
+    &quot;rejected_by&quot;: &quot;manager_001&quot;,
+    &quot;rejection_reason&quot;: &quot;insufficient_documentation&quot;
+  },
+  &quot;message&quot;: &quot;Credit note rejected&quot;
+}
+</code></pre>
+<h4>Process Credit Note</h4>
+<pre><code class="language-http">POST /api/v1/credit-notes/{id}/process
+</code></pre>
+<p><strong>Response</strong>:</p>
+<pre><code class="language-json">{
+  &quot;data&quot;: {
+    &quot;id&quot;: &quot;cn_001&quot;,
+    &quot;status&quot;: &quot;processed&quot;,
+    &quot;processed_at&quot;: &quot;2025-01-16T14:30:00Z&quot;,
+    &quot;processed_by&quot;: &quot;finance_001&quot;,
+    &quot;journal_entry_id&quot;: &quot;je_001&quot;,
+    &quot;vendor_balance_updated&quot;: true
+  },
+  &quot;message&quot;: &quot;Credit note processed successfully&quot;
+}
+</code></pre>
+<h3 id="3-credit-note-items">3. Credit Note Items</h3>
+<h4>Get Credit Note Items</h4>
+<pre><code class="language-http">GET /api/v1/credit-notes/{id}/items
+</code></pre>
+<p><strong>Response</strong>:</p>
+<pre><code class="language-json">{
+  &quot;data&quot;: [
+    {
+      &quot;id&quot;: &quot;item_001&quot;,
+      &quot;product&quot;: {
+        &quot;id&quot;: &quot;prod_001&quot;,
+        &quot;name&quot;: &quot;Premium Rice 5kg&quot;,
+        &quot;sku&quot;: &quot;RICE-PREM-5KG&quot;,
+        &quot;category&quot;: &quot;Grains &amp; Cereals&quot;
+      },
+      &quot;quantity&quot;: 10,
+      &quot;unit_price&quot;: 25.50,
+      &quot;total_amount&quot;: 255.00,
+      &quot;reason_code&quot;: &quot;quality_defect&quot;,
+      &quot;reason_description&quot;: &quot;Quality defect identified&quot;,
+      &quot;lot_number&quot;: &quot;LOT-2025-001&quot;,
+      &quot;expiry_date&quot;: &quot;2025-12-31T00:00:00Z&quot;,
+      &quot;grn_reference&quot;: &quot;GRN-2025-001&quot;,
+      &quot;notes&quot;: &quot;Visible damage on packaging&quot;
+    }
+  ]
+}
+</code></pre>
+<h4>Add Credit Note Item</h4>
+<pre><code class="language-http">POST /api/v1/credit-notes/{id}/items
+</code></pre>
+<p><strong>Request Body</strong>:</p>
+<pre><code class="language-json">{
+  &quot;product_id&quot;: &quot;prod_002&quot;,
+  &quot;quantity&quot;: 5,
+  &quot;unit_price&quot;: 12.75,
+  &quot;reason_code&quot;: &quot;pricing_error&quot;,
+  &quot;lot_number&quot;: &quot;LOT-2025-002&quot;,
+  &quot;notes&quot;: &quot;Incorrect pricing applied&quot;
+}
+</code></pre>
+<h4>Update Credit Note Item</h4>
+<pre><code class="language-http">PUT /api/v1/credit-notes/{id}/items/{item_id}
+</code></pre>
+<h4>Delete Credit Note Item</h4>
+<pre><code class="language-http">DELETE /api/v1/credit-notes/{id}/items/{item_id}
+</code></pre>
+<h3 id="4-document-management">4. Document Management</h3>
+<h4>Get Credit Note Documents</h4>
+<pre><code class="language-http">GET /api/v1/credit-notes/{id}/documents
+</code></pre>
+<p><strong>Response</strong>:</p>
+<pre><code class="language-json">{
+  &quot;data&quot;: [
+    {
+      &quot;id&quot;: &quot;doc_001&quot;,
+      &quot;name&quot;: &quot;quality_inspection_report.pdf&quot;,
+      &quot;type&quot;: &quot;quality_report&quot;,
+      &quot;size&quot;: 245760,
+      &quot;mime_type&quot;: &quot;application/pdf&quot;,
+      &quot;uploaded_by&quot;: &quot;user_001&quot;,
+      &quot;uploaded_at&quot;: &quot;2025-01-15T16:00:00Z&quot;,
+      &quot;url&quot;: &quot;/api/v1/documents/doc_001/download&quot;
+    }
+  ]
+}
+</code></pre>
+<h4>Upload Document</h4>
+<pre><code class="language-http">POST /api/v1/credit-notes/{id}/documents
+Content-Type: multipart/form-data
+</code></pre>
+<p><strong>Form Data</strong>:</p>
+<ul>
+<li><code>file</code>: Document file</li>
+<li><code>type</code>: Document type (quality_report, vendor_correspondence, photo_evidence)</li>
+<li><code>description</code>: Document description</li>
+</ul>
+<h4>Download Document</h4>
+<pre><code class="language-http">GET /api/v1/credit-notes/{id}/documents/{document_id}/download
+</code></pre>
+<h3 id="5-vendor-integration">5. Vendor Integration</h3>
+<h4>Get Vendor Credit Notes</h4>
+<pre><code class="language-http">GET /api/v1/vendors/{vendor_id}/credit-notes
+</code></pre>
+<h4>Get Available GRNs for Vendor</h4>
+<pre><code class="language-http">GET /api/v1/vendors/{vendor_id}/grns
+</code></pre>
+<p><strong>Query Parameters</strong>:</p>
+<ul>
+<li><code>status</code> (string): GRN status filter</li>
+<li><code>date_from</code> (string): Start date filter</li>
+<li><code>date_to</code> (string): End date filter</li>
+</ul>
+<p><strong>Response</strong>:</p>
+<pre><code class="language-json">{
+  &quot;data&quot;: [
+    {
+      &quot;id&quot;: &quot;grn_001&quot;,
+      &quot;ref_number&quot;: &quot;GRN-2025-001&quot;,
+      &quot;date&quot;: &quot;2025-01-10T00:00:00Z&quot;,
+      &quot;total_amount&quot;: 2500.00,
+      &quot;currency&quot;: &quot;MYR&quot;,
+      &quot;items_count&quot;: 5,
+      &quot;available_for_credit&quot;: true
+    }
+  ]
+}
+</code></pre>
+<h3 id="6-reporting-amp-analytics">6. Reporting &amp; Analytics</h3>
+<h4>Credit Note Summary Report</h4>
+<pre><code class="language-http">GET /api/v1/credit-notes/reports/summary
+</code></pre>
+<p><strong>Query Parameters</strong>:</p>
+<ul>
+<li><code>period</code> (string): Report period (daily, weekly, monthly, yearly)</li>
+<li><code>date_from</code> (string): Start date</li>
+<li><code>date_to</code> (string): End date</li>
+<li><code>vendor_id</code> (string): Vendor filter</li>
+<li><code>type</code> (string): Credit note type filter</li>
+</ul>
+<p><strong>Response</strong>:</p>
+<pre><code class="language-json">{
+  &quot;data&quot;: {
+    &quot;summary&quot;: {
+      &quot;total_credit_notes&quot;: 125,
+      &quot;total_amount&quot;: 15750.25,
+      &quot;by_status&quot;: {
+        &quot;draft&quot;: 5,
+        &quot;pending_approval&quot;: 8,
+        &quot;approved&quot;: 12,
+        &quot;processed&quot;: 100
+      },
+      &quot;by_type&quot;: {
+        &quot;quantity_return&quot;: 95,
+        &quot;amount_discount&quot;: 30
+      }
+    },
+    &quot;trends&quot;: [
+      {
+        &quot;period&quot;: &quot;2025-01&quot;,
+        &quot;count&quot;: 25,
+        &quot;amount&quot;: 3125.50
+      }
+    ],
+    &quot;top_vendors&quot;: [
+      {
+        &quot;vendor_id&quot;: &quot;vendor_001&quot;,
+        &quot;vendor_name&quot;: &quot;ACME Corporation&quot;,
+        &quot;credit_notes_count&quot;: 15,
+        &quot;total_amount&quot;: 2250.75
+      }
+    ]
+  }
+}
+</code></pre>
+<h4>Export Credit Notes</h4>
+<pre><code class="language-http">POST /api/v1/credit-notes/export
+</code></pre>
+<p><strong>Request Body</strong>:</p>
+<pre><code class="language-json">{
+  &quot;format&quot;: &quot;xlsx&quot;,
+  &quot;filters&quot;: {
+    &quot;status&quot;: [&quot;approved&quot;, &quot;processed&quot;],
+    &quot;date_from&quot;: &quot;2025-01-01T00:00:00Z&quot;,
+    &quot;date_to&quot;: &quot;2025-01-31T23:59:59Z&quot;
+  },
+  &quot;fields&quot;: [
+    &quot;ref_number&quot;,
+    &quot;vendor_name&quot;,
+    &quot;date&quot;,
+    &quot;type&quot;,
+    &quot;status&quot;,
+    &quot;total_amount&quot;
+  ]
+}
+</code></pre>
+<p><strong>Response</strong>:</p>
+<pre><code class="language-json">{
+  &quot;data&quot;: {
+    &quot;export_id&quot;: &quot;export_001&quot;,
+    &quot;status&quot;: &quot;processing&quot;,
+    &quot;estimated_completion&quot;: &quot;2025-01-15T18:05:00Z&quot;
+  }
+}
+</code></pre>
+<h4>Get Export Status</h4>
+<pre><code class="language-http">GET /api/v1/exports/{export_id}
+</code></pre>
+<h2 id="data-models">Data Models</h2>
+<h3 id="credit-note-model">Credit Note Model</h3>
+<pre><code class="language-json">{
+  &quot;id&quot;: &quot;string&quot;,
+  &quot;ref_number&quot;: &quot;string&quot;,
+  &quot;vendor&quot;: {
+    &quot;id&quot;: &quot;string&quot;,
+    &quot;name&quot;: &quot;string&quot;,
+    &quot;registration_number&quot;: &quot;string&quot;,
+    &quot;contact_person&quot;: &quot;string&quot;,
+    &quot;email&quot;: &quot;string&quot;,
+    &quot;phone&quot;: &quot;string&quot;
+  },
+  &quot;type&quot;: &quot;quantity_return | amount_discount&quot;,
+  &quot;status&quot;: &quot;draft | pending_approval | approved | rejected | processed | cancelled&quot;,
+  &quot;date&quot;: &quot;ISO 8601 datetime&quot;,
+  &quot;currency&quot;: &quot;string&quot;,
+  &quot;exchange_rate&quot;: &quot;number&quot;,
+  &quot;reason&quot;: &quot;string&quot;,
+  &quot;description&quot;: &quot;string&quot;,
+  &quot;items&quot;: [&quot;CreditNoteItem&quot;],
+  &quot;related_grns&quot;: [&quot;string&quot;],
+  &quot;financial_summary&quot;: {
+    &quot;subtotal&quot;: &quot;number&quot;,
+    &quot;tax_amount&quot;: &quot;number&quot;,
+    &quot;discount_amount&quot;: &quot;number&quot;,
+    &quot;total_amount&quot;: &quot;number&quot;
+  },
+  &quot;workflow&quot;: {
+    &quot;created_by&quot;: &quot;string&quot;,
+    &quot;created_at&quot;: &quot;ISO 8601 datetime&quot;,
+    &quot;submitted_by&quot;: &quot;string&quot;,
+    &quot;submitted_at&quot;: &quot;ISO 8601 datetime&quot;,
+    &quot;approved_by&quot;: &quot;string&quot;,
+    &quot;approved_at&quot;: &quot;ISO 8601 datetime&quot;,
+    &quot;processed_by&quot;: &quot;string&quot;,
+    &quot;processed_at&quot;: &quot;ISO 8601 datetime&quot;
+  },
+  &quot;documents&quot;: [&quot;Document&quot;],
+  &quot;activity_log&quot;: [&quot;ActivityLogEntry&quot;],
+  &quot;created_at&quot;: &quot;ISO 8601 datetime&quot;,
+  &quot;updated_at&quot;: &quot;ISO 8601 datetime&quot;
+}
+</code></pre>
+<h3 id="credit-note-item-model">Credit Note Item Model</h3>
+<pre><code class="language-json">{
+  &quot;id&quot;: &quot;string&quot;,
+  &quot;credit_note_id&quot;: &quot;string&quot;,
+  &quot;product&quot;: {
+    &quot;id&quot;: &quot;string&quot;,
+    &quot;name&quot;: &quot;string&quot;,
+    &quot;sku&quot;: &quot;string&quot;,
+    &quot;category&quot;: &quot;string&quot;,
+    &quot;unit&quot;: &quot;string&quot;
+  },
+  &quot;quantity&quot;: &quot;number&quot;,
+  &quot;unit_price&quot;: &quot;number&quot;,
+  &quot;total_amount&quot;: &quot;number&quot;,
+  &quot;reason_code&quot;: &quot;string&quot;,
+  &quot;reason_description&quot;: &quot;string&quot;,
+  &quot;lot_number&quot;: &quot;string&quot;,
+  &quot;expiry_date&quot;: &quot;ISO 8601 datetime&quot;,
+  &quot;grn_reference&quot;: &quot;string&quot;,
+  &quot;grn_item_id&quot;: &quot;string&quot;,
+  &quot;notes&quot;: &quot;string&quot;,
+  &quot;created_at&quot;: &quot;ISO 8601 datetime&quot;,
+  &quot;updated_at&quot;: &quot;ISO 8601 datetime&quot;
+}
+</code></pre>
+<h3 id="reason-code-model">Reason Code Model</h3>
+<pre><code class="language-json">{
+  &quot;code&quot;: &quot;string&quot;,
+  &quot;category&quot;: &quot;quality | pricing | quantity | other&quot;,
+  &quot;description&quot;: &quot;string&quot;,
+  &quot;requires_documentation&quot;: &quot;boolean&quot;,
+  &quot;automatic_approval&quot;: &quot;boolean&quot;,
+  &quot;active&quot;: &quot;boolean&quot;
+}
+</code></pre>
+<h3 id="document-model">Document Model</h3>
+<pre><code class="language-json">{
+  &quot;id&quot;: &quot;string&quot;,
+  &quot;credit_note_id&quot;: &quot;string&quot;,
+  &quot;name&quot;: &quot;string&quot;,
+  &quot;type&quot;: &quot;quality_report | vendor_correspondence | photo_evidence | other&quot;,
+  &quot;description&quot;: &quot;string&quot;,
+  &quot;file_path&quot;: &quot;string&quot;,
+  &quot;size&quot;: &quot;number&quot;,
+  &quot;mime_type&quot;: &quot;string&quot;,
+  &quot;uploaded_by&quot;: &quot;string&quot;,
+  &quot;uploaded_at&quot;: &quot;ISO 8601 datetime&quot;,
+  &quot;download_url&quot;: &quot;string&quot;
+}
+</code></pre>
+<h3 id="activity-log-entry-model">Activity Log Entry Model</h3>
+<pre><code class="language-json">{
+  &quot;id&quot;: &quot;string&quot;,
+  &quot;credit_note_id&quot;: &quot;string&quot;,
+  &quot;action&quot;: &quot;string&quot;,
+  &quot;description&quot;: &quot;string&quot;,
+  &quot;user_id&quot;: &quot;string&quot;,
+  &quot;user_name&quot;: &quot;string&quot;,
+  &quot;timestamp&quot;: &quot;ISO 8601 datetime&quot;,
+  &quot;metadata&quot;: &quot;object&quot;
+}
+</code></pre>
+<h2 id="error-handling">Error Handling</h2>
+<h3 id="error-response-format">Error Response Format</h3>
+<pre><code class="language-json">{
+  &quot;error&quot;: {
+    &quot;code&quot;: &quot;string&quot;,
+    &quot;message&quot;: &quot;string&quot;,
+    &quot;details&quot;: &quot;object&quot;,
+    &quot;timestamp&quot;: &quot;ISO 8601 datetime&quot;,
+    &quot;request_id&quot;: &quot;string&quot;
+  }
+}
+</code></pre>
+<h3 id="common-error-codes">Common Error Codes</h3>
+<p><strong>Client Errors (4xx)</strong>:</p>
+<ul>
+<li><code>400</code> - Bad Request</li>
+<li><code>401</code> - Unauthorized</li>
+<li><code>403</code> - Forbidden</li>
+<li><code>404</code> - Not Found</li>
+<li><code>409</code> - Conflict</li>
+<li><code>422</code> - Unprocessable Entity</li>
+</ul>
+<p><strong>Server Errors (5xx)</strong>:</p>
+<ul>
+<li><code>500</code> - Internal Server Error</li>
+<li><code>502</code> - Bad Gateway</li>
+<li><code>503</code> - Service Unavailable</li>
+<li><code>504</code> - Gateway Timeout</li>
+</ul>
+<h3 id="validation-errors">Validation Errors</h3>
+<pre><code class="language-json">{
+  &quot;error&quot;: {
+    &quot;code&quot;: &quot;validation_failed&quot;,
+    &quot;message&quot;: &quot;Validation failed for one or more fields&quot;,
+    &quot;details&quot;: {
+      &quot;fields&quot;: {
+        &quot;vendor_id&quot;: [&quot;Vendor ID is required&quot;],
+        &quot;items[0].quantity&quot;: [&quot;Quantity must be greater than 0&quot;]
+      }
+    }
+  }
+}
+</code></pre>
+<h3 id="business-logic-errors">Business Logic Errors</h3>
+<pre><code class="language-json">{
+  &quot;error&quot;: {
+    &quot;code&quot;: &quot;insufficient_grn_quantity&quot;,
+    &quot;message&quot;: &quot;Credit quantity exceeds available GRN quantity&quot;,
+    &quot;details&quot;: {
+      &quot;grn_id&quot;: &quot;GRN-2025-001&quot;,
+      &quot;product_id&quot;: &quot;prod_001&quot;,
+      &quot;available_quantity&quot;: 50,
+      &quot;requested_quantity&quot;: 75
+    }
+  }
+}
+</code></pre>
+<h2 id="rate-limiting">Rate Limiting</h2>
+<h3 id="rate-limit-headers">Rate Limit Headers</h3>
+<pre><code class="language-http">X-RateLimit-Limit: 1000
+X-RateLimit-Remaining: 999
+X-RateLimit-Reset: 1640995200
+X-RateLimit-Window: 3600
+</code></pre>
+<h3 id="rate-limit-tiers">Rate Limit Tiers</h3>
+<ul>
+<li><strong>Standard User</strong>: 1000 requests/hour</li>
+<li><strong>Premium User</strong>: 5000 requests/hour</li>
+<li><strong>Enterprise</strong>: 10000 requests/hour</li>
+<li><strong>System Integration</strong>: 50000 requests/hour</li>
+</ul>
+<h3 id="rate-limit-exceeded-response">Rate Limit Exceeded Response</h3>
+<pre><code class="language-json">{
+  &quot;error&quot;: {
+    &quot;code&quot;: &quot;rate_limit_exceeded&quot;,
+    &quot;message&quot;: &quot;Rate limit exceeded. Try again later.&quot;,
+    &quot;details&quot;: {
+      &quot;limit&quot;: 1000,
+      &quot;window&quot;: 3600,
+      &quot;reset_time&quot;: &quot;2025-01-15T19:00:00Z&quot;
+    }
+  }
+}
+</code></pre>
+<h2 id="webhooks">Webhooks</h2>
+<h3 id="webhook-events">Webhook Events</h3>
+<p><strong>Credit Note Events</strong>:</p>
+<ul>
+<li><code>credit_note.created</code> - New credit note created</li>
+<li><code>credit_note.updated</code> - Credit note modified</li>
+<li><code>credit_note.submitted</code> - Submitted for approval</li>
+<li><code>credit_note.approved</code> - Credit note approved</li>
+<li><code>credit_note.rejected</code> - Credit note rejected</li>
+<li><code>credit_note.processed</code> - Credit note processed</li>
+<li><code>credit_note.cancelled</code> - Credit note cancelled</li>
+</ul>
+<h3 id="webhook-payload">Webhook Payload</h3>
+<pre><code class="language-json">{
+  &quot;event&quot;: &quot;credit_note.approved&quot;,
+  &quot;timestamp&quot;: &quot;2025-01-16T09:00:00Z&quot;,
+  &quot;data&quot;: {
+    &quot;credit_note_id&quot;: &quot;cn_001&quot;,
+    &quot;ref_number&quot;: &quot;CN-2025-001&quot;,
+    &quot;vendor_id&quot;: &quot;vendor_001&quot;,
+    &quot;total_amount&quot;: 1250.50,
+    &quot;currency&quot;: &quot;MYR&quot;,
+    &quot;approved_by&quot;: &quot;manager_001&quot;,
+    &quot;approved_at&quot;: &quot;2025-01-16T09:00:00Z&quot;
+  },
+  &quot;metadata&quot;: {
+    &quot;request_id&quot;: &quot;req_001&quot;,
+    &quot;api_version&quot;: &quot;v1&quot;
+  }
+}
+</code></pre>
+<h3 id="webhook-security">Webhook Security</h3>
+<ul>
+<li><strong>Signature Verification</strong>: HMAC-SHA256 signature in <code>X-Webhook-Signature</code> header</li>
+<li><strong>Timestamp Validation</strong>: Timestamp in <code>X-Webhook-Timestamp</code> header</li>
+<li><strong>Retry Logic</strong>: Exponential backoff for failed deliveries</li>
+<li><strong>Delivery Confirmation</strong>: 200 status code required for successful delivery</li>
+</ul>
+<h2 id="integration-patterns">Integration Patterns</h2>
+<h3 id="vendor-portal-integration">Vendor Portal Integration</h3>
+<pre><code class="language-http">GET /api/v1/vendor-portal/credit-notes
+Authorization: Bearer &lt;vendor_portal_token&gt;
+</code></pre>
+<h3 id="erp-system-integration">ERP System Integration</h3>
+<pre><code class="language-http">POST /api/v1/integrations/erp/credit-notes/sync
+X-Integration-Key: &lt;erp_integration_key&gt;
+</code></pre>
+<h3 id="accounting-system-integration">Accounting System Integration</h3>
+<pre><code class="language-http">POST /api/v1/integrations/accounting/journal-entries
+Content-Type: application/json
+
+{
+  &quot;credit_note_id&quot;: &quot;cn_001&quot;,
+  &quot;entries&quot;: [
+    {
+      &quot;account&quot;: &quot;accounts_payable&quot;,
+      &quot;debit&quot;: 0,
+      &quot;credit&quot;: 1250.50
+    },
+    {
+      &quot;account&quot;: &quot;inventory_returns&quot;,
+      &quot;debit&quot;: 1250.50,
+      &quot;credit&quot;: 0
+    }
+  ]
+}
+</code></pre>
+<h3 id="inventory-management-integration">Inventory Management Integration</h3>
+<pre><code class="language-http">POST /api/v1/integrations/inventory/adjustments
+Content-Type: application/json
+
+{
+  &quot;credit_note_id&quot;: &quot;cn_001&quot;,
+  &quot;adjustments&quot;: [
+    {
+      &quot;product_id&quot;: &quot;prod_001&quot;,
+      &quot;location_id&quot;: &quot;loc_001&quot;,
+      &quot;quantity_change&quot;: 10,
+      &quot;adjustment_type&quot;: &quot;return&quot;,
+      &quot;reason&quot;: &quot;credit_note_return&quot;
+    }
+  ]
+}
+</code></pre>
+<hr>
+<p><em>Generated on: 2025-09-23</em><br><em>API Specification Version: 1.0</em><br><em>Carmen ERP - Credit Note Module</em></p>
+
+                </article>
+            </main>
+
+            <!-- Table of Contents -->
+            
+            <aside class="doc-toc">
+                <h4><i class="fas fa-list"></i> On This Page</h4>
+                <nav id="toc-nav">
+                    <a href="#credit-note-module-api-specification" class="level-1">Credit Note Module - API Specification</a>
+<a href="#table-of-contents" class="level-2">Table of Contents</a>
+<a href="#authentication-amp-authorization" class="level-2">Authentication &amp; Authorization</a>
+<a href="#authentication-methods" class="level-3">Authentication Methods</a>
+<a href="#authorization-levels" class="level-3">Authorization Levels</a>
+<a href="#jwt-token-structure" class="level-3">JWT Token Structure</a>
+<a href="#core-endpoints" class="level-2">Core Endpoints</a>
+<a href="#1-credit-note-management" class="level-3">1. Credit Note Management</a>
+<a href="#2-credit-note-workflow" class="level-3">2. Credit Note Workflow</a>
+<a href="#3-credit-note-items" class="level-3">3. Credit Note Items</a>
+<a href="#4-document-management" class="level-3">4. Document Management</a>
+<a href="#5-vendor-integration" class="level-3">5. Vendor Integration</a>
+<a href="#6-reporting-amp-analytics" class="level-3">6. Reporting &amp; Analytics</a>
+<a href="#data-models" class="level-2">Data Models</a>
+<a href="#credit-note-model" class="level-3">Credit Note Model</a>
+<a href="#credit-note-item-model" class="level-3">Credit Note Item Model</a>
+<a href="#reason-code-model" class="level-3">Reason Code Model</a>
+<a href="#document-model" class="level-3">Document Model</a>
+<a href="#activity-log-entry-model" class="level-3">Activity Log Entry Model</a>
+<a href="#error-handling" class="level-2">Error Handling</a>
+<a href="#error-response-format" class="level-3">Error Response Format</a>
+<a href="#common-error-codes" class="level-3">Common Error Codes</a>
+<a href="#validation-errors" class="level-3">Validation Errors</a>
+<a href="#business-logic-errors" class="level-3">Business Logic Errors</a>
+<a href="#rate-limiting" class="level-2">Rate Limiting</a>
+<a href="#rate-limit-headers" class="level-3">Rate Limit Headers</a>
+<a href="#rate-limit-tiers" class="level-3">Rate Limit Tiers</a>
+<a href="#rate-limit-exceeded-response" class="level-3">Rate Limit Exceeded Response</a>
+<a href="#webhooks" class="level-2">Webhooks</a>
+<a href="#webhook-events" class="level-3">Webhook Events</a>
+<a href="#webhook-payload" class="level-3">Webhook Payload</a>
+<a href="#webhook-security" class="level-3">Webhook Security</a>
+<a href="#integration-patterns" class="level-2">Integration Patterns</a>
+<a href="#vendor-portal-integration" class="level-3">Vendor Portal Integration</a>
+<a href="#erp-system-integration" class="level-3">ERP System Integration</a>
+<a href="#accounting-system-integration" class="level-3">Accounting System Integration</a>
+<a href="#inventory-management-integration" class="level-3">Inventory Management Integration</a>
+                </nav>
+            </aside>
+            
+        </div>
+    </div>
+
+    <!-- Search Modal -->
+    <div class="search-modal" id="searchModal">
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchModalInput" placeholder="Search documentation..." autofocus>
+                    <button class="search-close-btn" id="searchCloseBtn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="search-results" id="searchResults">
+                <div class="search-empty">
+                    <i class="fas fa-search"></i>
+                    <p>Start typing to search...</p>
+                </div>
+            </div>
+            <div class="search-footer">
+                <div class="search-shortcuts">
+                    <kbd>↑↓</kbd> Navigate
+                    <kbd>Enter</kbd> Select
+                    <kbd>Esc</kbd> Close
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+
+        // Highlight code blocks
+        document.querySelectorAll('pre code:not(.language-mermaid)').forEach(block => {
+            hljs.highlightElement(block);
+        });
+
+        // Navigation - Collapsible groups
+        document.querySelectorAll('.nav-group-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const group = header.parentElement;
+                group.classList.toggle('collapsed');
+            });
+        });
+
+        // Expand active group
+        const activeNavItem = document.querySelector('.nav-item.active');
+        if (activeNavItem) {
+            const activeGroup = activeNavItem.closest('.nav-group');
+            if (activeGroup) {
+                activeGroup.classList.remove('collapsed');
+            }
+        }
+
+        // Table of Contents - Active state on scroll
+        const tocLinks = document.querySelectorAll('#toc-nav a');
+        const headings = document.querySelectorAll('.doc-content h1[id], .doc-content h2[id], .doc-content h3[id]');
+
+        function updateActiveLink() {
+            let current = '';
+            headings.forEach(heading => {
+                const rect = heading.getBoundingClientRect();
+                if (rect.top <= 150) {
+                    current = heading.id;
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        if (tocLinks.length > 0) {
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+        }
+
+        // Smooth scroll for TOC links
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Search functionality
+        let searchIndex = [];
+        let selectedResultIndex = -1;
+
+        // Load search index
+        fetch('../../../search-index.json')
+            .then(res => res.json())
+            .then(data => {
+                searchIndex = data;
+                console.log('✓ Search index loaded:', searchIndex.length, 'entries');
+            })
+            .catch(err => console.error('❌ Failed to load search index:', err));
+
+        // Open search modal
+        function openSearchModal() {
+            console.log('🔍 Opening search modal...');
+            document.getElementById('searchModal').classList.add('active');
+            document.getElementById('searchModalInput').focus();
+            selectedResultIndex = -1;
+        }
+
+        // Close search modal
+        function closeSearchModal() {
+            document.getElementById('searchModal').classList.remove('active');
+            document.getElementById('searchModalInput').value = '';
+            document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-search"></i><p>Start typing to search...</p></div>';
+            selectedResultIndex = -1;
+        }
+
+        // Search function
+        function performSearch(query) {
+            console.log('🔎 Searching for:', query);
+
+            if (!query || query.length < 2) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-search"></i><p>Start typing to search...</p></div>';
+                return;
+            }
+
+            if (searchIndex.length === 0) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-exclamation-circle"></i><p>Search index not loaded</p></div>';
+                return;
+            }
+
+            const queryLower = query.toLowerCase();
+            const queryWords = queryLower.split(/s+/).filter(word => word.length > 1);
+
+            // Search and score results
+            const results = searchIndex
+                .map(entry => {
+                    let score = 0;
+
+                    // Title match (highest weight)
+                    if (entry.title.toLowerCase().includes(queryLower)) {
+                        score += 100;
+                    }
+                    queryWords.forEach(word => {
+                        if (entry.title.toLowerCase().includes(word)) score += 50;
+                    });
+
+                    // Content match
+                    if (entry.content.toLowerCase().includes(queryLower)) {
+                        score += 10;
+                    }
+                    queryWords.forEach(word => {
+                        if (entry.content.toLowerCase().includes(word)) score += 5;
+                    });
+
+                    return { ...entry, score };
+                })
+                .filter(result => result.score > 0)
+                .sort((a, b) => b.score - a.score)
+                .slice(0, 10); // Top 10 results
+
+            console.log('📊 Found', results.length, 'results');
+
+            // Display results
+            if (results.length === 0) {
+                document.getElementById('searchResults').innerHTML = '<div class="search-empty"><i class="fas fa-times-circle"></i><p>No results found</p></div>';
+                return;
+            }
+
+            const resultsHtml = results.map((result, index) => {
+                const urlPath = '../../../' + result.url;
+                return '<a href="' + urlPath + '" class="search-result ' + (index === 0 ? 'selected' : '') + '" data-index="' + index + '">' +
+                    '<div class="result-title">' + result.title + '</div>' +
+                    '<div class="result-content">' + highlightMatch(result.content, query) + '</div>' +
+                    '</a>';
+            }).join('');
+
+            document.getElementById('searchResults').innerHTML = resultsHtml;
+            selectedResultIndex = 0;
+        }
+
+        // Highlight matching text
+        function highlightMatch(text, query) {
+            if (!text) return '';
+            const queryWords = query.split(/\s+/).join('|');
+            const regex = new RegExp('(' + queryWords + ')', 'gi');
+            return text.substring(0, 150).replace(regex, '<mark>$1</mark>') + '...';
+        }
+
+        // Navigate results with keyboard
+        function navigateResults(direction) {
+            const results = document.querySelectorAll('.search-result');
+            if (results.length === 0) return;
+
+            results[selectedResultIndex]?.classList.remove('selected');
+
+            if (direction === 'down') {
+                selectedResultIndex = (selectedResultIndex + 1) % results.length;
+            } else if (direction === 'up') {
+                selectedResultIndex = (selectedResultIndex - 1 + results.length) % results.length;
+            }
+
+            results[selectedResultIndex]?.classList.add('selected');
+            results[selectedResultIndex]?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+
+        // Select result
+        function selectResult() {
+            const selected = document.querySelector('.search-result.selected');
+            if (selected) {
+                window.location.href = selected.href;
+            }
+        }
+
+        // Event listeners
+        document.getElementById('headerSearchBtn')?.addEventListener('click', openSearchModal);
+        document.getElementById('searchCloseBtn')?.addEventListener('click', closeSearchModal);
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Ctrl+K or Cmd+K to open search
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                openSearchModal();
+            }
+
+            // Esc to close search
+            if (e.key === 'Escape' && document.getElementById('searchModal').classList.contains('active')) {
+                closeSearchModal();
+            }
+
+            // Navigate results
+            if (document.getElementById('searchModal').classList.contains('active')) {
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    navigateResults('down');
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    navigateResults('up');
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    selectResult();
+                }
+            }
+        });
+
+        // Search input
+        document.getElementById('searchModalInput')?.addEventListener('input', (e) => {
+            performSearch(e.target.value);
+        });
+
+        // Click outside to close
+        document.getElementById('searchModal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'searchModal') {
+                closeSearchModal();
+            }
+        });
+    </script>
+</body>
+</html>
