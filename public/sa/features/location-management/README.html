@@ -447,10 +447,28 @@
   updatedAt: Date;
 }</code></pre>
 
+                <h2 id="view-location">3. View Location Detail Page</h2>
+                <p><strong>Route:</strong> <code>/system-administration/location-management/[id]</code></p>
+
+                <p>Read-only view displaying complete location information including basic details, delivery information, and assigned users.</p>
+
+                <p><strong>Location Detail View:</strong></p>
+                <img src="screenshots/location-detail-view.png" alt="Location Detail View - Complete information display with sections" style="max-width: 100%; border: 1px solid var(--border); border-radius: 0.5rem; margin: 1rem 0;">
+
+                <p><strong>Sections Displayed:</strong></p>
+                <ul>
+                    <li><strong>Basic Information</strong>: Location code, name, type, and status</li>
+                    <li><strong>Delivery Information</strong>: Physical count requirement and delivery point</li>
+                    <li><strong>Assigned Users</strong>: List of users with access to this location</li>
+                </ul>
+
                 <h2 id="edit-location">4. Edit Location Page</h2>
                 <p><strong>Route:</strong> <code>/system-administration/location-management/[id]/edit</code></p>
 
                 <p>Same form as Create Location, pre-populated with existing data.</p>
+
+                <p><strong>Location Edit Form - Basic Information:</strong></p>
+                <img src="screenshots/location-edit-form-basic.png" alt="Location Edit Form - Basic information fields and user assignment tab" style="max-width: 100%; border: 1px solid var(--border); border-radius: 0.5rem; margin: 1rem 0;">
 
                 <p><strong>Additional Features:</strong></p>
                 <ul>
@@ -787,6 +805,7 @@ Body: {
                         <li class="toc-h2"><a href="#overview">Overview</a></li>
                         <li class="toc-h3"><a href="#key-features">Key Features</a></li>
                         <li class="toc-h2"><a href="#data-model">Data Model</a></li>
+                        <li class="toc-h2"><a href="#view-location">View Location Detail</a></li>
                         <li class="toc-h2"><a href="#edit-location">Edit Location</a></li>
                         <li class="toc-h3"><a href="#user-assignment-tab">User Assignment Tab</a></li>
                         <li class="toc-h3"><a href="#product-assignment-tab">Product Assignment Tab</a></li>
